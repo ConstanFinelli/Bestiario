@@ -52,4 +52,6 @@ UNLOCK TABLES;
 
 -- Dump completed on 2025-07-09 20:20:11
 
-insert into tipo_evidencia values (1,'Imagenes en 1080p'), (2, 'Pisadas en la nieve')
+insert into tipo_evidencia values (1,'Imagenes en 1080p'), (2, 'Pisadas en la nieve');
+CREATE USER 'bestiario'@'%' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON bestiario.* TO 'bestiario'@'%'
