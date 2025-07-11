@@ -52,7 +52,36 @@ public class SvCategoria extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String desc = request.getParameter("descripcion");
+		if(desc != null) {
+			Categoria cat = new Categoria(0, desc);
+			cat = controlador.save(cat);
+			response.getWriter().append("Id: " + cat.getIdCategoria() + "<br>Descripcion: " + cat.getDescripcionCategoria());
+		}else {
+			response.getWriter().append("Ingrese una descripcion valida");
+		}
 	}
-
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String id = request.getParameter("id");
+		if(id != null) {
+			Categoria cat = new Categoria(Integer.parseInt(id), null);
+			cat = controlador.delete(cat);
+			response.getWriter().append("Id: " + cat.getIdCategoria() + "<br>Descripcion: " + cat.getDescripcionCategoria());
+		}else {
+			response.getWriter().append("Ingrese una id valida");
+		}
+	}
+	
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String id = request.getParameter("id");
+		String desc = request.getParameter("descripcion");
+		if(id != null && desc != null) {
+			Categoria cat = new Categoria(Integer.parseInt(id), desc);
+			cat = controlador.update(cat);
+			response.getWriter().append("Id: " + cat.getIdCategoria() + "<br>Descripcion: " + cat.getDescripcionCategoria());
+		}else {
+			response.getWriter().append("Los datos ingresados no son validos");
+		}
+	}
 }
