@@ -29,7 +29,8 @@ public class SvCategoria extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String id = request.getParameter("id");		if(id != null) {
+		String id = request.getParameter("id");
+		if(id != null) {
 			Categoria cat = new Categoria(Integer.parseInt(id), null);
 			Categoria categoria = controlador.getOne(cat);
 			if(categoria != null) {
