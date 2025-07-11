@@ -6,6 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedList;
+
+import entities.Categoria;
+import entities.TipoEvidencia;
+import logic.LogicCategoria;
 
 /**
  * Servlet implementation class SvCategoria
@@ -13,7 +18,7 @@ import java.io.IOException;
 @WebServlet("/SvCategoria")
 public class SvCategoria extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	public LogicCategoria controlador = new LogicCategoria();
     /**
      * Default constructor. 
      */
@@ -26,8 +31,23 @@ public class SvCategoria extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String id = request.getParameter("id");		if(id != null) {
+			Categoria cat = new Categoria(Integer.parseInt(id), null);
+			Categoria categoria = controlador.getOne(cat);
+			if(categoria != null) {
+				response.getWriter().append("Id: " + categoria.getIdCategoria() + "<br>Descripción: " +  categoria.getDescripcionCategoria());
+			}else {
+				response.getWriter().append("La categoria no se ha encontrado");
+			}
+		}else {
+			LinkedList<Categoria> categorias = new LinkedList<>();
+			categorias = controlador.findAll();
+			for(Categoria cat : categorias) {
+				response.getWriter().append("Id: " + cat.getIdCategoria() + "<br>Descripción: " +  cat.getDescripcionCategoria() + "<br>");
+			}
+		}
 	}
+		
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
