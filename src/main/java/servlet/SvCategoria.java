@@ -7,9 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedList;
-
 import entities.Categoria;
-import entities.TipoEvidencia;
 import logic.LogicCategoria;
 
 /**
