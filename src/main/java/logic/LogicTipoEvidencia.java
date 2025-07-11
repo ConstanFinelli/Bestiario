@@ -24,6 +24,7 @@ public class LogicTipoEvidencia {
 	}
 	
 	public TipoEvidencia delete(TipoEvidencia datoBorrado) {
-		return teDAO.delete(datoBorrado);
+		TipoEvidencia dato = getOne(datoBorrado); // consultar 
+		return teDAO.delete(dato);
 	}
 }
