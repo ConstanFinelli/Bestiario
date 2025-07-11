@@ -11,11 +11,11 @@ public class DataTipoEvidencia {
 		ResultSet rs = null;
 		TipoEvidencia tipoEncontrado = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from tipo_evidencia where id = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from tipo_evidencia where idTipoEvidencia = ?");
 			pstmt.setInt(1, tipoE.getId());
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
-				int id = rs.getInt("id");
+				int id = rs.getInt("idTipoEvidencia");
 				String descripcion = rs.getString("descripcion");
 				tipoEncontrado = new TipoEvidencia(id, descripcion);
 			}
@@ -51,7 +51,7 @@ public class DataTipoEvidencia {
 			rs = stmt.executeQuery("select * from tipo_evidencia");
 			if(rs != null){
 				while(rs.next()) {
-					int id = rs.getInt("id");
+					int id = rs.getInt("idTipoEvidencia");
 					String descripcion = rs.getString("descripcion");
 					tipoEncontrado = new TipoEvidencia(id, descripcion);
 					tipos.add(tipoEncontrado);
@@ -83,12 +83,13 @@ public class DataTipoEvidencia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into tipo_evidencia values (?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into tipo_evidencia(descripcion) values (?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, tipoS.getDescripcion());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
-				int id = rs.getInt("id");
+				
+				int id = rs.getInt(1);
 				tipoS.setId(id);
 			}
 		}catch(SQLException ex) {
@@ -116,10 +117,10 @@ public class DataTipoEvidencia {
 	public TipoEvidencia update(TipoEvidencia datos) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update tipo_evidencia set descripcion = ? where id = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update tipo_evidencia set descripcion = ? where idTipoEvidencia = ?");
 			pstmt.setString(1, datos.getDescripcion());
 			pstmt.setInt(2, datos.getId());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		}catch(SQLException ex){
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
@@ -142,9 +143,9 @@ public class DataTipoEvidencia {
 	public TipoEvidencia delete(TipoEvidencia datoBorrado) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from tipo_evidencia where id = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from tipo_evidencia where idTipoEvidencia = ?");
 			pstmt.setInt(1, datoBorrado.getId());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		}catch(SQLException ex){
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
