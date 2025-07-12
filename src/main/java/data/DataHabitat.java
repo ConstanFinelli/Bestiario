@@ -1,6 +1,8 @@
 package data;
 
 import entities.Habitat;
+import entities.TipoEvidencia;
+
 import java.sql.*;
 import java.util.LinkedList;
 
@@ -104,4 +106,88 @@ public class DataHabitat {
 		return htsEncontradas;
 	}
 	
+	public Habitat save(Habitat ht) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Habitat htGuardada = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("INSERT INTO habitat(nombre, localizacion) VALUES (?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt.setString(1, ht.getNombre());
+			pstmt.setString(2, ht.getLocalizacion());
+			pstmt.executeUpdate();
+			rs = pstmt.getGeneratedKeys();
+			if(rs != null && rs.next()) {
+				htGuardada = ht;
+				htGuardada.setCaracteristicas(null);
+				htGuardada.setId(rs.getInt(1));
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {pstmt.close();}
+				if(rs != null) {rs.close();}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return htGuardada;
+	}
+	
+	public Habitat update(Habitat ht) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE habitat SET nombre = ?, localizacion = ? WHERE idHabitat = ?");
+			pstmt.setString(1, ht.getNombre());
+			pstmt.setString(2, ht.getLocalizacion());
+			pstmt.setInt(3, ht.getId());
+			pstmt.executeUpdate();
+		}catch(SQLException ex){
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return ht;
+	}
+	
+	public Habitat delete(Habitat ht) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("DELETE FROM habitat WHERE idHabitat = ?");
+			pstmt.setInt(1, ht.getId());
+			pstmt.executeUpdate();
+		}catch(SQLException ex){
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return ht;
+	}
 }
