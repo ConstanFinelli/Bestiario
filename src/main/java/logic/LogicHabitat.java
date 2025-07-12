@@ -15,4 +15,16 @@ public class LogicHabitat {
 	public LinkedList<Habitat> findAll(){
 		return hDAO.findAll();
 	}
+	
+	public Habitat save(Habitat ht) {
+		return hDAO.save(ht);
+	}
+	
+	public Habitat update(Habitat ht) {
+		return hDAO.update(ht);
+	}
+	
+	public Habitat delete(Habitat ht) {
+		return hDAO.delete(ht);
+	}
 }

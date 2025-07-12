@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import entities.Habitat;
+import entities.TipoEvidencia;
 
 /**
  * Servlet implementation class SvHabitat
@@ -53,8 +54,40 @@ public class SvHabitat extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String nombre = request.getParameter("nombre");
+		String localizacion = request.getParameter("localizacion");
+		if(nombre != null && localizacion != null) {
+			Habitat ht = new Habitat(0, nombre, null, localizacion);
+			ht = controlador.save(ht);
+			response.getWriter().append("<div>" + ht + "</div>");
+		}else {
+			response.getWriter().append("Por favor ingresar un nombre y/o descripcion válidos.");
+		}
 	}
 
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String id = request.getParameter("id");
+		if(id != null) {
+			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+			ht = controlador.delete(ht);
+			response.getWriter().append("<div>"+ ht +"</div>");
+		}else {
+			response.getWriter().append("Habitat no encontrada");
+		}
+	}
+	
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		String id = request.getParameter("id");
+		String nombre = request.getParameter("nombre");
+		String localizacion = request.getParameter("localizacion");
+		
+		if(id != null && nombre != null && localizacion != null) {
+			Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, localizacion);
+			ht = controlador.update(ht);
+			response.getWriter().append("<div>"+ ht +"</div>");
+		}else {
+			response.getWriter().append("Habitat no encontrada");
+		}
+	}
+	
 }
