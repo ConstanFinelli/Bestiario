@@ -12,7 +12,7 @@ public class DataCategoria {
 		ResultSet rs = null;
 		Categoria categoriaEncontrada = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from categoria where id = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from categoria where idCategoria = ?");
 			pstmt.setInt(1, catB.getIdCategoria());
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {

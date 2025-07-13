@@ -13,7 +13,7 @@ import logic.LogicTipoEvidencia;
 /**
  * Servlet implementation class TipoEvidenciaServlet
  */
-@WebServlet("/TipoEvidenciaServlet")
+@WebServlet("/SvTipoEvidencia")
 public class SvTipoEvidencia extends HttpServlet {
 	
 	public LogicTipoEvidencia controlador = new LogicTipoEvidencia();
