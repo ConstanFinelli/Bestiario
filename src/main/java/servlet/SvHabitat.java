@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import entities.Habitat;
-import entities.TipoEvidencia;
 
 /**
  * Servlet implementation class SvHabitat
