@@ -1,7 +1,6 @@
 package data;
 
 import entities.Habitat;
-import entities.TipoEvidencia;
 
 import java.sql.*;
 import java.util.LinkedList;
