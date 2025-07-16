@@ -160,4 +160,28 @@ public class DataNoticia {
 		}		
 		return noticiaNueva;
 	}
+
+	public void delete(Noticia deletedNoticia) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from noticia where idNoticia = ?");
+			pstmt.setInt(1, deletedNoticia.getId());
+			pstmt.executeUpdate();
+		}catch(SQLException ex){
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+	}
 }

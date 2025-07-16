@@ -22,7 +22,6 @@ public class LogicNoticia {
 
 	public Noticia update(Noticia noticiaNueva) {
 		Noticia noticiaAnterior = dataNoticia.getOne(noticiaNueva);
-		//id de noticiaAnterior da 0 si no encuentra el idUsuario
 		if(noticiaAnterior != null) {
 			if(noticiaNueva.getContenido() == null) noticiaNueva.setContenido(noticiaAnterior.getContenido());
 			if(noticiaNueva.getTitulo() == null) noticiaNueva.setTitulo(noticiaAnterior.getTitulo());
@@ -33,5 +32,13 @@ public class LogicNoticia {
 			
 		}
 		return noticiaNueva;
+	}
+
+	public Noticia delete(Noticia noticia) {		
+		Noticia deletedNoticia = dataNoticia.getOne(noticia);
+		if(deletedNoticia != null) {
+			dataNoticia.delete(deletedNoticia);
+		}
+		return (deletedNoticia);
 	}
 }
