@@ -86,4 +86,43 @@ public class DataNoticia {
 		}
 		return noticias;
 	}
+
+	public Noticia save(Noticia noticia) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into noticia(titulo, contenido, estado, fechaPublicacion, idUsuario) values (?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt.setString(1, noticia.getTitulo());
+			pstmt.setString(2, noticia.getContenido());
+			pstmt.setString(3, noticia.getEstado());
+			pstmt.setDate(4, noticia.getFechaPublicacion());
+			pstmt.setInt(5, noticia.getIdUsuario());
+			pstmt.executeUpdate();
+			rs = pstmt.getGeneratedKeys();
+			if(rs != null && rs.next()) {
+				
+				int id = rs.getInt(1);
+				noticia.setId(id);
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return noticia;
+	}
 }

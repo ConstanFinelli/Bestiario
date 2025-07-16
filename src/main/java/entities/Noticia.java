@@ -23,6 +23,18 @@ public class Noticia {
 		this.id = id;
 	}
 	
+	public Noticia() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Noticia(String titulo, String contenido, String estado, Date fechaPublicacion, int idUsuario) {
+		this.titulo = titulo;
+		this.contenido = contenido;
+		this.estado = estado;
+		this.fechaPublicacion = fechaPublicacion;
+		this.idUsuario = idUsuario;			
+	}
+
 	public int getId() {
 		return id;
 	}
