@@ -9,6 +9,8 @@ import java.io.IOException;
 
 import logic.LogicNoticia;
 import entities.Noticia;
+import entities.TipoEvidencia;
+
 import java.util.LinkedList;
 import java.sql.Date;
 import java.text.ParseException;
@@ -88,7 +90,7 @@ public class SvNoticia extends HttpServlet {
 				noticia = controlador.save(noticia);
 				if (noticia != null) {
 					response.getWriter().append(noticia.toString());
-				} else {
+				} else { //HECHO especialmente para el caso en el que idUsuario no exista
 					response.getWriter().append(CREATE_NOTICIA_ERROR);
 				}
 			} else {
@@ -150,7 +152,14 @@ public class SvNoticia extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String id = request.getParameter("id");
+		if(id != null) {
+			Noticia noticia = new Noticia(Integer.parseInt(id));
+			noticia = controlador.delete(noticia);
+			response.getWriter().append("Datos de la noticia eliminada: \n"+noticia.toString());
+		}else {
+			response.getWriter().append("Noticia no encontrada");
+		}
 	}
 
 }
