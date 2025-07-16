@@ -76,16 +76,21 @@ public class SvNoticia extends HttpServlet {
 		String estado = request.getParameter("estado");
 		String fecha = request.getParameter("fechaPublicacion");
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
-
+		String idUsuario = request.getParameter("idUsuario");
+		
 		try {
-			int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-			if (titulo != null && contenido != null && estado != null && fecha != null) {
+
+			if (titulo != null && contenido != null && estado != null && fecha != null && idUsuario != null) {
 				java.util.Date fechaUtil = formatoFecha.parse(fecha);
 				System.out.println(fecha);
 				Date fechaPublicacion = new Date(fechaUtil.getTime());
 				Noticia noticia = new Noticia(titulo,contenido,estado,fechaPublicacion,idUsuario);
 				noticia = controlador.save(noticia);
-				response.getWriter().append(noticia.toString());
+				if (noticia != null) {
+					response.getWriter().append(noticia.toString());
+				} else {
+					response.getWriter().append(CREATE_NOTICIA_ERROR);
+				}
 			} else {
 				response.getWriter().append(CREATE_NOTICIA_ERROR);
 			}
@@ -98,16 +103,47 @@ public class SvNoticia extends HttpServlet {
 				response.getWriter().append("Error en el formato del id ingresado");
 			}
 		};
-		
-		
-		
 	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String id = request.getParameter("id");
+		String titulo = request.getParameter("titulo");
+		String contenido = request.getParameter("contenido");
+		String estado = request.getParameter("estado");
+		String fecha = request.getParameter("fechaPublicacion");
+		String idUsuario = request.getParameter("idUsuario");
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
+		if (id != null) {
+			try {
+				java.util.Date fechaUtil = formatoFecha.parse(fecha);
+				Date fechaPublicacion = new Date(fechaUtil.getTime());
+				Noticia noticia = new Noticia(Integer.parseInt(id), titulo, contenido, estado, fechaPublicacion, idUsuario);
+				noticia = controlador.update(noticia);
+				if(noticia != null && noticia.getId()!=0) { //!= 0 previsorio para caso donde idUsario no existe
+					response.getWriter().append(noticia.toString());
+				}else{
+					response.getWriter().append(NOTICIA_NOT_FOUND);
+				}
+
+				
+				
+			} catch (NumberFormatException | ParseException e) {
+				System.out.println(e.getClass().toString());
+				e.getMessage();
+				if (e instanceof ParseException) {
+					response.getWriter().append("Error en el formato de la fecha ingresada");
+				} else {
+					response.getWriter().append("Error en el formato del id ingresado");
+				}
+			}
+			;
+		} else {
+			response.getWriter().append("Ingresar un id valido");
+		}
+		
 	}
 
 	/**
