@@ -20,8 +20,9 @@ public class DataNoticia {
 				String titulo = rs.getString("titulo");
 				String estado = rs.getString("estado");
 				Date fechaPublicacion = rs.getDate("fechaPublicacion");
-				int idUsuario = rs.getInt("idUsuario");
-				noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, idUsuario);
+				Integer idUsuario = rs.getInt("idUsuario");
+				
+				noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, idUsuario.toString());
 			}
 		} catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -60,8 +61,9 @@ public class DataNoticia {
 					String titulo = rs.getString("titulo");
 					String estado = rs.getString("estado");
 					Date fechaPublicacion = rs.getDate("fechaPublicacion");
-					int idUsuario = rs.getInt("idUsuario");
-					noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, idUsuario);
+					Integer idUsuario = rs.getInt("idUsuario");
+					
+					noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, idUsuario.toString());
 					noticias.add(noticiaFound);
 				}
 			}
@@ -96,7 +98,7 @@ public class DataNoticia {
 			pstmt.setString(2, noticia.getContenido());
 			pstmt.setString(3, noticia.getEstado());
 			pstmt.setDate(4, noticia.getFechaPublicacion());
-			pstmt.setInt(5, noticia.getIdUsuario());
+			pstmt.setInt(5, Integer.parseInt(noticia.getIdUsuario()));
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
@@ -108,6 +110,7 @@ public class DataNoticia {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+            noticia = null; //previsorio para caso que no encuentre un inv con idUsuario 
 		} finally {
 			try {
 				if(rs != null) {
@@ -121,8 +124,40 @@ public class DataNoticia {
 				System.out.println("Mensaje: " + ex.getMessage());
 	            System.out.println("SQLState: " + ex.getSQLState());
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+	            
 			}
 		}
 		return noticia;
+	}
+
+	public Noticia update(Noticia noticiaNueva) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update noticia set contenido = ?, titulo = ?, estado = ?, fechaPublicacion = ?, idUsuario = ? where idNoticia = ?");
+			pstmt.setString(1, noticiaNueva.getContenido());
+			pstmt.setString(2, noticiaNueva.getTitulo());
+			pstmt.setString(3, noticiaNueva.getEstado());
+			pstmt.setDate(4, noticiaNueva.getFechaPublicacion());
+			pstmt.setInt(5, Integer.parseInt(noticiaNueva.getIdUsuario()));
+			pstmt.setInt(6, noticiaNueva.getId());
+			pstmt.executeUpdate();
+		}catch(SQLException ex){
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+            noticiaNueva = null; //previsorio para caso que no encuentre un inv con idUsuario 
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}		
+		return noticiaNueva;
 	}
 }

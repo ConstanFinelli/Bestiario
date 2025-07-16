@@ -8,9 +8,9 @@ public class Noticia {
 	private String contenido;
 	private String estado;
 	private Date fechaPublicacion;
-	private int idUsuario;
+	private String idUsuario; //lo manejo como string porque sino no acepta nulos
 	
-	public Noticia(int id, String titulo, String contenido, String estado, Date fechaPublicacion, int idUsuario) {
+	public Noticia(int id, String titulo, String contenido, String estado, Date fechaPublicacion, String idUsuario) {
 		this.id = id;
 		this.titulo = titulo;
 		this.contenido = contenido;
@@ -27,7 +27,7 @@ public class Noticia {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Noticia(String titulo, String contenido, String estado, Date fechaPublicacion, int idUsuario) {
+	public Noticia(String titulo, String contenido, String estado, Date fechaPublicacion, String idUsuario) {
 		this.titulo = titulo;
 		this.contenido = contenido;
 		this.estado = estado;
@@ -65,10 +65,10 @@ public class Noticia {
 	public void setFechaPublicacion(Date fechaPublicacion) {
 		this.fechaPublicacion = fechaPublicacion;
 	}
-	public int getIdUsuario() {
+	public String getIdUsuario() {
 		return idUsuario;
 	}
-	public void setIdUsuario(int idUsuario) {
+	public void setIdUsuario(String idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 	
