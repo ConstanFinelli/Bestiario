@@ -15,4 +15,8 @@ public class LogicNoticia {
 	public LinkedList<Noticia> findAll() {
 		return(dataNoticia.findAll());
 	}
+
+	public Noticia save(Noticia noticia) {
+		return (dataNoticia.save(noticia));
+	}
 }

@@ -10,6 +10,9 @@ import java.io.IOException;
 import logic.LogicNoticia;
 import entities.Noticia;
 import java.util.LinkedList;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Servlet implementation class SvNoticia
@@ -20,7 +23,7 @@ public class SvNoticia extends HttpServlet {
 	//CONSTANTES
 	private final String NOTICIA_NOT_FOUND = "No existe una noticia con ese id";
 	private final String NOTICIAS_NOT_CREATED = "No existen noticas creadas actualmente";
-	
+	private final String CREATE_NOTICIA_ERROR = "Error al crear la nueva noticia. Revisar datos enviados";
 	public LogicNoticia controlador = new LogicNoticia();
 	
 	
@@ -65,9 +68,39 @@ public class SvNoticia extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String titulo = request.getParameter("titulo");
+		String contenido = request.getParameter("contenido");
+		String estado = request.getParameter("estado");
+		String fecha = request.getParameter("fechaPublicacion");
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
+
+		try {
+			int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+			if (titulo != null && contenido != null && estado != null && fecha != null) {
+				java.util.Date fechaUtil = formatoFecha.parse(fecha);
+				System.out.println(fecha);
+				Date fechaPublicacion = new Date(fechaUtil.getTime());
+				Noticia noticia = new Noticia(titulo,contenido,estado,fechaPublicacion,idUsuario);
+				noticia = controlador.save(noticia);
+				response.getWriter().append(noticia.toString());
+			} else {
+				response.getWriter().append(CREATE_NOTICIA_ERROR);
+			}
+		} catch (NumberFormatException | ParseException e) {
+			System.out.println(e.getClass().toString());
+			e.getMessage();
+			if(e instanceof ParseException) {
+				response.getWriter().append("Error en el formato de la fecha ingresada");
+			}else {
+				response.getWriter().append("Error en el formato del id ingresado");
+			}
+		};
+		
+		
+		
 	}
 
 	/**
