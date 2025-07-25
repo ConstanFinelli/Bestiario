@@ -1,5 +1,6 @@
 package servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,6 +33,8 @@ public class SvHabitat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
+		RequestDispatcher rd = request.getRequestDispatcher("postHabitat.jsp");
+		String mensaje = "";
 		if(id != null) {
 			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
 			ht = controlador.getOne(ht);
@@ -45,7 +48,10 @@ public class SvHabitat extends HttpServlet {
 			hts = controlador.findAll();
 			for(Habitat ht : hts) {
 				response.getWriter().append("<div>" + ht + "</div>");
+				mensaje = mensaje + ht + "<br><br>";
 			}
+			request.setAttribute("mensaje", mensaje);
+			rd.forward(request, response);
 		}
 	}
 
