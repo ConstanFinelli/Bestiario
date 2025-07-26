@@ -33,26 +33,28 @@ public class SvHabitat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("postHabitat.jsp");
-		String mensaje = "";
+		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
+		String getOneMsg = "";
+		String findAllMsg = "";
 		if(id != null) {
 			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
 			ht = controlador.getOne(ht);
 			if(ht !=null){
-			response.getWriter().append("<div>" + ht + "</div>");
+				getOneMsg = getOneMsg + ht + "<br><br>";
+				request.setAttribute("getOneMsg", getOneMsg);
 			}else {
-				response.getWriter().append("Habitat no encontrada");
+				getOneMsg = "Hábitat no encontrada";
+				request.setAttribute("getOneMsg", getOneMsg);
 			}
 		}else {
 			LinkedList<Habitat> hts = new LinkedList<>();
 			hts = controlador.findAll();
 			for(Habitat ht : hts) {
-				response.getWriter().append("<div>" + ht + "</div>");
-				mensaje = mensaje + ht + "<br><br>";
+				findAllMsg = findAllMsg + ht + "<br><br>";
 			}
-			request.setAttribute("mensaje", mensaje);
-			rd.forward(request, response);
+			request.setAttribute("findAllMsg", findAllMsg);
 		}
+		rd.forward(request, response);
 	}
 
 	/**
@@ -61,37 +63,59 @@ public class SvHabitat extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
-		if(nombre != null && localizacion != null) {
+		String id = request.getParameter("id");
+		String delete = request.getParameter("delete");
+		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
+		String saveMsg = "";
+		if(nombre != null && localizacion != null && delete == null) {
+			if(id == null) {
 			Habitat ht = new Habitat(0, nombre, null, localizacion);
 			ht = controlador.save(ht);
-			response.getWriter().append("<div>" + ht + "</div>");
+			saveMsg = saveMsg + ht + "<br><br>";
+			request.setAttribute("saveMsg", saveMsg);
+			}else {
+				doPut(request, response);	
+			}
 		}else {
-			response.getWriter().append("Por favor ingresar un nombre y/o descripcion válidos.");
+			if(delete == null) {
+				saveMsg = "Ingresar descripcion o localizacion";
+				request.setAttribute("saveMsg", saveMsg);
+			}else {
+				doDelete(request, response);
+			}
 		}
+		rd.forward(request, response);
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
+		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
+		String deleteMsg = "";
 		if(id != null) {
 			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
 			ht = controlador.delete(ht);
-			response.getWriter().append("<div>"+ ht +"</div>");
+			deleteMsg = deleteMsg + ht + "<br><br>";
+			request.setAttribute("deleteMsg", deleteMsg);
 		}else {
-			response.getWriter().append("Habitat no encontrada");
+			deleteMsg = "Hábitat no encontrada";
+			request.setAttribute("deleteMsg", deleteMsg);
 		}
+		rd.forward(request, response);
 	}
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
-		
+		String updateMsg = "";
 		if(id != null && nombre != null && localizacion != null) {
 			Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, localizacion);
 			ht = controlador.update(ht);
-			response.getWriter().append("<div>"+ ht +"</div>");
+			updateMsg = updateMsg + ht + "<br><br>";
+			request.setAttribute("updateMsg", updateMsg);
 		}else {
-			response.getWriter().append("Habitat no encontrada");
+			updateMsg = "Hábitat no encontrada";
+			request.setAttribute("updateMsg", updateMsg);
 		}
 	}
 	
