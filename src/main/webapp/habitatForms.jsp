@@ -3,21 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 <meta charset="UTF-8">
-<title>GET hábitat</title>
+<title>Habitats forms</title>
 <style>
 
-.container{
-	border: 1px solid black;
-	margin-bottom: 20px;
-}
 
 </style>
 </head>
 <body>
 
 
-<div class="container">
+<div class="container-md text-center">
 <h1>Conseguir habitats</h1>
 <form action="SvHabitat" method="GET">
 <input type="submit" value="Conseguir habitats">	
@@ -25,7 +22,7 @@
 ${findAllMsg}
 </div>
 
-<div class="container">
+<div class="container-md text-center">
 <h1>Conseguir habitat por ID</h1>
 <form action="SvHabitat" method="GET">
 <label for="idGetOne">ID del habitat: </label>
@@ -35,19 +32,19 @@ ${findAllMsg}
 ${getOneMsg}
 </div>
 
-<div class="container">
+<div class="container-md text-center">
 <h1>Crear habitat</h1>
 <form action="SvHabitat" method="POST">
-<label for="nombreSave">Nombre de hábitat</label>
-<input type="text" name="nombre" id="nombreSave">
-<label for="localizacionSave">Localizacion de hábitat</label>
-<input type="text" name="localizacion" id="localizacionSave">
-<input type="submit" value="Crear habitat">
+<label for="nombreSave" class="form-label">Nombre de hábitat</label>
+<input type="text" name="nombre" id="nombreSave" class="form-control">
+<label for="localizacionSave" class="form-label">Localizacion de hábitat</label>
+<input type="text" name="localizacion" id="localizacionSave" class="form-control">
+<button type="submit" class="btn btn-outline-primary">Crear habitat</button>
 </form>
 ${saveMsg}
 </div>
 
-<div class="container">
+<div class="container-md text-center">
 <h1>Actualizar habitat por ID</h1>
 <form action="SvHabitat" method="POST">
 <label for="idUpdate">ID del habitat: </label>
@@ -61,7 +58,7 @@ ${saveMsg}
 ${updateMsg}
 </div>
 
-<div class="container">
+<div class="container-md text-center">
 <h1>Eliminar habitat por ID</h1>
 <form action="SvHabitat" method="POST">
 <input type="hidden" name="delete" value="delete">
