@@ -41,11 +41,10 @@ public class SvHabitat extends HttpServlet {
 			ht = controlador.getOne(ht);
 			if(ht !=null){
 				getOneMsg = getOneMsg + ht + "<br><br>";
-				request.setAttribute("getOneMsg", getOneMsg);
 			}else {
-				getOneMsg = "Hábitat no encontrada";
-				request.setAttribute("getOneMsg", getOneMsg);
-			}
+				getOneMsg = "Hábitat no encontrada";	
+			} 
+			request.setAttribute("getOneMsg", getOneMsg);
 		}else {
 			LinkedList<Habitat> hts = new LinkedList<>();
 			hts = controlador.findAll();
@@ -70,11 +69,10 @@ public class SvHabitat extends HttpServlet {
 			Habitat ht = new Habitat(0, nombre, null, localizacion);
 			ht = controlador.save(ht);
 			saveMsg = saveMsg + ht + "<br><br>";
-			request.setAttribute("saveMsg", saveMsg);
 			if(ht == null) {
 				saveMsg = "Hábitat no se ha podido crear";
-				request.setAttribute("saveMsg", saveMsg);
 			}
+			request.setAttribute("saveMsg", saveMsg);
 		}
 		else if(flag.equals("put")) {
 				doPut(request, response);
@@ -91,12 +89,10 @@ public class SvHabitat extends HttpServlet {
 		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
 		ht = controlador.delete(ht);
 		deleteMsg = deleteMsg + ht + "<br><br>";
-		request.setAttribute("deleteMsg", deleteMsg);
 		if(ht == null) {
 			deleteMsg = "Hábitat no encontrada";
-			request.setAttribute("deleteMsg", deleteMsg);
 		}
-		rd.forward(request, response);
+		request.setAttribute("deleteMsg", deleteMsg);
 	}
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -114,7 +110,6 @@ public class SvHabitat extends HttpServlet {
 			updateMsg = "Hábitat no encontrada";
 			request.setAttribute("updateMsg", updateMsg);
 		}
-		rd.forward(request, response);
 	}
 	
 }

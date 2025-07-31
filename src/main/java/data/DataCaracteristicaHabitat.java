@@ -80,7 +80,10 @@ public class DataCaracteristicaHabitat {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE caracteristica SET descripcion = ? WHERE idHabitat = ?");
 			pstmt.setString(1, ch.getDescripcion());
 			pstmt.setInt(2, ch.getIdHabitat());
-			pstmt.executeUpdate();
+			int error = pstmt.executeUpdate();
+			if(error == 0) {
+				ch = null;
+			}
 		}catch(SQLException ex){
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());

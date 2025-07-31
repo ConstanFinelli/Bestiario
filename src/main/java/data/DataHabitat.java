@@ -145,7 +145,10 @@ public class DataHabitat {
 			pstmt.setString(1, ht.getNombre());
 			pstmt.setString(2, ht.getLocalizacion());
 			pstmt.setInt(3, ht.getId());
-			pstmt.executeUpdate();
+			int error = pstmt.executeUpdate();
+			if(error == 0) {
+				ht = null;
+			}
 		}catch(SQLException ex){
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
