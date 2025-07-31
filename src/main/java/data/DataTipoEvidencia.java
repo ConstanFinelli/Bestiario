@@ -88,7 +88,6 @@ public class DataTipoEvidencia {
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
-				
 				int id = rs.getInt(1);
 				tipoS.setId(id);
 			}
