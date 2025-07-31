@@ -20,6 +20,6 @@ public class Lector extends Usuario {
 	
 	@Override public String toString() {
 		return (super.toString() +
-				"<br>Fecha de nacimiento: " + fechaNacimiento)
+				"<br>Fecha de nacimiento: " + fechaNacimiento);
 				};
 }

@@ -62,7 +62,6 @@ public class SvCategoria extends HttpServlet {
 		// TODO Auto-generated method stub
 		String desc = request.getParameter("descripcion");
 		String flag = request.getParameter("flag");
-		String id = request.getParameter("id");
 		String msj = "";
 		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
 		if("create".equals(flag)) {
@@ -96,12 +95,14 @@ public class SvCategoria extends HttpServlet {
 			msj = "Ingrese una id valida";
 			request.setAttribute("msjDelete", msj);
 		}
+		rd.forward(request, response);
 	}
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
 		String desc = request.getParameter("descripcion");
 		String msj = "";
+		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
 		if(id != null && desc != null) {
 			Categoria cat = new Categoria(Integer.parseInt(id), desc);
 			cat = controlador.update(cat);
@@ -111,5 +112,6 @@ public class SvCategoria extends HttpServlet {
 			msj = "Ingrese datos validos";
 			request.setAttribute("msjUpdate", msj);
 		}
+		rd.forward(request, response);
 	}
 }

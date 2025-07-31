@@ -35,6 +35,6 @@ public class Investigador extends Usuario{
 		return (super.toString()+
 				"<br>Nombre: " + nombre+
 				"<br>Apellido: " + apellido+
-				"<br>Dni: " + dni)
+				"<br>Dni: " + dni);
 	}
 }
