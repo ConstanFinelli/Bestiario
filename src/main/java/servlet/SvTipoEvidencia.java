@@ -1,5 +1,6 @@
 package servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,21 +35,26 @@ public class SvTipoEvidencia extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String id = request.getParameter("id");
+		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
+		String msj = "";
 		if(id != null) {
 			TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), null);
 			tipo = controlador.getOne(tipo);
 			if(tipo !=null){
-			response.getWriter().append("Id: " + tipo.getId() + "<br>Descripción: " +  tipo.getDescripcion());
+			msj = msj + tipo.toString();
 			}else {
-				response.getWriter().append("Tipo de evidencia no encontrada");
+				msj = "Tipo de evidencia no encontrada"; 
 			}
+			request.setAttribute("msjOne", msj);
 		}else {
 			LinkedList<TipoEvidencia> tipos = new LinkedList<>();
 			tipos = controlador.findAll();
 			for(TipoEvidencia tipo : tipos) {
-				response.getWriter().append("Id: " + tipo.getId() + "<br>Descripción: " +  tipo.getDescripcion() + "<br>");
+				msj = msj + "<br>" + tipo.toString();
 			}
+			request.setAttribute("msjAll", msj);
 		}
+		rd.forward(request, response);
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -56,38 +62,54 @@ public class SvTipoEvidencia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String desc = request.getParameter("descripcion");
-		if(desc != null) {
-			TipoEvidencia tipo = new TipoEvidencia(0, null);
-			tipo.setDescripcion(desc);
-			tipo = controlador.save(tipo);
-			response.getWriter().append("Id: " + tipo.getId() + "<br>Descripción: " +  tipo.getDescripcion());
-		}else {
-			response.getWriter().append("Por favor, ingresar una descripción válida");
+		String msj = "";
+		String flag = request.getParameter("flag");
+		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
+		if("create".equals(flag)) {
+			if(desc != null) {
+				TipoEvidencia tipo = new TipoEvidencia(0, null);
+				tipo.setDescripcion(desc);
+				tipo = controlador.save(tipo);
+				msj = "Categoria Agregada: <br><br>" + tipo.toString();
+			}else {
+				msj = "Por favor, ingresar una descripción válida";
+			}
+			request.setAttribute("msjCreate", msj);
+		} else if("update".equals(flag)) {
+			doPut(request, response);
+		} else if("delete".equals(flag)) {
+			doDelete(request, response);
 		}
+		rd.forward(request, response);
 	}
 	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
+		String msj = "";
+		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
 		if(id != null) {
 			TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), null);
 			tipo = controlador.delete(tipo);
-			response.getWriter().append("Id: " + tipo.getId() + "<br>Descripción: " +  tipo.getDescripcion());
+			msj = tipo.toString();
 		}else {
-			response.getWriter().append("Tipo de evidencia no encontrado");
+			msj = "Tipo de evidencia no encontrado";
 		}
+		request.setAttribute("msjDelete", msj);
 	}
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
 		String desc = request.getParameter("descripcion");
-		
-		if(id != null && desc != null) {
-			TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), desc);
-			tipo = controlador.update(tipo);
-			response.getWriter().append("Id: " + tipo.getId() + "<br>Descripción: " +  tipo.getDescripcion());
+		String msj = "";
+		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
+		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), desc);
+		tipo = controlador.update(tipo);
+		if(tipo != null) {	
+			msj = "Categoria Actualizada: <br>" + tipo.toString();
 		}else {
-			response.getWriter().append("Tipo de evidencia no encontrado");
+			msj = "Tipo de evidencia no encontrado";
 		}
+		request.setAttribute("msjUpdate", msj);
 	}
 
 }

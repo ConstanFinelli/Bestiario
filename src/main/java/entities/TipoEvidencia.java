@@ -25,5 +25,9 @@ public class TipoEvidencia {
 		this.descripcion = descripcion;
 	}
 	
+	@Override public String toString() {
+		return ("Id del Tipo de Evidencia: " + getId() + 
+				"<br>Descripcion: " + getDescripcion());
+	}
 	
 }
