@@ -26,7 +26,7 @@ ${findAllMsg}
 <h1>Conseguir habitat por ID</h1>
 <form action="SvHabitat" method="GET">
 <label for="idGetOne">ID del habitat: </label>
-<input type="number" name="id" id="idGetOne">
+<input type="number" name="id" id="idGetOne" required>
 <input type="submit" value="Conseguir habitat">	
 </form>
 ${getOneMsg}
@@ -35,10 +35,11 @@ ${getOneMsg}
 <div class="container-md text-center">
 <h1>Crear habitat</h1>
 <form action="SvHabitat" method="POST">
+<input type="hidden" name="flag" value="post">
 <label for="nombreSave" class="form-label">Nombre de hábitat</label>
-<input type="text" name="nombre" id="nombreSave" class="form-control">
+<input type="text" name="nombre" id="nombreSave" class="form-control" required>
 <label for="localizacionSave" class="form-label">Localizacion de hábitat</label>
-<input type="text" name="localizacion" id="localizacionSave" class="form-control">
+<input type="text" name="localizacion" id="localizacionSave" class="form-control" required>
 <button type="submit" class="btn btn-outline-primary">Crear habitat</button>
 </form>
 ${saveMsg}
@@ -47,12 +48,13 @@ ${saveMsg}
 <div class="container-md text-center">
 <h1>Actualizar habitat por ID</h1>
 <form action="SvHabitat" method="POST">
+<input type="hidden" name="flag" value="put">
 <label for="idUpdate">ID del habitat: </label>
-<input type="number" name="id" id="idUpdate">
+<input type="number" name="id" id="idUpdate" required>
 <label for="nombreUpdate">Nombre de hábitat</label>
-<input type="text" name="nombre" id="nombre">
+<input type="text" name="nombre" id="nombre" required>
 <label for="localizacionUpdate">Localizacion de hábitat</label>
-<input type="text" name="localizacion" id="localizacionUpdate">
+<input type="text" name="localizacion" id="localizacionUpdate" required>
 <input type="submit" value="Actualizar habitat">
 </form>
 ${updateMsg}
@@ -61,9 +63,9 @@ ${updateMsg}
 <div class="container-md text-center">
 <h1>Eliminar habitat por ID</h1>
 <form action="SvHabitat" method="POST">
-<input type="hidden" name="delete" value="delete">
+<input type="hidden" name="flag" value="delete">
 <label for="idDelete">ID del habitat: </label>
-<input type="number" name="id" id="idDelete">
+<input type="number" name="id" id="idDelete" required>
 <input type="submit" value="Eliminar habitat">	
 </form>
 ${deleteMsg}

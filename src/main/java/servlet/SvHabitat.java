@@ -63,27 +63,24 @@ public class SvHabitat extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
-		String id = request.getParameter("id");
-		String delete = request.getParameter("delete");
+		String flag = request.getParameter("flag");
 		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
 		String saveMsg = "";
-		if(nombre != null && localizacion != null && delete == null) {
-			if(id == null) {
+		if(flag.equals("post")) {
 			Habitat ht = new Habitat(0, nombre, null, localizacion);
 			ht = controlador.save(ht);
 			saveMsg = saveMsg + ht + "<br><br>";
 			request.setAttribute("saveMsg", saveMsg);
-			}else {
-				doPut(request, response);	
-			}
-		}else {
-			if(delete == null) {
-				saveMsg = "Ingresar descripcion o localizacion";
+			if(ht == null) {
+				saveMsg = "Hábitat no se ha podido crear";
 				request.setAttribute("saveMsg", saveMsg);
-			}else {
-				doDelete(request, response);
 			}
 		}
+		else if(flag.equals("put")) {
+				doPut(request, response);
+		}else {
+				doDelete(request, response);
+			}
 		rd.forward(request, response);
 	}
 
@@ -91,12 +88,11 @@ public class SvHabitat extends HttpServlet {
 		String id = request.getParameter("id");
 		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
 		String deleteMsg = "";
-		if(id != null) {
-			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
-			ht = controlador.delete(ht);
-			deleteMsg = deleteMsg + ht + "<br><br>";
-			request.setAttribute("deleteMsg", deleteMsg);
-		}else {
+		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		ht = controlador.delete(ht);
+		deleteMsg = deleteMsg + ht + "<br><br>";
+		request.setAttribute("deleteMsg", deleteMsg);
+		if(ht == null) {
 			deleteMsg = "Hábitat no encontrada";
 			request.setAttribute("deleteMsg", deleteMsg);
 		}
@@ -107,16 +103,18 @@ public class SvHabitat extends HttpServlet {
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
+		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
 		String updateMsg = "";
-		if(id != null && nombre != null && localizacion != null) {
-			Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, localizacion);
-			ht = controlador.update(ht);
-			updateMsg = updateMsg + ht + "<br><br>";
-			request.setAttribute("updateMsg", updateMsg);
-		}else {
+		
+		Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, localizacion);
+		ht = controlador.update(ht);
+		updateMsg = updateMsg + ht + "<br><br>";
+		request.setAttribute("updateMsg", updateMsg);
+		if(ht == null) {
 			updateMsg = "Hábitat no encontrada";
 			request.setAttribute("updateMsg", updateMsg);
 		}
+		rd.forward(request, response);
 	}
 	
 }
