@@ -38,11 +38,10 @@ public class SvCategoria extends HttpServlet {
 			Categoria categoria = controlador.getOne(cat);
 			if(categoria != null) {
 				msj = categoria.toString() + "<br><br>";
-				request.setAttribute("msjOne", msj);
 			}else {
 				msj = "Categoria no encontrada";
-				request.setAttribute("msjOne", msj);
 			}
+			request.setAttribute("msjOne", msj);
 		}else {
 			LinkedList<Categoria> categorias = new LinkedList<>();
 			categorias = controlador.findAll();
@@ -69,11 +68,9 @@ public class SvCategoria extends HttpServlet {
 				Categoria cat = new Categoria(0, desc);
 				cat = controlador.save(cat);
 				msj = "Categoria Guardada: <br><br>" + cat.toString() + "<br><br>"; 
-				request.setAttribute("msjSave", msj);
 			}else {
 				msj = "Ingrese una descripcion valida"; 
-				request.setAttribute("msjSave", msj);
-			}
+			} request.setAttribute("msjSave", msj);
 		}else if("delete".equals(flag)){
 			doDelete(request, response);
 		}else if("update".equals(flag)) {
@@ -85,33 +82,27 @@ public class SvCategoria extends HttpServlet {
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
 		String msj = "";
-		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
 		if(id != null) {
 			Categoria cat = new Categoria(Integer.parseInt(id), null);
 			cat = controlador.delete(cat);
 			msj = "Categoria eliminada: <br><br>" + cat.toString() + "<br><br>";
-			request.setAttribute("msjDelete", msj);
 		}else {
 			msj = "Ingrese una id valida";
-			request.setAttribute("msjDelete", msj);
 		}
-		rd.forward(request, response);
+		request.setAttribute("msjDelete", msj);
 	}
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
 		String desc = request.getParameter("descripcion");
 		String msj = "";
-		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
-		if(id != null && desc != null) {
-			Categoria cat = new Categoria(Integer.parseInt(id), desc);
-			cat = controlador.update(cat);
-			msj = "Categoria Actualizada: " + cat.toString();
-			request.setAttribute("msjUpdate", msj);
-		}else {
-			msj = "Ingrese datos validos";
-			request.setAttribute("msjUpdate", msj);
+		Categoria cat = new Categoria(Integer.parseInt(id), desc);
+		cat = controlador.update(cat);
+		if(cat != null) {
+			msj = "Categoria Actualizada: " + cat.toString();	
+		} else {
+			msj = "Categoria no encontrada";
 		}
-		rd.forward(request, response);
+		request.setAttribute("msjUpdate", msj);
 	}
 }

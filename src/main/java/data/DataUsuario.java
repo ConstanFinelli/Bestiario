@@ -1,25 +1,27 @@
 package data;
 
-import entities.TipoEvidencia;
 import java.sql.*;
 import java.util.LinkedList;
 
-public class DataTipoEvidencia {
+import entities.Usuario;
+import entities.Investigador;
+import entities.Lector;
 
-	public TipoEvidencia getOne(TipoEvidencia tipoE) {
+public class DataUsuario {
+	public Usuario getOne(Usuario usB) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		TipoEvidencia tipoEncontrado = null;
+		Usuario usuarioEncontrado = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from tipo_evidencia where idTipoEvidencia = ?");
-			pstmt.setInt(1, tipoE.getId());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from usuario where idUsuario = ?");
+			pstmt.setInt(1, usB.getIdUsuario());
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
-				int id = rs.getInt("idTipoEvidencia");
-				String descripcion = rs.getString("descripcion");
-				tipoEncontrado = new TipoEvidencia(id, descripcion);
+				int id = rs.getInt("idUsuario"); //aqui se debe seguir
+				String desc = rs.getString("descripcion");
+				categoriaEncontrada = new Categoria(id, desc);
 			}
-		} catch(SQLException ex) {
+		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
@@ -37,31 +39,31 @@ public class DataTipoEvidencia {
 	            System.out.println("SQLState: " + ex.getSQLState());
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
-		};
-		return tipoEncontrado;
+		}
+		return categoriaEncontrada;
 	}
 	
-	public LinkedList<TipoEvidencia> findAll(){
+	public LinkedList<Categoria> findAll(){
 		Statement stmt = null;
 		ResultSet rs = null;
-		LinkedList<TipoEvidencia> tipos = new LinkedList<>();
-		TipoEvidencia tipoEncontrado = null;
+		Categoria categoria = null;
+		LinkedList<Categoria> categorias = new LinkedList<>();
 		try {
 			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("select * from tipo_evidencia");
-			if(rs != null){
+			rs = stmt.executeQuery("Select * from categoria");
+			if(rs != null) {
 				while(rs.next()) {
-					int id = rs.getInt("idTipoEvidencia");
-					String descripcion = rs.getString("descripcion");
-					tipoEncontrado = new TipoEvidencia(id, descripcion);
-					tipos.add(tipoEncontrado);
+					int id = rs.getInt("idCategoria");
+					String desc = rs.getString("descripcion");
+					categoria = new Categoria(id, desc);
+					categorias.add(categoria);
 				}
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -76,59 +78,82 @@ public class DataTipoEvidencia {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return tipos;
-	} 
+		return categorias;
+	}
 	
-	public TipoEvidencia save(TipoEvidencia tipoS) {
+	public Categoria save(Categoria cat) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into tipo_evidencia(descripcion) values (?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			pstmt.setString(1, tipoS.getDescripcion());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into categoria(descripcion) values(?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt.setString(1, cat.getDescripcionCategoria());
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
-				
-				int id = rs.getInt(1);
-				tipoS.setId(id);
+				cat.setIdCategoria(rs.getInt(1));
+			}
+		}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} finally {
+				try {
+					if(rs != null) {
+						rs.close();
+					}
+					if(pstmt != null) {
+						pstmt.close();
+					}
+					DbConnector.getInstancia().releaseConn();
+				}catch(SQLException ex) {
+					System.out.println("Mensaje: " + ex.getMessage());
+		            System.out.println("SQLState: " + ex.getSQLState());
+		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+				}
+			}
+		return cat;
+		}
+	
+	public Categoria update(Categoria cat) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update categoria set descripcion = ? where idCategoria = ?");
+			pstmt.setString(1, cat.getDescripcionCategoria());
+			pstmt.setInt(2, cat.getIdCategoria());
+			pstmt.executeUpdate();
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return cat;
+	}
+	
+	public Categoria delete(Categoria catBorrada) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from categoria where idCategoria = ?");
+			pstmt.setInt(1, catBorrada.getIdCategoria());
+			int error = pstmt.executeUpdate();
+			if(error == 0) {
+				cat = null;
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			}
-		}
-		return tipoS;
-	}
-	
-	public TipoEvidencia update(TipoEvidencia datos) {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update tipo_evidencia set descripcion = ? where idTipoEvidencia = ?");
-			pstmt.setString(1, datos.getDescripcion());
-			pstmt.setInt(2, datos.getId());
-			int error = pstmt.executeUpdate();
-			if(error == 0) {
-				datos = null;
-			}
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		} finally {
+		}finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
@@ -140,31 +165,6 @@ public class DataTipoEvidencia {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return datos;
-	}
-	
-	public TipoEvidencia delete(TipoEvidencia datoBorrado) {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from tipo_evidencia where idTipoEvidencia = ?");
-			pstmt.setInt(1, datoBorrado.getId());
-			pstmt.executeUpdate();
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			}
-		}
-		return datoBorrado;
+		return catBorrada;
 	}
 }

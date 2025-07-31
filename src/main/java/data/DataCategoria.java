@@ -119,7 +119,10 @@ public class DataCategoria {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update categoria set descripcion = ? where idCategoria = ?");
 			pstmt.setString(1, cat.getDescripcionCategoria());
 			pstmt.setInt(2, cat.getIdCategoria());
-			pstmt.executeUpdate();
+			int error = pstmt.executeUpdate();
+			if(error == 0) {
+				cat = null;
+			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());

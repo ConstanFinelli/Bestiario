@@ -1,5 +1,6 @@
 package servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,17 +35,22 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
+		String msj = "";
+		RequestDispatcher rd = request.getRequestDispatcher("");
 		if(id != null) {
 			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
 			LinkedList<CaracteristicaHabitat> ch = controlador.findAllById(ht);
 			if(!ch.isEmpty()){
-				response.getWriter().append("<div><h1>ID Habitat: "+ id + "</h1><h2>Características: </h2>"  + ch + "</div>");
+				for(CaracteristicaHabitat carh : ch) {
+					msj = msj + carh + "<br><br>";
+				}
 			}else {
-				response.getWriter().append("Ese Hábitat no tiene caracteristicas asignadas");
+				msj = "Ese Hábitat no tiene caracteristicas asignadas";
 			}
 		}else {
-				response.getWriter().append("Por favor, ingresar una ID");
+				msj = "Por favor, ingresar una ID";
 		}
+		request.setAttribute("msjGet", msj);
 	}
 
 	/**
