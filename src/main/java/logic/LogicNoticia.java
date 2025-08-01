@@ -23,13 +23,17 @@ public class LogicNoticia {
 	public Noticia update(Noticia noticiaNueva) {
 		Noticia noticiaAnterior = dataNoticia.getOne(noticiaNueva);
 		if(noticiaAnterior != null) {
-			if(noticiaNueva.getContenido() == null) noticiaNueva.setContenido(noticiaAnterior.getContenido());
-			if(noticiaNueva.getTitulo() == null) noticiaNueva.setTitulo(noticiaAnterior.getTitulo());
-			if(noticiaNueva.getEstado() == null) noticiaNueva.setEstado(noticiaAnterior.getEstado());
+			if(noticiaNueva.getContenido().equals("")) noticiaNueva.setContenido(noticiaAnterior.getContenido());
+			if(noticiaNueva.getTitulo().equals("")) noticiaNueva.setTitulo(noticiaAnterior.getTitulo());
+			if(noticiaNueva.getEstado().equals("")) noticiaNueva.setEstado(noticiaAnterior.getEstado());
 			if(noticiaNueva.getFechaPublicacion() == null) noticiaNueva.setFechaPublicacion(noticiaAnterior.getFechaPublicacion());
-			if(noticiaNueva.getIdUsuario() == null) noticiaNueva.setIdUsuario(noticiaAnterior.getIdUsuario());
-			noticiaNueva = dataNoticia.update(noticiaNueva);
+			if(noticiaNueva.getIdUsuario().equals("")) noticiaNueva.setIdUsuario(noticiaAnterior.getIdUsuario());
+			System.out.println(noticiaAnterior.getIdUsuario() + "   " + noticiaAnterior.getIdUsuario().getClass().toString() );
+			System.out.println(noticiaNueva.getIdUsuario() + "   " + noticiaNueva.getIdUsuario().getClass().toString() );
+;			noticiaNueva = dataNoticia.update(noticiaNueva);
 			
+		} else {
+			return null;
 		}
 		return noticiaNueva;
 	}
