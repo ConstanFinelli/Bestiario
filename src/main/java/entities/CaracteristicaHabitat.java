@@ -27,7 +27,6 @@ public class CaracteristicaHabitat {
 	
 	@Override
 	public String toString() {
-		return "ID de Hábitat asociada: " + getIdHabitat() +
-				"<br>Descripción: " + getDescripcion();
+		return getDescripcion();
 	}
 }

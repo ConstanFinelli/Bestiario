@@ -42,8 +42,12 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 		LinkedList<CaracteristicaHabitat> hts = new LinkedList<>();
 		
 		hts = controlador.findAllById(ht);
+		findAllMsg = "ID del habitat asociado: " + ht.getId() + "<br>";
 		for(CaracteristicaHabitat hti : hts) {
-			findAllMsg = findAllMsg + hti + "<br><br>";
+			findAllMsg = findAllMsg + hti + ", ";
+		}
+		if(hts.isEmpty()) {
+			findAllMsg = "Sin resultados";
 		}
 		request.setAttribute("findAllMsg", findAllMsg);
 		
@@ -66,7 +70,7 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 			ch = controlador.save(ch, ht);
 			saveMsg = saveMsg + ch + "<br><br>";
 			if(ch == null) {
-				saveMsg = "Hábitat no se ha podido crear";
+				saveMsg = "Característica no se ha podido crear";
 			}
 			request.setAttribute("saveMsg", saveMsg);
 		}
@@ -80,13 +84,14 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
+		String descripcion = request.getParameter("descripcion");
 		String deleteMsg = "";
 		
-		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), null);
+		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
 		ch = controlador.delete(ch);
-		deleteMsg = deleteMsg + ch + "<br><br>";
+		deleteMsg = deleteMsg + "Característica " + ch +  "eliminada";
 		if(ch == null) {
-			deleteMsg = "Hábitat no encontrada";
+			deleteMsg = "Característica no encontrada";
 		}
 		request.setAttribute("deleteMsg", deleteMsg);
 	}
@@ -94,17 +99,17 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
+		String newDescripcion = request.getParameter("newDescripcion");
 		String updateMsg = "";
 		
 		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
-		ch = controlador.update(ch);
-		updateMsg = updateMsg + ch + "<br><br>";
-		request.setAttribute("updateMsg", updateMsg);
+		ch = controlador.update(ch, newDescripcion);
 		if(ch == null) {
-			updateMsg = "Hábitat no encontrada";
-			request.setAttribute("updateMsg", updateMsg);
+			updateMsg = "Característica no encontrada";
+		}else {
+			updateMsg = updateMsg + "ID del hábitat asociado: " + ch.getIdHabitat() + 
+					"<br>Característica nueva: " + newDescripcion;
 		}
+		request.setAttribute("updateMsg", updateMsg);
 	}
-	
-
 }

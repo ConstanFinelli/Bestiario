@@ -74,12 +74,13 @@ public class DataCaracteristicaHabitat {
 		return chS;
 	}
 	
-	public CaracteristicaHabitat update(CaracteristicaHabitat ch) {
+	public CaracteristicaHabitat update(CaracteristicaHabitat ch, String newDescripcion) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE caracteristica SET descripcion = ? WHERE idHabitat = ?");
-			pstmt.setString(1, ch.getDescripcion());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE caracteristica SET descripcion = ? WHERE idHabitat = ? AND descripcion = ?");
+			pstmt.setString(1, newDescripcion);
 			pstmt.setInt(2, ch.getIdHabitat());
+			pstmt.setString(3, ch.getDescripcion());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
 				ch = null;
@@ -106,7 +107,7 @@ public class DataCaracteristicaHabitat {
 	public CaracteristicaHabitat delete(CaracteristicaHabitat ch) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("DELETE FROM caracteristica WHERE idHabitat = ?, descripcion = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("DELETE FROM caracteristica WHERE idHabitat = ? AND descripcion = ?");
 			pstmt.setInt(1, ch.getIdHabitat());
 			pstmt.setString(2, ch.getDescripcion());
 			pstmt.executeUpdate();
