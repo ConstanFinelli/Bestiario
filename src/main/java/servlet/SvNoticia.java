@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import jakarta.servlet.RequestDispatcher;
 
 import logic.LogicNoticia;
 import entities.Noticia;
@@ -26,6 +27,7 @@ public class SvNoticia extends HttpServlet {
 	private final String NOTICIA_NOT_FOUND = "No existe una noticia con ese id";
 	private final String NOTICIAS_NOT_CREATED = "No existen noticas creadas actualmente";
 	private final String CREATE_NOTICIA_ERROR = "Error al crear la nueva noticia. Revisar datos enviados";
+	private final String ID_FORMAT_ERROR = "Error en el formato del id ingresado";
 	public LogicNoticia controlador = new LogicNoticia();
 	
 	
@@ -44,27 +46,34 @@ public class SvNoticia extends HttpServlet {
 	 */
 	//##GET ONE##
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String id = request.getParameter("id");
+		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp");
+		String getOneMsg = "";
+		String findAllMsg = "";
 		if(id != null) {
 			Noticia noticia = new Noticia(Integer.parseInt(id));
 			noticia = controlador.getOne(noticia);
 			if(noticia != null) {
-				response.getWriter().append(noticia.toString());
+				getOneMsg = getOneMsg + noticia + "<br><br>";
+				
 			}else {
-				response.getWriter().append(NOTICIA_NOT_FOUND);
+				getOneMsg = NOTICIA_NOT_FOUND;
+				
 			}	
+			request.setAttribute("getOneMsg", getOneMsg);
 		} else {
 			LinkedList<Noticia> noticias = new LinkedList<>();
 			noticias = controlador.findAll();
 			if (!noticias.isEmpty()) {
 				for (Noticia unaNoticia : noticias) {
-					response.getWriter().append(unaNoticia.toString());
+					findAllMsg = findAllMsg + unaNoticia + "<br><br>";
 				} 
 			} else {
-				response.getWriter().append(NOTICIAS_NOT_CREATED);
+				findAllMsg = NOTICIAS_NOT_CREATED;
 			}
+			request.setAttribute("findAllMsg", findAllMsg);
 		}
+		rd.forward(request, response);
 	}
 
 	/**
@@ -76,74 +85,83 @@ public class SvNoticia extends HttpServlet {
 		String titulo = request.getParameter("titulo");
 		String contenido = request.getParameter("contenido");
 		String estado = request.getParameter("estado");
-		String fecha = request.getParameter("fechaPublicacion");
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
 		String idUsuario = request.getParameter("idUsuario");
+		String flag = request.getParameter("flag");
+		String saveMsg = "";
+		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp"); 
 		
-		try {
+		if (flag.equals("post")) {
+			try {
 
-			if (titulo != null && contenido != null && estado != null && fecha != null && idUsuario != null) {
-				java.util.Date fechaUtil = formatoFecha.parse(fecha);
-				System.out.println(fecha);
-				Date fechaPublicacion = new Date(fechaUtil.getTime());
-				Noticia noticia = new Noticia(titulo,contenido,estado,fechaPublicacion,idUsuario);
-				noticia = controlador.save(noticia);
-				if (noticia != null) {
-					response.getWriter().append(noticia.toString());
-				} else { //HECHO especialmente para el caso en el que idUsuario no exista
-					response.getWriter().append(CREATE_NOTICIA_ERROR);
+				if (titulo != null && contenido != null && estado != null && idUsuario != null) {
+					java.util.Date fechaUtil = new java.util.Date();
+					Date fechaPublicacion = new Date(fechaUtil.getTime());
+					Noticia noticia = new Noticia(titulo, contenido, estado, fechaPublicacion, idUsuario);
+					noticia = controlador.save(noticia);
+					if (noticia != null) {
+						saveMsg = saveMsg + noticia + "<br><nr>";
+					} else { //HECHO especialmente para el caso en el que idUsuario no exista
+						saveMsg = CREATE_NOTICIA_ERROR;
+					}
+				} else {
+					saveMsg = CREATE_NOTICIA_ERROR;
 				}
-			} else {
-				response.getWriter().append(CREATE_NOTICIA_ERROR);
-			}
-		} catch (NumberFormatException | ParseException e) {
-			System.out.println(e.getClass().toString());
-			e.getMessage();
-			if(e instanceof ParseException) {
-				response.getWriter().append("Error en el formato de la fecha ingresada");
-			}else {
-				response.getWriter().append("Error en el formato del id ingresado");
-			}
-		};
+			} catch (NumberFormatException e) {
+				System.out.println(e.getClass().toString());
+				e.getMessage();
+				saveMsg = ID_FORMAT_ERROR;
+			} finally {
+				request.setAttribute("saveMsg", saveMsg);
+			} 
+		} else if(flag.equals("put")) {
+			doPut(request, response);
+		} else {
+			doDelete(request,response);
+		}
+		rd.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp");
+		String updateMsg = "";
 		String id = request.getParameter("id");
 		String titulo = request.getParameter("titulo");
 		String contenido = request.getParameter("contenido");
 		String estado = request.getParameter("estado");
-		String fecha = request.getParameter("fechaPublicacion");
 		String idUsuario = request.getParameter("idUsuario");
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
-		if (id != null) {
+		if (id != "") {
 			try {
-				java.util.Date fechaUtil = formatoFecha.parse(fecha);
+				java.util.Date fechaUtil = new java.util.Date();
 				Date fechaPublicacion = new Date(fechaUtil.getTime());
 				Noticia noticia = new Noticia(Integer.parseInt(id), titulo, contenido, estado, fechaPublicacion, idUsuario);
+				System.out.println(noticia);
 				noticia = controlador.update(noticia);
 				if(noticia != null && noticia.getId()!=0) { //!= 0 previsorio para caso donde idUsario no existe
-					response.getWriter().append(noticia.toString());
+					updateMsg = updateMsg + noticia + "<br><br>";
 				}else{
-					response.getWriter().append(NOTICIA_NOT_FOUND);
+					updateMsg = NOTICIA_NOT_FOUND;
 				}
 
 				
 				
-			} catch (NumberFormatException | ParseException e) {
-				System.out.println(e.getClass().toString());
+			} catch (NumberFormatException e) {
+				
 				e.getMessage();
-				if (e instanceof ParseException) {
-					response.getWriter().append("Error en el formato de la fecha ingresada");
-				} else {
-					response.getWriter().append("Error en el formato del id ingresado");
-				}
+				updateMsg = ID_FORMAT_ERROR;
+			} finally {
+				
+				request.setAttribute("updateMsg", updateMsg);
+				rd.forward(request, response);
 			}
 			;
 		} else {
 			response.getWriter().append("Ingresar un id valido");
+			//esto se maneja directamente desde el form del jsp
 		}
 		
 	}
@@ -153,13 +171,18 @@ public class SvNoticia extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		if(id != null) {
-			Noticia noticia = new Noticia(Integer.parseInt(id));
-			noticia = controlador.delete(noticia);
-			response.getWriter().append("Datos de la noticia eliminada: \n"+noticia.toString());
-		}else {
-			response.getWriter().append("Noticia no encontrada");
+		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp");
+		String msgDelete = "";
+		Noticia noticia = new Noticia(Integer.parseInt(id));
+		noticia = controlador.delete(noticia);
+		if(noticia == null) {
+			msgDelete = NOTICIA_NOT_FOUND;
+		} else {
+			msgDelete = "Eliminado: " + noticia + "<br><br>";
 		}
+		request.setAttribute("deleteMsg", msgDelete);
+		rd.forward(request, response);
+
 	}
 
 }
