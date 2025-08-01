@@ -84,7 +84,6 @@ public class SvHabitat extends HttpServlet {
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
 		String deleteMsg = "";
 		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
 		ht = controlador.delete(ht);
@@ -99,7 +98,6 @@ public class SvHabitat extends HttpServlet {
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
-		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
 		String updateMsg = "";
 		
 		Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, localizacion);
