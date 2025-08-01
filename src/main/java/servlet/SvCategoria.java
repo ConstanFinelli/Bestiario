@@ -34,7 +34,7 @@ public class SvCategoria extends HttpServlet {
 		String msj = "";
 		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
 		if(id != null) {
-			Categoria cat = new Categoria(Integer.parseInt(id), null);
+			Categoria cat = new Categoria(Integer.parseInt(id),null, null);
 			Categoria categoria = controlador.getOne(cat);
 			if(categoria != null) {
 				msj = categoria.toString() + "<br><br>";
@@ -59,13 +59,14 @@ public class SvCategoria extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String name = request.getParameter("nombre");
 		String desc = request.getParameter("descripcion");
 		String flag = request.getParameter("flag");
 		String msj = "";
 		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
 		if("create".equals(flag)) {
 			if(desc != null || "".equals(desc)) {
-				Categoria cat = new Categoria(0, desc);
+				Categoria cat = new Categoria(0, name, desc);
 				cat = controlador.save(cat);
 				msj = "Categoria Guardada: <br><br>" + cat.toString() + "<br><br>"; 
 			}else {
@@ -83,7 +84,7 @@ public class SvCategoria extends HttpServlet {
 		String id = request.getParameter("id");
 		String msj = "";
 		if(id != null) {
-			Categoria cat = new Categoria(Integer.parseInt(id), null);
+			Categoria cat = new Categoria(Integer.parseInt(id),null, null);
 			cat = controlador.delete(cat);
 			msj = "Categoria eliminada: <br><br>" + cat.toString() + "<br><br>";
 		}else {
@@ -94,9 +95,10 @@ public class SvCategoria extends HttpServlet {
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
+		String name = request.getParameter("nombre");
 		String desc = request.getParameter("descripcion");
 		String msj = "";
-		Categoria cat = new Categoria(Integer.parseInt(id), desc);
+		Categoria cat = new Categoria(Integer.parseInt(id), name, desc);
 		cat = controlador.update(cat);
 		if(cat != null) {
 			msj = "Categoria Actualizada: " + cat.toString();	

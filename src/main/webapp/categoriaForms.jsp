@@ -29,6 +29,9 @@ ${msjOne}
 <div class="container-md text-center">
 <h1>Crear Categoria</h1>
 <form action="SvCategoria" method="POST">
+<label for=nombreSave class="form-label">Nombre de la categoria</label>
+<input type="text" name="nombre" id=nombreSave>
+<br><br>
 <label for="descripcionSave" class="form-label">Desripcion de la categoria</label>
 <input type="text" name="descripcion" id="descripcionSave" class="form-control" required>
 <input type="hidden" name="flag" value="create" required>
@@ -43,6 +46,9 @@ ${msjSave}
 <label for="idUpdate">ID de la categoria</label>
 <input type="number" name="id" id="idUpdate" required>
 <input type="hidden" name="flag" value="update"> 
+<br><br>
+<label for="nombreUpdate" class="form-label">Nuevo nombre</label>
+<input type="text" name="nombre" id="nombreUpdate">
 <br><br>
 <label for="descripcionUpdate">Nueva descripcion</label>
 <input type="text" name="descripcion" id="descripcionUpdate" required> 
