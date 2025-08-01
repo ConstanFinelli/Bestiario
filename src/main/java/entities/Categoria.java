@@ -2,10 +2,12 @@ package entities;
 
 public class Categoria{
 	private int idCategoria;
+	private String nombre;
 	private String descripcionCategoria;
 	
-	public Categoria(int id, String desc) {
+	public Categoria(int id, String name, String desc) {
 		this.setIdCategoria(id);
+		this.setNombre(name);
 		this.setDescripcionCategoria(desc);
 	}
 	public int getIdCategoria() {
@@ -14,6 +16,13 @@ public class Categoria{
 	
 	public void setIdCategoria(int idCategoria) {
 		this.idCategoria = idCategoria;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 	
 	public String getDescripcionCategoria() {
@@ -27,7 +36,8 @@ public class Categoria{
 	@Override public String toString() {
 		return (
 				"ID: " + idCategoria
-				+ "<br>Descripcion: " + descripcionCategoria
+				+ "<br>Nombre: " + nombre + 
+				"<br>Descripcion: " + descripcionCategoria
 		);
 	}
 }
