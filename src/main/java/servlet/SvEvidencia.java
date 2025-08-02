@@ -37,7 +37,7 @@ public class SvEvidencia extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher rd = request.getRequestDispatcher("evidenciaForm.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("evidenciaForms.jsp");
 		String msj = "";
 		String idTipo = request.getParameter("IdTipo");
 		String nroEvidencia = request.getParameter("nroEvidencia");

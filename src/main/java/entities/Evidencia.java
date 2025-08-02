@@ -48,7 +48,7 @@ public class Evidencia {
 	}
 	@Override public String toString() {
 		return ("Numero de Evidencia: " + getNroEvidencia() + 
-				"<br>Fecha de Obtencion" + getFechaObtencion() +
+				"<br>Fecha de Obtencion: " + getFechaObtencion() +
 				"<br>Estado: " + getEstado() +
 				"<br>Enlace: " + getLink());
 	}
