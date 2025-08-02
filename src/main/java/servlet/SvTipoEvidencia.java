@@ -86,7 +86,6 @@ public class SvTipoEvidencia extends HttpServlet {
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String id = request.getParameter("id");
 		String msj = "";
-		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
 		if(id != null) {
 			TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), null);
 			tipo = controlador.delete(tipo);
@@ -101,7 +100,6 @@ public class SvTipoEvidencia extends HttpServlet {
 		String id = request.getParameter("id");
 		String desc = request.getParameter("descripcion");
 		String msj = "";
-		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
 		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), desc);
 		tipo = controlador.update(tipo);
 		if(tipo != null) {	

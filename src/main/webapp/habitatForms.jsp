@@ -7,14 +7,22 @@
 <meta charset="UTF-8">
 <title>Habitats forms</title>
 <style>
+.pageContainer{
+	display: flex;
+	gap: 1.5vh;
+	flex-direction: column;
+}
 
+.container-md{
+	padding: 15px;
+}
 
 </style>
 </head>
 <body>
 
-
-<div class="container-md text-center">
+<div class="pageContainer">
+<div class="container-md text-center border border-secondary">
 <h1>Conseguir habitats</h1>
 <form action="SvHabitat" method="GET">
 <input type="submit" value="Conseguir habitats">	
@@ -22,7 +30,7 @@
 ${findAllMsg}
 </div>
 
-<div class="container-md text-center">
+<div class="container-md text-center border border-secondary">
 <h1>Conseguir habitat por ID</h1>
 <form action="SvHabitat" method="GET">
 <label for="idGetOne">ID del habitat: </label>
@@ -31,8 +39,7 @@ ${findAllMsg}
 </form>
 ${getOneMsg}
 </div>
-
-<div class="container-md text-center">
+<div class="container-md text-center border border-secondary">
 <h1>Crear habitat</h1>
 <form action="SvHabitat" method="POST">
 <input type="hidden" name="flag" value="post">
@@ -45,7 +52,7 @@ ${getOneMsg}
 ${saveMsg}
 </div>
 
-<div class="container-md text-center">
+<div class="container-md text-center border border-secondary">
 <h1>Actualizar habitat por ID</h1>
 <form action="SvHabitat" method="POST">
 <input type="hidden" name="flag" value="put">
@@ -60,7 +67,7 @@ ${saveMsg}
 ${updateMsg}
 </div>
 
-<div class="container-md text-center">
+<div class="container-md text-center border border-secondary">
 <h1>Eliminar habitat por ID</h1>
 <form action="SvHabitat" method="POST">
 <input type="hidden" name="flag" value="delete">
@@ -70,7 +77,7 @@ ${updateMsg}
 </form>
 ${deleteMsg}
 </div>
-
+</div>
 
 </body>
 </html>

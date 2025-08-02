@@ -33,66 +33,83 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		String msj = "";
-		RequestDispatcher rd = request.getRequestDispatcher("");
-		if(id != null) {
-			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
-			LinkedList<CaracteristicaHabitat> ch = controlador.findAllById(ht);
-			if(!ch.isEmpty()){
-				for(CaracteristicaHabitat carh : ch) {
-					msj = msj + carh + "<br><br>";
-				}
-			}else {
-				msj = "Ese Hábitat no tiene caracteristicas asignadas";
-			}
-		}else {
-				msj = "Por favor, ingresar una ID";
+		RequestDispatcher rd = request.getRequestDispatcher("carHabitatForms.jsp");
+		String findAllMsg = "";
+		
+		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		LinkedList<CaracteristicaHabitat> hts = new LinkedList<>();
+		
+		hts = controlador.findAllById(ht);
+		findAllMsg = "ID del habitat asociado: " + ht.getId() + "<br>";
+		for(CaracteristicaHabitat hti : hts) {
+			findAllMsg = findAllMsg + hti + ", ";
 		}
-		request.setAttribute("msjGet", msj);
+		if(hts.isEmpty()) {
+			findAllMsg = "Sin resultados";
+		}
+		request.setAttribute("findAllMsg", findAllMsg);
+		
+		rd.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String desc = request.getParameter("descripcion");
-		String idHab = request.getParameter("idHabitat");
-		if(desc != null && idHab != null) {
-			CaracteristicaHabitat ch = new CaracteristicaHabitat(0, desc);
-			Habitat ht = new Habitat(Integer.parseInt(idHab), null, null, null);
+		String id = request.getParameter("id");
+		String descripcion = request.getParameter("descripcion");
+		String flag = request.getParameter("flag");
+		RequestDispatcher rd = request.getRequestDispatcher("carHabitatForms.jsp");
+		String saveMsg = "";
+		
+		if(flag.equals("post")) {
+			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+			CaracteristicaHabitat ch = new CaracteristicaHabitat(ht.getId(), descripcion);
 			ch = controlador.save(ch, ht);
-			response.getWriter().append("<div>Característica agregada: " + ch + " al Habitat con id: "+ idHab +"</div>");
-		}else {
-			response.getWriter().append("Por favor ingresar una descripción y/o ID válidos.");
+			saveMsg = saveMsg + ch + "<br><br>";
+			if(ch == null) {
+				saveMsg = "Característica no se ha podido crear";
+			}
+			request.setAttribute("saveMsg", saveMsg);
 		}
+		else if(flag.equals("put")) {
+				doPut(request, response);
+		}else {
+				doDelete(request, response);
+			}
+		rd.forward(request, response);
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		String idHab = request.getParameter("id");
-		String desc = request.getParameter("descripcion");
-		if(desc != null && idHab != null) {
-			CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(idHab), null);
-			ch = controlador.delete(ch);
-			response.getWriter().append("<div>Eliminada Característica: "+ ch +" del Habitat con id: " + idHab + "</div>");
-		}else {
-			response.getWriter().append("Característica de Hábitat no encontrada");
+		String id = request.getParameter("id");
+		String descripcion = request.getParameter("descripcion");
+		String deleteMsg = "";
+		
+		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
+		ch = controlador.delete(ch);
+		deleteMsg = deleteMsg + "Característica " + ch +  "eliminada";
+		if(ch == null) {
+			deleteMsg = "Característica no encontrada";
 		}
+		request.setAttribute("deleteMsg", deleteMsg);
 	}
 	
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		String idHab = request.getParameter("id");
-		String desc = request.getParameter("descripcion");
+		String id = request.getParameter("id");
+		String descripcion = request.getParameter("descripcion");
+		String newDescripcion = request.getParameter("newDescripcion");
+		String updateMsg = "";
 		
-		if(idHab != null && desc != null) {
-			CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(idHab), desc);
-			ch = controlador.update(ch);
-			response.getWriter().append("<div> Actualizada característica: "+ ch +" del Habitat con id: " + idHab + "</div>");
+		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
+		ch = controlador.update(ch, newDescripcion);
+		if(ch == null) {
+			updateMsg = "Característica no encontrada";
 		}else {
-			response.getWriter().append("Característica de Hábitat no encontrada");
+			updateMsg = updateMsg + "ID del hábitat asociado: " + ch.getIdHabitat() + 
+					"<br>Característica nueva: " + newDescripcion;
 		}
+		request.setAttribute("updateMsg", updateMsg);
 	}
-	
-
 }
