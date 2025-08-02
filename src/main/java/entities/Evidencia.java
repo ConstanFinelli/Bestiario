@@ -7,12 +7,14 @@ public class Evidencia {
 	private LocalDate fechaObtencion;
 	private String estado;
 	private String link;
+	private TipoEvidencia tipo;
 	
-	public Evidencia(int nroEvidencia, LocalDate fechaObtencion, String estado, String link) {
+	public Evidencia(int nroEvidencia, LocalDate fechaObtencion, String estado, String link, TipoEvidencia tip) {
 		this.nroEvidencia = nroEvidencia;
 		this.fechaObtencion = fechaObtencion;
 		this.estado = estado;
 		this.link = link;
+		this.tipo = tip;
 	}
 	public int getNroEvidencia() {
 		return nroEvidencia;
@@ -37,6 +39,12 @@ public class Evidencia {
 	}
 	public void setLink(String link) {
 		this.link = link;
+	}
+	public TipoEvidencia getTipo() {
+		return tipo;
+	}
+	public void setTipo(TipoEvidencia tipo) {
+		this.tipo = tipo;
 	}
 	@Override public String toString() {
 		return ("Numero de Evidencia: " + getNroEvidencia() + 
