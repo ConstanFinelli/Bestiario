@@ -1,6 +1,7 @@
 package data;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 import entities.Usuario;
@@ -27,7 +28,7 @@ public class DataUsuario {
 					String dni = rs.getString("dni");
 					usuarioEncontrado = new Investigador(id, correo, contraseña, nombre, apellido, dni);
 				}else {
-					Date fechaNacimiento = rs.getDate("fechaNacimiento");
+					LocalDate fechaNacimiento = rs.getDate("fechaNacimiento").toLocalDate();
 					usuarioEncontrado = new Lector(id, correo, contraseña, fechaNacimiento);
 				}
 			}
@@ -73,7 +74,7 @@ public class DataUsuario {
 						String dni = rs.getString("dni");
 						us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
 					}else {
-						Date fechaNacimiento = rs.getDate("fechaNacimiento");
+						LocalDate fechaNacimiento = rs.getDate("fechaNacimiento").toLocalDate();
 						us = new Lector(id, correo, contraseña, fechaNacimiento);
 					}
 					usuarios.add(us);
