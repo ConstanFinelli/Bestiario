@@ -1,20 +1,20 @@
 package entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Lector extends Usuario {
-	private Date fechaNacimiento;
+	private LocalDate fechaNacimiento;
 
-	public Lector(int id, String correo, String contraseña, Date fecha) {
+	public Lector(int id, String correo, String contraseña, LocalDate fecha) {
 		super(id, correo, contraseña);
 		this.fechaNacimiento = fecha;
 	}
 	
-	public Date getFechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
