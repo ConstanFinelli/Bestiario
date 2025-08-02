@@ -56,7 +56,7 @@ public class SvEvidencia extends HttpServlet {
 		} else if("findAll".equals(flag)) {
 			LinkedList<Evidencia> evidencias = controladorEvidencia.findAll();
 			for(Evidencia e : evidencias) {
-				msj = msj + e + "<br><br>";
+				msj = msj + "<br><br>Tipo de Evidencia:" + e.getTipo().getId() + "<br><br>"+ e + "<br><br>";
 			}
 			request.setAttribute("msjAll", msj);
 		} else if ("findAllType".equals(flag)) {
