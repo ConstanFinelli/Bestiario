@@ -16,6 +16,15 @@ public class Bestia {
 		peligrosidad = danger;
 	}
 	
+	public Bestia(String name, String danger) {
+		nombre = name;
+		peligrosidad = danger;
+	}
+	
+	public Bestia(int id) {
+		idBestia = id;
+	}
+	
 	public int getIdBestia() {
 		return idBestia;
 	}
