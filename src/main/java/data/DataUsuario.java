@@ -17,9 +17,19 @@ public class DataUsuario {
 			pstmt.setInt(1, usB.getIdUsuario());
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
-				int id = rs.getInt("idUsuario"); //aqui se debe seguir
-				String desc = rs.getString("descripcion");
-				categoriaEncontrada = new Categoria(id, desc);
+				int id = rs.getInt("idUsuario");
+				String correo = rs.getString("correo");
+				String contraseña = rs.getString("contraseña");
+				boolean esInv = rs.getBoolean("esInvestigador");
+				if(esInv) {
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					String dni = rs.getString("dni");
+					usuarioEncontrado = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+				}else {
+					Date fechaNacimiento = rs.getDate("fechaNacimiento");
+					usuarioEncontrado = new Lector(id, correo, contraseña, fechaNacimiento);
+				}
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -40,23 +50,33 @@ public class DataUsuario {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return categoriaEncontrada;
+		return usuarioEncontrado;
 	}
 	
-	public LinkedList<Categoria> findAll(){
+	public LinkedList<Usuario> findAll(){
 		Statement stmt = null;
 		ResultSet rs = null;
-		Categoria categoria = null;
-		LinkedList<Categoria> categorias = new LinkedList<>();
+		Usuario us = null;
+		LinkedList<Usuario> usuarios = new LinkedList<>();
 		try {
 			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("Select * from categoria");
+			rs = stmt.executeQuery("Select * from usuario");
 			if(rs != null) {
 				while(rs.next()) {
-					int id = rs.getInt("idCategoria");
-					String desc = rs.getString("descripcion");
-					categoria = new Categoria(id, desc);
-					categorias.add(categoria);
+					int id = rs.getInt("idUsuario");
+					String correo = rs.getString("correo");
+					String contraseña = rs.getString("contraseña");
+					boolean esInv = rs.getBoolean("esInvestigador");
+					if(esInv) {
+						String nombre = rs.getString("nombre");
+						String apellido = rs.getString("apellido");
+						String dni = rs.getString("dni");
+						us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+					}else {
+						Date fechaNacimiento = rs.getDate("fechaNacimiento");
+						us = new Lector(id, correo, contraseña, fechaNacimiento);
+					}
+					usuarios.add(us);
 				}
 			}
 		}catch(SQLException ex) {
@@ -78,8 +98,10 @@ public class DataUsuario {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return categorias;
+		return usuarios;
 	}
+	
+	/*
 	
 	public Categoria save(Categoria cat) {
 		PreparedStatement pstmt = null;
@@ -167,4 +189,5 @@ public class DataUsuario {
 		}
 		return catBorrada;
 	}
+	*/
 }
