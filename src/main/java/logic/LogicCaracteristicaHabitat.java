@@ -26,7 +26,7 @@ public class LogicCaracteristicaHabitat {
 		return carDAO.delete(ch);
 	}
 	
-	public CaracteristicaHabitat update(CaracteristicaHabitat ch) {
-		return carDAO.update(ch);
+	public CaracteristicaHabitat update(CaracteristicaHabitat ch, String newDescripcion) {
+		return carDAO.update(ch, newDescripcion);
 	}
 }
