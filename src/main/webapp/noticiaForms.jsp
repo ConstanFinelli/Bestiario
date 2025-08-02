@@ -9,9 +9,9 @@
 </head>
 <body>
 	<div class="container-md text-center my-4 border p-4">
-		<h2 class="h1">Conseguir noticias</h1>
+		<h2 class="h1">Conseguir noticias</h2>
 		<form action="SvNoticia" method="GET">
-			<button type="sumbit" class="btn btn-outline-primary">CONSEGUIR NOTICIAS</button>
+			<button type="submit" class="btn btn-outline-primary">CONSEGUIR NOTICIAS</button>
 		</form>
 		${findAllMsg}
 	</div>
@@ -21,7 +21,7 @@
 		<form action="SvNoticia" method="GET">
 			<label class="form-label" for="idGetOne">ID de la noticia: </label>
 			<input class="form-control" type="number" name="id" id="idGetOne" required>
-			<button type="sumbit" class="btn btn-outline-primary"]>Conseguir noticia</button>	
+			<button type="submit" class="btn btn-outline-primary"]>Conseguir noticia</button>	
 		</form>
 		${getOneMsg}
 	</div>
