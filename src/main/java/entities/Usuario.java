@@ -4,6 +4,7 @@ public class Usuario {
 	private int idUsuario;
 	private String correo; 
 	private String contraseña;
+	private boolean esInvestigador = false;
 	
 	public Usuario(int id, String correo, String contraseña) {
 		this.idUsuario = id;
@@ -41,5 +42,13 @@ public class Usuario {
 				"<br>Correo: " + correo+
 				"<br>Contraseña:" + contraseña
 				);
+	}
+
+	public boolean isEsInvestigador() {
+		return esInvestigador;
+	}
+
+	public void setEsInvestigador(boolean esInvestigador) {
+		this.esInvestigador = esInvestigador;
 	} 
 }

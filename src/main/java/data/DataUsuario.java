@@ -102,18 +102,40 @@ public class DataUsuario {
 		return usuarios;
 	}
 	
-	/*
 	
-	public Categoria save(Categoria cat) {
+	
+	public Usuario save(Usuario us) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		Investigador inv = null;
+		Lector le = null;
+		if(us == null) {return us;}
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into categoria(descripcion) values(?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			pstmt.setString(1, cat.getDescripcionCategoria());
+			if(us.isEsInvestigador()) {
+				inv = (Investigador) us;
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,nombre,apellido,dni,esInvestigador) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+				pstmt.setString(1, inv.getCorreo());
+				pstmt.setString(2, inv.getContraseña());
+				pstmt.setString(3, inv.getNombre());
+				pstmt.setString(4, inv.getApellido());
+				pstmt.setString(5, inv.getDni());
+				pstmt.setBoolean(6, true);
+			}else {
+				le = (Lector) us;
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,fechaNacimiento,esInvestigador) values(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+				pstmt.setString(1, le.getCorreo());
+				pstmt.setString(2, le.getContraseña());
+				pstmt.setDate(3, java.sql.Date.valueOf(le.getFechaNacimiento()));
+				pstmt.setBoolean(4, false);
+			}
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
-				cat.setIdCategoria(rs.getInt(1));
+				if(inv != null) {
+					inv.setIdUsuario(rs.getInt(1));
+				}else {
+				le.setIdUsuario(rs.getInt(1));
+				}
 			}
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
@@ -134,15 +156,32 @@ public class DataUsuario {
 		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 				}
 			}
-		return cat;
+		if(inv != null) {
+		return inv;
+		}else {return le;}
 		}
 	
-	public Categoria update(Categoria cat) {
+	public Usuario update(Usuario us) {
 		PreparedStatement pstmt = null;
+		Investigador inv = null;
+		Lector le = null;
+		if(us == null) {return us;}
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update categoria set descripcion = ? where idCategoria = ?");
-			pstmt.setString(1, cat.getDescripcionCategoria());
-			pstmt.setInt(2, cat.getIdCategoria());
+			if(us.isEsInvestigador()) {
+				inv = (Investigador) us;
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ? where idUsuario = ?");
+				pstmt.setString(1, inv.getCorreo());
+				pstmt.setString(2, inv.getContraseña());
+				pstmt.setString(3, inv.getNombre());
+				pstmt.setString(4, inv.getApellido());
+				pstmt.setString(5, inv.getDni());
+			}else {
+				le = (Lector) us;
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ? where idUsuario = ?");
+				pstmt.setString(1, le.getCorreo());
+				pstmt.setString(2, le.getContraseña());
+				pstmt.setDate(3, java.sql.Date.valueOf(le.getFechaNacimiento()));
+			}
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -160,17 +199,17 @@ public class DataUsuario {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return cat;
+		return us;
 	}
 	
-	public Categoria delete(Categoria catBorrada) {
+	public Usuario delete(Usuario usBorrado) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from categoria where idCategoria = ?");
-			pstmt.setInt(1, catBorrada.getIdCategoria());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from usuario where idUsuario = ?");
+			pstmt.setInt(1, usBorrado.getIdUsuario());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
-				cat = null;
+				usBorrado = null;
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -188,7 +227,7 @@ public class DataUsuario {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return catBorrada;
+		return usBorrado;
 	}
-	*/
+	
 }
