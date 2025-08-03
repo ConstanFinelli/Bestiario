@@ -11,12 +11,13 @@ public class Registro {
 	private String estado;
 	private Bestia bestia;
 	
-	public Registro(int id, String dtls, LocalDate fechaA, LocalDate fechaB, Investigador pub, Bestia b) {
+	public Registro(int id, String dtls, LocalDate fechaA, LocalDate fechaB, Investigador pub, String status, Bestia b) {
 		nroRegistro = id;
 		detalles = dtls;
 		fechaAprobacion = fechaA;
 		fechaBaja = fechaB;
 		setPublicador(pub);
+		estado = status;
 		bestia = b;
 	}
 	

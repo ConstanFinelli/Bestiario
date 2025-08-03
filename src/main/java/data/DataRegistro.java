@@ -9,8 +9,15 @@ import java.util.LinkedList;
 
 import entities.Registro;
 import entities.Bestia;
+import entities.Usuario;
+import entities.Investigador;
+import logic.LogicUsuario;
+import logic.LogicBestia;
 
 public class DataRegistro {
+	public LogicUsuario controladorUsuarios = new LogicUsuario();
+	public LogicBestia controladorBestia = new LogicBestia();
+	
 	public Registro getOne(Registro r) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -25,8 +32,10 @@ public class DataRegistro {
 				String detalles = rs.getString("detalles");
 				LocalDate fechaA= rs.getDate("fechaAprobacion").toLocalDate();
 				LocalDate fechaB = rs.getDate("fechaBaja").toLocalDate();
-				//Aqui va el investigador pero no se puede seguir hasta terminar crud usuarios
-				categoriaEncontrada = new Categoria(id, nombre, desc);
+				Investigador pub = (Investigador) controladorUsuarios.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+				String estado = rs.getString("estado");
+				Bestia bestia = controladorBestia.getOne(new Bestia(rs.getInt("idBestia"), null, null));
+				registroEncontrado = new Registro(id, detalles, fechaA, fechaB, pub, estado, bestia);
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -47,24 +56,28 @@ public class DataRegistro {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return categoriaEncontrada;
+		return registroEncontrado;
 	}
 	
-	public LinkedList<Categoria> findAll(){
+	public LinkedList<Registro> findAll(){
 		Statement stmt = null;
 		ResultSet rs = null;
-		Categoria categoria = null;
-		LinkedList<Categoria> categorias = new LinkedList<>();
+		Registro registro = null;
+		LinkedList<Registro> registros = new LinkedList<>();
 		try {
 			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("Select * from categoria");
+			rs = stmt.executeQuery("Select * from Registro");
 			if(rs != null) {
 				while(rs.next()) {
-					int id = rs.getInt("idCategoria");
-					String nombre = rs.getString("nombre");
-					String desc = rs.getString("descripcion");
-					categoria = new Categoria(id, nombre, desc);
-					categorias.add(categoria);
+					int id = rs.getInt("nroRegistro");
+					String detalles = rs.getString("detalles");
+					LocalDate fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+					LocalDate fechaB = rs.getDate("fechaBaja").toLocalDate();
+					Investigador pub = (Investigador) controladorUsuarios.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+					String estado = rs.getString("estado");
+					Bestia bestia = controladorBestia.getOne(new Bestia(rs.getInt("idBestia"), null, null));
+					registro = new Registro(id, detalles, fechaA, fechaB, pub, estado, bestia);
+					registros.add(registro);
 				}
 			}
 		}catch(SQLException ex) {
@@ -86,21 +99,23 @@ public class DataRegistro {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return categorias;
+		return registros;
 	}
 	
-	public Categoria save(Categoria cat) {
+	public Registro save(Registro r) {
+		asignarNroRegistro(r);
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into categoria(nombre, descripcion) values(?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-			pstmt.setString(1, cat.getNombre());
-			pstmt.setString(2, cat.getDescripcionCategoria());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, detalles, fechaAprobacion, fechaBaja, Publicador, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?)");
+			pstmt.setInt(1, r.getNroRegistro());
+			pstmt.setString(2, r.getDetalles());
+			pstmt.setDate(3, java.sql.Date.valueOf(r.getFechaAprobacion()));
+			pstmt.setDate(4, java.sql.Date.valueOf(r.getFechaBaja()));
+			pstmt.setInt(5, r.getPublicador().getIdUsuario());
+			pstmt.setString(6, r.getEstado());
+			pstmt.setInt(7, r.getBestia().getIdBestia());
 			pstmt.executeUpdate();
-			rs = pstmt.getGeneratedKeys();
-			if(rs != null && rs.next()) {
-				cat.setIdCategoria(rs.getInt(1));
-			}
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
 	            System.out.println("SQLState: " + ex.getSQLState());
@@ -120,19 +135,23 @@ public class DataRegistro {
 		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 				}
 			}
-		return cat;
+		return r;
 		}
 	
-	public Categoria update(Categoria cat) {
+	public Registro update(Registro r) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update categoria set nombre = ?, descripcion = ? where idCategoria = ?");
-			pstmt.setString(1, cat.getNombre());
-			pstmt.setString(2, cat.getDescripcionCategoria());
-			pstmt.setInt(3, cat.getIdCategoria());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set detalles = ?, fechaAprobacion = ?, fechaBaja = ?, Publicador = ?. estado = ? where idBestia = ? and nroRegistro = ?");
+			pstmt.setString(1, r.getDetalles());
+			pstmt.setDate(2, java.sql.Date.valueOf(r.getFechaAprobacion()));
+			pstmt.setDate(3, java.sql.Date.valueOf(r.getFechaBaja()));
+			pstmt.setInt(4, r.getPublicador().getIdUsuario());
+			pstmt.setString(5, r.getEstado());
+			pstmt.setInt(6, r.getBestia().getIdBestia());
+			pstmt.setInt(7, r.getNroRegistro());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
-				cat = null;
+				r = null;
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -150,14 +169,15 @@ public class DataRegistro {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return cat;
+		return r;
 	}
 	
-	public Categoria delete(Categoria catBorrada) {
+	public Registro delete(Registro r) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from categoria where idCategoria = ?");
-			pstmt.setInt(1, catBorrada.getIdCategoria());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from registro where idBestia = ? and nroRegistro = ?");
+			pstmt.setInt(1, r.getBestia().getIdBestia());
+			pstmt.setInt(2, r.getNroRegistro());
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -175,6 +195,34 @@ public class DataRegistro {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return catBorrada;
+		return r;
+	}
+	
+	public void asignarNroRegistro(Registro r) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select max(nroEvidencia) as maxnumber from registro where idBestia = ?");
+			pstmt.setInt(1, r.getBestia().getIdBestia());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				r.setNroRegistro(rs.getInt("maxnumber") + 1);
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
 	}
 }
