@@ -7,6 +7,7 @@ public class Investigador extends Usuario{
 	
 	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni) {
 		super(id, correo, contraseña);
+		super.setEsInvestigador(true);
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
