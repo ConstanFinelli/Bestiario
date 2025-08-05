@@ -292,7 +292,7 @@ public class DataBestia {
 	}
 	
 	public void addComentarios(Bestia bestiaEncontrada) {
-		bestiaEncontrada.setComentarios(controladorComentario.findAll());
+		bestiaEncontrada.setComentarios(controladorComentario.findAllByBestia(bestiaEncontrada));
 	}
 	
 	public void completarBestia(Bestia bestia) {

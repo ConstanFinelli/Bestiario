@@ -67,7 +67,6 @@ public class DataComentario {
 					Usuario user = controladorUsuario.getOne(new Usuario(idUsuario, null, null));
 					comentario = new Comentario(user, bestia, fecha, contenido);
 					comentarios.add(comentario);
-					;
 				}
 			}
 		}catch(SQLException ex) {
@@ -92,6 +91,48 @@ public class DataComentario {
 		return comentarios;
 	}
 	
+	public LinkedList<Comentario> findAllByBeast(Bestia b){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Comentario comentario = null;
+		LinkedList<Comentario> comentarios = new LinkedList<>();
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from comentario where idBestia = ?");
+			pstmt.setInt(1, b.getIdBestia());
+			rs = pstmt.executeQuery();
+			if(rs != null) {
+				while(rs.next()) {
+					int idBestia = rs.getInt("idBestia");
+					int idUsuario = rs.getInt("IdUsuario");
+					String contenido = rs.getString("contenido");
+					LocalDate fecha = rs.getDate("fechaPublicacion").toLocalDate();
+					Bestia bestia = controladorBestia.getOne(new Bestia(idBestia, null, null));
+					Usuario user = controladorUsuario.getOne(new Usuario(idUsuario, null, null));
+					comentario = new Comentario(user, bestia, fecha, contenido);
+					comentarios.add(comentario);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return comentarios;
+	}
 	public Comentario save(Comentario c) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
