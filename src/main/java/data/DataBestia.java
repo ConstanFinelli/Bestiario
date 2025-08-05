@@ -14,6 +14,7 @@ public class DataBestia {
 	public LogicHabitat controladorHabitat = new LogicHabitat();
 	public LogicCategoria controladorCategoria = new LogicCategoria();
 	public LogicRegistro controladorRegistro = new LogicRegistro();
+	public LogicComentario controladorComentario = new LogicComentario();
 	
 	public Bestia getOne(Bestia b) {
 		PreparedStatement pstmt = null;
@@ -167,6 +168,7 @@ public class DataBestia {
 			pstmt.executeUpdate();
 			deleteCategorias(b);
 			deleteHabitats(b);
+			//preguntar si se deberian eliminar las bestias
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
@@ -289,10 +291,15 @@ public class DataBestia {
 			}
 	}
 	
+	public void addComentarios(Bestia bestiaEncontrada) {
+		bestiaEncontrada.setComentarios(controladorComentario.findAll());
+	}
+	
 	public void completarBestia(Bestia bestia) {
 		addRegistros(bestia);
 		addHabitats(bestia);
 		addCategorias(bestia);
+		addComentarios(bestia);
 	}
 	
 	public void saveCategorias(Bestia b) {

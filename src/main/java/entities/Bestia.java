@@ -9,7 +9,8 @@ public class Bestia {
 	private LinkedList<Habitat> habitats = new LinkedList<>();
 	private LinkedList<Categoria> categorias  = new LinkedList<>();
 	private LinkedList<Registro> registros  = new LinkedList<>();
-	
+	private LinkedList<Comentario> comentarios = new LinkedList<>();
+
 	public Bestia(int id, String name, String danger) {
 		idBestia = id;
 		nombre = name;
@@ -43,6 +44,14 @@ public class Bestia {
 	public LinkedList<Registro> getRegistros(){
 		return registros;
 	}
+	public LinkedList<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(LinkedList<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	public String listarHabitats() {
 		String lista = "";
 		for(Habitat hab: habitats) {
@@ -67,12 +76,21 @@ public class Bestia {
 		return lista;
 	}
 	
+	public String listarComentarios() {
+		String lista = "";
+		for(Comentario comentario: comentarios) {
+			lista = lista + "<br>" + comentario.getBestia().getIdBestia() + comentario.getPublicador().getIdUsuario() + comentario.getFecha() +  comentario.getContenido();
+		}
+		return lista;
+	}
+	
 	 @Override public String toString(){
 		 return("Id de Bestia: " + idBestia + 
 				 "<br>Nombre: " + nombre + 
 				 "<br>Peligrosidad: " + peligrosidad+
 				 "<br>" + listarHabitats() + 
 				 "<br>" + listarCategorias() + 
-				 "<br>" + listarRegistros());
+				 "<br>" + listarRegistros() + 
+				 "<br>" + listarComentarios());
 	 }
 }
