@@ -1,0 +1,78 @@
+:root{
+    --primary-color: #8E6E53;
+    --secondary-color: #F4F1EA;
+    --third-color: rgb(201, 201, 202);
+    --font-color: #2C3E50;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+nav{
+    display: flex;
+    gap: 20px;
+    padding: 3vh;
+    background-color: var(--primary-color);
+}
+
+nav a{
+    color:aliceblue;
+    font-weight: 500;
+}
+
+body{
+    font-family: 'Consolas',system-ui;
+    background-color: var(--third-color);
+    color: var(--font-color);
+}
+
+section{
+    height: 100%;
+    display: flex;
+    background-color: var(--secondary-color);
+    margin: 0 4vw;
+}
+
+section section{
+    padding: 10px 10px 0px 10px;
+    display: block;
+    height: 100%;
+}
+
+h1, h2{
+    text-align: center;
+    text-decoration: underline;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+section aside{
+    box-shadow: 10px 8px 12px rgba(7, 35, 60, 0.317);
+    background-color: var(--primary-color);
+    padding: 10px;
+    margin: 2vh 2vw;
+    border-radius: 2%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #e3f0ff;
+    height: 100%;
+}
+
+section p {
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.234);
+}
+
+section aside img{
+    height: 20vh;
+    width: 30vw;
+    box-shadow: 10px 10px 16px rgba(7, 35, 60, 0.317);
+    border-radius: 2%;
+}
+
+ul{
+    list-style: none;
+}
