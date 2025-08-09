@@ -72,3 +72,6 @@ src/main/resources/rebel.xml
 
 # PDT-specific
 .buildpath
+.classpath
+
+src/main/java/data/DataBestia.java
