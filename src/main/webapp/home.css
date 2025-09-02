@@ -1,0 +1,10 @@
+.mainContent{
+    display: flex;
+    flex-direction: column;
+    gap: 5vh;
+    height: 100vh;
+    padding: 3vh 3vw;
+    text-align: center;
+    background-color: var(--secondary-color);
+    margin: 0 6vw;
+}
