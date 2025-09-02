@@ -1,0 +1,48 @@
+:root{
+    --primary-color: #8E6E53;
+    --secondary-color: #F4F1EA;
+    --third-color: rgb(201, 201, 202);
+    --font-color: #2C3E50;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Consolas',system-ui;
+}
+
+nav{
+    display: flex;
+    gap: 20px;
+    padding: 3vh;
+    background-color: var(--primary-color);
+}
+
+nav a{
+    color:aliceblue;
+    font-weight: 400;
+    padding: 0.3rem 0.5rem;
+    font-size: 1.5rem;
+}
+
+nav input{
+    margin-left: auto;
+    padding: 0.3rem 0.5rem;
+    width: 15vw;
+    height: 3vh;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    font-size: 1.3rem;
+}
+
+body{
+    background-color: var(--third-color);
+    color: var(--font-color);
+}
+
+footer{
+    width: 100vw;
+    height: 7vh;
+    background-color: var(--primary-color);
+}
