@@ -230,4 +230,48 @@ public class DataUsuario {
 		return usBorrado;
 	}
 	
+	public Usuario getByEmail(String correo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Usuario us = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from usuario where correo = ?");
+			pstmt.setString(1, correo);
+			rs = pstmt.executeQuery();
+			if(rs != null && rs.next()) {
+				int id = rs.getInt("idUsuario");
+				String contraseña = rs.getString("contraseña");
+				boolean esInv = rs.getBoolean("esInvestigador");
+				if(esInv) {
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					String dni = rs.getString("dni");
+					us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+				}else {
+					LocalDate fechaNacimiento = rs.getDate("fechaNacimiento").toLocalDate();
+					us = new Lector(id, correo, contraseña, fechaNacimiento);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return us;
+	}
+	
 }
