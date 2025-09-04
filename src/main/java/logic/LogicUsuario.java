@@ -57,4 +57,12 @@ public class LogicUsuario {
 		String decoded = new String(Base64.getDecoder().decode(pass.getBytes(StandardCharsets.UTF_8))); // desconvierte a contraseña original
 		return decoded.toString();
 	}
+	
+	public Usuario getByEmail(String correo) {
+		Usuario us = usDAO.getByEmail(correo);
+		if(us != null) {
+			us.setContraseña(dehashPassword(us.getContraseña()));
+		}
+		return us;
+	}
 }
