@@ -32,6 +32,7 @@ public class SvLogin extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 		String correo = request.getParameter("correo");
 		String contrasena = request.getParameter("contrasena");
+		contrasena = LogicUsuario.hashPassword(contrasena);
 		String logMsg = "";
 		
 		
@@ -42,7 +43,7 @@ public class SvLogin extends HttpServlet {
 				HttpSession session = request.getSession();
 	            session.setAttribute("user", usuario);
 	            
-	            response.sendRedirect("home.html");
+	            response.sendRedirect("home.jsp");
 	            return;
 			}else {
 				logMsg = "Contraseña incorrecta";

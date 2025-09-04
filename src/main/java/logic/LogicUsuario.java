@@ -60,9 +60,6 @@ public class LogicUsuario {
 	
 	public Usuario getByEmail(String correo) {
 		Usuario us = usDAO.getByEmail(correo);
-		if(us != null) {
-			us.setContraseña(dehashPassword(us.getContraseña()));
-		}
 		return us;
 	}
 }
