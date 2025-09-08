@@ -41,20 +41,17 @@ public class SvRegister extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String email = request.getParameter("email");
+		String email = request.getParameter("correo");
 		String logMessage = "";
 		Usuario user = logicUsuario.getByEmail(email);
 		
 		if(user != null) {
 			logMessage = "Ya existe un usario registrado con ese email";
 		} else { 
-			user.setContraseña(request.getParameter("password"));
-			user.setCorreo(email);
-			user.setEsInvestigador(Boolean.parseBoolean(request.getParameter("isInvestigador")));
-			if(user.isEsInvestigador()) {
+			if(request.getParameter("esInvestigador") != null) {
 				Investigador userInvestigador = new Investigador(
-					user.getCorreo(),
-					user.getContraseña(),
+					email,
+					request.getParameter("contrasena"),
 					request.getParameter("nombre"),
 					request.getParameter("apellido"),
 					request.getParameter("dni")
@@ -62,8 +59,8 @@ public class SvRegister extends HttpServlet {
 				logicUsuario.save(userInvestigador);
 			} else {
 				Lector userLector = new Lector(
-					user.getCorreo(),
-					user.getContraseña(),
+					email,
+					request.getParameter("contrasena"),
 					LocalDate.parse(request.getParameter("fechaNacimiento"))
 				);
 				logicUsuario.save(userLector);
