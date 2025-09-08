@@ -13,6 +13,15 @@ public class Investigador extends Usuario{
 		this.dni = dni;
 	}
 	
+	public Investigador(String correo, String contraseña, String nombre, String apellido, String dni) {
+		super(correo, contraseña);
+		super.setEsInvestigador(true);
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+	}
+	
+	
 	public String getNombre() {
 		return nombre;
 	}

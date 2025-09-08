@@ -21,9 +21,11 @@
                     <input type="password" required placeholder=' ' id="contrasena" name='contrasena'/>
                     <label for="contrasena">🔐 Contraseña</label>
                 </div>
+              	
+              	
                 <div class='otherMsgs'>
                     <span class='otherMsg'>¿Has olvidado tu contraseña?</span>
-                    <span class='otherMsg'>¿Desea registrarse?</span>
+                    <a class='otherMsg' href="SvRegister">¿Desea registrarse?</a>
                 </div>
             </section>
             <aside class="logSubmitContainer">
