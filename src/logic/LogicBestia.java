@@ -25,7 +25,7 @@ public class LogicBestia {
 	}
 	
 		public Bestia update(Bestia besActualizada) {
-			Bestia besAnterior = bestiaDao.getOne(besActualizada);
+			Bestia besAnterior = bDao.getOne(besActualizada);
 			if(besAnterior != null) {
 				if(besActualizada.getNombre() == "") {
 					besActualizada.setNombre(besAnterior.getNombre());
@@ -33,7 +33,7 @@ public class LogicBestia {
 				if(besActualizada.getPeligrosidad() == "") {
 					besActualizada.setPeligrosidad(besAnterior.getPeligrosidad());
 				}
-				return bestiaDao.update(besActualizada);
+				return bDao.update(besActualizada);
 			}
 			return besAnterior;
 }

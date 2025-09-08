@@ -43,6 +43,13 @@
     gap: 25px;
 }
 
+.extraFields {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+}
+
 .logInput{
     position: relative;
 }
@@ -72,6 +79,27 @@
     color: var(--primary-color);
     display: block;
     visibility: visible;
+}
+
+.logInputCheckbox {
+    display: flex;
+    gap: 10px; 
+    margin-top: 15px;
+}
+
+.logInputCheckbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color); 
+    cursor: pointer;
+    margin-top:8px;
+    
+}
+
+.logInputCheckbox label {
+    position: static; 
+    font-size: 1.4rem;
+    cursor: pointer;
 }
 
 .logSubmitContainer{
