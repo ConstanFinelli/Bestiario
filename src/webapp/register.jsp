@@ -22,7 +22,7 @@
                     <label for="contrasena">🔐 Contraseña</label>
                 </div>
                 <div class="logInputCheckbox">
-              		<input type="checkbox" required placeholder=' ' id="esInvestigador" name='esInvestigador'>
+              		<input type="checkbox" id="esInvestigador" name='esInvestigador'>
               		<label for="esInvestigador">¿Ud. es un investigador?</label>
               	</div>
               	
@@ -44,7 +44,7 @@
 
 				<div id="camposLector" class="extraFields" style="display:flex;">
 				    <div class="logInput">
-				        <input type="text" placeholder=' ' id="fechaNacimiento" name="fechaNacimiento"/>
+				        <input type="date" placeholder=' ' id="fechaNacimiento" name="fechaNacimiento"/>
 				        <label for="fechaNacimiento">Fecha de nacimiento</label>
 				    </div>
 				</div>         	
