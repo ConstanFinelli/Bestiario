@@ -11,6 +11,7 @@
 	<div class="container-md text-center my-4 border p-4">
 		<h2 class="h1">Conseguir bestias</h2>
 		<form action="SvBestia" method="GET">
+			<input type="hidden" name="action" value="form">
 			<button type="submit" class="btn btn-outline-primary">CONSEGUIR BESTIAS</button>
 		</form>
 		${findAllMsg}
