@@ -11,18 +11,9 @@ import logic.*;
 
 //INCOMPLETO: DEBATIR EN GRUPO COMO PROSEGUIR Y ORGANIZAR EL TEMA DE CATEGORIAS, HABITATS Y REGISTROS EN EL SAVE
 public class DataBestia {
-	private static DataBestia instance;
-	
-	public static DataBestia getInstance() {
-        if (instance == null) {
-            instance = new DataBestia();
-        }
-        return instance;
-    }
-	
 	public LogicHabitat controladorHabitat = new LogicHabitat();
 	public LogicCategoria controladorCategoria = new LogicCategoria();
-	public DataRegistro rDAO = DataRegistro.getInstance();
+	public LogicRegistro controladorRegistro = new LogicRegistro();
 	public LogicComentario controladorComentario = new LogicComentario();
 	
 	public Bestia getOne(Bestia b) {
@@ -275,7 +266,7 @@ public class DataBestia {
 			if(rs != null) {
 				while(rs.next()) {
 					Registro registro = new Registro(rs.getInt("nroRegistro"), bestiaEncontrada);
-					registro = rDAO.getOne(registro);
+					registro = controladorRegistro.getOne(registro);
 					bestiaEncontrada.getRegistros().add(registro);
 				}
 			}
@@ -367,7 +358,7 @@ public class DataBestia {
 	
 	public void saveRegistros(Bestia b) {
 		for(Registro registro : b.getRegistros()) {
-			rDAO.save(registro);
+			controladorRegistro.save(registro);
 		}
 	}
 	

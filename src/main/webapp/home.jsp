@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Inicio</title>
+        <title>Bestiario - Inicio</title>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="main.css">
         <link rel="stylesheet" href="home.css">

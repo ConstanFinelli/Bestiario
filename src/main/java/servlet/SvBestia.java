@@ -23,6 +23,8 @@ public class SvBestia extends HttpServlet {
 	private final String BESTIAS_NOT_CREATED = "No existen bestias creadas actualmente";
 	private final String CREATE_BESTIA_ERROR = "Error al crear la nueva bestia. Revisar datos enviados";
 	private final String ID_FORMAT_ERROR = "Error en el formato del id ingresado";
+	private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
+	private final String BESTIA_LIST_JSP = "bestias.jsp";
 	private LogicBestia controlador = new LogicBestia();
 	
 	private static final long serialVersionUID = 1L;
@@ -34,7 +36,16 @@ public class SvBestia extends HttpServlet {
 	//##GET ONE##
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("bestiaForms.jsp");
+		
+		RequestDispatcher rd = null;
+		
+		String action = request.getParameter("action");
+		
+		if("form".equals(action)) {
+			rd = request.getRequestDispatcher(BESTIA_FORMS_JSP);
+		}else {
+			rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
+		}
 		String getOneMsg = "";
 		String findAllMsg = "";
 		if(id != null) {
@@ -52,6 +63,7 @@ public class SvBestia extends HttpServlet {
 			LinkedList<Bestia> bestias = new LinkedList<>();
 			bestias = controlador.findAll();
 			if (!bestias.isEmpty()) {
+				request.setAttribute("bestias", bestias);
 				for (Bestia unabestia : bestias) {
 					findAllMsg = findAllMsg + unabestia + "<br><br>";
 				} 
