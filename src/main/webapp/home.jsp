@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ 
+page import="entities.Usuario"
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +16,18 @@
             <a>Inicio</a>
             <a>Bestias</a>
             <input type="text" placeholder="Buscar">
+	        <%
+			    Usuario usuario = (Usuario) session.getAttribute("user");
+			    if (usuario != null) {
+			%>
+			        <a href="logout.jsp">Cerrar sesión</a>
+			<%
+			    } else {
+			%>
+					<a href="login.jsp">Iniciar sesión</a>
+			<%
+			    }
+			%>
         </nav>
         <section class="mainContent">
             <section>
