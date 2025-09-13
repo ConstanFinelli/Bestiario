@@ -20,11 +20,11 @@ page import="entities.Usuario"
 			    Usuario usuario = (Usuario) session.getAttribute("user");
 			    if (usuario != null) {
 			%>
-			        <a href="logout.jsp">Cerrar sesión</a>
+			        <a href="logout.jsp" class="logInOut">Cerrar sesión</a>
 			<%
 			    } else {
 			%>
-					<a href="login.jsp">Iniciar sesión</a>
+					<a href="login.jsp" class="logInOut">Iniciar sesión</a>
 			<%
 			    }
 			%>
