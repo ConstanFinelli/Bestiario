@@ -8,16 +8,3 @@
     background-color: var(--secondary-color);
     margin: 0 6vw;
 }
-
-.logInOut{
-	padding: 10px;
-	border-radius: 10%;
-	background: rgba(0, 0, 0, 0.4);
-	text-decoration: none;
-	transition: 0.2s;
-}
-
-.logInOut:hover{
-	background: rgba(0, 0, 0, 0.55);
-	text-decoration: none;
-}

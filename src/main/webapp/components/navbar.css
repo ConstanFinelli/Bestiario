@@ -1,0 +1,42 @@
+nav{
+    display: flex;
+    gap: 20px;
+    padding: 2vh;
+    height: 8vh;
+    background-color: var(--primary-color);
+    overflow: hidden;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+nav a{
+    color:aliceblue;
+    font-weight: 400;
+    padding: 0.3rem 0.5rem;
+    font-size: 1.5rem;
+}
+
+nav input{
+    margin-left: auto;
+    padding: 0.3rem 0.5rem;
+    width: 15vw;
+    height: 3vh;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    font-size: 1.3rem;
+}
+
+
+.logInOut{
+	padding: 10px;
+	border-radius: 10%;
+	background: rgba(0, 0, 0, 0.4);
+	text-decoration: none;
+	transition: 0.2s;
+}
+
+.logInOut:hover{
+	background: rgba(0, 0, 0, 0.55);
+	text-decoration: none;
+}
