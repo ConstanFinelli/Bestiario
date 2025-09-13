@@ -6,13 +6,10 @@
         <title>Registro de bestia</title>
         <link rel="stylesheet" href="main.css">
         <link rel="stylesheet" href="registro.css">
+        <link rel="stylesheet" href="components/navbar.css">
     </head>
     <body>
-        <nav>
-            <a>Inicio</a>
-            <a>Bestias</a>
-            <input type="text" placeholder="Buscar">
-        </nav>
+        <%@ include file="components/navbar.jsp" %>
         <section class="mainContent">
             <section>
                 <h1>Monstruo del Lago Ness</h1>

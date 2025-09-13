@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ 
-page import="entities.Usuario"
-%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,25 +7,10 @@ page import="entities.Usuario"
         <meta charset="UTF-8">
         <link rel="stylesheet" href="main.css">
         <link rel="stylesheet" href="home.css">
+        <link rel="stylesheet" href="components/navbar.css">
     </head>
     <body>
-        <nav>
-            <a>Inicio</a>
-            <a>Bestias</a>
-            <input type="text" placeholder="Buscar">
-	        <%
-			    Usuario usuario = (Usuario) session.getAttribute("user");
-			    if (usuario != null) {
-			%>
-			        <a href="logout.jsp" class="logInOut">Cerrar sesión</a>
-			<%
-			    } else {
-			%>
-					<a href="login.jsp" class="logInOut">Iniciar sesión</a>
-			<%
-			    }
-			%>
-        </nav>
+        <%@ include file="components/navbar.jsp" %>
         <section class="mainContent">
             <section>
                 <h2>Â¿QuiÃ©nes somos?</h2>
