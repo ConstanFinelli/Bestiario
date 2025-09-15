@@ -115,7 +115,6 @@ public class SvBestia extends HttpServlet {
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("bestiaForms.jsp");
 		String updateMsg = "";
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
@@ -138,7 +137,6 @@ public class SvBestia extends HttpServlet {
 		} finally {
 			
 			request.setAttribute("updateMsg", updateMsg);
-			rd.forward(request, response);
 		}
 		;
 		
@@ -149,7 +147,6 @@ public class SvBestia extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("bestiaForms.jsp");
 		String msgDelete = "";
 		Bestia bestia = new Bestia(Integer.parseInt(id));
 		bestia = controlador.delete(bestia);
@@ -159,7 +156,6 @@ public class SvBestia extends HttpServlet {
 			msgDelete = "Eliminado: " + bestia + "<br><br>";
 		}
 		request.setAttribute("deleteMsg", msgDelete);
-		rd.forward(request, response);
 
 	}
 

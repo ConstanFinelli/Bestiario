@@ -47,11 +47,20 @@ public class Bestia {
 	public LinkedList<Habitat> getHabitats(){
 		return habitats;
 	}
+	public void setHabitats(LinkedList<Habitat> habs){
+		this.habitats = habs;
+	}
 	public LinkedList<Categoria> getCategorias(){
 		return categorias;
 	}
+	public void setCategorias(LinkedList<Categoria> cats){
+		this.categorias = cats;
+	}
 	public LinkedList<Registro> getRegistros(){
 		return registros;
+	}
+	public void setRegistros(LinkedList<Registro> regs){
+		this.registros = regs;
 	}
 	public LinkedList<Comentario> getComentarios() {
 		return comentarios;

@@ -1,5 +1,6 @@
 package data;
 
+import entities.Bestia;
 import entities.Habitat;
 
 import java.sql.*;
@@ -191,5 +192,42 @@ public class DataHabitat {
 			}
 		}
 		return ht;
+	}
+	
+	public LinkedList<Habitat> findAllByBestia(Bestia b){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		LinkedList<Habitat> habitatsBestia = new LinkedList<>();
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select distinct h.idHabitat from habitat h join bestia_habitat bh on bh.idHabitat = h.idHabitat where bh.idBestia = ?");
+			pstmt.setInt(1, b.getIdBestia());
+			rs = pstmt.executeQuery();
+			if(rs != null) {
+				while(rs.next()) {
+					Habitat habitat = new Habitat(rs.getInt("idHabitat"), null, null, null);
+					habitat = this.getOne(habitat);
+					habitatsBestia.add(habitat);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+				}
+			}
+		return habitatsBestia;
 	}
 }
