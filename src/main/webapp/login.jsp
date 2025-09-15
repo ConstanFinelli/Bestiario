@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Bestiario - Login</title>
-<link rel="stylesheet" href="login.css">
+<link rel="stylesheet" href="css/login.css">
 </head>
 <body class='logBody'>
         <form class="logForm" action="SvLogin" method="POST">
