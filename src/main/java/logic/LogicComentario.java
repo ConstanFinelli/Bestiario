@@ -18,7 +18,7 @@ public class LogicComentario {
 	}
 	
 	public LinkedList<Comentario> findAllByBestia(Bestia b){
-		return cDao.findAllByBeast(b);
+		return cDao.findAllByBestia(b);
 	}
 	
 	public Comentario save(Comentario c) {

@@ -11,8 +11,7 @@ import entities.*;
 import logic.*;
 
 public class DataComentario {
-	public LogicBestia controladorBestia = new LogicBestia();
-	public LogicUsuario controladorUsuario = new LogicUsuario();
+	public DataUsuario userDAO = new DataUsuario();
 	
 	public Comentario getOne(Comentario c) {
 		PreparedStatement pstmt = null;
@@ -49,49 +48,7 @@ public class DataComentario {
 		return comentarioEncontrado;
 	} 
 	
-	public LinkedList<Comentario> findAll(){
-		Statement stmt = null;
-		ResultSet rs = null;
-		Comentario comentario = null;
-		LinkedList<Comentario> comentarios = new LinkedList<>();
-		try {
-			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("Select * from comentario");
-			if(rs != null) {
-				while(rs.next()) {
-					int idBestia = rs.getInt("idBestia");
-					int idUsuario = rs.getInt("IdUsuario");
-					String contenido = rs.getString("contenido");
-					LocalDate fecha = rs.getDate("fechaPublicacion").toLocalDate();
-					Bestia bestia = controladorBestia.getOne(new Bestia(idBestia, null, null));
-					Usuario user = controladorUsuario.getOne(new Usuario(idUsuario, null, null));
-					comentario = new Comentario(user, bestia, fecha, contenido);
-					comentarios.add(comentario);
-				}
-			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(stmt != null) {
-					stmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			}
-		}
-		return comentarios;
-	}
-	
-	public LinkedList<Comentario> findAllByBeast(Bestia b){
+	public LinkedList<Comentario> findAllByBestia(Bestia b){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Comentario comentario = null;
@@ -102,12 +59,11 @@ public class DataComentario {
 			rs = pstmt.executeQuery();
 			if(rs != null) {
 				while(rs.next()) {
-					int idBestia = rs.getInt("idBestia");
 					int idUsuario = rs.getInt("IdUsuario");
 					String contenido = rs.getString("contenido");
 					LocalDate fecha = rs.getDate("fechaPublicacion").toLocalDate();
-					Bestia bestia = controladorBestia.getOne(new Bestia(idBestia, null, null));
-					Usuario user = controladorUsuario.getOne(new Usuario(idUsuario, null, null));
+					Bestia bestia = b;
+					Usuario user = userDAO.getOne(new Usuario(idUsuario, null, null));
 					comentario = new Comentario(user, bestia, fecha, contenido);
 					comentarios.add(comentario);
 				}
