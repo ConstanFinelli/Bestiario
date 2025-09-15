@@ -72,8 +72,13 @@ public class Bestia {
 
 	public String listarHabitats() {
 		String lista = "";
+		if(this.habitats != null) {
 		for(Habitat hab: habitats) {
+			if(hab != null) {
 			lista = lista + "<br>" + hab.getNombre() + ",";
+			}
+		}}else {
+			lista = "No hay habitats listadas";
 		}
 		return lista;
 	}
