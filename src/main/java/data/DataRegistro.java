@@ -3,7 +3,6 @@ package data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
@@ -11,30 +10,26 @@ import entities.Registro;
 import entities.Bestia;
 import entities.Usuario;
 import entities.Investigador;
-import logic.LogicUsuario;
-import logic.LogicBestia;
 
 public class DataRegistro {
-	public LogicUsuario controladorUsuarios = new LogicUsuario();
-	public LogicBestia controladorBestia = new LogicBestia();
+	public DataUsuario userDAO = new DataUsuario();
 	
-	public Registro getOne(Registro r) {
+	public Registro getLast(Bestia b) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Registro registroEncontrado = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where nroRegistro = ? and idBestia = ?");
-			pstmt.setInt(1, r.getNroRegistro());
-			pstmt.setInt(2, r.getBestia().getIdBestia());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where idBestia = ? order by fechaAprobacion desc limit 1");
+			pstmt.setInt(1, b.getIdBestia());
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("nroRegistro");
 				String detalles = rs.getString("detalles");
 				LocalDate fechaA= rs.getDate("fechaAprobacion").toLocalDate();
 				LocalDate fechaB = rs.getDate("fechaBaja").toLocalDate();
-				Investigador pub = (Investigador) controladorUsuarios.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 				String estado = rs.getString("estado");
-				Bestia bestia = controladorBestia.getOne(new Bestia(rs.getInt("idBestia"), null, null));
+				Bestia bestia = b;
 				registroEncontrado = new Registro(id, detalles, fechaA, fechaB, pub, estado, bestia);
 			}
 		}catch(SQLException ex) {
@@ -59,23 +54,24 @@ public class DataRegistro {
 		return registroEncontrado;
 	}
 	
-	public LinkedList<Registro> findAll(){
-		Statement stmt = null;
+	public LinkedList<Registro> findAllByBestia(Bestia b){
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Registro registro = null;
 		LinkedList<Registro> registros = new LinkedList<>();
 		try {
-			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("Select * from Registro");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from Registro where idBestia = ?");
+			pstmt.setInt(1, b.getIdBestia());
+			rs = pstmt.executeQuery();
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("nroRegistro");
 					String detalles = rs.getString("detalles");
 					LocalDate fechaA= rs.getDate("fechaAprobacion").toLocalDate();
 					LocalDate fechaB = rs.getDate("fechaBaja").toLocalDate();
-					Investigador pub = (Investigador) controladorUsuarios.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 					String estado = rs.getString("estado");
-					Bestia bestia = controladorBestia.getOne(new Bestia(rs.getInt("idBestia"), null, null));
+					Bestia bestia = b;
 					registro = new Registro(id, detalles, fechaA, fechaB, pub, estado, bestia);
 					registros.add(registro);
 				}
@@ -89,8 +85,8 @@ public class DataRegistro {
 				if(rs != null) {
 					rs.close();
 				}
-				if(stmt != null) {
-					stmt.close();
+				if(pstmt != null) {
+					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
 			}catch(SQLException ex) {

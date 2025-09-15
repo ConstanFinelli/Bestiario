@@ -3,6 +3,7 @@ package data;
 import java.sql.*;
 import java.util.LinkedList;
 
+import entities.Bestia;
 import entities.Categoria;
 
 public class DataCategoria {
@@ -169,6 +170,43 @@ public class DataCategoria {
 			}
 		}
 		return catBorrada;
+	}
+	
+	public LinkedList<Categoria> findAllByBestia(Bestia b){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		LinkedList<Categoria> categorias = new LinkedList<Categoria>();
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select distinct bc.idCategoria from categoria c join bestia_categoria bc on bc.idCategoria = c.idCategoria where bc.idBestia = ?");
+			pstmt.setInt(1, b.getIdBestia());
+			rs = pstmt.executeQuery();
+			if(rs != null) {
+				while(rs.next()) {
+					Categoria categoria = new Categoria(rs.getInt("idCategoria"),null, null);
+					categoria = this.getOne(categoria);
+					categorias.add(categoria);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+				}
+			}
+		return categorias;
 	}
 }
 

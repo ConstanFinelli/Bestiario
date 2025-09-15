@@ -93,7 +93,7 @@ public class SvBestia extends HttpServlet {
 			} 
 		} else if(flag.equals("put")) {
 			doPut(request, response);
-		} else {
+		} else {	
 			doDelete(request,response);
 		}
 		rd.forward(request, response);
@@ -126,7 +126,6 @@ public class SvBestia extends HttpServlet {
 		} finally {
 			
 			request.setAttribute("updateMsg", updateMsg);
-			rd.forward(request, response);
 		}
 		;
 		
@@ -147,8 +146,6 @@ public class SvBestia extends HttpServlet {
 			msgDelete = "Eliminado: " + bestia + "<br><br>";
 		}
 		request.setAttribute("deleteMsg", msgDelete);
-		rd.forward(request, response);
-
 	}
 
 }
