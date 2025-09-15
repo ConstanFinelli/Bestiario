@@ -4,6 +4,10 @@
     height: 100%;
 }
 
+.mainContent{
+	flex-direction: row;
+}
+
 h1, h2{
     text-align: center;
     text-decoration: underline;
@@ -21,7 +25,8 @@ h1, h2{
     flex-direction: column;
     gap: 10px;
     color: #e3f0ff;
-    height: 100%;
+    height: fit;
+    width: 20vw;
 }
 
 .mainContent p {
@@ -35,7 +40,7 @@ h1, h2{
 
 .infoBestia img{
     height: 20vh;
-    width: 30vw;
+    width: 20vw;
     box-shadow: 10px 10px 16px rgba(7, 35, 60, 0.317);
     border-radius: 2%;
 }

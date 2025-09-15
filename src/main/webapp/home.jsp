@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/home.css">
-        <link rel="stylesheet" href="components/navbar.css">
+        <link rel="stylesheet" href="css/navbar.css">
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>

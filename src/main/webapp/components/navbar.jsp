@@ -3,7 +3,7 @@ page import="entities.Usuario"
 %>
 <nav>
             <a href="home.jsp">Inicio</a>
-            <a>Bestias</a>
+            <a href="SvBestia">Bestias</a>
             <a href="registro.jsp">Registro (temp)</a>
             <input type="text" placeholder="Buscar">
 	        <%
