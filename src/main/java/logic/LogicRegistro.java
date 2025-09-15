@@ -8,14 +8,6 @@ import entities.Registro;
 public class LogicRegistro {
 	public DataRegistro rDao = new DataRegistro();
 	
-	public Registro getOne(Registro r) {
-		return rDao.getOne(r);
-	}
-	
-	public LinkedList<Registro> FindAll() {
-		return rDao.findAll();
-	}
-	
 	public Registro save(Registro r) {
 		return rDao.save(r);
 	}
