@@ -6,7 +6,7 @@
         <title>Registro de bestia</title>
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/registro.css">
-        <link rel="stylesheet" href="components/navbar.css">
+        <link rel="stylesheet" href="css/navbar.css">
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
