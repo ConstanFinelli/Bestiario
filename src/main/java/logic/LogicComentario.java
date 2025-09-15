@@ -13,10 +13,6 @@ public class LogicComentario {
 		return cDao.getOne(c);
 	}
 	
-	public LinkedList<Comentario> findAll() {
-		return cDao.findAll();
-	}
-	
 	public LinkedList<Comentario> findAllByBestia(Bestia b){
 		return cDao.findAllByBestia(b);
 	}
