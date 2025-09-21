@@ -4,16 +4,16 @@ import java.time.LocalDate;
 
 public class Registro {
 	private int nroRegistro;
-	private String detalles;
+	private ContenidoRegistro contenido;
 	private LocalDate fechaAprobacion;
 	private LocalDate fechaBaja;
 	private Investigador publicador;
 	private String estado;
 	private Bestia bestia;
 	
-	public Registro(int id, String dtls, LocalDate fechaA, LocalDate fechaB, Investigador pub, String status, Bestia b) {
+	public Registro(int id, ContenidoRegistro cR, LocalDate fechaA, LocalDate fechaB, Investigador pub, String status, Bestia b) {
 		nroRegistro = id;
-		detalles = dtls;
+		contenido = cR;
 		fechaAprobacion = fechaA;
 		fechaBaja = fechaB;
 		setPublicador(pub);
@@ -32,11 +32,11 @@ public class Registro {
 	public void setNroRegistro(int nroRegistro) {
 		this.nroRegistro = nroRegistro;
 	}
-	public String getDetalles() {
-		return detalles;
+	public ContenidoRegistro getContenido() {
+		return contenido;
 	}
-	public void setDetalles(String detalles) {
-		this.detalles = detalles;
+	public void setContenido(ContenidoRegistro contenido) {
+		this.contenido = contenido;
 	}
 	public LocalDate getFechaAprobacion() {
 		return fechaAprobacion;
@@ -77,7 +77,7 @@ public class Registro {
 
 	@Override public String toString() {
 		return("Numero de Registro: " + nroRegistro + 
-				"<br>Detalles: " + detalles +
+				"<br>Detalles: " + contenido +
 				"<br>Fecha de aprobacion: " + fechaAprobacion +
 				"<br>Fecha de baja: " + fechaBaja +
 				"<br>Investigador que lo aprobo: " + publicador +
