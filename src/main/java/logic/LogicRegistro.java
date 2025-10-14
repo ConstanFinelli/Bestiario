@@ -1,12 +1,16 @@
 package logic;
 
-import java.util.LinkedList;
 
 import data.DataRegistro;
 import entities.Registro;
+import entities.Bestia;
 
 public class LogicRegistro {
 	public DataRegistro rDao = new DataRegistro();
+	
+	public Registro getLast(Bestia b) {
+		return rDao.getLast(b);
+	}
 	
 	public Registro save(Registro r) {
 		return rDao.save(r);

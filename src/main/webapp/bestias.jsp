@@ -25,19 +25,6 @@
                     	<aside>
                     		<h4>Peligrosidad</h4>
                     		<p><%= bestia.getPeligrosidad() %></p>
-                    		<h2>Habitats</h2>
-                    		<ul>
-                    		<% LinkedList<Habitat> habitats =  bestia.getHabitats(); %>
-                    		<%  if(habitats != null){
-                    			for (Habitat habitat: habitats) { 
-                    		%>
-                    			<li><%= habitat.getNombre() %></li>
-                    			<% } 
-                    		} 
-                    		else{ %>
-                    			<li>Sin habitats registradas</li> 
-                    		<% } %>
-                    		</ul>
                     	</aside>
                     	<button>Examinar</button>
                     </article>
@@ -46,5 +33,7 @@
             }
         %> 
 </section>
+<footer>
+</footer>
 </body>
 </html>
