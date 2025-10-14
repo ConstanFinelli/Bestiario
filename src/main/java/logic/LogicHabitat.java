@@ -3,6 +3,7 @@ package logic;
 import java.util.LinkedList;
 
 import data.DataHabitat;
+import entities.Bestia;
 import entities.Habitat;
 
 public class LogicHabitat {
@@ -14,6 +15,10 @@ public class LogicHabitat {
 	
 	public LinkedList<Habitat> findAll(){
 		return hDAO.findAll();
+	}
+	
+	public LinkedList<Habitat> findAllByBestia(Bestia b){
+		return hDAO.findAllByBestia(b);
 	}
 	
 	public Habitat save(Habitat ht) {

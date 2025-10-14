@@ -2,9 +2,9 @@
 page import="entities.Usuario"
 %>
 <nav>
-            <a href="home.jsp">Inicio</a>
-            <a href="SvBestia">Bestias</a>
-            <a href="registro.jsp">Registro (temp)</a>
+            <a class="navLink" href="home.jsp">Inicio</a>
+            <a class="navLink" href="SvBestia?action=list">Bestias</a>
+            <a class="navLink" href="SvBestia?action=registro">Registro (temp)</a>
             <input type="text" placeholder="Buscar">
 	        <%
 			    Usuario usuario = (Usuario) session.getAttribute("user");

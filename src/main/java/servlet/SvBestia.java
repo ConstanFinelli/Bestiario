@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import entities.Bestia;
+import entities.Registro;
 import logic.LogicBestia;
+import logic.LogicRegistro;
 
 /**
  * Servlet implementation class SbBestia
@@ -25,7 +27,9 @@ public class SvBestia extends HttpServlet {
 	private final String ID_FORMAT_ERROR = "Error en el formato del id ingresado";
 	private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
 	private final String BESTIA_LIST_JSP = "bestias.jsp";
+	private final String REGISTRO_JSP = "registro.jsp";
 	private LogicBestia controlador = new LogicBestia();
+	private LogicRegistro controladorRegistro = new LogicRegistro();
 	
 	private static final long serialVersionUID = 1L;
        
@@ -39,12 +43,16 @@ public class SvBestia extends HttpServlet {
 		
 		RequestDispatcher rd = null;
 		
+		Registro ultimoRegistro = null;
+		
 		String action = request.getParameter("action");
 		
 		if("form".equals(action)) {
 			rd = request.getRequestDispatcher(BESTIA_FORMS_JSP);
-		}else {
+		}else if("list".equals(action)){
 			rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
+		}else if("registro".equals(action)) {
+			rd = request.getRequestDispatcher(REGISTRO_JSP);
 		}
 		String getOneMsg = "";
 		String findAllMsg = "";
@@ -53,12 +61,14 @@ public class SvBestia extends HttpServlet {
 			bestia = controlador.getOne(bestia);
 			if(bestia != null) {
 				getOneMsg = getOneMsg + bestia + "<br><br>";
-				
+				ultimoRegistro = controladorRegistro.getLast(bestia);
 			}else {
 				getOneMsg = BESTIA_NOT_FOUND;
 				
 			}	
 			request.setAttribute("getOneMsg", getOneMsg);
+			request.setAttribute("bestia", bestia);
+			request.setAttribute("ultimoRegistro", ultimoRegistro);
 		} else {
 			LinkedList<Bestia> bestias = new LinkedList<>();
 			bestias = controlador.findAll();
