@@ -26,7 +26,7 @@
                     		<h4>Peligrosidad</h4>
                     		<p><%= bestia.getPeligrosidad() %></p>
                     	</aside>
-                    	<button>Examinar</button>
+                    	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
                     </article>
         <%
                 }
