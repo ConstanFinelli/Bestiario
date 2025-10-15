@@ -371,10 +371,10 @@ DROP TABLE IF EXISTS `contenido_registro`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contenido_registro` (
   `idContenido` int NOT NULL AUTO_INCREMENT,
-  `introduccion` varchar(255) NOT NULL,
-  `historia` varchar(255) NOT NULL,
-  `descripcion` varchar(255) NOT NULL,
-  `resumen` varchar(255) NOT NULL,
+  `introduccion` text NOT NULL,
+  `historia` text NOT NULL,
+  `descripcion` text NOT NULL,
+  `resumen` varchar(500) NOT NULL,
   PRIMARY KEY (`idContenido`),
   UNIQUE KEY `nro_registro_UNIQUE` (`idContenido`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

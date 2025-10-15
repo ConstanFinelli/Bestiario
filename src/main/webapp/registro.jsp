@@ -52,8 +52,23 @@
                 <div>
 	                <h3>Hábitats localizados</h3>
 	                <ul>
-	                    <li>nombre, localización</li>
+	                	<% LinkedList<Habitat> habitats = bestia.getHabitats(); %>
+	                	<% if(habitats != null){ 
+	                	for(Habitat habitat:habitats){
+	                	%>
+	                    <li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %></li>
+	                    <%} %>
+	                    <% } else{%>
+	                    <li>No hay habitats registradas para esta bestia.</li>
+	                    <%} %>
 	                </ul>
+                </div>
+                <div>
+                	<h3>Detalles de registro</h3>
+                	<ul>
+                		<li>Publicado por <%= ultimoRegistro.getPublicador().getNombre() + " " + ultimoRegistro.getPublicador().getApellido() %></li>
+                		<li>Último cambio: <%= ultimoRegistro.getFechaAprobacion() %></li>
+                	</ul>
                 </div>
             </aside>
             <% } %>
