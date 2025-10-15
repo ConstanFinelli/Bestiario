@@ -45,7 +45,7 @@ UNLOCK TABLES;
 -- Table structure for table `bestia-evidencia`
 --
 
-DROP TABLE IF EXISTS `bestia-evidencia`;
+DROP TABLE IF EXISTS `bestia_evidencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bestia-evidencia` (
@@ -365,6 +365,24 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `contenido_registro`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bestiario`.`contenido_registro` (
+  `nro_registro` INT NOT NULL AUTO_INCREMENT,
+  `introduccion` VARCHAR(255) NOT NULL,
+  `historia` VARCHAR(255) NOT NULL,
+  `descripcion` VARCHAR(255) NOT NULL,
+  `resumen` VARCHAR(255) NOT NULL,
+  `id_registro` INT NOT NULL,
+  PRIMARY KEY (`nro_registro`, `id_registro`),
+  UNIQUE INDEX `nro_registro_UNIQUE` (`nro_registro` ASC) VISIBLE,
+  INDEX `id_registro_idx` (`id_registro` ASC) VISIBLE,
+  CONSTRAINT `id_registro`
+    FOREIGN KEY (`id_registro`)
+    REFERENCES `bestiario`.`registro` (`nroRegistro`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 --
 -- Dumping data for table `usuario`
 --
