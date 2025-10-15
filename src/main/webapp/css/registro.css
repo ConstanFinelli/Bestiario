@@ -1,7 +1,6 @@
 .mainContent section{
     padding: 10px 10px 0px 10px;
     display: block;
-    height: 100%;
 }
 
 .mainContent{
@@ -16,17 +15,37 @@ h1, h2{
 }
 
 .infoBestia{
-    box-shadow: 10px 8px 12px rgba(7, 35, 60, 0.317);
-    background-color: var(--primary-color);
-    padding: 10px;
+    box-shadow: 0 10px 20px rgba(7, 35, 60, 0.317);
+    border: 4px solid var(--primary-color);
+    padding: 20px;
     margin: 2vh 2vw;
-    border-radius: 2%;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    color: #e3f0ff;
-    height: fit;
+    gap: 15px;
+    height: fit-content;
     width: 20vw;
+    margin-left: auto;
+}
+
+.infoBestia:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(7, 35, 60, 0.4);
+}
+
+.infoBestia img {
+    height: 20vh;
+    width: 20vw;
+    box-shadow: 0 5px 15px rgba(7, 35, 60, 0.3); 
+    border-radius: 8px;
+}
+
+.infoBestia h3{
+    text-align: center;
+    text-decoration: underline;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .mainContent p {
@@ -36,13 +55,6 @@ h1, h2{
 
 .mainContent p:last-child{
     border-bottom: none;
-}
-
-.infoBestia img{
-    height: 20vh;
-    width: 20vw;
-    box-shadow: 10px 10px 16px rgba(7, 35, 60, 0.317);
-    border-radius: 2%;
 }
 
 ul{
@@ -62,7 +74,7 @@ ul{
     align-items: center;
     justify-content: center;
     gap: 12px;
-    position: relat	ive;
+    position: relative;
 }
 
 .notFound::before {
