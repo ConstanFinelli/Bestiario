@@ -26,9 +26,15 @@ public class DataRegistro {
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("nroRegistro");
+				LocalDate fechaA = null;
+				LocalDate fechaB = null;
 				ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
-				LocalDate fechaA= rs.getDate("fechaAprobacion").toLocalDate();
-				LocalDate fechaB = rs.getDate("fechaBaja").toLocalDate();
+				if(rs.getDate("fechaAprobacion") != null) {
+					fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+				}
+				if(rs.getDate("fechaBaja") != null) {
+				fechaB = rs.getDate("fechaBaja").toLocalDate();
+				}
 				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 				String estado = rs.getString("estado");
 				Bestia bestia = b;
@@ -68,9 +74,15 @@ public class DataRegistro {
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("nroRegistro");
+					LocalDate fechaA = null;
+					LocalDate fechaB = null;
 					ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
-					LocalDate fechaA= rs.getDate("fechaAprobacion").toLocalDate();
-					LocalDate fechaB = rs.getDate("fechaBaja").toLocalDate();
+					if(rs.getDate("fechaAprobacion") != null) {
+						fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+					}
+					if(rs.getDate("fechaBaja") != null) {
+					fechaB = rs.getDate("fechaBaja").toLocalDate();
+					}
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;

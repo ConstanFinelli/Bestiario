@@ -63,9 +63,9 @@ CREATE TABLE `bestia_evidencia` (
 -- Dumping data for table `bestia-evidencia`
 --
 
-LOCK TABLES `bestia-evidencia` WRITE;
-/*!40000 ALTER TABLE `bestia-evidencia` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bestia-evidencia` ENABLE KEYS */;
+LOCK TABLES `bestia_evidencia` WRITE;
+/*!40000 ALTER TABLE `bestia_evidencia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bestia_evidencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -293,7 +293,7 @@ DROP TABLE IF EXISTS `registro`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `registro` (
   `nroRegistro` int NOT NULL,
-  `detalles` longtext,
+  `idContenido` int NOT NULL,
   `fechaAprobacion` date DEFAULT NULL,
   `fechaBaja` date DEFAULT NULL,
   `idUsuario` int DEFAULT NULL,
@@ -301,6 +301,7 @@ CREATE TABLE `registro` (
   `idBestia` int NOT NULL,
   PRIMARY KEY (`nroRegistro`),
   UNIQUE KEY `nroRegistro_UNIQUE` (`nroRegistro`),
+  UNIQUE KEY `idContenido_UNIQUE` (`idContenido`),
   KEY `idUsuario_idx` (`idUsuario`),
   KEY `idBestia_idx` (`idBestia`),
   CONSTRAINT `idBestia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -368,21 +369,16 @@ CREATE TABLE `usuario` (
 DROP TABLE IF EXISTS `contenido_registro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `bestiario`.`contenido_registro` (
-  `nro_registro` INT NOT NULL AUTO_INCREMENT,
-  `introduccion` VARCHAR(255) NOT NULL,
-  `historia` VARCHAR(255) NOT NULL,
-  `descripcion` VARCHAR(255) NOT NULL,
-  `resumen` VARCHAR(255) NOT NULL,
-  `id_registro` INT NOT NULL,
-  PRIMARY KEY (`nro_registro`, `id_registro`),
-  UNIQUE INDEX `nro_registro_UNIQUE` (`nro_registro` ASC) VISIBLE,
-  INDEX `id_registro_idx` (`id_registro` ASC) VISIBLE,
-  CONSTRAINT `id_registro`
-    FOREIGN KEY (`id_registro`)
-    REFERENCES `bestiario`.`registro` (`nroRegistro`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
+CREATE TABLE `contenido_registro` (
+  `idContenido` int NOT NULL AUTO_INCREMENT,
+  `introduccion` varchar(255) NOT NULL,
+  `historia` varchar(255) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  `resumen` varchar(255) NOT NULL,
+  PRIMARY KEY (`idContenido`),
+  UNIQUE KEY `nro_registro_UNIQUE` (`idContenido`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --
 -- Dumping data for table `usuario`
 --

@@ -11,7 +11,7 @@ public class DataContenidoRegistro {
 		ResultSet rs = null;
 		ContenidoRegistro cr = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from contenidosRegistros where idContenido = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from contenido_registro where idContenido = ?");
 			pstmt.setInt(1, idContenido);
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
@@ -44,7 +44,7 @@ public class DataContenidoRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into contenidoRegistros(introduccion,historia, descripcion, resumen) values(?, ?, ?, ?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into contenido_registro(introduccion,historia, descripcion, resumen) values(?, ?, ?, ?)");
 			pstmt.setString(1, cr.getIntroduccion()); 
 			pstmt.setString(2, cr.getHistoria());
 			pstmt.setString(3, cr.getDescripcion());
@@ -75,7 +75,7 @@ public class DataContenidoRegistro {
 	public ContenidoRegistro update(ContenidoRegistro cr) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update contenidoRegistro set introduccion = ?, historia = ?, descripcion = ?, resumen = ? where idContenido = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update contenido_registro set introduccion = ?, historia = ?, descripcion = ?, resumen = ? where idContenido = ?");
 			pstmt.setString(1, cr.getIntroduccion());
 			pstmt.setString(2, cr.getHistoria());
 			pstmt.setString(3, cr.getDescripcion());
