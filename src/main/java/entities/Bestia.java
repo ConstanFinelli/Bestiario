@@ -10,6 +10,7 @@ public class Bestia {
 	private LinkedList<Categoria> categorias  = new LinkedList<>();
 	private LinkedList<Registro> registros  = new LinkedList<>();
 	private LinkedList<Comentario> comentarios = new LinkedList<>();
+	private LinkedList<Evidencia> evidencias = new LinkedList<>();
 
 	public Bestia(int id, String name, String danger) {
 		idBestia = id;
@@ -115,5 +116,13 @@ public class Bestia {
 				 "<br>" + listarCategorias() + 
 				 "<br>" + listarRegistros() + 
 				 "<br>" + listarComentarios());
+	 }
+
+	 public LinkedList<Evidencia> getEvidencias() {
+		return evidencias;
+	 }
+
+	 public void setEvidencias(LinkedList<Evidencia> evidencias) {
+		this.evidencias = evidencias;
 	 }
 }

@@ -4,6 +4,7 @@
 <%@ page import="entities.Bestia" %>
 <%@ page import="entities.Habitat" %>
 <%@ page import="entities.Registro" %>
+<%@ page import="entities.Evidencia" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,7 +17,8 @@
         <%@ include file="components/navbar.jsp" %>
         <% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro ultimoRegistro = (Registro) request.getAttribute("ultimoRegistro");    
+    		Registro ultimoRegistro = (Registro) request.getAttribute("ultimoRegistro"); 
+    		LinkedList<Evidencia> evidencias = bestia.getEvidencias();
         %>
         <section class="mainContent">
         <% if(bestia == null){ %>
@@ -26,7 +28,7 @@
         <%} %>
         <% if(bestia != null){ %>
             <section>
-                <h1><%= bestia.getNombre() %>></h1>
+                <h1><%= bestia.getNombre() %></h1>
                 <% if(ultimoRegistro != null){ %>
                 <h2>Introducción</h2>
                 <p><%= ultimoRegistro.getContenido().getIntroduccion() %></p>
@@ -39,6 +41,22 @@
                 <% }else{ %>
                 <div class="notFound">No hay un registro encontrado para esta bestia.</div>
                 <% } %>
+                <% if(!evidencias.isEmpty()){ %>
+                <h2>Evidencias</h2>
+                <ul class="evidencias">
+                <% for(Evidencia evidencia : evidencias){ %>
+                	<%
+                	String teDesc = evidencia.getTipo().getDescripcion();
+                	String fechaOb = evidencia.getFechaObtencion().toString();
+                	String evText = teDesc + ", obtenido el " + fechaOb;
+                	
+                	%>
+                	<li class="evidencias-item">
+                		<a href="<%= evidencia.getLink() %>"><%= evText %></a>
+                	</li>
+                <%} %>
+                </ul>
+                <%} %>
             </section>
             <aside class="infoBestia">
                 <img src="https://www.lanacion.com.ar/resizer/v2/las-fotos-encontradas-en-una-camara-escondida-en-OFV4RMZXVVHKHIHKGVMR2QETTA.jpg?auth=8e27602b93bb370ef1f97fb6135900dbccef34b4a4fa6e5693bd3335fe8f64a4&width=420&height=280&quality=70&smart=true">

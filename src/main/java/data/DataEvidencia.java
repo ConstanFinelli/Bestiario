@@ -7,8 +7,11 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
+import entities.Bestia;
+import entities.Comentario;
 import entities.Evidencia;
 import entities.TipoEvidencia;
+import entities.Usuario;
 
 public class DataEvidencia {
 	public DataTipoEvidencia teDao = new DataTipoEvidencia();
@@ -231,6 +234,49 @@ public class DataEvidencia {
 					String estado = rs.getString("estado");
 					String link = rs.getString("link");
 					evidencia = new Evidencia(id, fechaO, estado, link, te);
+					evidencias.add(evidencia);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return evidencias;
+	}
+	
+	public LinkedList<Evidencia> findAllByBestia(Bestia b){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Evidencia evidencia = null;
+		LinkedList<Evidencia> evidencias = new LinkedList<>();
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from evidencia ev inner join bestia_evidencia bv on ev.nroEvidencia = bv.nroEvidencia inner join bestia b on bv.idBestia = b.idBestia where b.idBestia = ?");
+			pstmt.setInt(1, b.getIdBestia());
+			rs = pstmt.executeQuery();
+			if(rs != null) {
+				while(rs.next()) {
+					int nroEvidencia = rs.getInt("nroEvidencia");
+					LocalDate fechaO= rs.getDate("fechaObtencion").toLocalDate();
+					String estado = rs.getString("estado");
+					String link = rs.getString("link");
+					int idTipo = rs.getInt("idTipoEvidencia");
+					TipoEvidencia te = teDao.getOne(new TipoEvidencia(idTipo, null));
+					evidencia = new Evidencia(nroEvidencia,fechaO, estado, link, te);
 					evidencias.add(evidencia);
 				}
 			}
