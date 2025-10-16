@@ -14,6 +14,7 @@ public class DataBestia {
 	public DataCategoria catDAO = new DataCategoria();
 	public DataRegistro regDAO = new DataRegistro();
 	public DataComentario comDAO = new DataComentario();
+	public DataEvidencia evDAO = new DataEvidencia();
 	
 	public Bestia getOne(Bestia b) {
 		PreparedStatement pstmt = null;
@@ -107,6 +108,7 @@ public class DataBestia {
 			saveCategorias(b);
 			saveRegistros(b);
 			saveHabitats(b);
+			saveEvidencias(b);
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
 	            System.out.println("SQLState: " + ex.getSQLState());
@@ -201,11 +203,16 @@ public class DataBestia {
 		bestiaEncontrada.setComentarios(comDAO.findAllByBestia(bestiaEncontrada));
 	}
 	
+	public void addEvidencias(Bestia bestiaEncontrada) {
+		bestiaEncontrada.setEvidencias(evDAO.findAllByBestia(bestiaEncontrada));
+	}
+	
 	public void completarBestia(Bestia bestia) {
 		addRegistros(bestia);
 		addHabitats(bestia);
 		addCategorias(bestia);
 		addComentarios(bestia);
+		addEvidencias(bestia);
 	}
 	
 	public void saveCategorias(Bestia b) {
@@ -242,6 +249,34 @@ public class DataBestia {
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into bestia_habitat(idBestia, idHabitat) values(?,?)");
 				pstmt.setInt(1, b.getIdBestia());
 				pstmt.setInt(2, habitat.getId());
+				pstmt.executeQuery();
+			}catch(SQLException ex){
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}finally {
+				try {
+					if(pstmt != null) {
+						pstmt.close();
+					}
+					DbConnector.getInstancia().releaseConn();
+				}catch(SQLException ex) {
+					System.out.println("Mensaje: " + ex.getMessage());
+		            System.out.println("SQLState: " + ex.getSQLState());
+		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+				}
+			}
+		}	
+	}
+	
+	public void saveEvidencias(Bestia b) {
+		PreparedStatement pstmt = null;
+		for(Evidencia evidencia : b.getEvidencias()) {
+			try {
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into bestia_evidencia(idBestia, idHabitat, detalle) values(?,?,?)");
+				pstmt.setInt(1, b.getIdBestia());
+				pstmt.setInt(2, evidencia.getNroEvidencia());
+				pstmt.setString(3, "Detalle a actualizar");
 				pstmt.executeQuery();
 			}catch(SQLException ex){
 				System.out.println("Mensaje: " + ex.getMessage());
