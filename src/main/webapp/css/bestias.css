@@ -7,6 +7,8 @@ ul{
 	box-shadow: 0px 8px 4px rgb(0,0,0,.15);
 	background: rgba(0,0,0,0.1);
 	padding: 2vh;
+	width: 16vw;
+	height: 22vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -19,13 +21,16 @@ ul{
 	gap: 1vh;
 }
 
-.bestia button{
-	width: 6vw;
-	height: 4vh;
+.bestias{
+	display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 2fr));
+	gap: 20px;
 }
 
 .mainContent{
 	gap: 2vh;
+	min-height: 800px;
+	height: fit-content;
 }
 
 .btnBestia {
@@ -44,4 +49,20 @@ ul{
 .btnBestia:hover {
     background: linear-gradient(135deg, #E5C158, #C9960C);
     transform: scale(1.02);
+}
+
+.controles-paginacion {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn-pagina {
+    padding: 8px 12px;
+    border: 1px solid #007bff;
+    background: white;
+    color: #007bff;
+    cursor: pointer;
+    border-radius: 4px;
 }
