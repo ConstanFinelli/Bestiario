@@ -5,6 +5,7 @@
 <%@ page import="entities.Habitat" %>
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Evidencia" %>
+<%@ page import="entities.Categoria" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -66,6 +67,20 @@
 	                    <li>Nombre: <%= bestia.getNombre() %> </li>
 	                    <li>Peligrosidad: <%= bestia.getPeligrosidad() %></li>
 	                </ul>
+                </div>
+                <div>
+                	<h3>Categorías</h3>
+                	<ul>
+                	<% if(bestia.getCategorias().isEmpty()){ %>
+                    			No tiene categorías definidas.
+                    			<%}else{ 
+                    				for(Categoria cat:bestia.getCategorias()){
+                    			%>
+                    				<li>
+                    				<a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
+                    				</li>
+                    			<%}} %>
+                	</ul>
                 </div>
                 <div>
 	                <h3>Hábitats localizados</h3>

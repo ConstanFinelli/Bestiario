@@ -34,7 +34,7 @@
                     				for(Bestia bestia: habitat.getBestias()){
                     			%>
                     			<li>
-                    			
+                    				<a href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>"><%= bestia.getNombre() %></a>
                     			</li>
                     			<%}}else{ %>
                     				<li>No hay bestias registradas.</li>

@@ -8,13 +8,18 @@ import entities.Habitat;
 
 public class LogicHabitat {
 	private DataHabitat hDAO = new DataHabitat();
+	private LogicBestia controladorB = new LogicBestia();
 	
 	public Habitat getOne(Habitat ht) {
 		return hDAO.getOne(ht);
 	}
 	
 	public LinkedList<Habitat> findAll(){
-		return hDAO.findAll();
+		LinkedList<Habitat> hts = hDAO.findAll();
+		for(Habitat ht:hts) {
+			ht.setBestias(controladorB.findAllBestiasFromHabitat(ht));
+		}
+		return hts;
 	}
 	
 	public LinkedList<Habitat> findAllByBestia(Bestia b){
