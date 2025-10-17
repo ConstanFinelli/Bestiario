@@ -33,7 +33,16 @@ public class SvHabitat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
+		
+		RequestDispatcher rd = null;
+		
+		String action = request.getParameter("action");
+		
+		if("form".equals(action)) {
+			rd = request.getRequestDispatcher("habitatForms.jsp");}
+		else {
+			rd = request.getRequestDispatcher("habitats.jsp");
+		}
 		String getOneMsg = "";
 		String findAllMsg = "";
 		if(id != null) {
@@ -52,6 +61,7 @@ public class SvHabitat extends HttpServlet {
 				findAllMsg = findAllMsg + ht + "<br><br>";
 			}
 			request.setAttribute("findAllMsg", findAllMsg);
+			request.setAttribute("habitats", hts);
 		}
 		rd.forward(request, response);
 	}

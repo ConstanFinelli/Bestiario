@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import data.DataBestia;
 import entities.Bestia;
+import entities.Habitat;
 
 public class LogicBestia {
 	public DataBestia bDao = new DataBestia();
@@ -14,6 +15,10 @@ public class LogicBestia {
 	
 	public LinkedList<Bestia> findAll() {
 		return bDao.findAll();
+	}
+	
+	public LinkedList<Bestia> findAllBestiasFromHabitat(Habitat ht) {
+		return bDao.findAllBestiasFromHabitat(ht);
 	}
 	
 	public Bestia save(Bestia b) {

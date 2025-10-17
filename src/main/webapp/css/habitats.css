@@ -2,6 +2,12 @@ ul{
 	list-style: none;
 }
 
+.habitats{
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
 .habitat{
 	border: 1px solid black;
 	box-shadow: 0px 8px 4px rgb(0,0,0,.15);

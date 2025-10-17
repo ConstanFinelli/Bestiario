@@ -356,7 +356,7 @@ public class DataBestia {
 		ResultSet rs = null;
 		LinkedList<Bestia> bestiasHabitat = new LinkedList<>();
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select distinct h.idHabitat from habitat h join bestia_habitat bh on bh.idHabitat = h.idHabitat where bh.idHabitat = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select distinct * from habitat h join bestia_habitat bh on bh.idHabitat = h.idHabitat where bh.idHabitat = ?");
 			pstmt.setInt(1, ht.getId());
 			rs = pstmt.executeQuery();
 			if(rs != null) {

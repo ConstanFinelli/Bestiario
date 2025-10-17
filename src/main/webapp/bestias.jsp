@@ -3,6 +3,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="entities.Bestia" %>
 <%@ page import="entities.Habitat" %>
+<%@ page import="entities.Categoria" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +27,17 @@
                     	<aside>
                     		<h4>Peligrosidad</h4>
                     		<p><%= bestia.getPeligrosidad() %></p>
+                    		<h4>Categorías</h4>
+                    		<p>
+                    		<% if(bestia.getCategorias().isEmpty()){ %>
+                    			No tiene categorías definidas.
+                    			<%}else{ 
+                    				for(Categoria cat:bestia.getCategorias()){
+                    			%>
+                    				<%-- implementar lista de bestias de una categoria --%>
+                    				<a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
+                    			<%}} %>
+                    		</p>
                     	</aside>
                     	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
                     </article>
