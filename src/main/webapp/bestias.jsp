@@ -16,6 +16,7 @@
 <%@ include file="components/navbar.jsp" %>
 <section class="mainContent">
 <h1>Bestias registradas</h1>
+	<section class="bestias">
 	<%
             LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
             if (bestias != null) {
@@ -32,6 +33,7 @@
                 }
             }
         %> 
+        </section>
 </section>
 <footer>
 </footer>
