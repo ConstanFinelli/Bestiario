@@ -7,12 +7,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 import entities.Bestia;
+import entities.Comentario;
 import entities.Registro;
+import entities.Usuario;
 import logic.LogicBestia;
+import logic.LogicComentario;
 import logic.LogicRegistro;
+import logic.LogicUsuario;
 
 /**
  * Servlet implementation class SbBestia
@@ -30,6 +35,8 @@ public class SvBestia extends HttpServlet {
 	private final String REGISTRO_JSP = "registro.jsp";
 	private LogicBestia controlador = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
+	private LogicComentario controladorComentario = new LogicComentario();
+	private LogicUsuario controladorUsuario = new LogicUsuario();
 	
 	private static final long serialVersionUID = 1L;
        
@@ -95,7 +102,8 @@ public class SvBestia extends HttpServlet {
 		String peligrosidad= request.getParameter("peligrosidad");
 		String flag = request.getParameter("flag");
 		String saveMsg = "";
-		RequestDispatcher rd = request.getRequestDispatcher("bestiaForms.jsp"); 
+		RequestDispatcher rd = request.getRequestDispatcher(BESTIA_FORMS_JSP); 
+		
 		
 		if (flag.equals("post")) {
 			try {
@@ -115,8 +123,20 @@ public class SvBestia extends HttpServlet {
 			} 
 		} else if(flag.equals("put")) {
 			doPut(request, response);
-		} else {
+		} else if(flag.equals("delete")){
 			doDelete(request,response);
+		} else {
+			String contenido = request.getParameter("contenido");
+			String idUsuario = request.getParameter("idUsuario");
+			String idBestia = request.getParameter("idBestia");
+			if(contenido != null && idUsuario != null && idBestia != null) {
+				LocalDate fechaComentario = LocalDate.now();
+				Usuario usuario = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), null, null));
+				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(idBestia),null,null));
+				Comentario comentario = new Comentario(usuario, bestia, fechaComentario, contenido);
+				controladorComentario.save(comentario);
+			}
+			rd = request.getRequestDispatcher(REGISTRO_JSP);
 		}
 		rd.forward(request, response);
 	}
@@ -129,6 +149,7 @@ public class SvBestia extends HttpServlet {
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String peligrosidad = request.getParameter("peligrosidad");
+		
 		try {
 			Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad);
 			bestia = controlador.update(bestia);
@@ -148,7 +169,6 @@ public class SvBestia extends HttpServlet {
 			
 			request.setAttribute("updateMsg", updateMsg);
 		}
-		;
 		
 	}
 
