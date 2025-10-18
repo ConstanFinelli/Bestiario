@@ -20,8 +20,6 @@
         <% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
     		Registro ultimoRegistro = (Registro) request.getAttribute("ultimoRegistro"); 
-    		LinkedList<Evidencia> evidencias = bestia.getEvidencias();
-    		LinkedList<Comentario> comentarios = bestia.getComentarios();
         %>
         <section class="mainContent">
         <% if(bestia == null){ %>
@@ -29,7 +27,9 @@
         	<div class="notFound">Bestia no encontrada</div>
         </section>
         <%} %>
-        <% if(bestia != null){ %>
+        <% if(bestia != null){ 
+        	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
+        %>
             <section>
                 <h1><%= bestia.getNombre() %></h1>
                 <% if(ultimoRegistro != null){ %>
@@ -108,6 +108,9 @@
             </aside>
             <% } %>
         </section>
+        <% if(bestia != null){
+
+            		LinkedList<Comentario> comentarios = bestia.getComentarios(); %>
         <section class="comentarios mainContent">
         		<h2>Comentarios</h2>
             	<% if(usuario != null){ %>
@@ -128,7 +131,7 @@
             	</section>
             	<%}}else{%>
             	<p>No hay comentarios para esta bestia.</p>
-            	<%} %>
+            	<%}} %>
             </section>
         <footer>
         </footer>
