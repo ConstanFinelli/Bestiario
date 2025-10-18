@@ -44,8 +44,12 @@
                     </article>
         <%
                 }
-            }
-        %> 
+            }else{
+                %> 
+                <section>
+                	<div class="notFound">No se pudieron encontrar Habitats.</div>
+                </section>
+                <%} %>
         </section>
 </section>
 <footer>

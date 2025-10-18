@@ -5,6 +5,7 @@
 
 .mainContent{
 	flex-direction: row;
+	min-height: 100vh;
 	height: fit-content; /* necesario o se rompe la página al modificar el tamaño horizontal del navegador*/
 }
 
@@ -69,27 +70,6 @@ ul{
     display: flex;
     flex-direction: column;
     gap: 7px;
-}
-
-.notFound {
-    color: #b91c1c;
-    font-size: 2.2rem;
-    font-weight: 600;
-    padding: 1.5rem;
-    background-color: #fef2f2;
-    border: 2px solid #fecaca;
-    border-radius: 12px;
-    margin: 1rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    position: relative;
-}
-
-.notFound::before {
-    content: "⚠️";
-    font-size: 2rem;
 }
 
 .comentarios{

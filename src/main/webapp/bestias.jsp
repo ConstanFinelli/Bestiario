@@ -43,8 +43,12 @@
                     </article>
         <%
                 }
-            }
+            }else{
         %> 
+        <section>
+        	<div class="notFound">No se pudieron encontrar Bestias.</div>
+        </section>
+        <%} %>
         </section>
 </section>
 <footer>
