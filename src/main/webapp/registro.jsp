@@ -6,6 +6,7 @@
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
+<%@ page import="entities.Comentario" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,6 +21,7 @@
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
     		Registro ultimoRegistro = (Registro) request.getAttribute("ultimoRegistro"); 
     		LinkedList<Evidencia> evidencias = bestia.getEvidencias();
+    		LinkedList<Comentario> comentarios = bestia.getComentarios();
         %>
         <section class="mainContent">
         <% if(bestia == null){ %>
@@ -106,6 +108,27 @@
             </aside>
             <% } %>
         </section>
+        <section class="comentarios mainContent">
+        		<h2>Comentarios</h2>
+            	<% if(usuario != null){ %>
+            	<form action="${pageContext.request.requestURL}" method="post">
+	            	<input type="text" placeholder="Escribir comentario..." name="contenido">
+	            	<input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">
+	            	<input type="hidden" name="idBestia" value="<%=bestia.getIdBestia()%>">
+	            	<input class="btnComentario" type="submit">
+            	</form>
+            	<%} 
+            	if(!comentarios.isEmpty()){
+            	for(Comentario comentario:comentarios){
+            	%>
+            	<section class="comentario">
+            		<aside class="comentarioDatos"><%= comentario.getPublicador().getCorreo() %> - <span class="fechaComentario">publicado el <%= comentario.getFecha() %></span></aside>
+            		<article class="comentarioContenido"><%= comentario.getContenido() %></article>
+            	</section>
+            	<%}}else{%>
+            	<p>No hay comentarios para esta bestia.</p>
+            	<%} %>
+            </section>
         <footer>
         </footer>
     </body>

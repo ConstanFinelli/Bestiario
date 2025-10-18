@@ -90,3 +90,41 @@ ul{
     content: "⚠️";
     font-size: 2rem;
 }
+
+.comentarios{
+	border-top: 2px solid var(--primary-color);
+    padding: 2rem;
+    min-height: 200px;
+    height: fit-content;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.comentario{
+	display: flex;
+	flex-direction: column;
+	border: 2px solid black;
+	border-radius: 12px;
+	padding: 1vh 2vw;
+	box-shadow: 0 10px 20px rgba(7, 35, 60, 0.317);
+}
+
+.comentarioDatos{
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: #2c3e50;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.comentarioContenido{
+	font-size: 1rem;
+	font-weight: 500;
+	padding-bottom: 1.2rem;
+	text-align: left;
+}
+
+.fechaComentario{
+	color: gray;
+}
