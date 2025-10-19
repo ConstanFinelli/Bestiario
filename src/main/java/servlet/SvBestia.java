@@ -29,6 +29,7 @@ public class SvBestia extends HttpServlet {
 	private final String BESTIA_NOT_FOUND = "No existe una bestia con ese id";
 	private final String BESTIAS_NOT_CREATED = "No existen bestias creadas actualmente";
 	private final String CREATE_BESTIA_ERROR = "Error al crear la nueva bestia. Revisar datos enviados";
+	private final String REGISTRO_NOT_FOUND = "No existe un registro asociado";
 	private final String ID_FORMAT_ERROR = "Error en el formato del id ingresado";
 	private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
 	private final String BESTIA_LIST_JSP = "bestias.jsp";
@@ -69,6 +70,14 @@ public class SvBestia extends HttpServlet {
 			if(bestia != null) {
 				getOneMsg = getOneMsg + bestia + "<br><br>";
 				ultimoRegistro = controladorRegistro.getLast(bestia);
+				
+				if (ultimoRegistro == null) {
+                    request.getSession().setAttribute("errorMsg", 
+                        REGISTRO_NOT_FOUND);
+                    response.sendRedirect("SvBestia?action=list");
+                    return; 
+                }
+				
 			}else {
 				getOneMsg = BESTIA_NOT_FOUND;
 				
