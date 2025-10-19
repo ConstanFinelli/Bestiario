@@ -17,6 +17,16 @@
 <%@ include file="components/navbar.jsp" %>
 <section class="mainContent">
 <h1>Bestias registradas</h1>
+	<%
+    	String errorMsg = (String) session.getAttribute("errorMsg");
+    	if (errorMsg != null) {
+	%>
+    <div class="notFound"><%= errorMsg %></div>
+	<%
+        session.removeAttribute("errorMsg"); // para que no se repita
+    	}
+	%>
+	
 	<section class="bestias">
 	<%
             LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
@@ -49,6 +59,8 @@
         	<div class="notFound">No se pudieron encontrar Bestias.</div>
         </section>
         <%} %>
+        
+        
         </section>
 </section>
 <footer>
