@@ -19,7 +19,7 @@
         <%@ include file="components/navbar.jsp" %>
         <% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro ultimoRegistro = (Registro) request.getAttribute("ultimoRegistro"); 
+    		Registro registro = (Registro) request.getAttribute("registro"); 
         %>
         <section class="mainContent">
         <% if(bestia == null){ %>
@@ -32,15 +32,15 @@
         %>
             <section>
                 <h1><%= bestia.getNombre() %></h1>
-                <% if(ultimoRegistro != null){ %>
+                <% if(registro != null){ %>
                 <h2>Introducción</h2>
-                <p><%= ultimoRegistro.getContenido().getIntroduccion() %></p>
+                <p><%= registro.getContenido().getIntroduccion() %></p>
                 <h2>Descripción</h2>
-                <p><%= ultimoRegistro.getContenido().getDescripcion() %></p>
+                <p><%= registro.getContenido().getDescripcion() %></p>
                 <h2>Historia</h2>
-                <p><%= ultimoRegistro.getContenido().getHistoria() %></p>
+                <p><%= registro.getContenido().getHistoria() %></p>
                 <h2>Resumen</h2>
-                <p><%= ultimoRegistro.getContenido().getResumen() %></p>
+                <p><%= registro.getContenido().getResumen() %></p>
                 <% }else{ %>
                 <div class="notFound">No hay un registro encontrado para esta bestia.</div>
                 <% } %>
@@ -101,8 +101,8 @@
                 <div>
                 	<h3>Detalles de registro</h3>
                 	<ul>
-                		<li>Publicado por <%= ultimoRegistro.getPublicador().getNombre() + " " + ultimoRegistro.getPublicador().getApellido() %></li>
-                		<li>Último cambio: <%= ultimoRegistro.getFechaAprobacion() %></li>
+                		<li>Publicado por <%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %></li>
+                		<li>Último cambio: <%= registro.getFechaAprobacion() %></li>
                 	</ul>
                 </div>
             </aside>

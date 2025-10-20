@@ -16,13 +16,15 @@ public class DataRegistro {
 	public DataUsuario userDAO = new DataUsuario();
 	public DataContenidoRegistro cRDAO = new DataContenidoRegistro();
 	
-	public Registro getLast(Bestia b) {
+	public Registro getRegistroToShow(Bestia b, LocalDate fecha) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Registro registroEncontrado = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where idBestia = ? order by fechaAprobacion desc limit 1");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where idBestia = ? and fechaAprobacion <= ? and not fechaBaja <= ? order by fechaAprobacion desc limit 1");
 			pstmt.setInt(1, b.getIdBestia());
+			pstmt.setDate(2, java.sql.Date.valueOf(fecha));
+			pstmt.setDate(3, java.sql.Date.valueOf(fecha));
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("nroRegistro");

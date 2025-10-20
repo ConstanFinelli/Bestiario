@@ -51,7 +51,7 @@
               	
                 <div class='otherMsgs'>
                     <a class='otherMsg' href="enConstruccion">¿Problemas para registrarse? Contáctanos</a>
-                    <a class='otherMsg' href="login.jsp">¿Desea iniciar sesión?</a>
+                    <a class='otherMsg' href="login.jsp">¿Ya tienes una cuenta? Inicia sesion</a>
                 </div>
             </section>
             <aside class="logSubmitContainer">

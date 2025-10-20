@@ -25,7 +25,7 @@
               	
                 <div class='otherMsgs'>
                     <span class='otherMsg'>¿Has olvidado tu contraseña?</span>
-                    <a class='otherMsg' href="SvRegister">¿Desea registrarse?</a>
+                    <a class='otherMsg' href="SvRegister">¿Aun no tienes una cuenta? Registrate	</a>
                 </div>
             </section>
             <aside class="logSubmitContainer">
