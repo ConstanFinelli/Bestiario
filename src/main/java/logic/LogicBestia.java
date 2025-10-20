@@ -17,6 +17,10 @@ public class LogicBestia {
 		return bDao.findAll();
 	}
 	
+	public LinkedList<Bestia> findByCategoria(String categoria){
+		return bDao.findByCategoria(categoria);
+	}
+	
 	public LinkedList<Bestia> findAllBestiasFromHabitat(Habitat ht) {
 		return bDao.findAllBestiasFromHabitat(ht);
 	}
