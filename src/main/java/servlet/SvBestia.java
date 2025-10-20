@@ -204,5 +204,5 @@ public class SvBestia extends HttpServlet {
 		request.setAttribute("deleteMsg", msgDelete);
 
 	}
-	
+
 }
