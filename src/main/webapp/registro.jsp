@@ -135,7 +135,7 @@
             	for(Comentario comentario:comentarios){
             	%>
             	<section class="comentario">
-            		<aside class="comentarioDatos"><%= comentario.getPublicador().getCorreo() %> - <span class="fechaComentario">publicado el <%= comentario.getFecha() %></span></aside>
+            		<aside class="comentarioDatos"><%= comentario.getPublicador().getCorreo() %> - <span class="fechaComentario">Publicado el <%= comentario.getFecha() %></span></aside>
             		<article class="comentarioContenido"><%= comentario.getContenido() %></article>
             	</section>
             	<%}}else{%>
