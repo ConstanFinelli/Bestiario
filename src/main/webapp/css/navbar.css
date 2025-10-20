@@ -26,15 +26,8 @@ nav{
     text-decoration-thickness: 2px;
 }
 
-nav input{
+nav a:last-child{
     margin-left: auto;
-    padding: 0.3rem 0.5rem;
-    width: 15vw;
-    height: 3vh;
-    border-radius: 10px;
-    outline: none;
-    border: none;
-    font-size: 1.3rem;
 }
 
 .logInOut {
