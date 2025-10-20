@@ -32,14 +32,13 @@ public class SvLogin extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 		String correo = request.getParameter("correo");
 		String contrasena = request.getParameter("contrasena");
-		contrasena = LogicUsuario.hashPassword(contrasena);
 		String logMsg = "";
 		
 		
 		Usuario usuario = controladorUsuario.getByEmail(correo);
 		
 		if(usuario != null) {
-			if(contrasena.equals(LogicUsuario.hashPassword(usuario.getContraseña()))) {
+			if(contrasena.equals(LogicUsuario.dehashPassword(usuario.getContraseña()))) {
 				HttpSession session = request.getSession();
 	            session.setAttribute("user", usuario);
 	            
