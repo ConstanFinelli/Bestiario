@@ -380,8 +380,14 @@ CREATE TABLE `contenido_registro` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `usuario`
+-- Dumping data for table `usuario` DATA GENERAL PARA TESTEO RAPIDO
 --
+
+insert into usuario values (1, "admin@admin.com", "admin", 0, "20241212", "Geronimo", "Benavides", "123123");
+
+insert into contenido_registro values (1, "as", "assad" , "asdasd", "asdqqd");
+
+insert into registro values (1, 1, "20240101", null, 1, "aprobada", 1);
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
