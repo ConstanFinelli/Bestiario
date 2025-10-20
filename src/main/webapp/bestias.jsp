@@ -51,7 +51,7 @@
                     			<%}} %>
                     		</p>
                     	</aside>
-                    	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>>">Examinar</a>
+                    	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
                     </article>
         <%
                 }
