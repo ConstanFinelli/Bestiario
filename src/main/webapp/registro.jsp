@@ -19,7 +19,8 @@
         <%@ include file="components/navbar.jsp" %>
         <% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro registro = (Registro) request.getAttribute("registro"); 
+    		Registro registro = (Registro) request.getAttribute("registro");  
+    		System.out.println(registro);
         %>
         <section class="mainContent">
         <% if(bestia == null){ %>
