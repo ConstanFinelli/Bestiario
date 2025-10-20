@@ -10,28 +10,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Registro de bestia</title>
+    	<% 
+        	Bestia bestia = (Bestia) request.getAttribute("bestia");
+    		Registro registro = (Registro) request.getAttribute("registro");  
+    		System.out.println(registro);
+        %>  
+        <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/registro.css">
         <link rel="stylesheet" href="css/navbar.css">
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
-        <% 
-        	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro registro = (Registro) request.getAttribute("registro");  
-    		System.out.println(registro);
-        %>  
-        <div style="margin: 20px;">
-    <form action="SvBestia" method="get" style="display: flex; align-items: center; gap: 10px;">
-        <input type="hidden" name="action" value="registro">
-        <input type="hidden" name="id" value="<%= bestia != null ? bestia.getIdBestia() : "" %>">
-        <label for="fecha">Seleccionar fecha:</label>
-        <input type="date" id="fecha" name="fecha" required>
-        <button type="submit">Cargar registro</button>
-    </form>
-		</div>
-		
         <section class="mainContent">
         <% if(bestia == null){ %>
         <section>
@@ -44,14 +34,22 @@
             <section>
                 <h1><%= bestia.getNombre() %></h1>
                 <% if(registro != null){ %>
-                <h2>Introducción</h2>
-                <p><%= registro.getContenido().getIntroduccion() %></p>
-                <h2>Descripción</h2>
-                <p><%= registro.getContenido().getDescripcion() %></p>
-                <h2>Historia</h2>
-                <p><%= registro.getContenido().getHistoria() %></p>
-                <h2>Resumen</h2>
-                <p><%= registro.getContenido().getResumen() %></p>
+                <article class="entrada">
+                	<h2>Introducción</h2>
+                	<p><%= registro.getContenido().getIntroduccion() %></p>
+                </article>
+                <article class="entrada">
+	                <h2>Descripción</h2>
+	                <p><%= registro.getContenido().getDescripcion() %></p>
+                </article>
+                <article class="entrada">
+	                <h2>Historia</h2>
+	                <p><%= registro.getContenido().getHistoria() %></p>
+                </article>
+                <article class="entrada">
+	                <h2>Resumen</h2>
+	                <p><%= registro.getContenido().getResumen() %></p>
+                </article>
                 <% }else{ %>
                 <div class="notFound">No hay un registro encontrado para esta bestia.</div>
                 <% } %>
@@ -143,6 +141,15 @@
             	<%}}else{%>
             	<p>No hay comentarios para esta bestia.</p>
             	<%}} %>
+            	<div class="anotherRegistros">
+            		<h3>Cargar registro en determinada fecha</h3>
+				    <form action="SvBestia" method="get" class="registrosForm">
+				        <input type="hidden" name="action" value="registro">
+				        <input type="hidden" name="id" value="<%= bestia != null ? bestia.getIdBestia() : "" %>">
+				        <input type="date" id="fecha" name="fecha" required>
+				        <button type="submit" class="btnRegistro">Cargar registro</button>
+				    </form>
+				</div>
             </section>
         <footer>
         </footer>

@@ -50,19 +50,3 @@ ul{
     background: linear-gradient(135deg, #E5C158, #C9960C);
     transform: scale(1.02);
 }
-
-.controles-paginacion {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-}
-
-.btn-pagina {
-    padding: 8px 12px;
-    border: 1px solid #007bff;
-    background: white;
-    color: #007bff;
-    cursor: pointer;
-    border-radius: 4px;
-}

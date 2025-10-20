@@ -153,6 +153,9 @@ public class SvBestia extends HttpServlet {
 				controladorComentario.save(comentario);
 			}
 			rd = request.getRequestDispatcher(REGISTRO_JSP);
+			String redirectUrl = request.getContextPath() + "/SvBestia?action=registro&id=" + idBestia;
+			 response.sendRedirect(redirectUrl);
+			 return;
 		}
 		rd.forward(request, response);
 	}
