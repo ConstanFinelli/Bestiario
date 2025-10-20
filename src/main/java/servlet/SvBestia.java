@@ -50,7 +50,7 @@ public class SvBestia extends HttpServlet {
 		
 		RequestDispatcher rd = null;
 		
-		Registro ultimoRegistro = null;
+		Registro registro = null;
 		
 		String action = request.getParameter("action");
 		
@@ -68,14 +68,14 @@ public class SvBestia extends HttpServlet {
 			bestia = controlador.getOne(bestia);
 			if(bestia != null) {
 				getOneMsg = getOneMsg + bestia + "<br><br>";
-				ultimoRegistro = controladorRegistro.getLast(bestia);
+				registro = controladorRegistro.getRegistroToShow(bestia, LocalDate.now());
 			}else {
 				getOneMsg = BESTIA_NOT_FOUND;
 				
 			}	
 			request.setAttribute("getOneMsg", getOneMsg);
 			request.setAttribute("bestia", bestia);
-			request.setAttribute("ultimoRegistro", ultimoRegistro);
+			request.setAttribute("registro", registro);
 		} else {
 			LinkedList<Bestia> bestias = new LinkedList<>();
 			bestias = controlador.findAll();
