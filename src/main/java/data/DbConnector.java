@@ -46,7 +46,7 @@ public class DbConnector {
     public void releaseConn() {
         conectados--;
         try {
-            if (conectados<=0) {
+            if (conectados<=0 && conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
