@@ -180,15 +180,18 @@ DROP TABLE IF EXISTS `comentario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comentario` (
+  `nroComentario` int unsigned NOT NULL AUTO_INCREMENT,
   `idUsuario` int NOT NULL,
   `idBestia` int NOT NULL,
   `fechaPublicacion` date NOT NULL,
   `contenido` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`idUsuario`,`idBestia`,`fechaPublicacion`),
+  PRIMARY KEY (`nroComentario`,`idUsuario`,`idBestia`,`fechaPublicacion`),
+  UNIQUE KEY `nroComentario_UNIQUE` (`nroComentario`),
   KEY `fk_comentario_idBestia_idx` (`idBestia`),
-  CONSTRAINT `fk_comentario_idBestia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_comentario_idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_comentario_idUsuario_idx` (`idUsuario`),
+  CONSTRAINT `fk_comentario_idBestia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`),
+  CONSTRAINT `fk_comentario_idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

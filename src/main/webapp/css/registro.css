@@ -55,6 +55,11 @@ h1, h2{
     text-align: left;
 }
 
+.entrada{
+	min-height: 300px;
+	min-width: 600px;
+}
+
 .evidencias{
 	text-align: left;
 	list-style: upper-roman;
@@ -137,4 +142,41 @@ ul{
 
 .btnComentario:hover{
 	background: #fff;
+}
+
+.anotherRegistros{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 4vh;
+	padding: 3vh 3vw;
+	border: 2px solid black;
+}
+
+.anotherRegistros input{
+	padding: 0.50rem 1rem;
+	height: 3vh;
+	width: 7vw;	
+}
+
+.registrosForm{
+	display: block; 
+	gap: 10px; 
+	flex-direction: column;
+}
+
+.btnRegistro {
+    padding: 12px 28px;
+    border-radius: 12px;
+    color: #2C2C2C;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btnRegistro:hover {
+    background: #fff;
+    transform: scale(1.02);
 }
