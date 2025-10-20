@@ -27,9 +27,9 @@
 	<form action="SvBestia?action=list" method="get">
 		<input type="hidden" name="action" value="list">
     	
-    	<input placeholder="categoria" name="filter" type="search" id="filter" value=<%= searchedFilter %>>
+    	<input placeholder="categoria" name="filter" class="inputFilter" type="search" id="filter" value=<%= searchedFilter %>>
     	
-    	<button type="submit">Buscar</button>
+    	<button class="btnBestia" type="submit">Buscar</button>
 	</form>
 	
 	<%
