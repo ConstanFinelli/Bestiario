@@ -48,10 +48,18 @@ public class SvBestia extends HttpServlet {
 	//##GET ONE##
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
+		String fechaParam = request.getParameter("fecha");
 		
 		RequestDispatcher rd = null;
 		
 		Registro registro = null;
+		LocalDate fecha = null;
+		
+		if (fechaParam != null && !fechaParam.isEmpty()) {
+		    fecha = LocalDate.parse(fechaParam);
+		} else{
+			fecha = LocalDate.now();
+		};
 		
 		String action = request.getParameter("action");
 		
@@ -61,6 +69,7 @@ public class SvBestia extends HttpServlet {
 			rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
 		}else if("registro".equals(action)) {
 			rd = request.getRequestDispatcher(REGISTRO_JSP);
+			
 		}
 		String getOneMsg = "";
 		String findAllMsg = "";
@@ -69,7 +78,7 @@ public class SvBestia extends HttpServlet {
 			bestia = controlador.getOne(bestia);
 			if(bestia != null) {
 				getOneMsg = getOneMsg + bestia + "<br><br>";
-				registro = controladorRegistro.getRegistroToShow(bestia, LocalDate.now());
+				registro = controladorRegistro.getRegistroToShow(bestia, fecha);
 				if (registro == null) {
                     request.getSession().setAttribute("errorMsg", 
                         REGISTRO_NOT_FOUND);
@@ -195,5 +204,5 @@ public class SvBestia extends HttpServlet {
 		request.setAttribute("deleteMsg", msgDelete);
 
 	}
-
+	
 }

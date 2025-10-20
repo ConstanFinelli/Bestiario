@@ -21,7 +21,17 @@
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
     		Registro registro = (Registro) request.getAttribute("registro");  
     		System.out.println(registro);
-        %>
+        %>  
+        <div style="margin: 20px;">
+    <form action="SvBestia" method="get" style="display: flex; align-items: center; gap: 10px;">
+        <input type="hidden" name="action" value="registro">
+        <input type="hidden" name="id" value="<%= bestia != null ? bestia.getIdBestia() : "" %>">
+        <label for="fecha">Seleccionar fecha:</label>
+        <input type="date" id="fecha" name="fecha" required>
+        <button type="submit">Cargar registro</button>
+    </form>
+		</div>
+		
         <section class="mainContent">
         <% if(bestia == null){ %>
         <section>
