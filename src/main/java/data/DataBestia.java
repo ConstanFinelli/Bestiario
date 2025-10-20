@@ -93,6 +93,52 @@ public class DataBestia {
 		return bestias;
 	}
 	
+	public LinkedList<Bestia> findByCategoria (String categoria){
+		Statement stmt = null;
+		ResultSet rs = null;
+		Bestia bestia = null;
+		
+		LinkedList<Bestia> bestias = new LinkedList<>();
+		try {
+			stmt = DbConnector.getInstancia().getConn().createStatement();
+			rs = stmt.executeQuery("Select b.* from bestia b "
+					+ "inner join bestia_categoria bc on bc.idBestia = b.idBestia"
+					+ " inner join categoria c on c.idCategoria = bc.idCategoria "
+					+ "where c.nombre = '" + categoria + "'");
+			
+			System.out.println(rs.toString());
+			if(rs != null) {
+				while(rs.next()) {
+					int id = rs.getInt("idBestia");
+					String nombre = rs.getString("nombre");
+					String peligrosidad = rs.getString("peligrosidad");
+					bestia = new Bestia(id, nombre, peligrosidad);
+					completarBestia(bestia);
+					bestias.add(bestia);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(stmt != null) {
+					stmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return bestias;
+	}
+	
 	public Bestia save(Bestia b) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
