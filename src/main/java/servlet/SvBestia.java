@@ -87,7 +87,15 @@ public class SvBestia extends HttpServlet {
 			request.setAttribute("ultimoRegistro", ultimoRegistro);
 		} else {
 			LinkedList<Bestia> bestias = new LinkedList<>();
-			bestias = controlador.findAll();
+			
+			String filter = request.getParameter("filter"); // filtro por categoria 
+			if(filter != null && !filter.isEmpty()) {
+				bestias= controlador.findByCategoria(filter);
+				
+			} else {
+				bestias = controlador.findAll();
+			}
+			
 			if (!bestias.isEmpty()) {
 				request.setAttribute("bestias", bestias);
 				for (Bestia unabestia : bestias) {
@@ -96,6 +104,10 @@ public class SvBestia extends HttpServlet {
 			} else {
 				findAllMsg = BESTIAS_NOT_CREATED;
 			}
+			if(filter != null) {
+				request.setAttribute("searchedFilter", filter); //Para que siga estando el filtro en el buscar 
+			}
+			
 			request.setAttribute("findAllMsg", findAllMsg);
 		}
 		rd.forward(request, response);

@@ -17,6 +17,21 @@
 <%@ include file="components/navbar.jsp" %>
 <section class="mainContent">
 <h1>Bestias registradas</h1>
+	<% 
+		String searchedFilter = (String) request.getAttribute("searchedFilter");
+		
+		System.out.println(searchedFilter); // Logica para que quede el la categoria en el input
+	
+		if (searchedFilter == null) { searchedFilter = "";}
+	 %>
+	<form action="SvBestia?action=list" method="get">
+		<input type="hidden" name="action" value="list">
+    	
+    	<input placeholder="categoria" name="filter" type="search" id="filter" value=<%= searchedFilter %>>
+    	
+    	<button type="submit">Buscar</button>
+	</form>
+	
 	<%
     	String errorMsg = (String) session.getAttribute("errorMsg");
     	if (errorMsg != null) {

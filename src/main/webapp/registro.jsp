@@ -20,7 +20,6 @@
         <% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
     		Registro ultimoRegistro = (Registro) request.getAttribute("ultimoRegistro"); 
-    		System.out.println(ultimoRegistro);
         %>
         <section class="mainContent">
         <% if(bestia == null){ %>
