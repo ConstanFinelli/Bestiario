@@ -4,6 +4,8 @@
 <%@ page import="entities.Bestia" %>
 <%@ page import="entities.Habitat" %>
 <%@ page import="entities.Categoria" %>
+<%@ page import="java.time.LocalDate" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +51,7 @@
                     			<%}} %>
                     		</p>
                     	</aside>
-                    	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
+                    	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>>">Examinar</a>
                     </article>
         <%
                 }

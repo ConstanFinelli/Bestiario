@@ -21,7 +21,7 @@ public class DataRegistro {
 		ResultSet rs = null;
 		Registro registroEncontrado = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where idBestia = ? and fechaAprobacion <= ? and not fechaBaja <= ? order by fechaAprobacion desc limit 1");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where idBestia = ? and fechaAprobacion <= ? and (fechaBaja is null or fechaBaja > ?) order by fechaAprobacion desc limit 1");
 			pstmt.setInt(1, b.getIdBestia());
 			pstmt.setDate(2, java.sql.Date.valueOf(fecha));
 			pstmt.setDate(3, java.sql.Date.valueOf(fecha));
