@@ -6,8 +6,11 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 <meta charset="UTF-8">
 <title>Noticia Forms</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/navbar.css">
 </head>
 <body>
+<%@ include file="components/adminNavbar.jsp" %>	
 	<div class="container-md text-center my-4 border p-4">
 		<h2 class="h1">Conseguir noticias</h2>
 		<form action="SvNoticia" method="GET">

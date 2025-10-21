@@ -49,6 +49,7 @@ public class SvCategoria extends HttpServlet {
 				msj = msj + cat + "<br><br>";
 			}
 			request.setAttribute("msjAll", msj);
+			request.setAttribute("categorias", categorias);
 		}
 		rd.forward(request, response);
 	}

@@ -3,12 +3,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 <meta charset="UTF-8">
 <title>Tipo de Evidencia Forms</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/navbar.css">
 </head>
 <body>
-
-<div class="container-md text-center">
+<%@ include file="components/adminNavbar.jsp" %>	
+<div class="container-md text-center my-4 border p-4">
 <h1>Conseguir Tipos de evidencia</h1>
 <form action="SvTipoEvidencia" method="GET">
 <input type="submit" value="Conseguir tipos de evidencia">
@@ -16,7 +19,7 @@
 ${msjAll}
 </div>
 
-<div class="container-md text-center">
+<div class="container-md text-center my-4 border p-4">
 <h1>Conseguir Tipo de evidencia por ID</h1>
 <form action="SvTipoEvidencia" method="GET">
 <label for="idGetOne">ID del tipo de evidencia: </label>
@@ -26,7 +29,7 @@ ${msjAll}
 ${msjOne}
 </div>
 
-<div class="container-md text-center">
+<div class="container-md text-center my-4 border p-4">
 <h1>Crear tipo de evidencia</h1>
 <form action="SvTipoEvidencia" method="POST">
 <label for="descripcionSave">Descripcion del tipo de evidencia: </label>
@@ -37,7 +40,7 @@ ${msjOne}
 ${msjCreate}
 </div>
 
-<div class="container-md text-center">
+<div class="container-md text-center my-4 border p-4">
 <h1>Actualizar tipo de evidencia</h1>
 <form action="SvTipoEvidencia" method="POST">
 <label for="idUpdate">Id del tipo a modificar</label>
@@ -52,7 +55,7 @@ ${msjCreate}
 ${msjUpdate}
 </div>
 
-<div class="container-md text-center">
+<div class="container-md text-center my-4 border p-4">
 <h1>Eliminar tipo de evidencia</h1>
 <form action="SvTipoEvidencia" method="POST">
 <label for="idDelete">Id del tipo a eliminar</label>
