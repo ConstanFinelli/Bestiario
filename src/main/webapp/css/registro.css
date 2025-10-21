@@ -5,7 +5,7 @@
 
 .mainContent{
 	flex-direction: row;
-	min-height: 100vh;
+	min-height: 50vh;
 	height: fit-content; /* necesario o se rompe la página al modificar el tamaño horizontal del navegador*/
 }
 
@@ -56,8 +56,8 @@ h1, h2{
 }
 
 .entrada{
-	min-height: 300px;
-	min-width: 600px;
+	min-height: 200px;
+	min-width: 400px;
 }
 
 .evidencias{
@@ -89,7 +89,8 @@ ul{
 .comentario{
 	display: flex;
 	flex-direction: column;
-	border: 2px solid black;
+	border: 2px solid var(--primary-color);
+	background: rgba(245, 245, 66,0.075);
 	border-radius: 12px;
 	padding: 1vh 2vw;
 	box-shadow: 0 5px 20px rgba(7, 35, 60, 0.317);
@@ -99,7 +100,7 @@ ul{
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 1.2rem;
-    color: #2c3e50;
+    color: var(--primary-color);
     display: flex;
     gap: 0.5rem;
 }
@@ -150,7 +151,7 @@ ul{
 	gap: 10px;
 	margin-top: 4vh;
 	padding: 3vh 3vw;
-	border: 2px solid black;
+	border: 2px solid var(--primary-color);
 }
 
 .anotherRegistros input{
@@ -174,9 +175,13 @@ ul{
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
+    background: rgba(245, 245, 66,0.075);
 }
 
 .btnRegistro:hover {
-    background: #fff;
+    background: rgba(245, 245, 66,0.125);
     transform: scale(1.02);
 }
+
+
+

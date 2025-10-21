@@ -12,17 +12,21 @@ ul{
 	border: 1px solid black;
 	box-shadow: 0px 8px 4px rgb(0,0,0,.15);
 	background: rgba(0,0,0,0.1);
-	padding: 2vh;
+	padding: 1vh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 2vh;
+	gap: 1vh;
 }
 
 .habitat aside{
 	display:flex;
 	flex-direction: column;
 	gap: 1vh;
+}
+
+.habitat a{
+	text-decoration: none;
 }
 
 .habitat button{
