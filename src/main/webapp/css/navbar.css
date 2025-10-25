@@ -34,7 +34,7 @@ nav a:last-child{
     padding: 12px 28px;
     border: none;
     border-radius: 6px;
-    background: linear-gradient(115deg, #D4AF37, #B8860B);
+    background: var(--primary-button);
     color: #2C2C2C;
     font-size: 1.2rem;
     font-weight: 600;
@@ -44,6 +44,17 @@ nav a:last-child{
 }
 
 .logInOut:hover {
-    background: linear-gradient(135deg, #E5C158, #C9960C);
+    background: var(--primary-button-hover);
     transform: scale(1.02);
+}
+
+.navTitle{
+	color: aliceblue;
+	font-size: 2.5rem;
+	font-family: 'Poppins';
+	font-weight: 550;
+}
+
+.navTitle:hover{
+	cursor: pointer;
 }

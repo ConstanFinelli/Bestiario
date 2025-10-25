@@ -6,7 +6,6 @@
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
-<%@ page import="entities.Comentario" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,7 +14,7 @@
     		Registro registro = (Registro) request.getAttribute("registro");  
     		System.out.println(registro);
         %>  
-        <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
+        <title><%= bestia != null ? bestia.getNombre() : "" %> - Actualización de bestia</title>
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/registro.css">
         <link rel="stylesheet" href="css/navbar.css">
@@ -34,25 +33,29 @@
             <section>
                 <h1><%= bestia.getNombre() %></h1>
                 <% if(registro != null){ %>
-                <article class="entrada">
-                	<h2>Introducción</h2>
-                	<p><%= registro.getContenido().getIntroduccion() %></p>
-                </article>
-                <article class="entrada">
-	                <h2>Descripción</h2>
-	                <p><%= registro.getContenido().getDescripcion() %></p>
-                </article>
-                <article class="entrada">
-	                <h2>Historia</h2>
-	                <p><%= registro.getContenido().getHistoria() %></p>
-                </article>
-                <article class="entrada">
-	                <h2>Resumen</h2>
-	                <p><%= registro.getContenido().getResumen() %></p>
-                </article>
+                <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>">
+	                <article class="entrada">
+	                	<h2>Introducción</h2>
+	                	<textarea name="introduccion"><%= registro.getContenido().getIntroduccion() %></textarea>
+	                </article>
+	                <article class="entrada">
+		                <h2>Descripción</h2>
+		                <textarea name="descripcion"><%= registro.getContenido().getDescripcion() %></textarea>
+	                </article>
+	                <article class="entrada">
+		                <h2>Historia</h2>
+		                <textarea name="historia"><%= registro.getContenido().getHistoria() %></textarea>
+	                </article>
+	                <article class="entrada">
+		                <h2>Resumen</h2>
+		                <textarea name="resumen"><%= registro.getContenido().getResumen() %></textarea>
+	                </article>
+                
                 <% }else{ %>
                 <div class="notFound">No hay un registro encontrado para esta bestia.</div>
                 <% } %>
+                <button type="submit" class="btnRegistro">Enviar registro</button>
+                </form>
                 <% if(!evidencias.isEmpty()){ %>
                 <h2>Evidencias</h2>
                 <ul class="evidencias">
@@ -117,39 +120,6 @@
             </aside>
             <% } %>
         </section>
-        <% if(bestia != null){
-
-            		LinkedList<Comentario> comentarios = bestia.getComentarios(); %>
-        <section class="comentarios mainContent">
-            	<% if(usuario != null){ %>
-            	<form action="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>" method="post">
-            		<input type="hidden" name="flag" value="comentario">
-	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" required>
-	            	<input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">
-	            	<input type="hidden" name="idBestia" value="<%=bestia.getIdBestia()%>">
-	            	<input class="btnComentario" type="submit">
-            	</form>
-            	<%} 
-            	if(!comentarios.isEmpty()){
-            	for(Comentario comentario:comentarios){
-            	%>
-            	<section class="comentario">
-            		<aside class="comentarioDatos"><%= comentario.getPublicador().getCorreo() %> - <span class="fechaComentario">Publicado el <%= comentario.getFecha() %></span></aside>
-            		<article class="comentarioContenido"><%= comentario.getContenido() %></article>
-            	</section>
-            	<%}}else{%>
-            	<p>No hay comentarios para esta bestia.</p>
-            	<%}} %>
-            	<div class="anotherRegistros">
-            		<h3>Cargar registro en determinada fecha</h3>
-				    <form action="SvBestia" method="get" class="registrosForm">
-				        <input type="hidden" name="action" value="registro">
-				        <input type="hidden" name="id" value="<%= bestia != null ? bestia.getIdBestia() : "" %>">
-				        <input type="date" id="fecha" name="fecha" required>
-				        <button type="submit" class="btnRegistro">Cargar registro</button>
-				    </form>
-				</div>
-            </section>
         <footer>
         </footer>
     </body>

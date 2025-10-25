@@ -1,10 +1,15 @@
 <%@ 
 page import="entities.Usuario"
 %>
+<head>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
 <nav>
-            <a class="navLink" href="home.jsp">Inicio</a>
+			<span class="navTitle" href="home.jsp">Bestiario</span>
             <a class="navLink" href="SvBestia?action=list">Bestias</a>
             <a class="navLink" href="SvHabitat?action=list">Habitats</a>
+            
 	        <%
 			    Usuario usuario = (Usuario) session.getAttribute("user");
 			    if (usuario != null) {

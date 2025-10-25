@@ -12,6 +12,7 @@ import java.util.LinkedList;
 
 import entities.Bestia;
 import entities.Comentario;
+import entities.ContenidoRegistro;
 import entities.Registro;
 import entities.Usuario;
 import logic.LogicBestia;
@@ -34,6 +35,7 @@ public class SvBestia extends HttpServlet {
 	private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
 	private final String BESTIA_LIST_JSP = "bestias.jsp";
 	private final String REGISTRO_JSP = "registro.jsp";
+	private final String ACTUALIZACION_REGISTRO_JSP = "nuevoRegistro.jsp";
 	private LogicBestia controlador = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private LogicComentario controladorComentario = new LogicComentario();
@@ -69,7 +71,11 @@ public class SvBestia extends HttpServlet {
 			rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
 		}else if("registro".equals(action)) {
 			rd = request.getRequestDispatcher(REGISTRO_JSP);
-			
+		}else if("actualizacion".equals(action)) {
+		rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+		}else {
+			response.sendRedirect("home.jsp");
+			return;
 		}
 		String getOneMsg = "";
 		String findAllMsg = "";
@@ -132,7 +138,22 @@ public class SvBestia extends HttpServlet {
 		String saveMsg = "";
 		RequestDispatcher rd = request.getRequestDispatcher(BESTIA_FORMS_JSP); 
 		
+		String action = request.getParameter("action");
 		
+		if("actualizacion".equals(action)) {
+			rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+			String introduccion = request.getParameter("introduccion");
+			String resumen = request.getParameter("resumen");
+			String historia = request.getParameter("historia");
+			String descripcion = request.getParameter("descripcion");
+			Bestia bestia = (Bestia)request.getAttribute("bestia");
+			if(introduccion != null && resumen != null && historia != null && descripcion != null) {
+				ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
+				Registro registro = new Registro(0,contenido, null, null, null, "pending", bestia );
+				System.out.println(registro);
+				controladorRegistro.save(registro);
+			}
+		}else {
 		if (flag.equals("post")) {
 			try {
 
@@ -168,7 +189,7 @@ public class SvBestia extends HttpServlet {
 			String redirectUrl = request.getContextPath() + "/SvBestia?action=registro&id=" + idBestia;
 			 response.sendRedirect(redirectUrl);
 			 return;
-		}
+		}}
 		rd.forward(request, response);
 	}
 

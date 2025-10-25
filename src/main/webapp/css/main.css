@@ -3,6 +3,8 @@
     --secondary-color: #F4F1EA;
     --third-color: rgb(201, 201, 202);
     --font-color: #2C3E50;
+    --primary-button: linear-gradient(105deg, #d9bd62, #c49623);
+    --primary-button-hover: linear-gradient(135deg, #E5C158, #C9960C);
 }
 
 *{

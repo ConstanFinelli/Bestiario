@@ -49,13 +49,13 @@ h1, h2{
     font-weight: 600;
 }
 
-.mainContent p {
+.mainContent p, .mainContent textarea {
     padding-bottom: 40px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.234);
     text-align: left;
 }
 
-.entrada{
+.entrada, .mainContent textarea{
 	min-height: 200px;
 	min-width: 400px;
 }
@@ -63,7 +63,9 @@ h1, h2{
 .evidencias{
 	text-align: left;
 	list-style: upper-roman;
+	height: fit-content;
 	margin-left: 5px;
+	padding-bottom: 40px;
 }
 
 .mainContent p:last-child{
@@ -78,7 +80,7 @@ ul{
 }
 
 .comentarios{
-	border-top: 2px solid var(--primary-color);
+	border-top: 10px solid var(--third-color);
     padding: 2rem;
     min-height: 200px;
     height: fit-content;
@@ -183,5 +185,6 @@ ul{
     transform: scale(1.02);
 }
 
-
-
+textarea{
+	resize: none;
+}
