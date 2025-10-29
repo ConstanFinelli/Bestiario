@@ -17,6 +17,7 @@ import entities.Registro;
 import entities.Usuario;
 import logic.LogicBestia;
 import logic.LogicComentario;
+import logic.LogicContenidoRegistro;
 import logic.LogicRegistro;
 import logic.LogicUsuario;
 
@@ -40,6 +41,7 @@ public class SvBestia extends HttpServlet {
 	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private LogicComentario controladorComentario = new LogicComentario();
 	private LogicUsuario controladorUsuario = new LogicUsuario();
+	private LogicContenidoRegistro controladorCr = new LogicContenidoRegistro();
 	
 	private static final long serialVersionUID = 1L;
        
@@ -146,12 +148,15 @@ public class SvBestia extends HttpServlet {
 			String resumen = request.getParameter("resumen");
 			String historia = request.getParameter("historia");
 			String descripcion = request.getParameter("descripcion");
-			Bestia bestia = (Bestia)request.getAttribute("bestia");
+			String bestiaId = request.getParameter("bestia");
+			Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null));
 			if(introduccion != null && resumen != null && historia != null && descripcion != null) {
 				ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
-				Registro registro = new Registro(0,contenido, null, null, null, "pending", bestia );
-				System.out.println(registro);
+				contenido = controladorCr.save(contenido);
+				Registro registro = new Registro(0,contenido, null, null, null, "pendiente", bestia );
 				controladorRegistro.save(registro);
+				response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
+				return;
 			}
 		}else {
 		if (flag.equals("post")) {

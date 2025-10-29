@@ -44,12 +44,16 @@ public class DataContenidoRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into contenido_registro(introduccion,historia, descripcion, resumen) values(?, ?, ?, ?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into contenido_registro(introduccion,historia, descripcion, resumen) values(?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, cr.getIntroduccion()); 
 			pstmt.setString(2, cr.getHistoria());
 			pstmt.setString(3, cr.getDescripcion());
 			pstmt.setString(4, cr.getResumen());
 			pstmt.executeUpdate();
+			rs = pstmt.getGeneratedKeys();
+			if(rs != null && rs.next()) {
+				cr.setIdContenido(rs.getInt(1));
+			}
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
 	            System.out.println("SQLState: " + ex.getSQLState());
