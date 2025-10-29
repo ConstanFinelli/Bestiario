@@ -94,8 +94,10 @@ public class Bestia {
 	public String listarRegistros() {
 		String lista = "";
 		for(Registro reg: registros) {
-			lista = lista + "<br>" + reg.getNroRegistro() + reg.getContenido().getResumen() + reg.getFechaAprobacion().toString() +  reg.getEstado() + 
+			if(reg.getFechaAprobacion() != null) {
+			lista = lista + "<br>" + reg.getNroRegistro() + reg.getContenido().getResumen() + (reg.getFechaAprobacion().toString() == null) +  reg.getEstado() + 
 					reg.getFechaBaja().toString() + reg.getPublicador().getIdUsuario();
+			}
 		}
 		return lista;
 	}

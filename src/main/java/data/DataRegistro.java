@@ -119,12 +119,16 @@ public class DataRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, idContenido, fechaAprobacion, fechaBaja, Publicador, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, idContenido, fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?)");
 			pstmt.setInt(1, r.getNroRegistro());
 			pstmt.setInt(2, r.getContenido().getIdContenido());
-			pstmt.setDate(3, java.sql.Date.valueOf(r.getFechaAprobacion()));
-			pstmt.setDate(4, java.sql.Date.valueOf(r.getFechaBaja()));
-			pstmt.setInt(5, r.getPublicador().getIdUsuario());
+			pstmt.setDate(3, (r.getFechaAprobacion() == null) ? null:java.sql.Date.valueOf(r.getFechaAprobacion()));
+			pstmt.setDate(4, (r.getFechaBaja() == null) ? null:java.sql.Date.valueOf(r.getFechaBaja()));
+			if(r.getPublicador() == null) {
+				pstmt.setNull(5, java.sql.Types.INTEGER);
+			}else {
+				pstmt.setInt(5, r.getPublicador().getIdUsuario());
+			}
 			pstmt.setString(6, r.getEstado());
 			pstmt.setInt(7, r.getBestia().getIdBestia());
 			pstmt.executeUpdate();
@@ -214,7 +218,7 @@ public class DataRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select max(nroEvidencia) as maxnumber from registro where idBestia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select max(nroRegistro) as maxnumber from registro where idBestia = ?");
 			pstmt.setInt(1, r.getBestia().getIdBestia());
 			rs = pstmt.executeQuery();
 			if(rs.next()) {

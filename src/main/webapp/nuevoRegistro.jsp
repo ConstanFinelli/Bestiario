@@ -33,7 +33,8 @@
             <section>
                 <h1><%= bestia.getNombre() %></h1>
                 <% if(registro != null){ %>
-                <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>">
+                <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>" method="POST">
+                	<input type="hidden" name="bestia" value="<%= bestia.getIdBestia() %>">
 	                <article class="entrada">
 	                	<h2>Introducción</h2>
 	                	<textarea name="introduccion"><%= registro.getContenido().getIntroduccion() %></textarea>
