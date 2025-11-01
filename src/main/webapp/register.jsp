@@ -44,7 +44,7 @@
 
 				<div id="camposLector" class="extraFields" style="display:flex;">
 				    <div class="logInput">
-				        <input type="date" required placeholder=' ' id="fechaNacimiento" name="fechaNacimiento"/>
+				        <input type="date" placeholder=' ' id="fechaNacimiento" name="fechaNacimiento"/>
 				        <label for="fechaNacimiento">Fecha de nacimiento</label>
 				    </div>
 				</div>         	
