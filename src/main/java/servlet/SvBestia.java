@@ -13,12 +13,16 @@ import java.util.LinkedList;
 import entities.Bestia;
 import entities.Comentario;
 import entities.ContenidoRegistro;
+import entities.Evidencia;
 import entities.Registro;
+import entities.TipoEvidencia;
 import entities.Usuario;
 import logic.LogicBestia;
 import logic.LogicComentario;
 import logic.LogicContenidoRegistro;
+import logic.LogicEvidencia;
 import logic.LogicRegistro;
+import logic.LogicTipoEvidencia;
 import logic.LogicUsuario;
 
 /**
@@ -42,6 +46,8 @@ public class SvBestia extends HttpServlet {
 	private LogicComentario controladorComentario = new LogicComentario();
 	private LogicUsuario controladorUsuario = new LogicUsuario();
 	private LogicContenidoRegistro controladorCr = new LogicContenidoRegistro();
+	private LogicEvidencia controladorEvidencia = new LogicEvidencia();
+	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
 	
 	private static final long serialVersionUID = 1L;
        
@@ -74,7 +80,9 @@ public class SvBestia extends HttpServlet {
 		}else if("registro".equals(action)) {
 			rd = request.getRequestDispatcher(REGISTRO_JSP);
 		}else if("actualizacion".equals(action)) {
-		rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+			rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+			LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
+			request.setAttribute("tes", tes);
 		}else {
 			response.sendRedirect("home.jsp");
 			return;
@@ -150,6 +158,21 @@ public class SvBestia extends HttpServlet {
 			String descripcion = request.getParameter("descripcion");
 			String bestiaId = request.getParameter("bestia");
 			Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null));
+			
+			String[] fechas = request.getParameterValues("fechaObtencion");
+			String[] tipos = request.getParameterValues("tipo");
+			String[] links = request.getParameterValues("link");
+
+			for (int i = 0; i < fechas.length; i++) {
+			    LocalDate fecha = LocalDate.parse(fechas[i]);
+			    String tipo = tipos[i];
+			    String link = links[i];
+			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
+			    te = controladorTipoEvidencia.getOne(te);
+			    Evidencia evidencia = new Evidencia(0,fecha,link,"inactivo",te);
+			    controladorEvidencia.save(evidencia);
+			}
+			
 			if(introduccion != null && resumen != null && historia != null && descripcion != null) {
 				ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
 				contenido = controladorCr.save(contenido);
