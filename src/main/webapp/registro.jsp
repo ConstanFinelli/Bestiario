@@ -32,7 +32,7 @@
         	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
         %>
             <section>
-                <h1><%= bestia.getNombre() %></h1>
+                <h1><%= bestia.getNombre() %> </h1>
                 <% if(registro != null){ %>
                 <article class="entrada">
                 	<h2>Introducción</h2>
@@ -112,6 +112,7 @@
                 	<ul>
                 		<li>Publicado por <%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %></li>
                 		<li>Último cambio: <%= registro.getFechaAprobacion() %></li>
+                		<li><% if(usuario != null){%><a class="registroProposal" href="SvBestia?action=actualizacion&id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %></li>
                 	</ul>
                 </div>
             </aside>

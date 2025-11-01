@@ -188,3 +188,51 @@ ul{
 textarea{
 	resize: none;
 }
+
+.evidenciaForm{
+	display:flex;
+	flex-direction: column;
+	width: fit-content;
+	gap: 7px;
+	background: rgba(245, 245, 66,0.075);
+	border: 2px solid var(--primary-color);
+	border-radius: 12px;
+	padding: 1vh 2vw;
+	margin: 10px;
+}
+
+.contenedorEvidencias{
+	max-width: 800px;
+	margin: 0 auto;
+	display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 20px;
+}
+
+.evidenciasContent{
+	border-top: 10px solid var(--third-color);
+    padding: 2rem;
+    min-height: 200px;
+    height: fit-content;
+    flex-direction: column;
+    gap: 7px;
+}
+
+#agregar{
+	width: 15vw;
+}
+
+.registroProposal{
+	font-size: 1rem;
+	border: 1px solid black;
+	text-decoration:none;
+	margin: 10px;
+	padding: 8px 20px;
+    border-radius: 12px;
+    background: rgba(245, 245, 66,0.075);
+    transition: all 0.2s ease;
+}
+
+.registroProposal:hover{
+    background: rgba(245, 245, 66,0.125);
+}
