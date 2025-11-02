@@ -1,0 +1,67 @@
+.tablaRegistros {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tablaRegistros th, .tablaRegistros td {
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.tablaRegistros th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.acciones {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btnAceptar {
+    background: linear-gradient(105deg, #7fd37f, #4CAF50);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnRechazar {
+    background: linear-gradient(105deg, #ff7b7b, #e53935);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnAceptar:hover { transform: scale(1.05); }
+.btnRechazar:hover { transform: scale(1.05); }
+
+.btnExaminar {
+    background: var(--primary-button);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnExaminar:hover {
+    background: var(--primary-button-hover);
+    transform: scale(1.02);
+}

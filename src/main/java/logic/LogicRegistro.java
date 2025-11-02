@@ -30,4 +30,8 @@ public class LogicRegistro {
 	public Registro delete(Registro r) {
 		return rDao.delete(r);
 	}
+	
+	public void updateEstado(Registro r) {
+		rDao.updateEstado(r);
+	}
 }
