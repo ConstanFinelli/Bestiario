@@ -30,6 +30,7 @@ public class DataRegistro {
 				int id = rs.getInt("nroRegistro");
 				LocalDate fechaA = null;
 				LocalDate fechaB = null;
+				String mainPic = rs.getString("main_picture");
 				ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
 				if(rs.getDate("fechaAprobacion") != null) {
 					fechaA= rs.getDate("fechaAprobacion").toLocalDate();
@@ -40,7 +41,7 @@ public class DataRegistro {
 				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 				String estado = rs.getString("estado");
 				Bestia bestia = b;
-				registroEncontrado = new Registro(id, contenido, fechaA, fechaB, pub, estado, bestia);
+				registroEncontrado = new Registro(id, mainPic, contenido, fechaA, fechaB, pub, estado, bestia);
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -78,6 +79,7 @@ public class DataRegistro {
 					int id = rs.getInt("nroRegistro");
 					LocalDate fechaA = null;
 					LocalDate fechaB = null;
+					String mainPic = rs.getString("main_picture");
 					ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
 					if(rs.getDate("fechaAprobacion") != null) {
 						fechaA= rs.getDate("fechaAprobacion").toLocalDate();
@@ -88,7 +90,7 @@ public class DataRegistro {
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
-					registro = new Registro(id, contenido, fechaA, fechaB, pub, estado, bestia);
+					registro = new Registro(id, mainPic, contenido, fechaA, fechaB, pub, estado, bestia);
 					registros.add(registro);
 				}
 			}
@@ -157,13 +159,14 @@ public class DataRegistro {
 	public Registro update(Registro r) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set fechaAprobacion = ?, fechaBaja = ?, Publicador = ?. estado = ? where idBestia = ? and nroRegistro = ?");
-			pstmt.setDate(1, java.sql.Date.valueOf(r.getFechaAprobacion()));
-			pstmt.setDate(2, java.sql.Date.valueOf(r.getFechaBaja()));
-			pstmt.setInt(3, r.getPublicador().getIdUsuario());
-			pstmt.setString(4, r.getEstado());
-			pstmt.setInt(5, r.getBestia().getIdBestia());
-			pstmt.setInt(6, r.getNroRegistro());
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set contenido_registro = ?, fechaAprobacion = ?, fechaBaja = ?, Publicador = ?. estado = ? where idBestia = ? and nroRegistro = ?");
+			pstmt.setInt(1, r.getContenido().getIdContenido());
+			pstmt.setDate(2, java.sql.Date.valueOf(r.getFechaAprobacion()));
+			pstmt.setDate(3, java.sql.Date.valueOf(r.getFechaBaja()));
+			pstmt.setInt(4, r.getPublicador().getIdUsuario());
+			pstmt.setString(5, r.getEstado());
+			pstmt.setInt(6, r.getBestia().getIdBestia());
+			pstmt.setInt(7, r.getNroRegistro());
 			cRDAO.update(r.getContenido());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
