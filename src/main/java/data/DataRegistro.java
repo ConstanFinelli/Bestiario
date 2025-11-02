@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.LinkedList;
 
 import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
@@ -294,4 +295,37 @@ public class DataRegistro {
 			}
 		}
 	}
+	
+	public Registro updateEstado(Registro r) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set fechaAprobacion = ?, idUsuario = ?, estado = ? where idBestia = ? and nroRegistro = ?");
+			pstmt.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+			pstmt.setInt(2, r.getPublicador().getIdUsuario());
+			pstmt.setString(3, "aprobada");
+			pstmt.setInt(4, r.getBestia().getIdBestia());
+			pstmt.setInt(5, r.getNroRegistro());
+			int error = pstmt.executeUpdate();
+			if(error == 0) {
+				r = null;
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return r;
+	}
+	
 }

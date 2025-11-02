@@ -21,6 +21,9 @@ public class Investigador extends Usuario{
 		this.dni = dni;
 	}
 	
+	public Investigador(int id) {
+		super(id);
+	}
 	
 	public String getNombre() {
 		return nombre;
