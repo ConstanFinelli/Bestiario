@@ -71,7 +71,7 @@
                 <%} %>
             </section>
             <aside class="infoBestia">
-                <img src="https://www.lanacion.com.ar/resizer/v2/las-fotos-encontradas-en-una-camara-escondida-en-OFV4RMZXVVHKHIHKGVMR2QETTA.jpg?auth=8e27602b93bb370ef1f97fb6135900dbccef34b4a4fa6e5693bd3335fe8f64a4&width=420&height=280&quality=70&smart=true">
+                <img src=<%registro.getMainPic();%>>
                 <div>
 	                <h3>Detalles de la bestia</h3>
 	                <ul>

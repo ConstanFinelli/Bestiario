@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Registro {
 	private int nroRegistro;
+	private String mainPic;
 	private ContenidoRegistro contenido;
 	private LocalDate fechaAprobacion;
 	private LocalDate fechaBaja;
@@ -11,8 +12,9 @@ public class Registro {
 	private String estado;
 	private Bestia bestia;
 	
-	public Registro(int id, ContenidoRegistro cR, LocalDate fechaA, LocalDate fechaB, Investigador pub, String status, Bestia b) {
+	public Registro(int id, String mainP, ContenidoRegistro cR, LocalDate fechaA, LocalDate fechaB, Investigador pub, String status, Bestia b) {
 		nroRegistro = id;
+		mainPic = mainP;
 		contenido = cR;
 		fechaAprobacion = fechaA;
 		fechaBaja = fechaB;
@@ -73,6 +75,14 @@ public class Registro {
 
 	public void setBestia(Bestia bestia) {
 		this.bestia = bestia;
+	}
+
+	public String getMainPic() {
+		return mainPic;
+	}
+
+	public void setMainPic(String mainPic) {
+		this.mainPic = mainPic;
 	}
 
 	@Override public String toString() {
