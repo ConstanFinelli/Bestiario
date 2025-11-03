@@ -60,6 +60,7 @@ public class SvBestia extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String fechaParam = request.getParameter("fecha");
+		String nroRegistro = request.getParameter("nroRegistro");
 		
 		RequestDispatcher rd = null;
 		
@@ -105,7 +106,13 @@ public class SvBestia extends HttpServlet {
 					registrosPendientes = controladorRegistro.findRegistrosPendientes(bestia);
 					
 				} else {
-					registro = controladorRegistro.getRegistroToShow(bestia, fecha);
+					if(nroRegistro != null) {
+						registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, bestia);
+						
+						registro = controladorRegistro.getOne(registro);
+					} else {
+						registro = controladorRegistro.getRegistroToShow(bestia, fecha);	
+					}
 					if (registro == null) {
 	                    request.getSession().setAttribute("errorMsg", 
 	                        REGISTRO_NOT_FOUND);

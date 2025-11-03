@@ -15,6 +15,10 @@ public class LogicRegistro {
 		return rDao.getRegistroToShow(b, fecha);
 	}
 	
+	public Registro getOne(Registro r) {
+		return rDao.getOne(r);
+	}
+	
 	public LinkedList<Registro> findRegistrosPendientes(Bestia b) {
 		return rDao.findRegistrosPendientes(b);
 	}
