@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -62,6 +63,8 @@ public class SvBestia extends HttpServlet {
 		
 		RequestDispatcher rd = null;
 		
+		HttpSession session = request.getSession();
+		
 		Registro registro = null;
 		LocalDate fecha = null;
 		
@@ -107,7 +110,7 @@ public class SvBestia extends HttpServlet {
 			}	
 			request.setAttribute("getOneMsg", getOneMsg);
 			request.setAttribute("bestia", bestia);
-			request.setAttribute("registro", registro);
+			session.setAttribute("registro", registro);
 		} else {
 			LinkedList<Bestia> bestias = new LinkedList<>();
 			
@@ -157,30 +160,61 @@ public class SvBestia extends HttpServlet {
 			String historia = request.getParameter("historia");
 			String descripcion = request.getParameter("descripcion");
 			String bestiaId = request.getParameter("bestia");
+			
+			HttpSession session = request.getSession();
+			
+			ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
+			
+			Registro registroActual = (Registro) session.getAttribute("registro");
+			ContenidoRegistro crActual = registroActual.getContenido();
+			
+			if(contenido.getDescripcion() != crActual.getDescripcion() && contenido.getHistoria() != crActual.getHistoria() 
+					&& contenido.getIntroduccion() != crActual.getIntroduccion() && contenido.getResumen() != crActual.getResumen()) { // verificar si no hubo modificaciones
+				descripcion = null;
+				introduccion = null;
+				resumen = null;
+				historia = null;
+			}
+			
 			Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null));
 			
 			String[] fechas = request.getParameterValues("fechaObtencion");
 			String[] tipos = request.getParameterValues("tipo");
 			String[] links = request.getParameterValues("link");
-
-			for (int i = 0; i < fechas.length; i++) {
-			    LocalDate fecha = LocalDate.parse(fechas[i]);
-			    String tipo = tipos[i];
-			    String link = links[i];
-			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
-			    te = controladorTipoEvidencia.getOne(te);
-			    Evidencia evidencia = new Evidencia(0,fecha,link,"inactivo",te);
-			    controladorEvidencia.save(evidencia);
-			}
 			
-			if(introduccion != null && resumen != null && historia != null && descripcion != null) {
-				ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
-				contenido = controladorCr.save(contenido);
-				Registro registro = new Registro(0,contenido, null, null, null, "pendiente", bestia );
-				controladorRegistro.save(registro);
-				response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
-				return;
+			Usuario usuario = (Usuario) session.getAttribute("user");
+			
+			if(fechas != null) {
+				LinkedList<Evidencia> evidencias = new LinkedList<>();
+				for (int i = 0; i < fechas.length; i++) {
+				    LocalDate fecha = LocalDate.parse(fechas[i]);
+				    String tipo = tipos[i];
+				    String link = links[i];
+				    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
+				    te = controladorTipoEvidencia.getOne(te);
+				    String estado = "pendiente";
+					if(usuario.isEsInvestigador()) {
+						estado = "aprobado";
+					}
+				    Evidencia evidencia = new Evidencia(0,fecha,estado,link,te);
+				    controladorEvidencia.save(evidencia);
+				    evidencias.add(evidencia);
+				}
+				bestia.setEvidencias(evidencias);
+				controlador.saveEvidencias(bestia);
+				
 			}
+			if(introduccion != null && resumen != null && historia != null && descripcion != null) {
+				contenido = controladorCr.save(contenido);
+				String estado = "pendiente";
+				if(usuario.isEsInvestigador()) {
+					estado = "aprobado";
+				}
+				Registro registro = new Registro(0,contenido, null, null, null, estado , bestia );
+				controladorRegistro.save(registro);
+			}
+			response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
+			return;
 		}else {
 		if (flag.equals("post")) {
 			try {
