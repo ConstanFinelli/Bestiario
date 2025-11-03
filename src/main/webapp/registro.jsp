@@ -12,7 +12,7 @@
     <head>
     	<% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro registro = (Registro) request.getAttribute("registro");  
+    		Registro registro = (Registro) session.getAttribute("registro");  
     		System.out.println(registro);
         %>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
@@ -110,7 +110,7 @@
                 <div>
                 	<h3>Detalles de registro</h3>
                 	<ul>
-                		<li>Publicado por <%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %></li>
+                		<li>Publicado por <% if(registro.getPublicador() != null){%><%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %><%}else{ %>Falta aprobar<%} %> </li>
                 		<li>Último cambio: <%= registro.getFechaAprobacion() %></li>
                 		<li><% if(usuario != null){%><a class="registroProposal" href="SvBestia?action=actualizacion&id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %></li>
                 	</ul>
