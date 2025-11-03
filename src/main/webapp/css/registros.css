@@ -1,7 +1,7 @@
 .tablaRegistros {
     width: 100%;
     border-collapse: collapse;
-    background-color: rgba(255,255,255,0.7);
+    background-color: rgba(245, 245, 66,0.075);
     border-radius: 10px;
     overflow: hidden;
 }
