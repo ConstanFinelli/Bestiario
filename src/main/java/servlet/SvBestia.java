@@ -2,11 +2,15 @@ package servlet;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -29,6 +33,7 @@ import logic.LogicUsuario;
 /**
  * Servlet implementation class SbBestia
  */
+@MultipartConfig
 @WebServlet("/SvBestia")
 public class SvBestia extends HttpServlet {
 	
@@ -180,6 +185,18 @@ public class SvBestia extends HttpServlet {
 			String historia = request.getParameter("historia");
 			String descripcion = request.getParameter("descripcion");
 			String bestiaId = request.getParameter("bestia");
+			Part filePart = request.getPart("mainPic");
+			String fileName = filePart != null ? filePart.getSubmittedFileName() : null;
+			
+			if(filePart != null && fileName != null) {
+				String uploadPath = getServletContext().getRealPath("/imagenes");
+				File uploadDir = new File(uploadPath);
+				if(!uploadDir.exists()) {
+					uploadDir.mkdirs();
+				}
+				filePart.write(uploadPath + File.separator + fileName);
+			}
+			String mainPic = "/imagenes/" + fileName;
 			
 			HttpSession session = request.getSession();
 			
@@ -230,7 +247,7 @@ public class SvBestia extends HttpServlet {
 				if(usuario.isEsInvestigador()) {
 					estado = "aprobado";
 				}
-				Registro registro = new Registro(0, null, contenido, null, null, null, estado , bestia );
+				Registro registro = new Registro(0, mainPic, contenido, null, null, null, estado , bestia );
 				controladorRegistro.save(registro);
 			}
 			response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
