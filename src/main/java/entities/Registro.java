@@ -45,7 +45,7 @@ public class Registro {
 		this.fechaAprobacion = fechaAprobacion;
 	}
 	public LocalDate getFechaBaja() {
-		return fechaBaja != null ? fechaBaja : LocalDate.of(1970, 1, 1); // fecha genérica para evitar error en null
+		return fechaBaja;
 	}
 	public void setFechaBaja(LocalDate fechaBaja) {
 		this.fechaBaja = fechaBaja;

@@ -96,7 +96,7 @@ public class Bestia {
 		for(Registro reg: registros) {
 			if(reg.getFechaAprobacion() != null) {
 			lista = lista + "<br>" + reg.getNroRegistro() + reg.getContenido().getResumen() + (reg.getFechaAprobacion().toString() == null) +  reg.getEstado() + 
-					reg.getFechaBaja().toString() + reg.getPublicador().getIdUsuario();
+					((reg.getFechaBaja() == null) ? "Vigente":(reg.getFechaBaja().toString())) + reg.getPublicador().getIdUsuario();
 			}
 		}
 		return lista;

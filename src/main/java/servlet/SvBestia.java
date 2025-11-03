@@ -41,6 +41,7 @@ public class SvBestia extends HttpServlet {
 	private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
 	private final String BESTIA_LIST_JSP = "bestias.jsp";
 	private final String REGISTRO_JSP = "registro.jsp";
+	private final String REGISTROS_PENDIENTES_JSP = "registrosPendientes.jsp";
 	private final String ACTUALIZACION_REGISTRO_JSP = "nuevoRegistro.jsp";
 	private LogicBestia controlador = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
@@ -60,12 +61,14 @@ public class SvBestia extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String fechaParam = request.getParameter("fecha");
+		String nroRegistro = request.getParameter("nroRegistro");
 		
 		RequestDispatcher rd = null;
 		
 		HttpSession session = request.getSession();
 		
 		Registro registro = null;
+		LinkedList<Registro> registrosPendientes = new LinkedList<>();
 		LocalDate fecha = null;
 		
 		if (fechaParam != null && !fechaParam.isEmpty()) {
@@ -82,7 +85,10 @@ public class SvBestia extends HttpServlet {
 			rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
 		}else if("registro".equals(action)) {
 			rd = request.getRequestDispatcher(REGISTRO_JSP);
-		}else if("actualizacion".equals(action)) {
+		}else if ("registrosPendientes".equals(action)) {
+			rd = request.getRequestDispatcher(REGISTROS_PENDIENTES_JSP);
+		}
+		else if("actualizacion".equals(action)) {
 			rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
 			LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
 			request.setAttribute("tes", tes);
@@ -93,17 +99,30 @@ public class SvBestia extends HttpServlet {
 		String getOneMsg = "";
 		String findAllMsg = "";
 		if(id != null) {
+			
+			
 			Bestia bestia = new Bestia(Integer.parseInt(id));
 			bestia = controlador.getOne(bestia);
 			if(bestia != null) {
 				getOneMsg = getOneMsg + bestia + "<br><br>";
-				registro = controladorRegistro.getRegistroToShow(bestia, fecha);
-				if (registro == null) {
-                    request.getSession().setAttribute("errorMsg", 
-                        REGISTRO_NOT_FOUND);
-                    response.sendRedirect("SvBestia?action=list");
-                    return; 
-                }
+				if("registrosPendientes".equals(action)) {
+					registrosPendientes = controladorRegistro.findRegistrosPendientes(bestia);
+					
+				} else {
+					if(nroRegistro != null) {
+						registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, bestia);
+						
+						registro = controladorRegistro.getOne(registro);
+					} else {
+						registro = controladorRegistro.getRegistroToShow(bestia, fecha);	
+					}
+					if (registro == null) {
+	                    request.getSession().setAttribute("errorMsg", 
+	                        REGISTRO_NOT_FOUND);
+	                    response.sendRedirect("SvBestia?action=list");
+	                    return; 
+	                }
+				}		
 			}else {
 				getOneMsg = BESTIA_NOT_FOUND;
 				
@@ -111,6 +130,7 @@ public class SvBestia extends HttpServlet {
 			request.setAttribute("getOneMsg", getOneMsg);
 			request.setAttribute("bestia", bestia);
 			session.setAttribute("registro", registro);
+			request.setAttribute("registrosPendientes", registrosPendientes);
 		} else {
 			LinkedList<Bestia> bestias = new LinkedList<>();
 			
