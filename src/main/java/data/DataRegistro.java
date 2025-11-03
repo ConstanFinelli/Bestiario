@@ -67,6 +67,52 @@ public class DataRegistro {
 		return registroEncontrado;
 	}
 	
+	public Registro getOne(Registro r) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Registro registroEncontrado = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where idBestia = ? and nroRegistro = ?");
+			pstmt.setInt(1, r.getBestia().getIdBestia());
+			pstmt.setInt(2, r.getNroRegistro());
+			rs = pstmt.executeQuery();
+			if(rs != null && rs.next()) {
+				ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
+				LocalDate fechaA = null;
+				LocalDate fechaB = null;
+				if(rs.getDate("fechaAprobacion") != null) {
+					fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+				}
+				if(rs.getDate("fechaBaja") != null) {
+					fechaB = rs.getDate("fechaBaja").toLocalDate();
+				}
+				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+				String estado = rs.getString("estado");
+				Bestia bestia = r.getBestia();
+				registroEncontrado = new Registro(r.getNroRegistro(), contenido, fechaA, fechaB, pub, estado, bestia);
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return registroEncontrado;
+	}
+	
 	public LinkedList<Registro> findRegistrosPendientes(Bestia b){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

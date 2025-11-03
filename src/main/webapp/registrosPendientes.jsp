@@ -42,7 +42,7 @@
                 <tr>
                     <td><%= reg.getNroRegistro() %></td>
                     <td class="acciones">
-                        <a href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">
+                        <a href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>&nroRegistro=<%=reg.getNroRegistro()%>">
                         	<button class="btnExaminar">Examinar</button>
                         </a>
                     	
