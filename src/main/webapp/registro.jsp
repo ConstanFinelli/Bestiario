@@ -12,7 +12,7 @@
     <head>
     	<% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro registro = (Registro) request.getAttribute("registro");  
+    		Registro registro = (Registro) session.getAttribute("registro");  
     		System.out.println(registro);
         %>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
