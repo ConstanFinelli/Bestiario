@@ -30,7 +30,7 @@
         <% if(bestia != null){ 
         	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
         %> 
-        <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>" method="POST">
+        <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>" method="POST" enctype="multipart/form-data">
         <section class="mainContent">
         <section>
                 <h1><%= bestia.getNombre() %></h1>
@@ -59,50 +59,51 @@
             </section>
          
             <aside class="infoBestia">
-                <img src="https://www.lanacion.com.ar/resizer/v2/las-fotos-encontradas-en-una-camara-escondida-en-OFV4RMZXVVHKHIHKGVMR2QETTA.jpg?auth=8e27602b93bb370ef1f97fb6135900dbccef34b4a4fa6e5693bd3335fe8f64a4&width=420&height=280&quality=70&smart=true">
-                <div>
-	                <h3>Detalles de la bestia</h3>
-	                <ul>
-	                    <li>Nombre: <%= bestia.getNombre() %> </li>
-	                    <li>Peligrosidad: <%= bestia.getPeligrosidad() %></li>
-	                </ul>
-                </div>
-                <div>
-                	<h3>Categorías</h3>
-                	<ul>
-                	<% if(bestia.getCategorias().isEmpty()){ %>
-                    			No tiene categorías definidas.
-                    			<%}else{ 
+				<label>Ingresar imagen de la bestia (En caso de no haber ninguna se asignara la del registro anterior)</label>
+				<input type="file" name="mainPic" accept="image/*" required>
+					<div>
+						<h3>Detalles de la bestia</h3>
+						<ul>
+							<li>Nombre: <%= bestia.getNombre() %>
+							</li>
+							<li>Peligrosidad: <%= bestia.getPeligrosidad() %></li>
+						</ul>
+					</div>
+					<div>
+						<h3>Categorías</h3>
+						<ul>
+							<% if(bestia.getCategorias().isEmpty()){ %>
+							No tiene categorías definidas.
+							<%}else{ 
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
-                    				<li>
-                    				<a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
-                    				</li>
-                    			<%}} %>
-                	</ul>
-                </div>
-                <div>
-	                <h3>Hábitats localizados</h3>
-	                <ul>
-	                	<% LinkedList<Habitat> habitats = bestia.getHabitats(); %>
-	                	<% if(habitats != null){ 
+							<li><a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
+							</li>
+							<%}} %>
+						</ul>
+					</div>
+					<div>
+						<h3>Hábitats localizados</h3>
+						<ul>
+							<% LinkedList<Habitat> habitats = bestia.getHabitats(); %>
+							<% if(habitats != null){ 
 	                	for(Habitat habitat:habitats){
 	                	%>
-	                    <li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %></li>
-	                    <%} %>
-	                    <% } else{%>
-	                    <li>No hay habitats registradas para esta bestia.</li>
-	                    <%} %>
-	                </ul>
-                </div>
-                <div>
-                	<h3>Detalles de registro</h3>
-                	<ul>
-                		<li>Publicado por <%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %></li>
-                		<li>Último cambio: <%= registro.getFechaAprobacion() %></li>
-                	</ul>
-                </div>
-            </aside>
+							<li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %></li>
+							<%} %>
+							<% } else{%>
+							<li>No hay habitats registradas para esta bestia.</li>
+							<%} %>
+						</ul>
+					</div>
+					<div>
+						<h3>Detalles de registro</h3>
+						<ul>
+							<li>Publicado por <%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %></li>
+							<li>Último cambio: <%= registro.getFechaAprobacion() %></li>
+						</ul>
+					</div>
+			</aside>
             
         </section>
         		<section class="mainContent evidenciasContent">
