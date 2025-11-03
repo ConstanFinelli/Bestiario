@@ -348,7 +348,7 @@ public class DataRegistro {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set fechaAprobacion = ?, idUsuario = ?, estado = ? where idBestia = ? and nroRegistro = ?");
 			pstmt.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
 			pstmt.setInt(2, r.getPublicador().getIdUsuario());
-			pstmt.setString(3, "aprobada");
+			pstmt.setString(3, "aprobado");
 			pstmt.setInt(4, r.getBestia().getIdBestia());
 			pstmt.setInt(5, r.getNroRegistro());
 			int error = pstmt.executeUpdate();
