@@ -61,12 +61,14 @@
                     			<%}else{ 
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
-                    				<%-- implementar lista de bestias de una categoria --%>
                     				<a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
                     			<%}} %>
                     		</p>
                     	</aside>
                     	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
+                    	<%if(usuario != null && usuario.isEsInvestigador() == true ){ %>
+                    	<a class="btnBestia" href="SvBestia?action=registrosPendientes&id=<%= bestia.getIdBestia() %>">Ver Reg. Pendientes</a>
+                    	<%} else{} %>
                     </article>
         <%
                 }
