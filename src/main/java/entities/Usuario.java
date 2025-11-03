@@ -17,6 +17,10 @@ public class Usuario {
 		this.contraseña = contraseña;
 	}
 	
+	public Usuario(int id) {
+		this.idUsuario = id;
+	}
+	
 	public int getIdUsuario() {
 		return idUsuario;
 	}

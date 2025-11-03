@@ -12,9 +12,8 @@
     <head>
     	<% 
         	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro registro = (Registro) request.getAttribute("registro");
+    		Registro registro = (Registro) session.getAttribute("registro");
     		LinkedList<TipoEvidencia> tes = (LinkedList<TipoEvidencia>) request.getAttribute("tes");
-    		System.out.println(registro);
         %>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Actualización de bestia</title>
         <link rel="stylesheet" href="css/main.css">
@@ -23,7 +22,6 @@
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
-        <section class="mainContent">
         <% if(bestia == null){ %>
         <section>
         	<div class="notFound">Bestia no encontrada</div>
@@ -31,11 +29,12 @@
         <%} %>
         <% if(bestia != null){ 
         	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
-        %>
-            <section>
+        %> 
+        <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>" method="POST">
+        <section class="mainContent">
+        <section>
                 <h1><%= bestia.getNombre() %></h1>
                 <% if(registro != null){ %>
-                <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>" method="POST">
                 	<input type="hidden" name="bestia" value="<%= bestia.getIdBestia() %>">
 	                <article class="entrada">
 	                	<h2>Introducción</h2>
