@@ -2,7 +2,7 @@ nav{
     display: flex;
     gap: 20px;
     padding: 2vh;
-    height: 7vh;
+    height: fit-content;
     background-color: var(--primary-color);
     overflow: hidden;
     align-items: center;
