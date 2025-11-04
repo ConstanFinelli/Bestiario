@@ -71,7 +71,7 @@
                 <%} %>
             </section>
             <aside class="infoBestia">
-                <img src="<%=registro.getMainPic() != null ? registro.getMainPic() : (((HttpServletRequest)request).getContextPath() + "/imagenes/default.avif")%>" alt="Imagen de la bestia">
+                <img src="SvBestia?action=imagen&file=<%=registro.getMainPic() != null ? registro.getMainPic() : "default.avif"%>" alt="Imagen de la bestia">
                 <div>
 	                <h3>Detalles de la bestia</h3>
 	                <ul>
