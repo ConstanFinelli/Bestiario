@@ -1,7 +1,7 @@
 package logic;
 
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import data.DataRegistro;
@@ -11,7 +11,7 @@ import entities.Bestia;
 public class LogicRegistro {
 	public DataRegistro rDao = new DataRegistro();
 	
-	public Registro getRegistroToShow(Bestia b, LocalDate fecha) {
+	public Registro getRegistroToShow(Bestia b, LocalDateTime fecha) {
 		return rDao.getRegistroToShow(b, fecha);
 	}
 	

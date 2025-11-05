@@ -14,8 +14,8 @@
 	import java.io.FileInputStream;
 	import java.io.IOException;
 	import java.io.OutputStream;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
+
 	import java.util.LinkedList;
 	
 	import entities.Bestia;
@@ -45,7 +45,6 @@ import entities.Registro;
 		private final String BESTIA_NOT_FOUND = "No existe una bestia con ese id";
 		private final String BESTIAS_NOT_CREATED = "No existen bestias creadas actualmente";
 		private final String CREATE_BESTIA_ERROR = "Error al crear la nueva bestia. Revisar datos enviados";
-		private final String REGISTRO_NOT_FOUND = "No existe un registro asociado";
 		private final String ID_FORMAT_ERROR = "Error en el formato del id ingresado";
 		private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
 		private final String BESTIA_LIST_JSP = "bestias.jsp";
@@ -190,7 +189,9 @@ import entities.Registro;
 				String resumen = request.getParameter("resumen");
 				String historia = request.getParameter("historia");
 				String descripcion = request.getParameter("descripcion");
+				
 				String bestiaId = request.getParameter("id");
+
 				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen(bestiaId));
 				
 				HttpSession session = request.getSession();
