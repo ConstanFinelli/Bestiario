@@ -1,14 +1,14 @@
 package entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Comentario {
 	private Usuario publicador;
 	private Bestia  bestia;
-	private LocalDate fecha;
+	private LocalDateTime fecha;
 	private String contenido;
 	
-	public Comentario(Usuario usuario, Bestia bestia, LocalDate fecha, String contenido) {
+	public Comentario(Usuario usuario, Bestia bestia, LocalDateTime fecha, String contenido) {
 		setPublicador(usuario);
 		setBestia(bestia);
 		setFecha(fecha);
@@ -26,10 +26,10 @@ public class Comentario {
 	public void setBestia(Bestia bestia) {
 		this.bestia = bestia;
 	}
-	public LocalDate getFecha() {
+	public LocalDateTime getFecha() {
 		return fecha;
 	}
-	public void setFecha(LocalDate fecha) {
+	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
 	public String getContenido() {
