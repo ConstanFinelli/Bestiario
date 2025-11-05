@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
-
 import entities.Registro;
 import entities.Bestia;
 import entities.ContenidoRegistro;
@@ -234,6 +232,7 @@ public class DataRegistro {
 			}else {
 				pstmt.setInt(6, r.getPublicador().getIdUsuario());
 			}
+
 			pstmt.setString(7, r.getEstado());
 			pstmt.setInt(8, r.getBestia().getIdBestia());
 			pstmt.executeUpdate();

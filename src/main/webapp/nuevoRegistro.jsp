@@ -76,7 +76,7 @@
          
             <aside class="infoBestia">
 				<label>Ingresar imagen de la bestia (En caso de no haber ninguna se asignara la del registro anterior)</label>
-				<input type="file" name="mainPic" accept="image/*" required>
+				<input type="file" name="mainPic" accept="image/*">
 					<div>
 						<h3>Detalles de la bestia</h3>
 						<ul>
