@@ -63,7 +63,6 @@ import java.time.LocalDate;
 			File projectDir = new File("").getAbsoluteFile();
 			return (projectDir.toString() + File.separator + "docs" + File.separator + "imagenes"); 
 		}
-		
 		private static final long serialVersionUID = 1L;
 	       
 	
