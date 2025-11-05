@@ -113,12 +113,12 @@
                 </div>
                 <div>
                 	<% if(registro != null){ %>
-                	<h3>Detalles de registro</h3>
-                	<ul>
-                		<li>Publicado por <% if(registro.getPublicador() != null){%><%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %><%}else{ %>Falta aprobar<%} %> </li>
-                		<li>Último cambio: <% if(registro.getPublicador() != null){%><%= registro.getFechaAprobacion() %><%}else{ %>Sin cambios <%} %></li>
-                	</ul>
-                	<%} %>
+	                	<h3>Detalles de registro</h3>
+	                	<ul>
+	                		<li>Publicado por <% if(registro.getPublicador() != null){%><%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %><%}else{ %>Falta aprobar<%} %> </li>
+	                		<li>Último cambio: <% if(registro.getPublicador() != null){%><%= registro.getFechaAprobacion() %><%}else{ %>Sin cambios <%} %></li>
+	                	</ul>
+	                	<%} %>
                 </div>
             </aside>
             <% } %>
