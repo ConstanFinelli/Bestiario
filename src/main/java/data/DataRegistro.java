@@ -224,21 +224,19 @@ public class DataRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, main_pictures, idContenido, fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, main_picture, idContenido, fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?, ?)");
 			pstmt.setInt(1, r.getNroRegistro());
 			pstmt.setString(2, r.getMainPic());
 			pstmt.setInt(3, r.getContenido().getIdContenido());
 			pstmt.setDate(4, (r.getFechaAprobacion() == null) ? null:java.sql.Date.valueOf(r.getFechaAprobacion()));
 			pstmt.setDate(5, (r.getFechaBaja() == null) ? null:java.sql.Date.valueOf(r.getFechaBaja()));
-			pstmt.setInt(6, r.getPublicador().getIdUsuario());
-			pstmt.setInt(7, r.getBestia().getIdBestia());
 			if(r.getPublicador() == null) {
-				pstmt.setNull(5, java.sql.Types.INTEGER);
+				pstmt.setNull(6, java.sql.Types.INTEGER);
 			}else {
-				pstmt.setInt(5, r.getPublicador().getIdUsuario());
-			}
-			pstmt.setString(6, r.getEstado());
-			pstmt.setInt(7, r.getBestia().getIdBestia());
+				pstmt.setInt(6, r.getPublicador().getIdUsuario());
+			}			
+			pstmt.setString(7, r.getEstado());
+			pstmt.setInt(8, r.getBestia().getIdBestia());
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
@@ -389,11 +387,11 @@ public class DataRegistro {
 		ResultSet rs = null;
 		int nroRegistro = 0;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select max(nroRegistro) from registro where idBestia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select max(nroRegistro) as nroRegistro from registro where idBestia = ?");
 			pstmt.setString(1, idBestia);
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
-				nroRegistro = rs.getInt("nroRegistro");
+				nroRegistro = rs.getInt("nroRegistro") + 1;
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
