@@ -15,6 +15,7 @@
     		Registro registro = (Registro) session.getAttribute("registro");
     		LinkedList<TipoEvidencia> tes = (LinkedList<TipoEvidencia>) request.getAttribute("tes");
         %>  
+      
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Actualización de bestia</title>
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/registro.css">
@@ -22,6 +23,7 @@
     </head>
     <body>
         <%@ include file="components/navbar.jsp" %>
+
         <% if(bestia == null){ %>
         <section>
         	<div class="notFound">Bestia no encontrada</div>
@@ -30,6 +32,9 @@
         <% if(bestia != null){ 
         	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
         %> 
+        	<% if(usuario == null){
+        	response.sendRedirect("SvBestia?action=registro&id="+bestia.getIdBestia());
+        } %>
         <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>" method="POST" enctype="multipart/form-data">
         <section class="mainContent">
         <section>
