@@ -108,20 +108,23 @@
 	                </ul>
                 </div>
                 <div>
+                	<% if(registro != null){ %>
                 	<h3>Detalles de registro</h3>
                 	<ul>
                 		<li>Publicado por <% if(registro.getPublicador() != null){%><%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %><%}else{ %>Falta aprobar<%} %> </li>
-                		<li>Último cambio: <%= registro.getFechaAprobacion() %></li>
-                		<li><% if(usuario != null){%><a class="registroProposal" href="SvBestia?action=actualizacion&id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %></li>
+                		<li>Último cambio: <% if(registro.getPublicador() != null){%><%= registro.getFechaAprobacion() %><%}else{ %>Sin cambios <%} %></li>
                 	</ul>
+                	<%} %>
                 </div>
             </aside>
             <% } %>
         </section>
-        <% if(bestia != null){
-
+        <% if(request.getParameter("nroRegistro") == null){
+        	if(bestia != null){
+				
             		LinkedList<Comentario> comentarios = bestia.getComentarios(); %>
         <section class="comentarios mainContent">
+        	<% if(registro != null){ %>
             	<% if(usuario != null){ %>
             	<form action="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>" method="post">
             		<input type="hidden" name="flag" value="comentario">
@@ -150,7 +153,10 @@
 				        <button type="submit" class="btnRegistro">Cargar registro</button>
 				    </form>
 				</div>
+				<%} %>
+                <% if(usuario != null){%><a class="registroProposal" href="SvBestia?action=actualizacion&id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>		
             </section>
+            <%} %>
         <footer>
         </footer>
     </body>
