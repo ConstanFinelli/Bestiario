@@ -54,7 +54,23 @@
 	                </article>
                 
                 <% }else{ %>
-                <div class="notFound">No hay un registro encontrado para esta bestia.</div>
+                 	<input type="hidden" name="bestia" value="<%= bestia.getIdBestia() %>">
+	                <article class="entrada">
+	                	<h2>Introducción</h2>
+	                	<textarea name="introduccion" required></textarea>
+	                </article>
+	                <article class="entrada">
+		                <h2>Descripción</h2>
+		                <textarea name="descripcion" required></textarea>
+	                </article>
+	                <article class="entrada">
+		                <h2>Historia</h2>
+		                <textarea name="historia" required></textarea>
+	                </article>
+	                <article class="entrada">
+		                <h2>Resumen</h2>
+		                <textarea name="resumen" required></textarea>
+	                </article>
                 <% } %>
             </section>
          
@@ -97,11 +113,13 @@
 						</ul>
 					</div>
 					<div>
-						<h3>Detalles de registro</h3>
-						<ul>
-							<li>Publicado por <%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %></li>
-							<li>Último cambio: <%= registro.getFechaAprobacion() %></li>
-						</ul>
+						<% if(registro != null){ %>
+	                	<h3>Detalles de registro</h3>
+	                	<ul>
+	                		<li>Publicado por <% if(registro.getPublicador() != null){%><%= registro.getPublicador().getNombre() + " " + registro.getPublicador().getApellido() %><%}else{ %>Falta aprobar<%} %> </li>
+	                		<li>Último cambio: <% if(registro.getPublicador() != null){%><%= registro.getFechaAprobacion() %><%}else{ %>Sin cambios <%} %></li>
+	                	</ul>
+	                	<%} %>
 					</div>
 			</aside>
             

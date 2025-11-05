@@ -1,18 +1,18 @@
 package entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Registro {
 	private int nroRegistro;
 	private String mainPic;
 	private ContenidoRegistro contenido;
-	private LocalDate fechaAprobacion;
-	private LocalDate fechaBaja;
+	private LocalDateTime fechaAprobacion;
+	private LocalDateTime fechaBaja;
 	private Investigador publicador;
 	private String estado;
 	private Bestia bestia;
 	
-	public Registro(int id, String mainP, ContenidoRegistro cR, LocalDate fechaA, LocalDate fechaB, Investigador pub, String status, Bestia b) {
+	public Registro(int id, String mainP, ContenidoRegistro cR, LocalDateTime fechaA, LocalDateTime fechaB, Investigador pub, String status, Bestia b) {
 		nroRegistro = id;
 		mainPic = mainP;
 		contenido = cR;
@@ -40,16 +40,16 @@ public class Registro {
 	public void setContenido(ContenidoRegistro contenido) {
 		this.contenido = contenido;
 	}
-	public LocalDate getFechaAprobacion() {
+	public LocalDateTime getFechaAprobacion() {
 		return fechaAprobacion;
 	}
-	public void setFechaAprobacion(LocalDate fechaAprobacion) {
+	public void setFechaAprobacion(LocalDateTime fechaAprobacion) {
 		this.fechaAprobacion = fechaAprobacion;
 	}
-	public LocalDate getFechaBaja() {
+	public LocalDateTime getFechaBaja() {
 		return fechaBaja;
 	}
-	public void setFechaBaja(LocalDate fechaBaja) {
+	public void setFechaBaja(LocalDateTime fechaBaja) {
 		this.fechaBaja = fechaBaja;
 	}
 

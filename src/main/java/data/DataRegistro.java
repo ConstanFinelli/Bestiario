@@ -3,8 +3,7 @@ package data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
@@ -19,28 +18,28 @@ public class DataRegistro {
 	public DataUsuario userDAO = new DataUsuario();
 	public DataContenidoRegistro cRDAO = new DataContenidoRegistro();
 	
-	public Registro getRegistroToShow(Bestia b, LocalDate fecha) {
+	public Registro getRegistroToShow(Bestia b, LocalDateTime fecha) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Registro registroEncontrado = null;
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from registro where idBestia = ? and fechaAprobacion <= ? and (fechaBaja is null or fechaBaja > ?) and estado = ? order by fechaAprobacion desc limit 1");
 			pstmt.setInt(1, b.getIdBestia());
-			pstmt.setDate(2, java.sql.Date.valueOf(fecha));
-			pstmt.setDate(3, java.sql.Date.valueOf(fecha));
+			pstmt.setTimestamp(2, java.sql.Timestamp.valueOf(fecha));
+			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(fecha));
 			pstmt.setString(4, "aprobado");
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("nroRegistro");
-				LocalDate fechaA = null;
-				LocalDate fechaB = null;
+				LocalDateTime fechaA = null;
+				LocalDateTime fechaB = null;
 				String mainPic = rs.getString("main_picture");
 				ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
-				if(rs.getDate("fechaAprobacion") != null) {
-					fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+				if(rs.getTimestamp("fechaAprobacion") != null) {
+					fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 				}
-				if(rs.getDate("fechaBaja") != null) {
-				fechaB = rs.getDate("fechaBaja").toLocalDate();
+				if(rs.getTimestamp("fechaBaja") != null) {
+				fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 				}
 				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 				String estado = rs.getString("estado");
@@ -80,14 +79,14 @@ public class DataRegistro {
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
-				LocalDate fechaA = null;
-				LocalDate fechaB = null;
+				LocalDateTime fechaA = null;
+				LocalDateTime fechaB = null;
 				String mainPic = rs.getString("main_picture");
-				if(rs.getDate("fechaAprobacion") != null) {
-					fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+				if(rs.getTimestamp("fechaAprobacion") != null) {
+					fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 				}
-				if(rs.getDate("fechaBaja") != null) {
-					fechaB = rs.getDate("fechaBaja").toLocalDate();
+				if(rs.getTimestamp("fechaBaja") != null) {
+					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 				}
 				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 				String estado = rs.getString("estado");
@@ -129,15 +128,15 @@ public class DataRegistro {
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("nroRegistro");
-					LocalDate fechaA = null;
-					LocalDate fechaB = null;
+					LocalDateTime fechaA = null;
+					LocalDateTime fechaB = null;
 					String mainPic = rs.getString("main_picture");
 					ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
-					if(rs.getDate("fechaAprobacion") != null) {
-						fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+					if(rs.getTimestamp("fechaAprobacion") != null) {
+						fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 					}
-					if(rs.getDate("fechaBaja") != null) {
-					fechaB = rs.getDate("fechaBaja").toLocalDate();
+					if(rs.getTimestamp("fechaBaja") != null) {
+					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 					String estado = rs.getString("estado");
@@ -180,15 +179,15 @@ public class DataRegistro {
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("nroRegistro");
-					LocalDate fechaA = null;
-					LocalDate fechaB = null;
+					LocalDateTime fechaA = null;
+					LocalDateTime fechaB = null;
 					String mainPic = rs.getString("main_picture");
 					ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
-					if(rs.getDate("fechaAprobacion") != null) {
-						fechaA= rs.getDate("fechaAprobacion").toLocalDate();
+					if(rs.getTimestamp("fechaAprobacion") != null) {
+						fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 					}
-					if(rs.getDate("fechaBaja") != null) {
-					fechaB = rs.getDate("fechaBaja").toLocalDate();
+					if(rs.getTimestamp("fechaBaja") != null) {
+					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
 					String estado = rs.getString("estado");
@@ -224,21 +223,19 @@ public class DataRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, main_pictures, idContenido, fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, main_picture, idContenido, fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?,?)");
 			pstmt.setInt(1, r.getNroRegistro());
 			pstmt.setString(2, r.getMainPic());
 			pstmt.setInt(3, r.getContenido().getIdContenido());
-			pstmt.setDate(4, (r.getFechaAprobacion() == null) ? null:java.sql.Date.valueOf(r.getFechaAprobacion()));
-			pstmt.setDate(5, (r.getFechaBaja() == null) ? null:java.sql.Date.valueOf(r.getFechaBaja()));
-			pstmt.setInt(6, r.getPublicador().getIdUsuario());
-			pstmt.setInt(7, r.getBestia().getIdBestia());
+			pstmt.setTimestamp(4, (r.getFechaAprobacion() == null) ? null:java.sql.Timestamp.valueOf(r.getFechaAprobacion()));
+			pstmt.setTimestamp(5, (r.getFechaBaja() == null) ? null:java.sql.Timestamp.valueOf(r.getFechaBaja()));
 			if(r.getPublicador() == null) {
-				pstmt.setNull(5, java.sql.Types.INTEGER);
+				pstmt.setNull(6, java.sql.Types.INTEGER);
 			}else {
-				pstmt.setInt(5, r.getPublicador().getIdUsuario());
+				pstmt.setInt(6, r.getPublicador().getIdUsuario());
 			}
-			pstmt.setString(6, r.getEstado());
-			pstmt.setInt(7, r.getBestia().getIdBestia());
+			pstmt.setString(7, r.getEstado());
+			pstmt.setInt(8, r.getBestia().getIdBestia());
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
@@ -268,8 +265,8 @@ public class DataRegistro {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set main_picture = ?, contenido_registro = ?, fechaAprobacion = ?, fechaBaja = ?, Publicador = ?, estado = ? where idBestia = ? and nroRegistro = ?");
 			pstmt.setString(1, r.getMainPic());
 			pstmt.setInt(2, r.getContenido().getIdContenido());
-			pstmt.setDate(3, java.sql.Date.valueOf(r.getFechaAprobacion()));
-			pstmt.setDate(4, java.sql.Date.valueOf(r.getFechaBaja()));
+			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(r.getFechaAprobacion()));
+			pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(r.getFechaBaja()));
 			pstmt.setInt(5, r.getPublicador().getIdUsuario());
 			pstmt.setString(6, r.getEstado());
 			pstmt.setInt(7, r.getBestia().getIdBestia());
@@ -356,7 +353,7 @@ public class DataRegistro {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set fechaAprobacion = ?, idUsuario = ?, estado = ? where idBestia = ? and nroRegistro = ?");
-			pstmt.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+			pstmt.setTimestamp(1, java.sql.Timestamp.valueOf(LocalDateTime.now()));
 			pstmt.setInt(2, r.getPublicador().getIdUsuario());
 			pstmt.setString(3, "aprobado");
 			pstmt.setInt(4, r.getBestia().getIdBestia());
@@ -389,11 +386,11 @@ public class DataRegistro {
 		ResultSet rs = null;
 		int nroRegistro = 0;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select max(nroRegistro) from registro where idBestia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select max(nroRegistro) as nroRegistro from registro where idBestia = ?");
 			pstmt.setString(1, idBestia);
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
-				nroRegistro = rs.getInt("nroRegistro");
+				nroRegistro = rs.getInt("nroRegistro") + 1;
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
