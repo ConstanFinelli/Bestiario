@@ -14,7 +14,8 @@
 	import java.io.FileInputStream;
 	import java.io.IOException;
 	import java.io.OutputStream;
-	import java.time.LocalDate;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 	import java.util.LinkedList;
 	
 	import entities.Bestia;
@@ -59,8 +60,8 @@
 		private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
 		
 		private String getExternalFolder() {
-			return ("C:/Users/costa/OneDrive/Escritorio/Facu/java/Bestiario/docs/imagenes"); 
-			//Ruta absoluta temporalmente
+			File projectDir = new File("").getAbsoluteFile();
+			return (projectDir.toString() + File.separator + "docs" + File.separator + "imagenes"); 
 		}
 		
 		private static final long serialVersionUID = 1L;
@@ -196,7 +197,7 @@
 				String historia = request.getParameter("historia");
 				String descripcion = request.getParameter("descripcion");
 				String bestiaId = request.getParameter("bestia");
-				String mainPic = doPostImage(request, response);
+				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen("bestiaId"));
 				
 				HttpSession session = request.getSession();
 				
@@ -338,7 +339,6 @@
 		}
 		
 		protected void doGetImage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			System.out.println("Buscando en: " + getExternalFolder());
 			String fileName = request.getParameter("file");
 	        if(fileName == null || fileName.isEmpty()) {
 	            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No file specified");
@@ -371,9 +371,9 @@
 	        }
 		}
 		
-		protected String doPostImage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		protected String doPostImage(HttpServletRequest request, HttpServletResponse response, String nombreImagen) throws ServletException, IOException {
 			Part filePart = request.getPart("mainPic");
-	    	String fileName = filePart.getSubmittedFileName();
+	    	String fileName = nombreImagen;
 	    	
 	    	File uploadDir = new File(getExternalFolder());
 	    	if(!uploadDir.exists()) {
