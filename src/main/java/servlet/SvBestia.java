@@ -14,7 +14,7 @@
 	import java.io.FileInputStream;
 	import java.io.IOException;
 	import java.io.OutputStream;
-import java.nio.file.Paths;
+
 import java.time.LocalDate;
 	import java.util.LinkedList;
 	
@@ -196,7 +196,7 @@ import java.time.LocalDate;
 				String historia = request.getParameter("historia");
 				String descripcion = request.getParameter("descripcion");
 				String bestiaId = request.getParameter("bestia");
-				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen("bestiaId"));
+				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen(bestiaId));
 				
 				HttpSession session = request.getSession();
 				
