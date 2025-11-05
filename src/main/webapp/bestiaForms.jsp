@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="entities.Bestia" %>
+<%@ page import="entities.Habitat" %>
+<%@ page import="entities.Categoria" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,15 +17,10 @@
 	<%@ include file="components/adminNavbar.jsp" %>
 	<%
 		LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
+		LinkedList<Habitat> habitats = (LinkedList<Habitat>) request.getAttribute("habitats");
+		LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("categorias");
 	%>
-	<div class="container-md text-center my-4 border p-4">
-		<h2 class="h1">Conseguir bestias</h2>
-		<form action="SvBestia?action=form" method="GET">
-			<button type="submit" class="btn btn-outline-primary">CONSEGUIR BESTIAS</button>
-		</form>
-		${findAllMsg}
-	</div>
-
+	<section class="mainContent" style="height:fit-content">
 	<div class="container-md text-center my-4 border p-4">
 		<h1>Conseguir bestia por ID</h1>
 		<form action="SvBestia?action=form" method="GET">
@@ -90,7 +87,54 @@
 	</form>
 	${deleteMsg}
 	</div>
-	
-	
+	<div class="container-md text-center my-4 border p-4">
+		<h1>Agregar categoría a bestia</h1>
+		<form action="SvBestia?action=form" method="POST">
+			<input type="hidden" name="flag" value="put">
+			<label class="form-label" for="idUpdate">Nombre de la bestia: </label>
+			<select class="form-control" name="id" id="idUpdate" required>
+				<%
+				if(bestias != null && !bestias.isEmpty()) {
+				for(Bestia bestia:bestias){ %>
+				<option value="<%= bestia.getIdBestia() %>"><%= bestia.getNombre() %></option>
+				<%}} %>
+			</select>
+			<label for="nombre" class="form-label">Categoría a agregar: </label>
+			<select class="form-control" name="idCategoria" id="idCategoria" required>
+				<%
+				if(categorias != null && !categorias.isEmpty()) {
+				for(Categoria categoria:categorias){ %>
+				<option value="<%= categoria.getIdCategoria() %>"><%= categoria.getNombre() %></option>
+				<%}} %>
+			</select>
+			<button type="submit" class="btn btn-outline-primary">Actualizar bestia</button>
+		</form>
+	</div>
+	<div class="container-md text-center my-4 border p-4">
+		<h1>Agregar habitat a bestia</h1>
+		<form action="SvBestia?action=form" method="POST">
+			<input type="hidden" name="flag" value="put">
+			<label class="form-label" for="idUpdateHt">Nombre de la bestia: </label>
+			<select class="form-control" name="id" id="idUpdateHt" required>
+				<%
+				if(bestias != null && !bestias.isEmpty()) {
+				for(Bestia bestia:bestias){ %>
+				<option value="<%= bestia.getIdBestia() %>"><%= bestia.getNombre() %></option>
+				<%}} %>
+			</select>
+			<label for="nombre" class="form-label">Habitat a agregar: </label>
+			<select class="form-control" name="idHabitat" id="idHabitat" required>
+				<%
+				if(habitats != null && !habitats.isEmpty()) {
+				for(Habitat habitat:habitats){ %>
+				<option value="<%= habitat.getId() %>"><%= habitat.getNombre() %></option>
+				<%}} %>
+			</select>
+			<button type="submit" class="btn btn-outline-primary">Actualizar bestia</button>
+		</form>
+	</div>
+	</section>
+	<footer>
+	</footer>
 </body>
 </html>

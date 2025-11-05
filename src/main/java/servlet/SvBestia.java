@@ -14,23 +14,28 @@
 	import java.io.FileInputStream;
 	import java.io.IOException;
 	import java.io.OutputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 	import java.util.LinkedList;
 	
 	import entities.Bestia;
-	import entities.Comentario;
+import entities.Categoria;
+import entities.Comentario;
 	import entities.ContenidoRegistro;
 	import entities.Evidencia;
+import entities.Habitat;
 import entities.Investigador;
 import entities.Registro;
 	import entities.TipoEvidencia;
 	import entities.Usuario;
 	import logic.LogicBestia;
-	import logic.LogicComentario;
+import logic.LogicCategoria;
+import logic.LogicComentario;
 	import logic.LogicContenidoRegistro;
 	import logic.LogicEvidencia;
-	import logic.LogicRegistro;
+import logic.LogicHabitat;
+import logic.LogicRegistro;
 	import logic.LogicTipoEvidencia;
 	import logic.LogicUsuario;
 	
@@ -58,6 +63,8 @@ import entities.Registro;
 		private LogicContenidoRegistro controladorCr = new LogicContenidoRegistro();
 		private LogicEvidencia controladorEvidencia = new LogicEvidencia();
 		private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
+		private LogicHabitat controladorHabitat = new LogicHabitat();
+		private LogicCategoria controladorCategoria = new LogicCategoria();
 		
 		private String getExternalFolder() {
 			File projectDir = new File("").getAbsoluteFile();
@@ -93,6 +100,10 @@ import entities.Registro;
 			
 			if("form".equals(action)) {
 				rd = request.getRequestDispatcher(BESTIA_FORMS_JSP);
+				LinkedList<Habitat> habitats = controladorHabitat.findAll();
+				LinkedList <Categoria> categorias = controladorCategoria.findAll();
+				request.setAttribute("habitats", habitats);
+				request.setAttribute("categorias", categorias);
 			}else if("list".equals(action)){
 				rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
 			}else if("registro".equals(action)) {
@@ -220,7 +231,8 @@ import entities.Registro;
 				if(fechas != null) {
 					LinkedList<Evidencia> evidencias = new LinkedList<>();
 					for (int i = 0; i < fechas.length; i++) {
-					    LocalDateTime fecha = LocalDateTime.parse(fechas[i]);
+						LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
+					    LocalDateTime fecha = fechaSinHora.atStartOfDay();
 					    String tipo = tipos[i];
 					    String link = links[i];
 					    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
