@@ -38,4 +38,8 @@ public class LogicRegistro {
 	public void updateEstado(Registro r) {
 		rDao.updateEstado(r);
 	}
+	
+	public String obtenerNombreImagen(String id) {
+		return rDao.obtenerNombreImagen(id);
+	}
 }
