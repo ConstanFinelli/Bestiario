@@ -4,14 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.Bestia;
-import entities.Comentario;
 import entities.Evidencia;
 import entities.TipoEvidencia;
-import entities.Usuario;
 
 public class DataEvidencia {
 	public DataTipoEvidencia teDao = new DataTipoEvidencia();
@@ -27,7 +25,7 @@ public class DataEvidencia {
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("nroEvidencia");
-				LocalDate fechaO = rs.getDate("fechaObtencion").toLocalDate();
+				LocalDateTime fechaO = rs.getTimestamp("fechaObtencion").toLocalDateTime();
 				String estado = rs.getString("estado");
 				String link = rs.getString("link");
 				int idTipo = rs.getInt("idTipoEvidencia");
@@ -67,7 +65,7 @@ public class DataEvidencia {
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("nroEvidencia");
-					LocalDate fechaO= rs.getDate("fechaObtencion").toLocalDate();
+					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
 					String link = rs.getString("link");
 					int idTipo = rs.getInt("idTipoEvidencia");
@@ -105,7 +103,7 @@ public class DataEvidencia {
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into evidencia(nroEvidencia, fechaObtencion, estado, link, idTipoEvidencia) values(?, ?, ?, ? ,?)");
 			pstmt.setInt(1, e.getNroEvidencia()); 
-			pstmt.setDate(2, java.sql.Date.valueOf( e.getFechaObtencion()));
+			pstmt.setTimestamp(2, java.sql.Timestamp.valueOf( e.getFechaObtencion()));
 			pstmt.setString(3, e.getEstado());
 			pstmt.setString(4, e.getLink());
 			pstmt.setInt(5, e.getTipo().getId());
@@ -136,7 +134,7 @@ public class DataEvidencia {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update evidencia set fechaObtencion = ?, estado = ?, link = ? where idTipoEvidencia = ? and nroEvidencia = ?");
-			pstmt.setDate(1, java.sql.Date.valueOf(e.getFechaObtencion()));
+			pstmt.setTimestamp(1, java.sql.Timestamp.valueOf(e.getFechaObtencion()));
 			pstmt.setString(2, e.getEstado());
 			pstmt.setString(3, e.getLink());
 			pstmt.setInt(4,e.getTipo().getId());
@@ -230,7 +228,7 @@ public class DataEvidencia {
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("nroEvidencia");
-					LocalDate fechaO= rs.getDate("fechaObtencion").toLocalDate();
+					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
 					String link = rs.getString("link");
 					evidencia = new Evidencia(id, fechaO, estado, link, te);
@@ -271,7 +269,7 @@ public class DataEvidencia {
 			if(rs != null) {
 				while(rs.next()) {
 					int nroEvidencia = rs.getInt("nroEvidencia");
-					LocalDate fechaO= rs.getDate("fechaObtencion").toLocalDate();
+					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
 					String link = rs.getString("link");
 					int idTipo = rs.getInt("idTipoEvidencia");

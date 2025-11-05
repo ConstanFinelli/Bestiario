@@ -1,7 +1,7 @@
 package data;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.Usuario;
@@ -28,7 +28,7 @@ public class DataUsuario {
 					String dni = rs.getString("dni");
 					usuarioEncontrado = new Investigador(id, correo, contraseña, nombre, apellido, dni);
 				}else {
-					LocalDate fechaNacimiento = rs.getDate("fechaNacimiento").toLocalDate();
+					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
 					usuarioEncontrado = new Lector(id, correo, contraseña, fechaNacimiento);
 				}
 			}
@@ -74,7 +74,7 @@ public class DataUsuario {
 						String dni = rs.getString("dni");
 						us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
 					}else {
-						LocalDate fechaNacimiento = rs.getDate("fechaNacimiento").toLocalDate();
+						LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
 						us = new Lector(id, correo, contraseña, fechaNacimiento);
 					}
 					usuarios.add(us);
@@ -125,7 +125,7 @@ public class DataUsuario {
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,fechaNacimiento,esInvestigador) values(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContraseña());
-				pstmt.setDate(3, java.sql.Date.valueOf(le.getFechaNacimiento()));
+				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
 				pstmt.setBoolean(4, false);
 			}
 			pstmt.executeUpdate();
@@ -180,7 +180,7 @@ public class DataUsuario {
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ? where idUsuario = ?");
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContraseña());
-				pstmt.setDate(3, java.sql.Date.valueOf(le.getFechaNacimiento()));
+				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
 			}
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
@@ -248,7 +248,7 @@ public class DataUsuario {
 					String dni = rs.getString("dni");
 					us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
 				}else {
-					LocalDate fechaNacimiento = rs.getDate("fechaNacimiento").toLocalDate();
+					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
 					us = new Lector(id, correo, contraseña, fechaNacimiento);
 				}
 			}
