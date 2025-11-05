@@ -3,6 +3,7 @@ package data;
 import entities.Noticia;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class DataNoticia {
@@ -19,7 +20,7 @@ public class DataNoticia {
 				String contenido = rs.getString("contenido");
 				String titulo = rs.getString("titulo");
 				String estado = rs.getString("estado");
-				Date fechaPublicacion = rs.getDate("fechaPublicacion");
+				LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 				Integer idUsuario = rs.getInt("idUsuario");
 				
 				noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, idUsuario.toString());
@@ -60,7 +61,7 @@ public class DataNoticia {
 					String contenido = rs.getString("contenido");
 					String titulo = rs.getString("titulo");
 					String estado = rs.getString("estado");
-					Date fechaPublicacion = rs.getDate("fechaPublicacion");
+					LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 					Integer idUsuario = rs.getInt("idUsuario");
 					
 					noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, idUsuario.toString());
@@ -97,7 +98,7 @@ public class DataNoticia {
 			pstmt.setString(1, noticia.getTitulo());
 			pstmt.setString(2, noticia.getContenido());
 			pstmt.setString(3, noticia.getEstado());
-			pstmt.setDate(4, noticia.getFechaPublicacion());
+			pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(noticia.getFechaPublicacion()));
 			pstmt.setInt(5, Integer.parseInt(noticia.getIdUsuario()));
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
@@ -137,7 +138,7 @@ public class DataNoticia {
 			pstmt.setString(1, noticiaNueva.getContenido());
 			pstmt.setString(2, noticiaNueva.getTitulo());
 			pstmt.setString(3, noticiaNueva.getEstado());
-			pstmt.setDate(4, noticiaNueva.getFechaPublicacion());
+			pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(noticiaNueva.getFechaPublicacion()));
 			pstmt.setInt(5, Integer.parseInt(noticiaNueva.getIdUsuario()));
 			pstmt.setInt(6, noticiaNueva.getId());
 			pstmt.executeUpdate();
