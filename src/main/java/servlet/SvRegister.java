@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicUsuario;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import entities.Investigador;
 import entities.Lector;
@@ -61,7 +61,7 @@ public class SvRegister extends HttpServlet {
 				Lector userLector = new Lector(
 					email,
 					request.getParameter("contrasena"),
-					LocalDate.parse(request.getParameter("fechaNacimiento"))
+					LocalDateTime.parse(request.getParameter("fechaNacimiento"))
 				);
 				logicUsuario.save(userLector);
 			}

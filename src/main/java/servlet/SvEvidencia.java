@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.TipoEvidencia;
@@ -86,7 +86,7 @@ public class SvEvidencia extends HttpServlet {
 			String link = request.getParameter("link");
 			String estado = request.getParameter("estado");
 			TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(request.getParameter("idTipoEvidencia")), null)); 
-			LocalDate fechaO = LocalDate.parse(request.getParameter("fechaObtencion"));
+			LocalDateTime fechaO = LocalDateTime.parse(request.getParameter("fechaObtencion"));
 			Evidencia evidencia = controladorEvidencia.save(new Evidencia(0, fechaO, estado, link, tipo));
 			msj = "Evidencia guardada: " + evidencia; 
 			request.setAttribute("msjCreate", msj);
@@ -117,7 +117,7 @@ public class SvEvidencia extends HttpServlet {
 		if(tipo == null) {
 		msj = "Tipo de Evidencia invalido<br><br>";	
 		}else {
-		Evidencia evidencia = controladorEvidencia.update(new Evidencia(Integer.parseInt(request.getParameter("nroEvidencia")), LocalDate.parse(request.getParameter("fechaObtencion")), request.getParameter("estado"), request.getParameter("link"), tipo));
+		Evidencia evidencia = controladorEvidencia.update(new Evidencia(Integer.parseInt(request.getParameter("nroEvidencia")), LocalDateTime.parse(request.getParameter("fechaObtencion")), request.getParameter("estado"), request.getParameter("link"), tipo));
 		if(evidencia != null) {
 			msj = "Evidencia guardada: <br> " + evidencia;
 		} else {

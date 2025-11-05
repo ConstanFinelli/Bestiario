@@ -3,12 +3,10 @@ package data;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.*;
-import logic.*;
 
 public class DataComentario {
 	public DataUsuario userDAO = new DataUsuario();
@@ -21,7 +19,7 @@ public class DataComentario {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from comentario where idUsuario = ?, idBestia = ?, fechaPublicacion = ?");
 			pstmt.setInt(1, c.getPublicador().getIdUsuario());
 			pstmt.setInt(2, c.getBestia().getIdBestia());
-			pstmt.setDate(3, java.sql.Date.valueOf(c.getFecha()));
+			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(c.getFecha()));
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				comentarioEncontrado = new Comentario(c.getPublicador(), c.getBestia(), c.getFecha(), rs.getString("contenido"));
@@ -61,7 +59,7 @@ public class DataComentario {
 				while(rs.next()) {
 					int idUsuario = rs.getInt("IdUsuario");
 					String contenido = rs.getString("contenido");
-					LocalDate fecha = rs.getDate("fechaPublicacion").toLocalDate();
+					LocalDateTime fecha = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 					Bestia bestia = b;
 					Usuario user = userDAO.getOne(new Usuario(idUsuario, null, null));
 					comentario = new Comentario(user, bestia, fecha, contenido);
@@ -97,7 +95,7 @@ public class DataComentario {
 			pstmt.setInt(1, c.getPublicador().getIdUsuario());
 			pstmt.setInt(2, c.getBestia().getIdBestia());
 			pstmt.setString(3, c.getContenido());
-			pstmt.setDate(4, java.sql.Date.valueOf(c.getFecha()));
+			pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(c.getFecha()));
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
@@ -121,15 +119,15 @@ public class DataComentario {
 		return c;
 	}
 	
-	public Comentario update(Comentario c, LocalDate oldDate) {
+	public Comentario update(Comentario c, LocalDateTime oldDate) {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update comentario set contenido = ?, fechaPublicacion = ? where idBestia = ? and idUsuario = ? and fechaPublicacion = ?");
 			pstmt.setString(1, c.getContenido());
-			pstmt.setDate(2, java.sql.Date.valueOf(c.getFecha()));
+			pstmt.setTimestamp(2, java.sql.Timestamp.valueOf(c.getFecha()));
 			pstmt.setInt(3, c.getBestia().getIdBestia());
 			pstmt.setInt(4, c.getPublicador().getIdUsuario());
-			pstmt.setDate(5, java.sql.Date.valueOf(oldDate));
+			pstmt.setTimestamp(5, java.sql.Timestamp.valueOf(oldDate));
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
 				c = null;
@@ -159,7 +157,7 @@ public class DataComentario {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from comentario where idUsuario = ? and idBestia = ? and fechaPublicacion = ?");
 			pstmt.setInt(1, c.getPublicador().getIdUsuario());
 			pstmt.setInt(2, c.getBestia().getIdBestia());
-			pstmt.setDate(3, java.sql.Date.valueOf(c.getFecha()));
+			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(c.getFecha()));
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
