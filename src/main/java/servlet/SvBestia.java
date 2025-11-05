@@ -15,14 +15,15 @@
 	import java.io.IOException;
 	import java.io.OutputStream;
 import java.nio.file.Paths;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 	import java.util.LinkedList;
 	
 	import entities.Bestia;
 	import entities.Comentario;
 	import entities.ContenidoRegistro;
 	import entities.Evidencia;
-	import entities.Registro;
+import entities.Investigador;
+import entities.Registro;
 	import entities.TipoEvidencia;
 	import entities.Usuario;
 	import logic.LogicBestia;
@@ -81,12 +82,12 @@ import java.time.LocalDate;
 			
 			Registro registro = null;
 			LinkedList<Registro> registrosPendientes = new LinkedList<>();
-			LocalDate fecha = null;
+			LocalDateTime fecha = null;
 			
 			if (fechaParam != null && !fechaParam.isEmpty()) {
-			    fecha = LocalDate.parse(fechaParam);
+			    fecha = LocalDateTime.parse(fechaParam);
 			} else{
-				fecha = LocalDate.now();
+				fecha = LocalDateTime.now();
 			};
 			
 			String action = request.getParameter("action");
@@ -132,12 +133,6 @@ import java.time.LocalDate;
 						} else {
 							registro = controladorRegistro.getRegistroToShow(bestia, fecha);	
 						}
-						if (registro == null) {
-		                    request.getSession().setAttribute("errorMsg", 
-		                        REGISTRO_NOT_FOUND);
-		                    response.sendRedirect("SvBestia?action=list");
-		                    return; 
-		                }
 					}		
 				}else {
 					getOneMsg = BESTIA_NOT_FOUND;
@@ -195,24 +190,24 @@ import java.time.LocalDate;
 				String resumen = request.getParameter("resumen");
 				String historia = request.getParameter("historia");
 				String descripcion = request.getParameter("descripcion");
-				String bestiaId = request.getParameter("bestia");
-				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen("bestiaId"));
+				String bestiaId = request.getParameter("id");
+				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen(bestiaId));
 				
 				HttpSession session = request.getSession();
 				
 				ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
 				
 				Registro registroActual = (Registro) session.getAttribute("registro");
-				ContenidoRegistro crActual = registroActual.getContenido();
-				
-				if(contenido.getDescripcion() != crActual.getDescripcion() && contenido.getHistoria() != crActual.getHistoria() 
-						&& contenido.getIntroduccion() != crActual.getIntroduccion() && contenido.getResumen() != crActual.getResumen()) { // verificar si no hubo modificaciones
-					descripcion = null;
-					introduccion = null;
-					resumen = null;
-					historia = null;
+				if(registroActual != null) {
+					ContenidoRegistro crActual = registroActual.getContenido();	
+					if(contenido.getDescripcion() == crActual.getDescripcion() && contenido.getHistoria() == crActual.getHistoria() 
+							&& contenido.getIntroduccion() == crActual.getIntroduccion() && contenido.getResumen() == crActual.getResumen()) { // verificar si no hubo modificaciones
+						descripcion = null;
+						introduccion = null;
+						resumen = null;
+						historia = null;
+					}
 				}
-				
 				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null));
 				
 				String[] fechas = request.getParameterValues("fechaObtencion");
@@ -224,7 +219,7 @@ import java.time.LocalDate;
 				if(fechas != null) {
 					LinkedList<Evidencia> evidencias = new LinkedList<>();
 					for (int i = 0; i < fechas.length; i++) {
-					    LocalDate fecha = LocalDate.parse(fechas[i]);
+					    LocalDateTime fecha = LocalDateTime.parse(fechas[i]);
 					    String tipo = tipos[i];
 					    String link = links[i];
 					    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
@@ -244,10 +239,15 @@ import java.time.LocalDate;
 				if(introduccion != null && resumen != null && historia != null && descripcion != null) {
 					contenido = controladorCr.save(contenido);
 					String estado = "pendiente";
+					LocalDateTime fechaAprobacion = null;
+					Investigador user = null;
 					if(usuario.isEsInvestigador()) {
 						estado = "aprobado";
+						fechaAprobacion = LocalDateTime.now();
+						user = (Investigador) usuario;
 					}
-					Registro registro = new Registro(0, mainPic, contenido, null, null, null, estado , bestia );
+					Registro registro = new Registro(0, mainPic, contenido, fechaAprobacion, null, user, estado , bestia );
+					
 					controladorRegistro.save(registro);
 				}
 				response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
@@ -278,7 +278,7 @@ import java.time.LocalDate;
 				String idUsuario = request.getParameter("idUsuario");
 				String idBestia = request.getParameter("idBestia");
 				if(contenido != null && idUsuario != null && idBestia != null) {
-					LocalDate fechaComentario = LocalDate.now();
+					LocalDateTime fechaComentario = LocalDateTime.now();
 					Usuario usuario = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), null, null));
 					Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(idBestia),null,null));
 					Comentario comentario = new Comentario(usuario, bestia, fechaComentario, contenido);
