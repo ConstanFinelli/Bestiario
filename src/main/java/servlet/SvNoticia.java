@@ -10,12 +10,9 @@ import jakarta.servlet.RequestDispatcher;
 
 import logic.LogicNoticia;
 import entities.Noticia;
-import entities.TipoEvidencia;
 
 import java.util.LinkedList;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 /**
  * Servlet implementation class SvNoticia
@@ -85,7 +82,6 @@ public class SvNoticia extends HttpServlet {
 		String titulo = request.getParameter("titulo");
 		String contenido = request.getParameter("contenido");
 		String estado = request.getParameter("estado");
-		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
 		String idUsuario = request.getParameter("idUsuario");
 		String flag = request.getParameter("flag");
 		String saveMsg = "";
@@ -95,8 +91,7 @@ public class SvNoticia extends HttpServlet {
 			try {
 
 				if (titulo != null && contenido != null && estado != null && idUsuario != null) {
-					java.util.Date fechaUtil = new java.util.Date();
-					Date fechaPublicacion = new Date(fechaUtil.getTime());
+					LocalDateTime fechaPublicacion = LocalDateTime.now();
 					Noticia noticia = new Noticia(titulo, contenido, estado, fechaPublicacion, idUsuario);
 					noticia = controlador.save(noticia);
 					if (noticia != null) {
@@ -133,11 +128,9 @@ public class SvNoticia extends HttpServlet {
 		String contenido = request.getParameter("contenido");
 		String estado = request.getParameter("estado");
 		String idUsuario = request.getParameter("idUsuario");
-		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd"); 
 		if (id != "") {
 			try {
-				java.util.Date fechaUtil = new java.util.Date();
-				Date fechaPublicacion = new Date(fechaUtil.getTime());
+				LocalDateTime fechaPublicacion = LocalDateTime.now();
 				Noticia noticia = new Noticia(Integer.parseInt(id), titulo, contenido, estado, fechaPublicacion, idUsuario);
 				System.out.println(noticia);
 				noticia = controlador.update(noticia);

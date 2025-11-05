@@ -1,6 +1,6 @@
 package logic;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import entities.Bestia;
 import data.DataComentario;
@@ -18,13 +18,13 @@ public class LogicComentario {
 	}
 	
 	public Comentario save(Comentario c) {
-		c.setFecha(LocalDate.now());
+		c.setFecha(LocalDateTime.now());
 		return cDao.save(c);
 	}
 	
 	public Comentario update(Comentario c) {
-		LocalDate oldDate = c.getFecha();
-		c.setFecha(LocalDate.now());
+		LocalDateTime oldDate = c.getFecha();
+		c.setFecha(LocalDateTime.now());
 		return cDao.update(c, oldDate);
 	}
 	
