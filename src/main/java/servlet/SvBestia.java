@@ -116,12 +116,6 @@ public class SvBestia extends HttpServlet {
 					} else {
 						registro = controladorRegistro.getRegistroToShow(bestia, fecha);	
 					}
-					if (registro == null) {
-	                    request.getSession().setAttribute("errorMsg", 
-	                        REGISTRO_NOT_FOUND);
-	                    response.sendRedirect("SvBestia?action=list");
-	                    return; 
-	                }
 				}		
 			}else {
 				getOneMsg = BESTIA_NOT_FOUND;

@@ -60,11 +60,13 @@ DROP TABLE IF EXISTS `bestia_evidencia`;
 CREATE TABLE `bestia_evidencia` (
   `nroEvidencia` int NOT NULL,
   `idBestia` int NOT NULL,
+  `idTipoEvidencia` int NOT NULL,
   `detalle` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`nroEvidencia`,`idBestia`),
+  PRIMARY KEY (`nroEvidencia`,`idBestia`, `idTipoEvidencia`),
   KEY `idBestia-Evidencia_idx` (`idBestia`),
   CONSTRAINT `idBestia-Evidencia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`),
-  CONSTRAINT `idEvidencia-Bestia` FOREIGN KEY (`nroEvidencia`) REFERENCES `evidencia` (`nroEvidencia`)
+  CONSTRAINT `idEvidencia-Bestia` FOREIGN KEY (`nroEvidencia` , `idTipoEvidencia`)
+  REFERENCES `bestiario`.`evidencia` (`nroEvidencia` , `idTipoEvidencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
