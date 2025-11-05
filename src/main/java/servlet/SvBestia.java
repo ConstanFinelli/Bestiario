@@ -373,7 +373,7 @@ import java.time.LocalDate;
 		
 		protected String doPostImage(HttpServletRequest request, HttpServletResponse response, String nombreImagen) throws ServletException, IOException {
 			Part filePart = request.getPart("mainPic");
-	    	String fileName = nombreImagen;
+	    	String fileName = nombreImagen +".jpg";
 	    	
 	    	File uploadDir = new File(getExternalFolder());
 	    	if(!uploadDir.exists()) {
