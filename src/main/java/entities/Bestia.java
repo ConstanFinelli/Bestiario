@@ -11,16 +11,19 @@ public class Bestia {
 	private LinkedList<Registro> registros  = new LinkedList<>();
 	private LinkedList<Comentario> comentarios = new LinkedList<>();
 	private LinkedList<Evidencia> evidencias = new LinkedList<>();
+	private String estado;
 
-	public Bestia(int id, String name, String danger) {
+	public Bestia(int id, String name, String danger, String state) {
 		idBestia = id;
 		nombre = name;
 		peligrosidad = danger;
+		setEstado(state);
 	}
 	
-	public Bestia(String name, String danger) {
+	public Bestia(String name, String danger, String state) {
 		nombre = name;
 		peligrosidad = danger;
+		estado = state;
 	}
 	
 	public Bestia(int id) {
@@ -126,5 +129,13 @@ public class Bestia {
 
 	 public void setEvidencias(LinkedList<Evidencia> evidencias) {
 		this.evidencias = evidencias;
+	 }
+
+	 public String getEstado() {
+		return estado;
+	 }
+
+	 public void setEstado(String estado) {
+		this.estado = estado;
 	 }
 }

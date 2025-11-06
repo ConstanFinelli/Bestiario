@@ -38,17 +38,20 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("carHabitatForms.jsp");
 		String findAllMsg = "";
 		
-		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
-		LinkedList<CaracteristicaHabitat> hts = new LinkedList<>();
+		if(id != null) {
+			Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+			LinkedList<CaracteristicaHabitat> hts = new LinkedList<>();
+			hts = controlador.findAllById(ht);
+			if(hts.isEmpty()) {
+				findAllMsg = "Sin resultados";
+		} else {
+			findAllMsg = "ID del habitat asociado: " + ht.getId() + "<br>";
+			for(CaracteristicaHabitat hti : hts) {
+				findAllMsg = findAllMsg + hti + ", ";
+			}
+		}
 		
-		hts = controlador.findAllById(ht);
-		findAllMsg = "ID del habitat asociado: " + ht.getId() + "<br>";
-		for(CaracteristicaHabitat hti : hts) {
-			findAllMsg = findAllMsg + hti + ", ";
-		}
-		if(hts.isEmpty()) {
-			findAllMsg = "Sin resultados";
-		}
+	}
 		request.setAttribute("findAllMsg", findAllMsg);
 		
 		rd.forward(request, response);

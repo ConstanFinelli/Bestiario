@@ -61,3 +61,16 @@ ul{
     background: var(--primary-button-hover);
     transform: scale(1.02);
 }
+
+.btnAgregar{
+	padding: 0.75rem 1.75rem;
+    border: 4px dashed var(--primary-color);
+    border-radius: 20px;
+    background: rgba(245, 245, 66,0.075);
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}

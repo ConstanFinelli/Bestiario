@@ -46,9 +46,16 @@
 	
 	<section class="bestias">
 	<%
+			boolean verTodo = false;
+			if(usuario != null){
+				if(usuario.isEsInvestigador() == true){
+					verTodo = true;
+				}
+			}
             LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
             if (bestias != null) {
-                for (Bestia bestia : bestias) { %>
+                for (Bestia bestia : bestias) { 
+                if(bestia.getEstado().equals("aprobado") || verTodo == true){ %>
                     <article class="bestia">
                     	<h1><%= bestia.getNombre() %></h1>
                     	<aside>
@@ -69,9 +76,21 @@
                     	<%if(usuario != null && usuario.isEsInvestigador() == true ){ %>
                     	<a class="btnBestia" href="SvBestia?action=registrosPendientes&id=<%= bestia.getIdBestia() %>">Ver Reg. Pendientes</a>
                     	<%} else{} %>
+                        <% if(bestia.getEstado().equals("pendiente")){%>
+                    	<form action="SvBestia" method="post" style="display:inline;">
+						  <input type="hidden" name="flag" value="put">
+						  <input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
+						  <input type="hidden" name="nombre" value="<%= bestia.getNombre() %>">
+						  <input type="hidden" name="peligrosidad" value="<%= bestia.getPeligrosidad() %>">
+						  <input type="hidden" name="estado" value="aprobado">
+						  <button type="submit" class="btnBestia">Aprobar Bestia</button>
+						</form>
+
+                    <%} %>
                     </article>
         <%
-                }
+                } 
+              }
             }else{
         %> 
         <section>
@@ -81,6 +100,7 @@
         
         
         </section>
+        <button class="btnAgregar" href="crearPropuestaBestia.jsp"> + Proponer Nueva Bestia</button>
 </section>
 <footer>
 </footer>

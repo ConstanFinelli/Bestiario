@@ -86,6 +86,7 @@ import logic.LogicRegistro;
 			
 			HttpSession session = request.getSession();
 			
+			
 			Registro registro = null;
 			LinkedList<Registro> registrosPendientes = new LinkedList<>();
 			LocalDateTime fecha = null;
@@ -119,10 +120,8 @@ import logic.LogicRegistro;
 				rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
 				LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
 				request.setAttribute("tes", tes);
-			}else {
-				response.sendRedirect("home.jsp");
-				return;
 			}
+			
 			String getOneMsg = "";
 			String findAllMsg = "";
 			if(id != null) {
@@ -191,6 +190,8 @@ import logic.LogicRegistro;
 			String flag = request.getParameter("flag");
 			String saveMsg = "";
 			RequestDispatcher rd = request.getRequestDispatcher(BESTIA_FORMS_JSP); 
+			HttpSession session = request.getSession();
+			Usuario usuario = (Usuario) session.getAttribute("user");
 			
 			String action = request.getParameter("action");
 			
@@ -205,7 +206,6 @@ import logic.LogicRegistro;
 
 				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen(bestiaId));
 				
-				HttpSession session = request.getSession();
 				
 				ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
 				
@@ -220,13 +220,12 @@ import logic.LogicRegistro;
 						historia = null;
 					}
 				}
-				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null));
+				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null, null));
 				
 				String[] fechas = request.getParameterValues("fechaObtencion");
 				String[] tipos = request.getParameterValues("tipo");
 				String[] links = request.getParameterValues("link");
 				
-				Usuario usuario = (Usuario) session.getAttribute("user");
 				
 				if(fechas != null) {
 					LinkedList<Evidencia> evidencias = new LinkedList<>();
@@ -237,11 +236,11 @@ import logic.LogicRegistro;
 					    String link = links[i];
 					    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
 					    te = controladorTipoEvidencia.getOne(te);
-					    String estado = "pendiente";
+					    String estadoRegistro = "pendiente";
 						if(usuario.isEsInvestigador()) {
-							estado = "aprobado";
+							estadoRegistro = "aprobado";
 						}
-					    Evidencia evidencia = new Evidencia(0,fecha,estado,link,te);
+					    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,link,te);
 					    controladorEvidencia.save(evidencia);
 					    evidencias.add(evidencia);
 					}
@@ -251,15 +250,15 @@ import logic.LogicRegistro;
 				}
 				if(introduccion != null && resumen != null && historia != null && descripcion != null) {
 					contenido = controladorCr.save(contenido);
-					String estado = "pendiente";
+					String estadoRegistro = "pendiente";
 					LocalDateTime fechaAprobacion = null;
 					Investigador user = null;
 					if(usuario.isEsInvestigador()) {
-						estado = "aprobado";
+						estadoRegistro = "aprobado";
 						fechaAprobacion = LocalDateTime.now();
 						user = (Investigador) usuario;
 					}
-					Registro registro = new Registro(0, mainPic, contenido, fechaAprobacion, null, user, estado , bestia );
+					Registro registro = new Registro(0, mainPic, contenido, fechaAprobacion, null, user, estadoRegistro , bestia );
 					
 					controladorRegistro.save(registro);
 				}
@@ -270,7 +269,11 @@ import logic.LogicRegistro;
 				try {
 	
 					if (nombre != null && peligrosidad != null) {
-						Bestia bestia = new Bestia(nombre, peligrosidad);
+						String estado = "pendiente";
+						if (usuario.isEsInvestigador() == true) {
+							estado = "aprobado";
+						} 
+						Bestia bestia = new Bestia(nombre, peligrosidad, estado);
 						bestia = controlador.save(bestia);
 						saveMsg = saveMsg + bestia + "<br><nr>";
 					} else {
@@ -284,6 +287,8 @@ import logic.LogicRegistro;
 				} 
 			} else if(flag.equals("put")) {
 				doPut(request, response);
+				response.sendRedirect("SvBestia?action=list");
+				return;
 			} else if(flag.equals("delete")){
 				doDelete(request,response);
 			} else {
@@ -292,9 +297,9 @@ import logic.LogicRegistro;
 				String idBestia = request.getParameter("idBestia");
 				if(contenido != null && idUsuario != null && idBestia != null) {
 					LocalDateTime fechaComentario = LocalDateTime.now();
-					Usuario usuario = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), null, null));
-					Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(idBestia),null,null));
-					Comentario comentario = new Comentario(usuario, bestia, fechaComentario, contenido);
+					Usuario publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), null, null));
+					Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(idBestia),null,null, null));
+					Comentario comentario = new Comentario(publicador, bestia, fechaComentario, contenido);
 					controladorComentario.save(comentario);
 				}
 				rd = request.getRequestDispatcher(REGISTRO_JSP);
@@ -313,9 +318,9 @@ import logic.LogicRegistro;
 			String id = request.getParameter("id");
 			String nombre = request.getParameter("nombre");
 			String peligrosidad = request.getParameter("peligrosidad");
-			
+			String estado = request.getParameter("estado");
 			try {
-				Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad);
+				Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
 				bestia = controlador.update(bestia);
 				if(bestia != null) { 
 					updateMsg = updateMsg + bestia + "<br><br>";
@@ -324,7 +329,6 @@ import logic.LogicRegistro;
 				}
 				
 			} catch (NumberFormatException e) {
-				
 				e.getMessage();
 				updateMsg = ID_FORMAT_ERROR;
 			} finally {
@@ -396,5 +400,4 @@ import logic.LogicRegistro;
 	    	filePart.write(file.getAbsolutePath());
 	    	return fileName; 
 		}
-	
 	}
