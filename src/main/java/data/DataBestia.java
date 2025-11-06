@@ -28,7 +28,8 @@ public class DataBestia {
 				int id = rs.getInt("idBestia");
 				String nombre = rs.getString("nombre");
 				String peligrosidad = rs.getString("peligrosidad");
-				bestiaEncontrada = new Bestia(id, nombre, peligrosidad);
+				String estado = rs.getString("estado");
+				bestiaEncontrada = new Bestia(id, nombre, peligrosidad, estado);
 				completarBestia(bestiaEncontrada);
 			}
 		}catch(SQLException ex) {
@@ -66,7 +67,8 @@ public class DataBestia {
 					int id = rs.getInt("idBestia");
 					String nombre = rs.getString("nombre");
 					String peligrosidad = rs.getString("peligrosidad");
-					bestia = new Bestia(id, nombre, peligrosidad);
+					String estado = rs.getString("estado");
+					bestia = new Bestia(id, nombre, peligrosidad, estado);
 					completarBestia(bestia);
 					bestias.add(bestia);
 				}
@@ -112,7 +114,8 @@ public class DataBestia {
 					int id = rs.getInt("idBestia");
 					String nombre = rs.getString("nombre");
 					String peligrosidad = rs.getString("peligrosidad");
-					bestia = new Bestia(id, nombre, peligrosidad);
+					String estado = rs.getString("estado");
+					bestia = new Bestia(id, nombre, peligrosidad, estado);
 					completarBestia(bestia);
 					bestias.add(bestia);
 				}
@@ -143,9 +146,10 @@ public class DataBestia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Bestia(nombre, peligrosidad) values(?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Bestia(nombre, peligrosidad, estado) values(?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, b.getNombre());
 			pstmt.setString(2, b.getPeligrosidad());
+			pstmt.setString(3, b.getEstado());
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
@@ -180,10 +184,11 @@ public class DataBestia {
 	public Bestia update(Bestia b) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Bestia set nombre = ?, peligrosidad = ? where idBestia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Bestia set nombre = ?, peligrosidad = ?, estado = ? where idBestia = ?");
 			pstmt.setString(1, b.getNombre());
 			pstmt.setString(2, b.getPeligrosidad());
-			pstmt.setInt(3, b.getIdBestia());
+			pstmt.setString(3, b.getEstado());
+			pstmt.setInt(4, b.getIdBestia());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
 				b = null;
@@ -408,7 +413,7 @@ public class DataBestia {
 			rs = pstmt.executeQuery();
 			if(rs != null) {
 				while(rs.next()) {
-					Bestia bestia = new Bestia(rs.getInt("idBestia"), null, null);
+					Bestia bestia = new Bestia(rs.getInt("idBestia"), null, null, null);
 					bestia = this.getOne(bestia);
 					bestiasHabitat.add(bestia);
 				}

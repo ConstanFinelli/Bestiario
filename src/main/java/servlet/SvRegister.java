@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicUsuario;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import entities.Investigador;
@@ -44,6 +45,8 @@ public class SvRegister extends HttpServlet {
 		String email = request.getParameter("correo");
 		String logMessage = "";
 		Usuario user = logicUsuario.getByEmail(email);
+		String fecha = request.getParameter("fechaNacimiento");
+		LocalDate fechaSinHora = LocalDate.parse(fecha);
 		
 		if(user != null) {
 			logMessage = "Ya existe un usario registrado con ese email";
@@ -61,7 +64,7 @@ public class SvRegister extends HttpServlet {
 				Lector userLector = new Lector(
 					email,
 					request.getParameter("contrasena"),
-					LocalDateTime.parse(request.getParameter("fechaNacimiento"))
+					fechaSinHora.atStartOfDay()
 				);
 				logicUsuario.save(userLector);
 			}
