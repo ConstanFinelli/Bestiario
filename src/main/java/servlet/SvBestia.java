@@ -217,6 +217,8 @@ import logic.LogicRegistro;
 				doPut(request, response);
 			} else if(flag.equals("delete")){
 				doDelete(request,response);
+				response.sendRedirect("SvBestia?action=list");
+				return;
 			}else {
 				String idBestia = doAddCommentary(request,response);
 				String redirectUrl = request.getContextPath() + "/SvBestia?action=registro&id=" + idBestia;
