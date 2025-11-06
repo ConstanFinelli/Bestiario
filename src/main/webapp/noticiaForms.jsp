@@ -11,6 +11,7 @@
 </head>
 <body>
 <%@ include file="components/adminNavbar.jsp" %>	
+<div class="mainContent" style="height:fit-content">
 	<div class="container-md text-center my-4 border p-4">
 		<h2 class="h1">Conseguir noticias</h2>
 		<form action="SvNoticia" method="GET">
@@ -66,16 +67,17 @@
 	</div>
 	
 	<div class="container-md text-center my-4 border p-4">
-	<h1>Eliminar habitat por ID</h1>
-	<form action="SvNoticia" method="POST">
-		<input type="hidden" name="flag" value="delete">
-		<label for="idDelete">ID de la noticia: </label>
-		<input type="number" name="id" id="idDelete" required>
-		<button type="submit" class="btn btn-outline-primary">Eliminar noticia</button>
-	</form>
-	${deleteMsg}
+		<h1>Eliminar habitat por ID</h1>
+		<form action="SvNoticia" method="POST">
+			<input type="hidden" name="flag" value="delete">
+			<label for="idDelete">ID de la noticia: </label>
+			<input type="number" name="id" id="idDelete" required>
+			<button type="submit" class="btn btn-outline-primary">Eliminar noticia</button>
+		</form>
+		${deleteMsg}
 	</div>
-	
-	
+</div>
+	<footer>
+	</footer>
 </body>
 </html>
