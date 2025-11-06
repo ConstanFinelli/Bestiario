@@ -273,7 +273,7 @@ public class DataBestia {
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into bestia_categoria(idBestia, idCategoria) values(?,?)");
 				pstmt.setInt(1, b.getIdBestia());
 				pstmt.setInt(2, categoria.getIdCategoria());
-				pstmt.executeQuery();
+				pstmt.executeUpdate();
 			}catch(SQLException ex){
 				System.out.println("Mensaje: " + ex.getMessage());
 	            System.out.println("SQLState: " + ex.getSQLState());
@@ -300,7 +300,7 @@ public class DataBestia {
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into bestia_habitat(idBestia, idHabitat) values(?,?)");
 				pstmt.setInt(1, b.getIdBestia());
 				pstmt.setInt(2, habitat.getId());
-				pstmt.executeQuery();
+				pstmt.executeUpdate();
 			}catch(SQLException ex){
 				System.out.println("Mensaje: " + ex.getMessage());
 	            System.out.println("SQLState: " + ex.getSQLState());

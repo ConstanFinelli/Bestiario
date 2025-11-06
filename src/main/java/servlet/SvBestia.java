@@ -86,6 +86,8 @@ import logic.LogicRegistro;
 			
 			HttpSession session = request.getSession();
 			
+			LinkedList<Bestia> bestias = controlador.findAll();
+			session.setAttribute("bestias", bestias);
 			
 			Registro registro = null;
 			LinkedList<Registro> registrosPendientes = new LinkedList<>();
@@ -103,8 +105,8 @@ import logic.LogicRegistro;
 				rd = request.getRequestDispatcher(BESTIA_FORMS_JSP);
 				LinkedList<Habitat> habitats = controladorHabitat.findAll();
 				LinkedList <Categoria> categorias = controladorCategoria.findAll();
-				request.setAttribute("habitats", habitats);
-				request.setAttribute("categorias", categorias);
+				session.setAttribute("habitats", habitats);
+				session.setAttribute("categorias", categorias);
 			}else if("list".equals(action)){
 				rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
 			}else if("registro".equals(action)) {
@@ -123,7 +125,6 @@ import logic.LogicRegistro;
 			}
 			
 			String getOneMsg = "";
-			String findAllMsg = "";
 			if(id != null) {
 				
 				
@@ -152,29 +153,19 @@ import logic.LogicRegistro;
 				session.setAttribute("registro", registro);
 				request.setAttribute("registrosPendientes", registrosPendientes);
 			} else {
-				LinkedList<Bestia> bestias = new LinkedList<>();
-				
 				String filter = request.getParameter("filter"); // filtro por categoria 
 				if(filter != null && !filter.isEmpty()) {
-					bestias= controlador.findByCategoria(filter);
-					
+					bestias= controlador.findByCategoria(filter);	
 				} else {
 					bestias = controlador.findAll();
 				}
 				
 				if (!bestias.isEmpty()) {
 					request.setAttribute("bestias", bestias);
-					for (Bestia unabestia : bestias) {
-						findAllMsg = findAllMsg + unabestia + "<br><br>";
-					} 
-				} else {
-					findAllMsg = BESTIAS_NOT_CREATED;
 				}
 				if(filter != null) {
 					request.setAttribute("searchedFilter", filter); //Para que siga estando el filtro en el buscar 
 				}
-				
-				request.setAttribute("findAllMsg", findAllMsg);
 			}
 			rd.forward(request, response);
 		}
@@ -287,8 +278,6 @@ import logic.LogicRegistro;
 				} 
 			} else if(flag.equals("put")) {
 				doPut(request, response);
-				response.sendRedirect("SvBestia?action=list");
-				return;
 			} else if(flag.equals("delete")){
 				doDelete(request,response);
 			} else {
@@ -319,23 +308,64 @@ import logic.LogicRegistro;
 			String nombre = request.getParameter("nombre");
 			String peligrosidad = request.getParameter("peligrosidad");
 			String estado = request.getParameter("estado");
-			try {
-				Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
-				bestia = controlador.update(bestia);
-				if(bestia != null) { 
-					updateMsg = updateMsg + bestia + "<br><br>";
-				}else{
-					updateMsg = BESTIA_NOT_FOUND;
-				}
-				
-			} catch (NumberFormatException e) {
-				e.getMessage();
-				updateMsg = ID_FORMAT_ERROR;
-			} finally {
-				
-				request.setAttribute("updateMsg", updateMsg);
-			}
+			String putAction = request.getParameter("putAction");
 			
+			if(putAction == null) {
+				try {
+					Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
+					bestia = controlador.update(bestia);
+					if(bestia != null) { 
+						updateMsg = updateMsg + bestia + "<br><br>";
+					}else{
+						updateMsg = BESTIA_NOT_FOUND;
+					}
+					
+				} catch (NumberFormatException e) {
+					e.getMessage();
+					updateMsg = ID_FORMAT_ERROR;
+				} finally {
+					
+					request.setAttribute("updateMsg", updateMsg);
+				}
+			}else {
+				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(id), null, null, null));
+				String idHabitat = request.getParameter("idHabitat");
+				String idCategoria = request.getParameter("idCategoria");
+
+				if(idHabitat != null) {
+					Habitat ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat),null,null,null));
+					LinkedList<Habitat> habitatsBestia = bestia.getHabitats();
+					boolean isIn = false;
+					for(Habitat habitat:habitatsBestia) {
+						if(habitat.getId() == ht.getId()) {
+							isIn = true;
+					}
+					}
+					if(!isIn) {
+						habitatsBestia.add(ht);
+						bestia.setHabitats(habitatsBestia);
+						controlador.saveHabitats(bestia);
+					}else {
+						request.setAttribute("errorMsg", "Habitat ya se encuentra asignada a la bestia.");
+					}
+				}else if(idCategoria != null) {
+					Categoria cat = controladorCategoria.getOne(new Categoria(Integer.parseInt(idCategoria),null,null));
+					LinkedList<Categoria> categoriasBestia = bestia.getCategorias();
+					boolean isIn = false;
+					for(Categoria categoria:categoriasBestia) {
+						if(categoria.getIdCategoria() == cat.getIdCategoria()) {
+							isIn = true;
+					}
+					}
+					if(!isIn) {
+						categoriasBestia.add(cat);
+						bestia.setCategorias(categoriasBestia);
+						controlador.saveCategorias(bestia);
+					}else {
+						request.setAttribute("errorMsg", "Categoria ya se encuentra asignada a la bestia.");
+					}
+				}
+			}
 		}
 	
 		/**

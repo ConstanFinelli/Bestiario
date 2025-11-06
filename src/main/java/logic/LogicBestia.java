@@ -33,6 +33,14 @@ public class LogicBestia {
 		bDao.saveEvidencias(b);
 	}
 	
+	public void saveHabitats(Bestia b) {
+		bDao.saveHabitats(b);
+	}
+	
+	public void saveCategorias(Bestia b) {
+		bDao.saveCategorias(b);
+	}
+	
 	public Bestia delete(Bestia b) {
 		return bDao.delete(b);
 	}
