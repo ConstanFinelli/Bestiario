@@ -56,6 +56,7 @@ import logic.LogicRegistro;
 		private final String REGISTRO_JSP = "registro.jsp";
 		private final String REGISTROS_PENDIENTES_JSP = "registrosPendientes.jsp";
 		private final String ACTUALIZACION_REGISTRO_JSP = "nuevoRegistro.jsp";
+		//private final String ADD_BESTIA_JSP = "crearPropuestaBestia.jsp"; 
 		private LogicBestia controlador = new LogicBestia();
 		private LogicRegistro controladorRegistro = new LogicRegistro();
 		private LogicComentario controladorComentario = new LogicComentario();
@@ -125,8 +126,6 @@ import logic.LogicRegistro;
 			String getOneMsg = "";
 			String findAllMsg = "";
 			if(id != null) {
-				
-				
 				Bestia bestia = new Bestia(Integer.parseInt(id));
 				bestia = controlador.getOne(bestia);
 				if(bestia != null) {
@@ -264,6 +263,9 @@ import logic.LogicRegistro;
 				}
 				response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
 				return;
+			}else if("add".equals(action)) {
+				   doAddBestiaProposal(request, response);
+				   return;
 			}else {
 			if (flag.equals("post")) {
 				try {
@@ -291,7 +293,7 @@ import logic.LogicRegistro;
 				return;
 			} else if(flag.equals("delete")){
 				doDelete(request,response);
-			} else {
+			}else {
 				String contenido = request.getParameter("contenido");
 				String idUsuario = request.getParameter("idUsuario");
 				String idBestia = request.getParameter("idBestia");
@@ -399,5 +401,14 @@ import logic.LogicRegistro;
 	    	File file = new File(uploadDir, fileName);
 	    	filePart.write(file.getAbsolutePath());
 	    	return fileName; 
+		}
+		
+		protected void doAddBestiaProposal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+			String nombre = request.getParameter("nombre");
+			String peligrosidad = request.getParameter("peligrosidad");
+			String estado = request.getParameter("estado");
+			Bestia newBestia = new Bestia(nombre, peligrosidad, estado);
+			newBestia = controlador.save(newBestia);
+			response.sendRedirect("SvBestia?action=registro&id=" + newBestia.getIdBestia());
 		}
 	}
