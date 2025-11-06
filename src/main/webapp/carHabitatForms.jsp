@@ -23,7 +23,7 @@
 </head>
 <body>
 <%@ include file="components/adminNavbar.jsp" %>	
-<div class="pageContainer">
+<div class="mainContent" style="height:fit-content">
 <div class="container-md text-center border border-secondary">
 <h1>Conseguir caracteristicas de un habitat</h1>
 <form action="SvCaracteristicaHabitat" method="GET">
