@@ -74,3 +74,12 @@ ul{
     transition: all 0.2s ease;
     text-decoration: none;
 }
+
+.btn-deleteBestia{
+	padding: 0.5rem 0.5rem;
+	color: white;
+	font-Size: 2rem;
+	background: red;
+	float:right;
+	border-radius: 10px;
+}

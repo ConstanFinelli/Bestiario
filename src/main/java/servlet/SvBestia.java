@@ -293,6 +293,8 @@ import logic.LogicRegistro;
 				return;
 			} else if(flag.equals("delete")){
 				doDelete(request,response);
+				response.sendRedirect("SvBestia?action=list");
+				return;
 			}else {
 				String contenido = request.getParameter("contenido");
 				String idUsuario = request.getParameter("idUsuario");
