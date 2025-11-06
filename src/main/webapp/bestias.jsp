@@ -57,6 +57,13 @@
                 for (Bestia bestia : bestias) { 
                 if(bestia.getEstado().equals("aprobado") || verTodo == true){ %>
                     <article class="bestia">
+                    <%if (verTodo == true){%>
+                    	<form action="SvBestia" method="post" style="display:inline;">
+						    <input type="hidden" name="flag" value="delete">
+						    <input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
+						    <button type="submit" class="btn-deleteBestia">X</button>
+						</form>
+                    	<%} %>
                     	<h1><%= bestia.getNombre() %></h1>
                     	<aside>
                     		<h4>Peligrosidad</h4>
