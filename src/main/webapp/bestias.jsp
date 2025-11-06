@@ -100,7 +100,9 @@
         
         
         </section>
-        <button class="btnAgregar" href="crearPropuestaBestia.jsp"> + Proponer Nueva Bestia</button>
+        <%if(usuario != null){%>
+        <a class="btnAgregar" href="crearPropuestaBestia.jsp"> + Proponer Nueva Bestia</a>
+        <% }%>
 </section>
 <footer>
 </footer>
