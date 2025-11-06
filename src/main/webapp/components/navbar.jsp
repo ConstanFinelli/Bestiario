@@ -6,7 +6,7 @@ page import="entities.Usuario"
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <nav>
-			<span class="navTitle" href="home.jsp">Bestiario</span>
+			<a class="navTitle" href="home.jsp">Bestiario</a>
             <a class="navLink" href="SvBestia?action=list">Bestias</a>
             <a class="navLink" href="SvHabitat?action=list">Habitats</a>
             
