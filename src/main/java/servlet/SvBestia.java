@@ -48,7 +48,6 @@ import logic.LogicRegistro;
 		
 		//CONSTANTES
 		private final String BESTIA_NOT_FOUND = "No existe una bestia con ese id";
-		private final String BESTIAS_NOT_CREATED = "No existen bestias creadas actualmente";
 		private final String CREATE_BESTIA_ERROR = "Error al crear la nueva bestia. Revisar datos enviados";
 		private final String ID_FORMAT_ERROR = "Error en el formato del id ingresado";
 		private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
@@ -187,71 +186,7 @@ import logic.LogicRegistro;
 			
 			if("actualizacion".equals(action)) {
 				rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
-				String introduccion = request.getParameter("introduccion");
-				String resumen = request.getParameter("resumen");
-				String historia = request.getParameter("historia");
-				String descripcion = request.getParameter("descripcion");
-				
-				String bestiaId = request.getParameter("id");
-
-				String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen(bestiaId));
-				
-				
-				ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
-				
-				Registro registroActual = (Registro) session.getAttribute("registro");
-				if(registroActual != null) {
-					ContenidoRegistro crActual = registroActual.getContenido();	
-					if(contenido.getDescripcion() == crActual.getDescripcion() && contenido.getHistoria() == crActual.getHistoria() 
-							&& contenido.getIntroduccion() == crActual.getIntroduccion() && contenido.getResumen() == crActual.getResumen()) { // verificar si no hubo modificaciones
-						descripcion = null;
-						introduccion = null;
-						resumen = null;
-						historia = null;
-					}
-				}
-				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null, null));
-				
-				String[] fechas = request.getParameterValues("fechaObtencion");
-				String[] tipos = request.getParameterValues("tipo");
-				String[] links = request.getParameterValues("link");
-				
-				
-				if(fechas != null) {
-					LinkedList<Evidencia> evidencias = new LinkedList<>();
-					for (int i = 0; i < fechas.length; i++) {
-						LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
-					    LocalDateTime fecha = fechaSinHora.atStartOfDay();
-					    String tipo = tipos[i];
-					    String link = links[i];
-					    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
-					    te = controladorTipoEvidencia.getOne(te);
-					    String estadoRegistro = "pendiente";
-						if(usuario.isEsInvestigador()) {
-							estadoRegistro = "aprobado";
-						}
-					    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,link,te);
-					    controladorEvidencia.save(evidencia);
-					    evidencias.add(evidencia);
-					}
-					bestia.setEvidencias(evidencias);
-					controlador.saveEvidencias(bestia);
-					
-				}
-				if(introduccion != null && resumen != null && historia != null && descripcion != null) {
-					contenido = controladorCr.save(contenido);
-					String estadoRegistro = "pendiente";
-					LocalDateTime fechaAprobacion = null;
-					Investigador user = null;
-					if(usuario.isEsInvestigador()) {
-						estadoRegistro = "aprobado";
-						fechaAprobacion = LocalDateTime.now();
-						user = (Investigador) usuario;
-					}
-					Registro registro = new Registro(0, mainPic, contenido, fechaAprobacion, null, user, estadoRegistro , bestia );
-					
-					controladorRegistro.save(registro);
-				}
+				String bestiaId = doProposeRegistro(request, response, session);
 				response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
 				return;
 			}else if("add".equals(action)) {
@@ -283,20 +218,10 @@ import logic.LogicRegistro;
 			} else if(flag.equals("delete")){
 				doDelete(request,response);
 			}else {
-				String contenido = request.getParameter("contenido");
-				String idUsuario = request.getParameter("idUsuario");
-				String idBestia = request.getParameter("idBestia");
-				if(contenido != null && idUsuario != null && idBestia != null) {
-					LocalDateTime fechaComentario = LocalDateTime.now();
-					Usuario publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), null, null));
-					Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(idBestia),null,null, null));
-					Comentario comentario = new Comentario(publicador, bestia, fechaComentario, contenido);
-					controladorComentario.save(comentario);
-				}
-				rd = request.getRequestDispatcher(REGISTRO_JSP);
+				String idBestia = doAddCommentary(request,response);
 				String redirectUrl = request.getContextPath() + "/SvBestia?action=registro&id=" + idBestia;
-				 response.sendRedirect(redirectUrl);
-				 return;
+				response.sendRedirect(redirectUrl);
+				return;
 			}}
 			rd.forward(request, response);
 		}
@@ -335,37 +260,9 @@ import logic.LogicRegistro;
 				String idCategoria = request.getParameter("idCategoria");
 
 				if(idHabitat != null) {
-					Habitat ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat),null,null,null));
-					LinkedList<Habitat> habitatsBestia = bestia.getHabitats();
-					boolean isIn = false;
-					for(Habitat habitat:habitatsBestia) {
-						if(habitat.getId() == ht.getId()) {
-							isIn = true;
-					}
-					}
-					if(!isIn) {
-						habitatsBestia.add(ht);
-						bestia.setHabitats(habitatsBestia);
-						controlador.saveHabitats(bestia);
-					}else {
-						request.setAttribute("errorMsg", "Habitat ya se encuentra asignada a la bestia.");
-					}
+					doSaveHabitats(request, response, bestia, idHabitat);
 				}else if(idCategoria != null) {
-					Categoria cat = controladorCategoria.getOne(new Categoria(Integer.parseInt(idCategoria),null,null));
-					LinkedList<Categoria> categoriasBestia = bestia.getCategorias();
-					boolean isIn = false;
-					for(Categoria categoria:categoriasBestia) {
-						if(categoria.getIdCategoria() == cat.getIdCategoria()) {
-							isIn = true;
-					}
-					}
-					if(!isIn) {
-						categoriasBestia.add(cat);
-						bestia.setCategorias(categoriasBestia);
-						controlador.saveCategorias(bestia);
-					}else {
-						request.setAttribute("errorMsg", "Categoria ya se encuentra asignada a la bestia.");
-					}
+					doSaveCategorias(request, response, bestia, idCategoria);
 				}
 			}
 		}
@@ -441,4 +338,124 @@ import logic.LogicRegistro;
 			newBestia = controlador.save(newBestia);
 			response.sendRedirect("SvBestia?action=registro&id=" + newBestia.getIdBestia());
 		}
-	}
+		
+		protected String doAddCommentary(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+			String contenido = request.getParameter("contenido");
+			String idUsuario = request.getParameter("idUsuario");
+			String idBestia = request.getParameter("idBestia");
+			if(contenido != null && idUsuario != null && idBestia != null) {
+				LocalDateTime fechaComentario = LocalDateTime.now();
+				Usuario publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), null, null));
+				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(idBestia),null,null, null));
+				Comentario comentario = new Comentario(publicador, bestia, fechaComentario, contenido);
+				controladorComentario.save(comentario);
+			}
+			return idBestia;
+		}
+		
+		protected String doProposeRegistro(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException{
+			String introduccion = request.getParameter("introduccion");
+			String resumen = request.getParameter("resumen");
+			String historia = request.getParameter("historia");
+			String descripcion = request.getParameter("descripcion");
+			
+			Usuario usuario = (Usuario) session.getAttribute("user");	
+			String bestiaId = request.getParameter("id");
+	
+			String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen(bestiaId));
+			
+			
+			ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
+			
+			Registro registroActual = (Registro) session.getAttribute("registro");
+			if(registroActual != null) {
+				ContenidoRegistro crActual = registroActual.getContenido();	
+				if(contenido.getDescripcion() == crActual.getDescripcion() && contenido.getHistoria() == crActual.getHistoria() 
+						&& contenido.getIntroduccion() == crActual.getIntroduccion() && contenido.getResumen() == crActual.getResumen()) { // verificar si no hubo modificaciones
+					descripcion = null;
+					introduccion = null;
+					resumen = null;
+					historia = null;
+				}
+			}
+			Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(bestiaId),null,null, null));
+			
+			String[] fechas = request.getParameterValues("fechaObtencion");
+			String[] tipos = request.getParameterValues("tipo");
+			String[] links = request.getParameterValues("link");
+			
+			
+			if(fechas != null) {
+				LinkedList<Evidencia> evidencias = new LinkedList<>();
+				for (int i = 0; i < fechas.length; i++) {
+					LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
+				    LocalDateTime fecha = fechaSinHora.atStartOfDay();
+				    String tipo = tipos[i];
+				    String link = links[i];
+				    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
+				    te = controladorTipoEvidencia.getOne(te);
+				    String estadoRegistro = "pendiente";
+					if(usuario.isEsInvestigador()) {
+						estadoRegistro = "aprobado";
+					}
+				    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,link,te);
+				    controladorEvidencia.save(evidencia);
+				    evidencias.add(evidencia);
+				}
+				bestia.setEvidencias(evidencias);
+				controlador.saveEvidencias(bestia);
+				
+			}
+			if(introduccion != null && resumen != null && historia != null && descripcion != null) {
+				contenido = controladorCr.save(contenido);
+				String estadoRegistro = "pendiente";
+				LocalDateTime fechaAprobacion = null;
+				Investigador user = null;
+				if(usuario.isEsInvestigador()) {
+					estadoRegistro = "aprobado";
+					fechaAprobacion = LocalDateTime.now();
+					user = (Investigador) usuario;
+				}
+				Registro registro = new Registro(0, mainPic, contenido, fechaAprobacion, null, user, estadoRegistro , bestia );
+				
+				controladorRegistro.save(registro);
+			}
+			return bestiaId;
+		}
+		
+		protected void doSaveHabitats(HttpServletRequest request, HttpServletResponse response, Bestia bestia, String idHabitat) throws ServletException, IOException{
+			Habitat ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat),null,null,null));
+			LinkedList<Habitat> habitatsBestia = bestia.getHabitats();
+			boolean isIn = false;
+			for(Habitat habitat:habitatsBestia) {
+				if(habitat.getId() == ht.getId()) {
+					isIn = true;
+			}
+			}
+			if(!isIn) {
+				habitatsBestia.add(ht);
+				bestia.setHabitats(habitatsBestia);
+				controlador.saveHabitats(bestia);
+			}else {
+				request.setAttribute("errorMsg", "Habitat ya se encuentra asignada a la bestia.");
+			}
+		}
+		
+		protected void doSaveCategorias(HttpServletRequest request, HttpServletResponse response, Bestia bestia, String idCategoria) throws ServletException, IOException{
+			Categoria cat = controladorCategoria.getOne(new Categoria(Integer.parseInt(idCategoria),null,null));
+			LinkedList<Categoria> categoriasBestia = bestia.getCategorias();
+			boolean isIn = false;
+			for(Categoria categoria:categoriasBestia) {
+				if(categoria.getIdCategoria() == cat.getIdCategoria()) {
+					isIn = true;
+			}
+			}
+			if(!isIn) {
+				categoriasBestia.add(cat);
+				bestia.setCategorias(categoriasBestia);
+				controlador.saveCategorias(bestia);
+			}else {
+				request.setAttribute("errorMsg", "Categoria ya se encuentra asignada a la bestia.");
+			}
+		}
+}
