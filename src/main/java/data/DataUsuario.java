@@ -274,4 +274,77 @@ public class DataUsuario {
 		return us;
 	}
 	
+	public LinkedList<Investigador> findAllSolicitantes() {
+		Statement stmt = null;
+		ResultSet rs = null;
+		Investigador us = null;
+		LinkedList<Investigador> usuarios = new LinkedList<>();
+		try {
+			stmt = DbConnector.getInstancia().getConn().createStatement();
+			rs = stmt.executeQuery("Select * from usuario where dni is not null and esInvestigador = 0");
+			if(rs != null) {
+				while(rs.next()) {
+					int id = rs.getInt("idUsuario");
+					String correo = rs.getString("correo");
+					String contraseña = rs.getString("contraseña");
+					boolean esInv = rs.getBoolean("esInvestigador");
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					String dni = rs.getString("dni");
+					us = new Investigador(id, correo, contraseña, nombre, apellido, dni, esInv);
+					usuarios.add(us);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(stmt != null) {
+					stmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return usuarios;
+	}
+	
+	public Usuario procesarSolicitud(Investigador inv) {
+		PreparedStatement pstmt = null;
+		try {
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ? where idUsuario = ?");
+				pstmt.setString(1, inv.getCorreo());
+				pstmt.setString(2, inv.getContraseña());
+				pstmt.setString(3, inv.getNombre());
+				pstmt.setString(4, inv.getApellido());
+				pstmt.setString(5, inv.getDni());
+				pstmt.setInt(6, inv.getIdUsuario());
+				pstmt.executeUpdate();
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return inv;
+	}
+		
 }
