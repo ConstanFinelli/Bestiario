@@ -27,7 +27,7 @@
             <option value="Alta">Alta</option>
         </select><br><br>
         
-        <input type="hidden" name="estado" value="<%= (usuario != null && usuario.isEsInvestigador() == true) ? "aprobado" : "pendiente"%>">
+        <input type="hidden" name="estado" value="<%= (usuario != null && usuario.getEstado().equals("investigador")) ? "aprobado" : "pendiente"%>">
 	
 		<a href="SvBestia?action=list" class="btnBestia">Cancelar</a>
         <button type="submit" class="btnBestia">Continuar →</button>

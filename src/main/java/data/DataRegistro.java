@@ -39,7 +39,7 @@ public class DataRegistro {
 				if(rs.getTimestamp("fechaBaja") != null) {
 				fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 				}
-				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+				Investigador pub = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
 				String estado = rs.getString("estado");
 				Bestia bestia = b;
 				registroEncontrado = new Registro(id, mainPic, contenido, fechaA, fechaB, pub, estado, bestia);
@@ -86,7 +86,7 @@ public class DataRegistro {
 				if(rs.getTimestamp("fechaBaja") != null) {
 					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 				}
-				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
 				String estado = rs.getString("estado");
 				Bestia bestia = r.getBestia();
 				registroEncontrado = new Registro(r.getNroRegistro(), mainPic, contenido, fechaA, fechaB, pub, estado, bestia);
@@ -136,7 +136,7 @@ public class DataRegistro {
 					if(rs.getTimestamp("fechaBaja") != null) {
 					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
-					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
 					registro = new Registro(id, mainPic, contenido, fechaA, fechaB, pub, estado, bestia);
@@ -187,7 +187,7 @@ public class DataRegistro {
 					if(rs.getTimestamp("fechaBaja") != null) {
 					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
-					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario"), null, null));
+					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
 					registro = new Registro(id, mainPic, contenido, fechaA, fechaB, pub, estado, bestia);

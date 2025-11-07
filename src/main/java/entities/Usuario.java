@@ -2,30 +2,32 @@ package entities;
 
 public class Usuario {
 	private int idUsuario;
-	private String correo; 
+	private String correo;
 	private String contraseña;
-	private boolean esInvestigador = false;
-	
-	public Usuario(int id, String correo, String contraseña) {
+	private String estado;
+
+	public Usuario(int id, String correo, String contraseña, String state) {
 		this.idUsuario = id;
 		this.correo = correo;
 		this.contraseña = contraseña;
+		this.estado = state;
 	}
-	
-	public Usuario(String correo, String contraseña) {
+
+	public Usuario(String correo, String contraseña, String state) {
 		this.correo = correo;
 		this.contraseña = contraseña;
+		this.estado = state;
 	}
 	
-	public Usuario(int id, boolean inv) {
+	public Usuario(int id, String inv) {
 		idUsuario = id;
-		esInvestigador = inv;
+		estado = inv;
 	}
-	
+
 	public Usuario(int id) {
 		this.idUsuario = id;
 	}
-	
+
 	public int getIdUsuario() {
 		return idUsuario;
 	}
@@ -50,19 +52,16 @@ public class Usuario {
 		this.contraseña = contraseña;
 	}
 
-	@Override public String toString() {
-		return(
-				"Id: " + idUsuario+
-				"<br>Correo: " + correo+
-				"<br>Contraseña:" + contraseña
-				);
+	@Override
+	public String toString() {
+		return ("Id: " + idUsuario + "<br>Correo: " + correo + "<br>Contraseña:" + contraseña);
 	}
 
-	public boolean isEsInvestigador() {
-		return esInvestigador;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setEsInvestigador(boolean esInvestigador) {
-		this.esInvestigador = esInvestigador;
-	} 
+	public void setEstado(String state) {
+		this.estado = state;
+	}
 }

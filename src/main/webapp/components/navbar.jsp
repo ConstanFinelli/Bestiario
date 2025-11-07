@@ -14,7 +14,7 @@ page import="entities.Usuario"
 			    Usuario usuario = (Usuario) session.getAttribute("user");
 			    if (usuario != null) { %>
 			    	<%
-			    	if(usuario.isEsInvestigador()){
+			    	if(usuario.getEstado().equals("investigador")){
 			    	%>
 			    	<a class="navLink" href="SvBestia?action=form">Admin</a>
 			    	<a class="navLink" href="SvUsuario?action=findAllSolicitantes">Candidaturas</a>

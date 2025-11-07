@@ -198,7 +198,7 @@ import logic.LogicRegistro;
 	
 					if (nombre != null && peligrosidad != null) {
 						String estado = "pendiente";
-						if (usuario.isEsInvestigador() == true) {
+						if (usuario.getEstado().equals("investigador")) {
 							estado = "aprobado";
 						} 
 						Bestia bestia = new Bestia(nombre, peligrosidad, estado);
@@ -347,7 +347,7 @@ import logic.LogicRegistro;
 			String idBestia = request.getParameter("idBestia");
 			if(contenido != null && idUsuario != null && idBestia != null) {
 				LocalDateTime fechaComentario = LocalDateTime.now();
-				Usuario publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), null, null));
+				Usuario publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario)));
 				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(idBestia),null,null, null));
 				Comentario comentario = new Comentario(publicador, bestia, fechaComentario, contenido);
 				controladorComentario.save(comentario);
@@ -397,7 +397,7 @@ import logic.LogicRegistro;
 				    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
 				    te = controladorTipoEvidencia.getOne(te);
 				    String estadoRegistro = "pendiente";
-					if(usuario.isEsInvestigador()) {
+					if(usuario.getEstado().equals("investigador")) {
 						estadoRegistro = "aprobado";
 					}
 				    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,link,te);
@@ -413,7 +413,7 @@ import logic.LogicRegistro;
 				String estadoRegistro = "pendiente";
 				LocalDateTime fechaAprobacion = null;
 				Investigador user = null;
-				if(usuario.isEsInvestigador()) {
+				if(usuario.getEstado().equals("investigador")) {
 					estadoRegistro = "aprobado";
 					fechaAprobacion = LocalDateTime.now();
 					user = (Investigador) usuario;

@@ -6,12 +6,12 @@ public class Lector extends Usuario {
 	private LocalDateTime fechaNacimiento;
 
 	public Lector(int id, String correo, String contraseña, LocalDateTime fecha) {
-		super(id, correo, contraseña);
+		super(id, correo, contraseña, "lector");
 		this.fechaNacimiento = fecha;
 	}
 	
 	public Lector(String correo, String contraseña, LocalDateTime fecha) {
-		super(correo, contraseña);
+		super(correo, contraseña, "lector");
 		this.fechaNacimiento = fecha;
 	}
 	

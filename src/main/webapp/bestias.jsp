@@ -48,7 +48,7 @@
 	<%
 			boolean verTodo = false;
 			if(usuario != null){
-				if(usuario.isEsInvestigador() == true){
+				if(usuario.getEstado().equals("investigador")){
 					verTodo = true;
 				}
 			}
@@ -80,7 +80,7 @@
                     		</p>
                     	</aside>
                     	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
-                    	<%if(usuario != null && usuario.isEsInvestigador() == true ){ %>
+                    	<%if(usuario != null && usuario.getEstado().equals("investigador") ){ %>
                     	<a class="btnBestia" href="SvBestia?action=registrosPendientes&id=<%= bestia.getIdBestia() %>">Ver Reg. Pendientes</a>
                     	<%} else{} %>
                         <% if(bestia.getEstado().equals("pendiente")){%>
