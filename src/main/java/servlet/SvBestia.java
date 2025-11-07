@@ -91,10 +91,12 @@ import logic.LogicRegistro;
 			
 			Registro registro = null;
 			LinkedList<Registro> registrosPendientes = new LinkedList<>();
+			LocalDate fechaSinTime = null;
 			LocalDateTime fecha = null;
 			
 			if (fechaParam != null && !fechaParam.isEmpty()) {
-			    fecha = LocalDateTime.parse(fechaParam);
+			    fechaSinTime = LocalDate.parse(fechaParam);
+			    fecha = fechaSinTime.atStartOfDay();
 			} else{
 				fecha = LocalDateTime.now();
 			};

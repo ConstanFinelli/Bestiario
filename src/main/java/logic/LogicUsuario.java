@@ -46,7 +46,9 @@ public class LogicUsuario {
 			us.setContraseña(hashPassword(us.getContraseña())); // hashea para guarda en bd
 		}
 		us = usDAO.update(us);
-		us.setContraseña(dehashPassword(us.getContraseña())); // dehashea para mostrar a ui
+		if(us != null) {
+			us.setContraseña(dehashPassword(us.getContraseña())); // dehashea para mostrar a ui
+		}
 		return us;
 	}
 	
