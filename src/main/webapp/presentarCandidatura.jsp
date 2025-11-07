@@ -7,11 +7,14 @@
 <title>Registrar Candidatura a Investigador</title>
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/bestias.css">
+<link rel="stylesheet" href="css/nuevaBestia.css">
 <link rel="stylesheet" href="css/navbar.css">
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
+
 <section class="mainContent">
+	<% if(usuario != null){ %>
     <h1>Registrar Candidatura a Investigador</h1>
     
     <form action="SvUsuario?action=crearSolicitud&idUsuario=<%= usuario.getIdUsuario() %>" method="post" class="formBestia">
@@ -27,6 +30,9 @@
         <a href="home.jsp" class="btnBestia">Cancelar</a>
         <button type="submit" class="btnBestia">Guardar →</button>
     </form>
+    <%}else{ %>
+    	<div class="notFound">Debes iniciar sesión para esta página.</div>
+    <%} %>
 </section>
 
 <footer></footer>
