@@ -5,6 +5,8 @@ import java.util.Base64;
 import java.util.LinkedList;
 
 import data.DataUsuario;
+import entities.Investigador;
+import entities.Lector;
 import entities.Usuario;
 
 
@@ -13,7 +15,11 @@ public class LogicUsuario {
 	private DataUsuario usDAO = new DataUsuario();
 	
 	public Usuario getOne(Usuario us) {
-		us = usDAO.getOne(us);
+		if(us.isEsInvestigador() == true) {
+			us = (Investigador) usDAO.getOne(us);
+		} else {
+			us = (Lector) usDAO.getOne(us);
+		}
 		if(us != null) {
 			us.setContraseña(dehashPassword(us.getContraseña()));
 		}
@@ -61,5 +67,13 @@ public class LogicUsuario {
 	public Usuario getByEmail(String correo) {
 		Usuario us = usDAO.getByEmail(correo);
 		return us;
+	}
+	
+	public LinkedList<Investigador> findAllSolicitantes(){
+		return usDAO.findAllSolicitantes();
+	}
+	
+	public Usuario procesarSolicitud(Investigador us) {
+		return usDAO.procesarSolicitud(us);
 	}
 }
