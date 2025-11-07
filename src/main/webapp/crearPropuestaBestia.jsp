@@ -7,6 +7,7 @@
 <title>Bestiario - Proponer Bestia</title>
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/bestias.css">
+<link rel="stylesheet" href="css/nuevaBestia.css">
 <link rel="stylesheet" href="css/navbar.css">
 </head>
 <body>
@@ -16,10 +17,10 @@
     <h1>Proponer Nueva Bestia</h1>
     
     <form action="SvBestia?action=add" method="post" class="formBestia">
-        <label for="nombre"><strong>Nombre:</strong></label><br>
+        <label for="nombre" class="inputLabel"><strong>Nombre:</strong></label><br>
         <input type="text" id="nombre" name="nombre" class="inputText" placeholder="Ej: Dragón Carmesí" required><br><br>
         
-        <label for="peligrosidad"><strong>Peligrosidad:</strong></label><br>
+        <label for="peligrosidad" class="inputLabel"><strong>Peligrosidad:</strong></label><br>
         <select id="peligrosidad" name="peligrosidad" class="inputSelect" required>
             <option value="">-- Seleccionar nivel --</option>
             <option value="Baja">Baja</option>

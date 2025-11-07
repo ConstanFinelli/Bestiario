@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import data.DataBestia;
 import entities.Bestia;
+import entities.Categoria;
 import entities.Habitat;
 
 public class LogicBestia {
@@ -39,6 +40,14 @@ public class LogicBestia {
 	
 	public void saveCategorias(Bestia b) {
 		bDao.saveCategorias(b);
+	}
+	
+	public void removeRelation(Bestia b, Habitat ht) {
+		bDao.removeRelation(b, ht);
+	}
+	
+	public void removeRelation(Bestia b, Categoria cat) {
+		bDao.removeRelation(b, cat);
 	}
 	
 	public Bestia delete(Bestia b) {

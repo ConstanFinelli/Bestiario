@@ -439,5 +439,55 @@ public class DataBestia {
 			}
 		return bestiasHabitat;
 	}
+	
+	public void removeRelation(Bestia b, Categoria cat) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia_habitat where idBestia = ? and idCategoria = ?");
+			pstmt.setInt(1, b.getIdBestia());
+			pstmt.setInt(2, cat.getIdCategoria());
+			pstmt.executeUpdate();
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+	}
+	
+	public void removeRelation(Bestia b, Habitat ht) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia_habitat where idBestia = ? and idHabitat = ?");
+			pstmt.setInt(1, b.getIdBestia());
+			pstmt.setInt(2, ht.getId());
+			pstmt.executeUpdate();
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+	}
 }
 
