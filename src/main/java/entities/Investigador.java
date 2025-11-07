@@ -13,6 +13,13 @@ public class Investigador extends Usuario{
 		this.dni = dni;
 	}
 	
+	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni, boolean state) {
+		super(id, correo, contraseña);
+		super.setEsInvestigador(state);
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+	}
 	public Investigador(String correo, String contraseña, String nombre, String apellido, String dni) {
 		super(correo, contraseña);
 		super.setEsInvestigador(true);
@@ -23,6 +30,10 @@ public class Investigador extends Usuario{
 	
 	public Investigador(int id) {
 		super(id);
+	}
+	
+	public Investigador(int id, boolean inv) {
+		super(id, inv);
 	}
 	
 	public String getNombre() {
