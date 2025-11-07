@@ -61,7 +61,7 @@ public class DataComentario {
 					String contenido = rs.getString("contenido");
 					LocalDateTime fecha = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 					Bestia bestia = b;
-					Usuario user = userDAO.getOne(new Usuario(idUsuario, null, null));
+					Usuario user = userDAO.getOne(new Usuario(idUsuario));
 					comentario = new Comentario(user, bestia, fecha, contenido);
 					comentarios.add(comentario);
 				}

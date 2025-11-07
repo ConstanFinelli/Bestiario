@@ -10,6 +10,7 @@ import entities.Lector;
 
 public class DataUsuario {
 	public Usuario getOne(Usuario usB) {
+		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Usuario usuarioEncontrado = null;
@@ -21,15 +22,15 @@ public class DataUsuario {
 				int id = rs.getInt("idUsuario");
 				String correo = rs.getString("correo");
 				String contraseña = rs.getString("contraseña");
-				boolean esInv = rs.getBoolean("esInvestigador");
-				if(esInv) {
-					String nombre = rs.getString("nombre");
-					String apellido = rs.getString("apellido");
-					String dni = rs.getString("dni");
-					usuarioEncontrado = new Investigador(id, correo, contraseña, nombre, apellido, dni);
-				}else {
+				String estado = rs.getString("estado");
+				if("lector".equals(estado)) {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
 					usuarioEncontrado = new Lector(id, correo, contraseña, fechaNacimiento);
+				}else {
+					String dni = rs.getString("dni");
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					usuarioEncontrado = new Investigador(id, correo, contraseña, nombre, apellido, dni);
 				}
 			}
 		}catch(SQLException ex) {
@@ -111,7 +112,7 @@ public class DataUsuario {
 		Lector le = null;
 		if(us == null) {return us;}
 		try {
-			if(us.isEsInvestigador()) {
+			if(us.getEstado().equals("investigador")) {
 				inv = (Investigador) us;
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,nombre,apellido,dni,esInvestigador) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, inv.getCorreo());
@@ -167,20 +168,23 @@ public class DataUsuario {
 		Lector le = null;
 		if(us == null) {return us;}
 		try {
-			if(us.isEsInvestigador()) {
+			if(!us.getEstado().equals("lector")) {
 				inv = (Investigador) us;
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ? where idUsuario = ?");
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ?, estado = ? where idUsuario = ?");
 				pstmt.setString(1, inv.getCorreo());
 				pstmt.setString(2, inv.getContraseña());
 				pstmt.setString(3, inv.getNombre());
 				pstmt.setString(4, inv.getApellido());
 				pstmt.setString(5, inv.getDni());
+				pstmt.setString(6, inv.getEstado());
+				pstmt.setInt(7, inv.getIdUsuario());
 			}else {
-				le = (Lector) us;
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ? where idUsuario = ?");
+				le = new Lector(us.getIdUsuario(), us.getCorreo(), us.getContraseña(), getFechaNacimiento(us.getIdUsuario()));
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ?, estado = 'lector' where idUsuario = ?");
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContraseña());
 				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
+				pstmt.setInt(4, le.getIdUsuario());
 			}
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
@@ -241,8 +245,8 @@ public class DataUsuario {
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("idUsuario");
 				String contraseña = rs.getString("contraseña");
-				boolean esInv = rs.getBoolean("esInvestigador");
-				if(esInv) {
+				String estado = rs.getString("estado");
+				if(estado.equals("investigador")) {
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String dni = rs.getString("dni");
@@ -281,17 +285,17 @@ public class DataUsuario {
 		LinkedList<Investigador> usuarios = new LinkedList<>();
 		try {
 			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("Select * from usuario where dni is not null and esInvestigador = 0");
+			rs = stmt.executeQuery("Select * from usuario where estado = 'solicitante'");
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("idUsuario");
 					String correo = rs.getString("correo");
 					String contraseña = rs.getString("contraseña");
-					boolean esInv = rs.getBoolean("esInvestigador");
+					String estado = rs.getString("estado");
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String dni = rs.getString("dni");
-					us = new Investigador(id, correo, contraseña, nombre, apellido, dni, esInv);
+					us = new Investigador(id, correo, contraseña, nombre, apellido, dni, estado);
 					usuarios.add(us);
 				}
 			}
@@ -317,23 +321,27 @@ public class DataUsuario {
 		return usuarios;
 	}
 	
-	public Usuario procesarSolicitud(Investigador inv) {
+public LocalDateTime getFechaNacimiento(int id) {
+		
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		LocalDateTime fechaEncontrada = null;
 		try {
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ? where idUsuario = ?");
-				pstmt.setString(1, inv.getCorreo());
-				pstmt.setString(2, inv.getContraseña());
-				pstmt.setString(3, inv.getNombre());
-				pstmt.setString(4, inv.getApellido());
-				pstmt.setString(5, inv.getDni());
-				pstmt.setInt(6, inv.getIdUsuario());
-				pstmt.executeUpdate();
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select fechaNacimiento from usuario where idUsuario = ?");
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			if(rs != null && rs.next()) {
+				fechaEncontrada = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
+			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} finally {
 			try {
+				if(rs != null) {
+					rs.close();
+				}
 				if(pstmt != null) {
 					pstmt.close();
 				}
@@ -344,7 +352,7 @@ public class DataUsuario {
 	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 			}
 		}
-		return inv;
+		return fechaEncontrada;
 	}
 		
 }

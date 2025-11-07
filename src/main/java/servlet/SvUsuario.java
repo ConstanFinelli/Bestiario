@@ -48,7 +48,6 @@ public class SvUsuario extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
-		System.out.println("action");
 		if("aprobarSolicitud".equals(action)) {
 			doAprobarSolicitud(request, response);
 		} else if("rechazarSolicitud".equals(action)) {
@@ -60,29 +59,31 @@ public class SvUsuario extends HttpServlet {
 	
 	protected void doAprobarSolicitud(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String idUsuario = request.getParameter("idUsuario");
-		System.out.println();
 		try {
 			Usuario user = new Usuario(Integer.parseInt(idUsuario));
 			user = (Investigador) controladorUsuario.getOne(user);	
-			user.setEsInvestigador(true);
-			controladorUsuario.procesarSolicitud((Investigador) user);
+			user.setEstado("investigador");
+			controladorUsuario.update((Investigador) user);
 		} catch(NumberFormatException e) {
 			e.getMessage();
 		}
+		response.sendRedirect(SOLICITUDES_INVESTIGADOR_JSP);
 	}
 	
 	protected void doRechazarSolicitud(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String idUsuario = request.getParameter("idUsuario");
 		try {
-			Investigador user = new Investigador(Integer.parseInt(idUsuario), false);
+			Investigador user = new Investigador(Integer.parseInt(idUsuario));
 			user = (Investigador) controladorUsuario.getOne(user);	
 			user.setDni(null);
 			user.setApellido(null);
 			user.setNombre(null);
-			controladorUsuario.procesarSolicitud(user);
+			user.setEstado("lector");
+			controladorUsuario.update(user);
 		} catch(NumberFormatException e) {
 			e.getMessage();
 		}
+		response.sendRedirect(SOLICITUDES_INVESTIGADOR_JSP);
 	}
 	
 
@@ -101,9 +102,9 @@ public class SvUsuario extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String apellido = request.getParameter("apellido");
 		String dni = request.getParameter("dni");
-		Lector user = (Lector) controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario), false));
-		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), user.getContraseña(), nombre, apellido, dni, false);
-		controladorUsuario.procesarSolicitud(solicitud);
+		Lector user = (Lector) controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario)));
+		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), user.getContraseña(), nombre, apellido, dni, "solicitante");
+		controladorUsuario.update(solicitud);
 		response.sendRedirect("home.jsp");
 	}
 }

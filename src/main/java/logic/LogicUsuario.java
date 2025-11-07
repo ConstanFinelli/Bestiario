@@ -15,11 +15,7 @@ public class LogicUsuario {
 	private DataUsuario usDAO = new DataUsuario();
 	
 	public Usuario getOne(Usuario us) {
-		if(us.isEsInvestigador() == true) {
-			us = (Investigador) usDAO.getOne(us);
-		} else {
-			us = (Lector) usDAO.getOne(us);
-		}
+		us = usDAO.getOne(us);
 		if(us != null) {
 			us.setContraseña(dehashPassword(us.getContraseña()));
 		}
@@ -73,7 +69,4 @@ public class LogicUsuario {
 		return usDAO.findAllSolicitantes();
 	}
 	
-	public Usuario procesarSolicitud(Investigador us) {
-		return usDAO.procesarSolicitud(us);
-	}
 }

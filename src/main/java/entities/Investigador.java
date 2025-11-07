@@ -6,23 +6,20 @@ public class Investigador extends Usuario{
 	private String dni;
 	
 	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni) {
-		super(id, correo, contraseña);
-		super.setEsInvestigador(true);
+		super(id, correo, contraseña, "investigador");
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 	}
 	
-	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni, boolean state) {
-		super(id, correo, contraseña);
-		super.setEsInvestigador(state);
+	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni, String state) {
+		super(id, correo, contraseña, state);
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 	}
 	public Investigador(String correo, String contraseña, String nombre, String apellido, String dni) {
-		super(correo, contraseña);
-		super.setEsInvestigador(true);
+		super(correo, contraseña, "investigador");
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
@@ -32,7 +29,7 @@ public class Investigador extends Usuario{
 		super(id);
 	}
 	
-	public Investigador(int id, boolean inv) {
+	public Investigador(int id, String inv) {
 		super(id, inv);
 	}
 	
