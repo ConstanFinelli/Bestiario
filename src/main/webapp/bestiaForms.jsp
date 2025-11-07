@@ -150,6 +150,56 @@
 			<button type="submit" class="btn btn-outline-primary">Actualizar bestia</button>
 		</form>
 	</div>
+	<div class="container-md text-center my-4 border p-4">
+		<h1>Desasignar categoría a bestia</h1>
+		<form action="SvBestia?action=form" method="POST">
+			<input type="hidden" name="action" value="form">
+			<input type="hidden" name="flag" value="put">
+			<input type="hidden" name="putAction" value="removeRelation">
+			<label class="form-label" for="idHab">Nombre de la bestia: </label>
+			<select class="form-control" name="id" id="idHab" required>
+				<%
+				if(bestias != null && !bestias.isEmpty()) {
+				for(Bestia bestia:bestias){ %>
+				<option value="<%= bestia.getIdBestia() %>"><%= bestia.getNombre() %></option>
+				<%}} %>
+			</select>
+			<label for="idCategoria" class="form-label">Categoría a agregar: </label>
+			<select class="form-control" name="idCategoria" id="idCategoria" required>
+				<%
+				if(categorias != null && !categorias.isEmpty()) {
+				for(Categoria categoria:categorias){ %>
+				<option value="<%= categoria.getIdCategoria() %>"><%= categoria.getNombre() %></option>
+				<%}} %>
+			</select>
+			<button type="submit" class="btn btn-outline-primary">Actualizar bestia</button>
+		</form>
+	</div>
+	<div class="container-md text-center my-4 border p-4">
+		<h1>Desasignar habitat a bestia</h1>
+		<form action="SvBestia?action=form" method="POST">
+			<input type="hidden" name="action" value="form">
+			<input type="hidden" name="flag" value="put">
+			<input type="hidden" name="putAction" value="removeRelation">
+			<label class="form-label" for="idUpdateHt">Nombre de la bestia: </label>
+			<select class="form-control" name="id" id="idUpdateHt" required>
+				<%
+				if(bestias != null && !bestias.isEmpty()) {
+				for(Bestia bestia:bestias){ %>
+				<option value="<%= bestia.getIdBestia() %>"><%= bestia.getNombre() %></option>
+				<%}} %>
+			</select>
+			<label for="idHabitat" class="form-label">Habitat a agregar: </label>
+			<select class="form-control" name="idHabitat" id="idHabitat" required>
+				<%
+				if(habitats != null && !habitats.isEmpty()) {
+				for(Habitat habitat:habitats){ %>
+				<option value="<%= habitat.getId() %>"><%= habitat.getNombre() %></option>
+				<%}} %>
+			</select>
+			<button type="submit" class="btn btn-outline-primary">Actualizar bestia</button>
+		</form>
+	</div>
 	</section>
 	<footer>
 	</footer>
