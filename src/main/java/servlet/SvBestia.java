@@ -260,11 +260,18 @@ import logic.LogicRegistro;
 				Bestia bestia = controlador.getOne(new Bestia(Integer.parseInt(id), null, null, null));
 				String idHabitat = request.getParameter("idHabitat");
 				String idCategoria = request.getParameter("idCategoria");
-
-				if(idHabitat != null) {
-					doSaveHabitats(request, response, bestia, idHabitat);
-				}else if(idCategoria != null) {
-					doSaveCategorias(request, response, bestia, idCategoria);
+				if("addRelations".equals(putAction)) {
+					if(idHabitat != null) {
+						doSaveHabitats(request, response, bestia, idHabitat);
+					}else if(idCategoria != null) {
+						doSaveCategorias(request, response, bestia, idCategoria);
+					}
+				}else if("removeRelation".equals(putAction)) {
+					if(idHabitat != null) {
+						doRemoveHabitats(request, response, bestia, idHabitat);
+					}else if(idCategoria != null) {
+						doRemoveCategorias(request, response, bestia, idCategoria);
+					}
 				}
 			}
 		}
@@ -458,6 +465,38 @@ import logic.LogicRegistro;
 				controlador.saveCategorias(bestia);
 			}else {
 				request.setAttribute("errorMsg", "Categoria ya se encuentra asignada a la bestia.");
+			}
+		}
+		
+		protected void doRemoveHabitats(HttpServletRequest request, HttpServletResponse response, Bestia bestia, String idHabitat) throws ServletException, IOException{
+			Habitat ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat),null,null,null));
+			LinkedList<Habitat> habitatsBestia = bestia.getHabitats();
+			boolean isIn = false;
+			for(Habitat habitat:habitatsBestia) {
+				if(habitat.getId() == ht.getId()) {
+					isIn = true;
+			}
+			}
+			if(isIn) {
+				controlador.removeRelation(bestia,ht);
+			}else {
+				request.setAttribute("errorMsg", "Habitat no se encuentra asignada a la bestia.");
+			}
+		}
+		
+		protected void doRemoveCategorias(HttpServletRequest request, HttpServletResponse response, Bestia bestia, String idCategoria) throws ServletException, IOException{
+			Categoria cat = controladorCategoria.getOne(new Categoria(Integer.parseInt(idCategoria),null,null));
+			LinkedList<Categoria> categoriasBestia = bestia.getCategorias();
+			boolean isIn = false;
+			for(Categoria categoria:categoriasBestia) {
+				if(categoria.getIdCategoria() == cat.getIdCategoria()) {
+					isIn = true;
+			}
+			}
+			if(isIn) {
+				controlador.removeRelation(bestia,cat);
+			}else {
+				request.setAttribute("errorMsg", "Categoria no se encuentra asignada a la bestia.");
 			}
 		}
 }

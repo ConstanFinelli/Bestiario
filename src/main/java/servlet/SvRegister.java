@@ -46,28 +46,19 @@ public class SvRegister extends HttpServlet {
 		String logMessage = "";
 		Usuario user = logicUsuario.getByEmail(email);
 		String fecha = request.getParameter("fechaNacimiento");
-		LocalDate fechaSinHora = LocalDate.parse(fecha);
-		
+		LocalDate fechaSinHora = null;
+		if(fecha != null) {
+			fechaSinHora = LocalDate.parse(fecha);
+		}
 		if(user != null) {
 			logMessage = "Ya existe un usario registrado con ese email";
 		} else { 
-			if(request.getParameter("esInvestigador") != null) {
-				Investigador userInvestigador = new Investigador(
-					email,
-					request.getParameter("contrasena"),
-					request.getParameter("nombre"),
-					request.getParameter("apellido"),
-					request.getParameter("dni")
-				);
-				logicUsuario.save(userInvestigador);
-			} else {
 				Lector userLector = new Lector(
 					email,
 					request.getParameter("contrasena"),
 					fechaSinHora.atStartOfDay()
 				);
 				logicUsuario.save(userLector);
-			}
 			response.sendRedirect("login.jsp");	
 			return;
 		}

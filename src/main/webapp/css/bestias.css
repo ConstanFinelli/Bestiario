@@ -76,9 +76,9 @@ ul{
 }
 
 .btn-deleteBestia{
-	padding: 0.5rem 0.5rem;
+	padding: 0.3rem 0.6rem;
 	color: white;
-	font-Size: 2rem;
+	font-Size: 1.8rem;
 	background: red;
 	float:right;
 	border-radius: 10px;
