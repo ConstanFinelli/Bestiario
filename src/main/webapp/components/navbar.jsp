@@ -12,13 +12,16 @@ page import="entities.Usuario"
             
 	        <%
 			    Usuario usuario = (Usuario) session.getAttribute("user");
-			    if (usuario != null) {
+			    if (usuario != null) { %>
+			    	<%
 			    	if(usuario.isEsInvestigador()){
 			    	%>
 			    	<a class="navLink" href="SvBestia?action=form">Admin</a>
+			    	<a class="navLink" href="SvUsuario?action=findAllSolicitantes">Candidaturas</a>
 			    	<%
-			    	}
-			%>
+			    	} else{ %>
+			    		<a class="navLink" href="presentarCandidatura.jsp">Volverse Investigador</a>    	
+			<% }%>
 			        <a href="logout.jsp" class="logInOut">Cerrar sesión</a>
 			<%
 			    } else {

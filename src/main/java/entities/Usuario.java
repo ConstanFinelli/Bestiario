@@ -17,6 +17,11 @@ public class Usuario {
 		this.contraseña = contraseña;
 	}
 	
+	public Usuario(int id, boolean inv) {
+		idUsuario = id;
+		esInvestigador = inv;
+	}
+	
 	public Usuario(int id) {
 		this.idUsuario = id;
 	}
