@@ -191,6 +191,7 @@ public class DataUsuario {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+            us = null;
 		}finally {
 			try {
 				if(pstmt != null) {
@@ -321,7 +322,7 @@ public class DataUsuario {
 		return usuarios;
 	}
 	
-public LocalDateTime getFechaNacimiento(int id) {
+	public LocalDateTime getFechaNacimiento(int id) {
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

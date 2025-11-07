@@ -12,7 +12,9 @@
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
-
+<%
+	String errorMsg = (String) request.getAttribute("errorMsg");
+%>
 <section class="mainContent">
 	<% if(usuario != null){ %>
     <h1>Registrar Candidatura a Investigador</h1>
@@ -32,6 +34,9 @@
     </form>
     <%}else{ %>
     	<div class="notFound">Debes iniciar sesión para esta página.</div>
+    <%} %>
+    <% if(errorMsg != null){ %>
+    	<div class="notFound">${errorMsg}</div>
     <%} %>
 </section>
 

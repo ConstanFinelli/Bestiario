@@ -48,6 +48,9 @@ public class SvUsuario extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
+		
+		
+		
 		if("aprobarSolicitud".equals(action)) {
 			doAprobarSolicitud(request, response);
 		} else if("rechazarSolicitud".equals(action)) {
@@ -103,8 +106,15 @@ public class SvUsuario extends HttpServlet {
 		String apellido = request.getParameter("apellido");
 		String dni = request.getParameter("dni");
 		Lector user = (Lector) controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario)));
+		
+		RequestDispatcher rd = request.getRequestDispatcher("presentarCandidatura.jsp");
+		
 		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), user.getContraseña(), nombre, apellido, dni, "solicitante");
-		controladorUsuario.update(solicitud);
-		response.sendRedirect("home.jsp");
+		if(controladorUsuario.update(solicitud) != null) {
+			response.sendRedirect("home.jsp");
+		}else {
+			request.setAttribute("errorMsg", "Ya hay un investigador registrado con este DNI.");
+			rd.forward(request, response);
+		}
 	}
 }
