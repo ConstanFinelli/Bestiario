@@ -14,7 +14,7 @@
         <section class="mainContent">
             <section>
                 <h2>¿Quiénes somos?</h2>
-                <p>En (inserte nombre) nos dedicamos a recopilar, analizar y compartir información sobre avistamientos de criaturas enigmÃ¡ticas alrededor del mundo. Desde leyendas ancestrales hasta testimonios recientes, nuestro objetivo es construir un registro accesible y confiable que acerque a la comunidad a estos fenómenos misteriosos.</p>
+                <p>En Bestiario nos dedicamos a recopilar, analizar y compartir información sobre avistamientos de criaturas enigmáticas alrededor del mundo. Desde leyendas ancestrales hasta testimonios recientes, nuestro objetivo es construir un registro accesible y confiable que acerque a la comunidad a estos fenómenos misteriosos.</p>
             </section>
             <section>
                 <h2>¿Que encontrarás en este sitio?</h2>

@@ -221,6 +221,9 @@ public class DataRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+			if("aprobado".equals(r.getEstado())){
+				setLastRegistroFechaBaja(r.getBestia());
+			}
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, main_picture, idContenido, fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?,?)");
 			pstmt.setInt(1, r.getNroRegistro());
 			pstmt.setString(2, r.getMainPic());
@@ -351,6 +354,7 @@ public class DataRegistro {
 	public Registro updateEstado(Registro r) {
 		PreparedStatement pstmt = null;
 		try {
+			setLastRegistroFechaBaja(r.getBestia());
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set fechaAprobacion = ?, idUsuario = ?, estado = ? where idBestia = ? and nroRegistro = ?");
 			pstmt.setTimestamp(1, java.sql.Timestamp.valueOf(LocalDateTime.now()));
 			pstmt.setInt(2, r.getPublicador().getIdUsuario());
@@ -380,6 +384,32 @@ public class DataRegistro {
 		return r;
 	}
 	
+	private void setLastRegistroFechaBaja(Bestia b) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update Registro set fechaBaja = ? where idBestia = ? and fechaBaja is null and estado = 'aprobado'");
+			pstmt.setTimestamp(1, java.sql.Timestamp.valueOf(LocalDateTime.now()));
+			pstmt.setInt(2, b.getIdBestia());
+		    pstmt.executeUpdate();
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		
+	}
+
 	public String obtenerNombreImagen(String idBestia) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

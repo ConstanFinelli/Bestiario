@@ -7,6 +7,7 @@ nav{
     overflow: hidden;
     align-items: center;
     box-sizing: border-box;
+    font-family: 'Consolas',system-ui;
 }
 
 .navLink{

@@ -14,7 +14,7 @@
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>
-<section class="mainContent">
+<section class="mainContent" style="height:fit-content">
 <h1>Habitats registradas</h1>
 	<section class="habitats">
 	<%
