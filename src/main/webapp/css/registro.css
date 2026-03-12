@@ -1,3 +1,4 @@
+
 .mainContent section{
     padding: 10px 10px 0px 10px;
     display: block;
@@ -7,12 +8,21 @@
 	flex-direction: row;
 	min-height: 50vh;
 	height: fit-content; /* necesario o se rompe la página al modificar el tamaño horizontal del navegador*/
+	font-family: 'Consolas',system-ui;
 }
 
-h1, h2{
+h2{
     text-decoration: underline;
-    font-size: 25px;
+    font-size: 1.6rem;
     margin-bottom: 15px;
+}
+
+h1 {
+	font-size: 2.2rem;
+	margin-bottom: 25px;
+	text-align: left;
+	padding-bottom: 0.2rem;
+	border-bottom: 1px solid gray;
 }
 
 .infoBestia{
@@ -50,14 +60,13 @@ h1, h2{
 }
 
 .mainContent p, .mainContent textarea {
-    padding-bottom: 40px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.234);
     text-align: left;
 }
 
 .entrada, .mainContent textarea{
-	min-height: 200px;
 	min-width: 400px;
+	padding-bottom: 1.5rem;
 }
 
 .evidencias{
@@ -235,4 +244,10 @@ textarea{
 
 .registroProposal:hover{
     background: rgba(245, 245, 66,0.125);
+}
+
+.entrada p{
+	font-family: "Aubrey", system-ui;
+	font-weight: 400;
+	font-size: 1.4rem;
 }

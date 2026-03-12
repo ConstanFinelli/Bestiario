@@ -19,6 +19,7 @@ ul{
 	gap: 1vh;
 }
 
+
 .habitat aside{
 	display:flex;
 	flex-direction: column;
@@ -35,5 +36,5 @@ ul{
 }
 
 .mainContent{
-	gap: 2vh;
+	gap: 2vh
 }
