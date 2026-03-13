@@ -23,7 +23,7 @@ ul{
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	gap: 2vh;
+	gap: 1.5vh;
 }
 
 .bestia aside{
@@ -75,11 +75,96 @@ ul{
     text-decoration: none;
 }
 
+.container-btn-deleteBestia{
+	width: 100%;
+	display: flex;
+	justify-content: right;
+}
+
 .btn-deleteBestia{
-	padding: 0.3rem 0.6rem;
+	padding: 0.5rem 0.875rem;
+	border: none;
 	color: white;
-	font-Size: 1.8rem;
+	font-Size: 1.2rem;
 	background: red;
-	float:right;
-	border-radius: 10px;
+	border-radius: 0.5rem;
+	border: 1px solid black;
+}
+
+.btn-deleteBestia:hover {
+    background: #d92518;
+    transform: scale(1.02);
+}
+
+.modal-container {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-container.is-visible {
+	opacity: 1;
+	visibility: visible;
+}
+
+.modal-content {
+	background-color: var(--third-color);
+	margin: 15% auto;
+	padding: 25px;
+	width: 50%;
+	height: fit-content;
+	border-radius: 12px;
+	position: relative;
+	z-index: 1001;
+	display: flex;
+	flex-direction: column;
+	border: 3px solid var(--primary-color);
+	gap: 15px;
+	align-items: center;
+}
+
+#modal-titulo {
+	margin: 0;
+	padding: 0;
+}
+
+#modal-cuerpo {
+	font-size: 1.6rem;
+}
+
+.modalButtons {
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.modalButtons button {
+	padding: 0.7rem 1rem;
+	font-size: 1.2rem;
+	font-weight: 400;
+	height: fit-content;
+	border: none;
+	border-radius: 6px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.closeButton {
+	background: var(--primary-button);
+}
+
+.deleteButton {
+	background: linear-gradient(105deg, #ff7b7b, #e53935);
+}
+
+.modalButtons button:hover {
+	transform: scale(1.05);
 }
