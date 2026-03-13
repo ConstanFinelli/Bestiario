@@ -75,7 +75,7 @@
                     			<%}else{ 
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
-                    				<a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
+                    				<a class="catBadge" href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
                     			<%}} %>
                     		</p>
                     	</aside>
