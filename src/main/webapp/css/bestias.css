@@ -16,9 +16,9 @@ ul{
 	box-shadow: 0px 8px 4px rgb(0,0,0,.15);
 	background: rgba(0,0,0,0.1);
 	padding: 2vh;
-	height: fit-content;
-	min-width: 13vw;
-	min-height: 18vh;
+	width: 14vw;
+	height: 27vh;
+	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -167,4 +167,22 @@ ul{
 
 .modalButtons button:hover {
 	transform: scale(1.05);
+}
+
+.catBadge{
+	display: inline-block;
+    border: 1px solid var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    padding: 0.3rem;
+    font-weight: 500;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.catBadge::before{
+    content: '⫸';
+    font-size: 1.3rem;
+    color: gray;
 }
