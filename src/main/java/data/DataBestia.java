@@ -218,8 +218,12 @@ public class DataBestia {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia where idbestia = ?");
 			pstmt.setInt(1, b.getIdBestia());
 			pstmt.executeUpdate();
-			deleteCategorias(b);
-			deleteHabitats(b);
+			if(b.getCategorias() != null) {
+				deleteCategorias(b);
+			}
+			if(b.getHabitats() != null) {
+				deleteHabitats(b);
+			}
 			//preguntar si se deberian eliminar las bestias
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());

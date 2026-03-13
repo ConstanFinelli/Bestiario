@@ -57,13 +57,13 @@
                 for (Bestia bestia : bestias) { 
                 if(bestia.getEstado().equals("aprobado") || verTodo == true){ %>
                     <article class="bestia">
-                    <%if (verTodo == true){%>
-                    	<form action="SvBestia" method="post" style="display:inline;">
-						    <input type="hidden" name="flag" value="delete">
-						    <input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
-						    <button type="submit" class="btn-deleteBestia">X</button>
-						</form>
-                    	<%} %>
+                    	<%if (verTodo == true){%>
+                    		<div class="container-btn-deleteBestia">
+		                    	<button type="button" class="btn-deleteBestia" onClick="abrirModal('<%=bestia.getIdBestia()%>', '<%= bestia.getNombre() %>')" >
+		                    		x
+		                    	</button>	
+		                    </div>			
+	                    <%}%>
                     	<h1><%= bestia.getNombre() %></h1>
                     	<aside>
                     		<h4>Peligrosidad</h4>
@@ -82,7 +82,7 @@
                     	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
                     	<%if(usuario != null && usuario.getEstado().equals("investigador") ){ %>
                     	<a class="btnBestia" href="SvBestia?action=registrosPendientes&id=<%= bestia.getIdBestia() %>">Ver Reg. Pendientes</a>
-                    	<%} else{} %>
+                    	<%}%>
                         <% if(bestia.getEstado().equals("pendiente")){%>
                     	<form action="SvBestia" method="post" style="display:inline;">
 						  <input type="hidden" name="flag" value="put">
@@ -113,5 +113,38 @@
 </section>
 <footer>
 </footer>
+	<div id="modal" class="modal-container">
+		<div class="modal-content">
+			<h2 id="modal-titulo"></h2>
+			<div id="modal-cuerpo"></div>
+			<div class="modalButtons">
+				<form action="SvBestia" method="post" style="display:inline;">
+					<input type="hidden" name="flag" value="delete">
+					<input type="hidden" name="id" id="idAEliminar">
+					<button type="button" class="closeButton" onclick="cerrarModal()">Volver</button>
+					<button type="submit" class="deleteButton" onclick="cerrarModal()">Eliminar</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script> // javascript para modal
+            function abrirModal(id, nombre) {
+                document.getElementById('modal-titulo').innerText = "ELIMINAR BESTIA";
+                document.getElementById('modal-cuerpo').innerHTML = '¿Estas seguro que deseas eliminar a la bestia ' + nombre + '?';
+                document.getElementById('idAEliminar').value = id;
+                document.getElementById('modal').classList.add('is-visible');
+            }
+
+            function cerrarModal() {
+                document.getElementById('modal').classList.remove('is-visible');
+            }
+            
+            window.onclick = function(event) {
+                let modal = document.getElementById('modal');
+                if (event.target == modal) {
+                    cerrarModal();
+                }
+            }
+</script>
 </body>
 </html>
