@@ -75,7 +75,7 @@
             </section>
             <aside class="infoBestia">
             	<% if(registro != null){ %>
-                <img src="SvBestia?action=imagen&file=<%=registro.getMainPic() != null ? registro.getMainPic() : "default.avif"%>" alt="Imagen de la bestia">
+                <img src="SvImagen?&file=<%=registro.getMainPic() != null ? registro.getMainPic() : "default.avif"%>" alt="Imagen de la bestia">
                 <%}else{%>
                 <img src="default.avif" alt="Imagen de la bestia">
                 <% } %>
