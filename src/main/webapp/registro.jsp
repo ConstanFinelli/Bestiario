@@ -95,7 +95,7 @@
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
                     				<li>
-                    				<a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
+                    				<a href="SvCategoria?action=bestias" class="catBadge"><%= cat.getNombre() %></a>
                     				</li>
                     			<%}} %>
                 	</ul>
