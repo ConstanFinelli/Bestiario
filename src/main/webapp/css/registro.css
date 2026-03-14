@@ -26,8 +26,8 @@ h1 {
 }
 
 .infoBestia{
-    box-shadow: 0 10px 20px rgba(7, 35, 60, 0.317);
-    border: 4px solid var(--primary-color);
+    box-shadow: 0 4px 6px 0 rgba(7, 35, 60, 0.317);
+    background: #d1cec6;
     padding: 20px;
     margin: 2vh 2vw;
     border-radius: 12px;
@@ -47,7 +47,6 @@ h1 {
 .infoBestia img {
     height: 20vh;
     width: 20vw;
-    box-shadow: 0 5px 15px rgba(7, 35, 60, 0.3); 
     border-radius: 8px;
 }
 
@@ -162,7 +161,7 @@ ul{
 	gap: 10px;
 	margin-top: 4vh;
 	padding: 3vh 3vw;
-	border: 2px solid var(--primary-color);
+	background: #d1cec6;
 }
 
 .anotherRegistros input{
