@@ -17,7 +17,7 @@ ul{
 	background: rgba(0,0,0,0.1);
 	padding: 2vh;
 	width: 14vw;
-	height: 27vh;
+	height: 40vh;
 	overflow-y: scroll;
 	display: flex;
 	flex-direction: column;
@@ -149,7 +149,8 @@ ul{
 .modalButtons button {
 	padding: 0.7rem 1rem;
 	font-size: 1.2rem;
-	font-weight: 400;
+	font-weight: 600;
+	color: var(--font-color);
 	height: fit-content;
 	border: none;
 	border-radius: 6px;

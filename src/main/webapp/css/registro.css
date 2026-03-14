@@ -12,7 +12,6 @@
 }
 
 h2{
-    text-decoration: underline;
     font-size: 1.6rem;
     margin-bottom: 15px;
 }
@@ -52,10 +51,9 @@ h1 {
 
 .infoBestia h3{
     text-align: center;
-    text-decoration: underline;
     font-size: 1.4rem;
     margin-bottom: 10px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .mainContent p, .mainContent textarea {
@@ -249,4 +247,21 @@ textarea{
 	font-family: "Aubrey", system-ui;
 	font-weight: 400;
 	font-size: 1.4rem;
+}
+
+.catBadge{
+	display: inline-block;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    padding: 0.3rem;
+    font-weight: 500;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.catBadge::before{
+    content: '⫸';
+    font-size: 1.3rem;
+    color: gray;
 }
