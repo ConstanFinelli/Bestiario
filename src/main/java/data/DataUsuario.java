@@ -68,8 +68,8 @@ public class DataUsuario {
 					int id = rs.getInt("idUsuario");
 					String correo = rs.getString("correo");
 					String contraseña = rs.getString("contraseña");
-					boolean esInv = rs.getBoolean("esInvestigador");
-					if(esInv) {
+					String estado = rs.getString("estado");
+					if("Investigador".equals(estado)) {
 						String nombre = rs.getString("nombre");
 						String apellido = rs.getString("apellido");
 						String dni = rs.getString("dni");
@@ -114,20 +114,20 @@ public class DataUsuario {
 		try {
 			if(us.getEstado().equals("investigador")) {
 				inv = (Investigador) us;
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,nombre,apellido,dni,esInvestigador) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,nombre,apellido,dni,estado) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, inv.getCorreo());
 				pstmt.setString(2, inv.getContraseña());
 				pstmt.setString(3, inv.getNombre());
 				pstmt.setString(4, inv.getApellido());
 				pstmt.setString(5, inv.getDni());
-				pstmt.setBoolean(6, true);
+				pstmt.setString(6, inv.getEstado());
 			}else {
 				le = (Lector) us;
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,fechaNacimiento,esInvestigador) values(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,fechaNacimiento,estado) values(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContraseña());
 				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
-				pstmt.setBoolean(4, false);
+				pstmt.setString(4, le.getEstado());
 			}
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
