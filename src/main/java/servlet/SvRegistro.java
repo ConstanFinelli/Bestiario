@@ -7,9 +7,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedList;
+
 import logic.LogicRegistro;
+import logic.LogicTipoEvidencia;
 
 import entities.Registro;
+import entities.TipoEvidencia;
 import entities.Bestia;
 import entities.Investigador;
 
@@ -19,7 +23,10 @@ import entities.Investigador;
 @WebServlet("/SvRegistro")
 public class SvRegistro extends HttpServlet {
 
+	private final String ACTUALIZACION_REGISTRO_JSP = "nuevoRegistro.jsp";
+	
 	private LogicRegistro controlador = new LogicRegistro();
+	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -36,6 +43,15 @@ public class SvRegistro extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		RequestDispatcher rd = null;
+		String action = request.getParameter("action");
+		
+		if("actualizacion".equals(action)) {
+			rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+			LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
+			request.setAttribute("tes", tes);
+		}
+		rd.forward(request, response);
 		
 	}
 

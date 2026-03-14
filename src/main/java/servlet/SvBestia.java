@@ -9,36 +9,33 @@
 	import jakarta.servlet.http.HttpServletResponse;
 	import jakarta.servlet.http.HttpSession;
 	import jakarta.servlet.http.Part;
-	
-	import java.io.File;
-	import java.io.FileInputStream;
+
 	import java.io.IOException;
-	import java.io.OutputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+	import java.time.LocalDate;
+	import java.time.LocalDateTime;
 
 	import java.util.LinkedList;
 	
 	import entities.Bestia;
-import entities.Categoria;
-import entities.Comentario;
+	import entities.Categoria;
+	import entities.Comentario;
 	import entities.ContenidoRegistro;
 	import entities.Evidencia;
-import entities.Habitat;
-import entities.Investigador;
-import entities.Registro;
+	import entities.Habitat;
+	import entities.Investigador;
+	import entities.Registro;
 	import entities.TipoEvidencia;
 	import entities.Usuario;
 	import logic.LogicBestia;
-import logic.LogicCategoria;
-import logic.LogicComentario;
+	import logic.LogicCategoria;
+	import logic.LogicComentario;
 	import logic.LogicContenidoRegistro;
 	import logic.LogicEvidencia;
 import logic.LogicHabitat;
 import logic.LogicRegistro;
 	import logic.LogicTipoEvidencia;
 	import logic.LogicUsuario;
-	
+import helpers.ImagesHelper;
 	/**
 	 * Servlet implementation class SbBestia
 	 */
@@ -66,10 +63,6 @@ import logic.LogicRegistro;
 		private LogicHabitat controladorHabitat = new LogicHabitat();
 		private LogicCategoria controladorCategoria = new LogicCategoria();
 		
-		private String getExternalFolder() {
-			File projectDir = new File("").getAbsoluteFile();
-			return (projectDir.toString() + File.separator + "docs" + File.separator + "imagenes"); 
-		}
 		private static final long serialVersionUID = 1L;
 	       
 	
@@ -115,10 +108,6 @@ import logic.LogicRegistro;
 				rd = request.getRequestDispatcher(REGISTRO_JSP);
 			}else if ("registrosPendientes".equals(action)) {
 				rd = request.getRequestDispatcher(REGISTROS_PENDIENTES_JSP);
-			}
-			else if("imagen".equals(action)) {
-				doGetImage(request, response);
-				return;
 			}
 			else if("actualizacion".equals(action)) {
 				rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
@@ -294,53 +283,6 @@ import logic.LogicRegistro;
 			request.setAttribute("deleteMsg", msgDelete);
 		}
 		
-		protected void doGetImage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			String fileName = request.getParameter("file");
-	        if(fileName == null || fileName.isEmpty()) {
-	            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No file specified");
-	            return;
-	        }
-	
-	        File imageFile = new File(getExternalFolder(), fileName);
-	        if(!imageFile.exists()) {
-	            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found");
-	            return;
-	        }
-	
-	     
-	        String mimeType = getServletContext().getMimeType(imageFile.getName());
-	        if(mimeType == null) {
-	            mimeType = "application/octet-stream";
-	        }
-	
-	        response.setContentType(mimeType);
-	        response.setContentLengthLong(imageFile.length());
-	
-	        try (FileInputStream fis = new FileInputStream(imageFile);
-	             OutputStream os = response.getOutputStream()) {
-	
-	            byte[] buffer = new byte[4096];
-	            int bytesRead;
-	            while((bytesRead = fis.read(buffer)) != -1) {
-	                os.write(buffer, 0, bytesRead);
-	            }
-	        }
-		}
-		
-		protected String doPostImage(HttpServletRequest request, HttpServletResponse response, String nombreImagen) throws ServletException, IOException {
-			Part filePart = request.getPart("mainPic");
-	    	String fileName = nombreImagen +".jpg";
-	    	
-	    	File uploadDir = new File(getExternalFolder());
-	    	if(!uploadDir.exists()) {
-	    		uploadDir.mkdirs();
-	    	}
-	    	
-	    	File file = new File(uploadDir, fileName);
-	    	filePart.write(file.getAbsolutePath());
-	    	return fileName; 
-		}
-		
 		protected void doAddBestiaProposal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 			String nombre = request.getParameter("nombre");
 			String peligrosidad = request.getParameter("peligrosidad");
@@ -372,8 +314,9 @@ import logic.LogicRegistro;
 			
 			Usuario usuario = (Usuario) session.getAttribute("user");	
 			String bestiaId = request.getParameter("id");
-	
-			String mainPic = doPostImage(request, response, controladorRegistro.obtenerNombreImagen(bestiaId));
+			
+			Part filePart = request.getPart("mainPic");
+			String mainPic = ImagesHelper.saveImage(filePart, controladorRegistro.obtenerNombreImagen(bestiaId));
 			
 			
 			ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
