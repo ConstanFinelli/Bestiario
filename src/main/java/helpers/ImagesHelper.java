@@ -8,7 +8,7 @@ import jakarta.servlet.http.Part;
 public class ImagesHelper {
 	
 	public static String getImagesFolder() {
-		File folder = new File(FilesHelper.getFilesFolder(), "imagenes");
+		File folder = new File(FilesHelper.getFilesFolder(), "images");
 		return (folder.getAbsolutePath()); 
 	}
 	

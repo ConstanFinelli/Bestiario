@@ -10,6 +10,7 @@ import jakarta.servlet.RequestDispatcher;
 
 import logic.LogicNoticia;
 import entities.Noticia;
+import helpers.Constantes;
 
 import java.util.LinkedList;
 import java.time.LocalDateTime;
@@ -44,7 +45,7 @@ public class SvNoticia extends HttpServlet {
 	//##GET ONE##
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.NOTICIA_FORM_JSP);
 		String getOneMsg = "";
 		String findAllMsg = "";
 		if(id != null) {
@@ -85,7 +86,7 @@ public class SvNoticia extends HttpServlet {
 		String idUsuario = request.getParameter("idUsuario");
 		String flag = request.getParameter("flag");
 		String saveMsg = "";
-		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp"); 
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.NOTICIA_FORM_JSP); 
 		
 		if (flag.equals("post")) {
 			try {
@@ -121,7 +122,7 @@ public class SvNoticia extends HttpServlet {
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.NOTICIA_FORM_JSP);
 		String updateMsg = "";
 		String id = request.getParameter("id");
 		String titulo = request.getParameter("titulo");
@@ -164,7 +165,7 @@ public class SvNoticia extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("noticiaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.NOTICIA_FORM_JSP);
 		String msgDelete = "";
 		Noticia noticia = new Noticia(Integer.parseInt(id));
 		noticia = controlador.delete(noticia);

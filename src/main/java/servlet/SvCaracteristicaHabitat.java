@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
+import helpers.Constantes;
 
 
 /**
@@ -35,7 +36,7 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("carHabitatForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.CARAC_HABITAT_FORM_JSP);
 		String findAllMsg = "";
 		
 		if(id != null) {
@@ -64,7 +65,7 @@ public class SvCaracteristicaHabitat extends HttpServlet {
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
 		String flag = request.getParameter("flag");
-		RequestDispatcher rd = request.getRequestDispatcher("carHabitatForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.CARAC_HABITAT_FORM_JSP);
 		String saveMsg = "";
 		
 		if(flag.equals("post")) {
