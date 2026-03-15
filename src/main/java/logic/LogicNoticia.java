@@ -15,6 +15,10 @@ public class LogicNoticia {
 	public LinkedList<Noticia> findAll() {
 		return(dataNoticia.findAll());
 	}
+	
+	public LinkedList<Noticia> getUltimasNoticias(){
+		return(dataNoticia.getUltimasNoticias());
+	}
 
 	public Noticia save(Noticia noticia) {
 		return (dataNoticia.save(noticia));
@@ -27,9 +31,7 @@ public class LogicNoticia {
 			if(noticiaNueva.getTitulo().equals("")) noticiaNueva.setTitulo(noticiaAnterior.getTitulo());
 			if(noticiaNueva.getEstado().equals("")) noticiaNueva.setEstado(noticiaAnterior.getEstado());
 			if(noticiaNueva.getFechaPublicacion() == null) noticiaNueva.setFechaPublicacion(noticiaAnterior.getFechaPublicacion());
-			if(noticiaNueva.getIdUsuario().equals("")) noticiaNueva.setIdUsuario(noticiaAnterior.getIdUsuario());
-			System.out.println(noticiaAnterior.getIdUsuario() + "   " + noticiaAnterior.getIdUsuario().getClass().toString() );
-			System.out.println(noticiaNueva.getIdUsuario() + "   " + noticiaNueva.getIdUsuario().getClass().toString() );
+			if(noticiaNueva.getPublicador() == null) noticiaNueva.setPublicador(noticiaAnterior.getPublicador());
 ;			noticiaNueva = dataNoticia.update(noticiaNueva);
 			
 		} else {

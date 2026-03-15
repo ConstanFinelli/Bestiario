@@ -28,10 +28,14 @@ body{
     color: var(--font-color);
 }
 
-footer{
-    width: 100vw;
-    height: 7vh;
-    background-color: var(--primary-color);
+footer {
+	width: 100vw;
+	height: 7vh;
+	background-color: var(--primary-color);
+	text-align: center;
+	padding: 15px 0;
+	font-size: 1.6rem;
+	color: white;
 }
 
 .notFound {
@@ -51,4 +55,10 @@ footer{
 .notFound::before {
     content: "⚠️";
     font-size: 2rem;
+}
+
+h1, h2, h3, h4 {
+	font-family: "MedievalSharp", cursive;
+	line-height: 2lh;
+	font-weight: 600;
 }
