@@ -28,8 +28,6 @@
 <h1>Bestias registradas</h1>
 	<% 
 		String searchedFilter = (String) request.getAttribute("searchedFilter");
-		
-		System.out.println(searchedFilter); // Logica para que quede el la categoria en el input
 	
 		if (searchedFilter == null) { searchedFilter = "";}
 	 %>

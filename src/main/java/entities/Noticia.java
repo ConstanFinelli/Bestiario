@@ -8,15 +8,15 @@ public class Noticia {
 	private String contenido;
 	private String estado;
 	private LocalDateTime fechaPublicacion;
-	private String idUsuario; //lo manejo como string porque sino no acepta nulos
+	private Investigador publicador; //lo manejo como string porque sino no acepta nulos
 	
-	public Noticia(int id, String titulo, String contenido, String estado, LocalDateTime fechaPublicacion, String idUsuario) {
+	public Noticia(int id, String titulo, String contenido, String estado, LocalDateTime fechaPublicacion, Investigador publicador) {
 		this.id = id;
 		this.titulo = titulo;
 		this.contenido = contenido;
 		this.estado = estado;
 		this.fechaPublicacion = fechaPublicacion;
-		this.idUsuario = idUsuario;
+		this.publicador = publicador;
 	}
 	
 	public Noticia(int id) {
@@ -27,12 +27,12 @@ public class Noticia {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Noticia(String titulo, String contenido, String estado, LocalDateTime fechaPublicacion, String idUsuario) {
+	public Noticia(String titulo, String contenido, String estado, LocalDateTime fechaPublicacion, Investigador publicador) {
 		this.titulo = titulo;
 		this.contenido = contenido;
 		this.estado = estado;
 		this.fechaPublicacion = fechaPublicacion;
-		this.idUsuario = idUsuario;			
+		this.publicador = publicador;			
 	}
 
 	public int getId() {
@@ -65,17 +65,11 @@ public class Noticia {
 	public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
 		this.fechaPublicacion = fechaPublicacion;
 	}
-	public String getIdUsuario() {
-		return idUsuario;
+	public Investigador getPublicador() {
+		return publicador;
 	}
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setPublicador(Investigador publicador) {
+		this.publicador = publicador;
 	}
-	
-	@Override
-	public String toString() {
-		return "Noticia [id=" + id + ", titulo=" + titulo + ", contenido=" + contenido + ", estado=" + estado
-				+ ", fechaPublicacion=" + fechaPublicacion + ", idUsuario="+idUsuario +"]\n";
-	}	
 	
 }
