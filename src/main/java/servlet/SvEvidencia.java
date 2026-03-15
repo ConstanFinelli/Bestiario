@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.TipoEvidencia;
+import helpers.Constantes;
 import entities.Evidencia;
 import logic.LogicEvidencia;
 import logic.LogicTipoEvidencia;
@@ -37,7 +38,7 @@ public class SvEvidencia extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher rd = request.getRequestDispatcher("evidenciaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.EVIDENCIA_FORM_JSP);
 		String msj = "";
 		String idTipo = request.getParameter("IdTipo");
 		String nroEvidencia = request.getParameter("nroEvidencia");
@@ -79,7 +80,7 @@ public class SvEvidencia extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher rd = request.getRequestDispatcher("evidenciaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.EVIDENCIA_FORM_JSP);
 		String msj = null;
 		String flag = request.getParameter("flag");
 		if("create".equals(flag)) {

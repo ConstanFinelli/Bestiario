@@ -14,6 +14,7 @@ import logic.LogicTipoEvidencia;
 
 import entities.Registro;
 import entities.TipoEvidencia;
+import helpers.HttpRoutes;
 import entities.Bestia;
 import entities.Investigador;
 
@@ -22,8 +23,6 @@ import entities.Investigador;
  */
 @WebServlet("/SvRegistro")
 public class SvRegistro extends HttpServlet {
-
-	private final String ACTUALIZACION_REGISTRO_JSP = "nuevoRegistro.jsp";
 	
 	private LogicRegistro controlador = new LogicRegistro();
 	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
@@ -47,7 +46,7 @@ public class SvRegistro extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		if("actualizacion".equals(action)) {
-			rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+			rd = request.getRequestDispatcher(HttpRoutes.REGISTRO_JSP(request.getContextPath()));
 			LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
 			request.setAttribute("tes", tes);
 		}
@@ -73,7 +72,7 @@ public class SvRegistro extends HttpServlet {
 			controlador.delete(registro);
 		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher("registrosPendientes.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.REGISTROS_PENDIENTES_JSP(request.getContextPath()));
 		rd.forward(request, response);
 		
 	}

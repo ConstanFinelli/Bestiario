@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedList;
 import entities.Categoria;
+import helpers.Constantes;
 import logic.LogicCategoria;
 
 /**
@@ -32,7 +33,7 @@ public class SvCategoria extends HttpServlet {
 		// TODO Auto-generated method stub
 		String id = request.getParameter("id");
 		String msj = "";
-		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.CATEGORIA_FORM_JSP);
 		if(id != null) {
 			Categoria cat = new Categoria(Integer.parseInt(id),null, null);
 			Categoria categoria = controlador.getOne(cat);
@@ -64,7 +65,7 @@ public class SvCategoria extends HttpServlet {
 		String desc = request.getParameter("descripcion");
 		String flag = request.getParameter("flag");
 		String msj = "";
-		RequestDispatcher rd = request.getRequestDispatcher("categoriaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.CATEGORIA_FORM_JSP);
 		if("create".equals(flag)) {
 			if(desc != null || "".equals(desc)) {
 				Categoria cat = new Categoria(0, name, desc);

@@ -35,6 +35,8 @@ import logic.LogicHabitat;
 import logic.LogicRegistro;
 	import logic.LogicTipoEvidencia;
 	import logic.LogicUsuario;
+import helpers.Constantes;
+import helpers.HttpMethodParser;
 import helpers.ImagesHelper;
 	/**
 	 * Servlet implementation class SbBestia
@@ -43,15 +45,12 @@ import helpers.ImagesHelper;
 	@WebServlet("/SvBestia")
 	public class SvBestia extends HttpServlet {
 		
+		
 		//CONSTANTES
 		private final String BESTIA_NOT_FOUND = "No existe una bestia con ese id";
 		private final String CREATE_BESTIA_ERROR = "Error al crear la nueva bestia. Revisar datos enviados";
 		private final String ID_FORMAT_ERROR = "Error en el formato del id ingresado";
-		private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
-		private final String BESTIA_LIST_JSP = "bestias.jsp";
-		private final String REGISTRO_JSP = "registro.jsp";
-		private final String REGISTROS_PENDIENTES_JSP = "registrosPendientes.jsp";
-		private final String ACTUALIZACION_REGISTRO_JSP = "nuevoRegistro.jsp";
+
 		//private final String ADD_BESTIA_JSP = "crearPropuestaBestia.jsp"; 
 		private LogicBestia controlador = new LogicBestia();
 		private LogicRegistro controladorRegistro = new LogicRegistro();
@@ -64,14 +63,16 @@ import helpers.ImagesHelper;
 		private LogicCategoria controladorCategoria = new LogicCategoria();
 		
 		private static final long serialVersionUID = 1L;
-	       
+		
+		// HELPER
+		private HttpMethodParser parser = new HttpMethodParser();   
 	
 		/**
 		 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 		 */
 		//##GET ONE##
 	    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			String id = request.getParameter("id");
+	    	String id = request.getParameter("id");
 			String fechaParam = request.getParameter("fecha");
 			String nroRegistro = request.getParameter("nroRegistro");
 			
@@ -97,20 +98,20 @@ import helpers.ImagesHelper;
 			String action = request.getParameter("action");
 			
 			if("form".equals(action)) {
-				rd = request.getRequestDispatcher(BESTIA_FORMS_JSP);
+				rd = request.getRequestDispatcher(Constantes.BESTIA_FORMS_JSP);
 				LinkedList<Habitat> habitats = controladorHabitat.findAll();
 				LinkedList <Categoria> categorias = controladorCategoria.findAll();
 				session.setAttribute("habitats", habitats);
 				session.setAttribute("categorias", categorias);
 			}else if("list".equals(action)){
-				rd = request.getRequestDispatcher(BESTIA_LIST_JSP);
+				rd = request.getRequestDispatcher(Constantes.BESTIA_LIST_JSP);
 			}else if("registro".equals(action)) {
-				rd = request.getRequestDispatcher(REGISTRO_JSP);
+				rd = request.getRequestDispatcher(Constantes.REGISTRO_JSP);
 			}else if ("registrosPendientes".equals(action)) {
-				rd = request.getRequestDispatcher(REGISTROS_PENDIENTES_JSP);
+				rd = request.getRequestDispatcher(Constantes.REGISTROS_PENDIENTES_JSP);
 			}
 			else if("actualizacion".equals(action)) {
-				rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+				rd = request.getRequestDispatcher(Constantes.ACTUALIZACION_REGISTRO_JSP);
 				LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
 				request.setAttribute("tes", tes);
 			}
@@ -141,21 +142,7 @@ import helpers.ImagesHelper;
 				request.setAttribute("bestia", bestia);
 				session.setAttribute("registro", registro);
 				request.setAttribute("registrosPendientes", registrosPendientes);
-			} else {
-				String filter = request.getParameter("filter"); // filtro por categoria 
-				if(filter != null && !filter.isEmpty()) {
-					bestias= controlador.findByCategoria(filter);	
-				} else {
-					bestias = controlador.findAll();
-				}
-				
-				if (!bestias.isEmpty()) {
-					request.setAttribute("bestias", bestias);
-				}
-				if(filter != null) {
-					request.setAttribute("searchedFilter", filter); //Para que siga estando el filtro en el buscar 
-				}
-			}
+			} 
 			rd.forward(request, response);
 		}
 	
@@ -164,58 +151,72 @@ import helpers.ImagesHelper;
 		 */
 	
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			// TODO Auto-generated method stub
+			RequestDispatcher rd = request.getRequestDispatcher(Constantes.BESTIA_FORMS_JSP); 
+			HttpSession session = request.getSession();
+			
+			String flag = request.getParameter("flag");
 			String nombre = request.getParameter("nombre");
 			String peligrosidad= request.getParameter("peligrosidad");
-			String flag = request.getParameter("flag");
-			String saveMsg = "";
-			RequestDispatcher rd = request.getRequestDispatcher(BESTIA_FORMS_JSP); 
-			HttpSession session = request.getSession();
-			Usuario usuario = (Usuario) session.getAttribute("user");
-			
 			String action = request.getParameter("action");
 			
-			if("actualizacion".equals(action)) {
-				rd = request.getRequestDispatcher(ACTUALIZACION_REGISTRO_JSP);
+			Usuario usuario = (Usuario) session.getAttribute("user");
+			
+			boolean redirigido = false;
+			
+			try {
+				redirigido = parser.Redirect(flag, new HttpMethodParser.MethodCallback() {
+			        @Override
+			        public void put() throws ServletException, IOException {
+		        		doPut(request, response);	
+			        }
+	
+			        @Override
+			        public void delete() throws IOException, ServletException {
+		        		doDelete(request,response);
+			        }
+			    });
+			}catch(IOException e) {
+        		e.printStackTrace();
+        	}catch(ServletException e) {
+        		e.printStackTrace();
+        	}
+
+		    // 3. Si el parser devuelve true (caso PATCH en tu switch) o manejas lógica extra
+		    if (redirigido) {
+		        return;
+		    }
+			
+			// 4. Validar accion y ejecutar flujo correspondiente
+		    if(action.equals("actualizacion")) {
+				rd = request.getRequestDispatcher(Constantes.ACTUALIZACION_REGISTRO_JSP);
 				String bestiaId = doProposeRegistro(request, response, session);
 				response.sendRedirect("SvBestia?action=registro&id="+bestiaId);
 				return;
-			}else if("add".equals(action)) {
+			}else if(action.equals("add")) {
 				   doAddBestiaProposal(request, response);
 				   return;
-			}else {
-			if (flag.equals("post")) {
-				try {
-	
-					if (nombre != null && peligrosidad != null) {
-						String estado = "pendiente";
-						if (usuario.getEstado().equals("investigador")) {
-							estado = "aprobado";
-						} 
-						Bestia bestia = new Bestia(nombre, peligrosidad, estado);
-						bestia = controlador.save(bestia);
-						saveMsg = saveMsg + bestia + "<br><nr>";
-					} else {
-						saveMsg = CREATE_BESTIA_ERROR;
-					}
-				} catch (NumberFormatException e) {
-					e.getMessage();
-					saveMsg = ID_FORMAT_ERROR;
-				} finally {
-					request.setAttribute("saveMsg", saveMsg);
-				} 
-			} else if(flag.equals("put")) {
-				doPut(request, response);
-			} else if(flag.equals("delete")){
-				doDelete(request,response);
-				response.sendRedirect("SvBestia?action=list");
-				return;
-			}else {
+			}
+		    
+		    if (flag == "") {
 				String idBestia = doAddCommentary(request,response);
 				String redirectUrl = request.getContextPath() + "/SvBestia?action=registro&id=" + idBestia;
 				response.sendRedirect(redirectUrl);
-				return;
-			}}
+		    }
+		    
+		    // en caso de no tener accion valida ejecutar flujo del post
+			try {
+				if (nombre != null && peligrosidad != null) {
+					String estado = "pendiente";
+					if (usuario.getEstado().equals("investigador")) {
+						estado = "aprobado";
+					} 
+					Bestia bestia = new Bestia(nombre, peligrosidad, estado);
+					bestia = controlador.save(bestia);
+				} 
+			} catch (NumberFormatException e) {
+				e.getMessage();
+			} 
+		
 			rd.forward(request, response);
 		}
 	
@@ -265,6 +266,7 @@ import helpers.ImagesHelper;
 					}
 				}
 			}
+			request.getRequestDispatcher(Constantes.BESTIA_FORMS_JSP).forward(request, response);
 		}
 	
 		/**
@@ -281,6 +283,7 @@ import helpers.ImagesHelper;
 				msgDelete = "Eliminado: " + bestia + "<br><br>";
 			}
 			request.setAttribute("deleteMsg", msgDelete);
+			response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));
 		}
 		
 		protected void doAddBestiaProposal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -311,12 +314,18 @@ import helpers.ImagesHelper;
 			String resumen = request.getParameter("resumen");
 			String historia = request.getParameter("historia");
 			String descripcion = request.getParameter("descripcion");
+			String mainPic = null;
 			
 			Usuario usuario = (Usuario) session.getAttribute("user");	
 			String bestiaId = request.getParameter("id");
 			
 			Part filePart = request.getPart("mainPic");
-			String mainPic = ImagesHelper.saveImage(filePart, controladorRegistro.obtenerNombreImagen(bestiaId));
+			if(filePart != null && filePart.getSize() > 0 ) {
+				mainPic = ImagesHelper.saveImage(filePart, controladorRegistro.obtenerNombreImagen(bestiaId));
+			}else if(controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()) != null){
+				mainPic = controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()).getMainPic();
+			}
+			
 			
 			
 			ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);

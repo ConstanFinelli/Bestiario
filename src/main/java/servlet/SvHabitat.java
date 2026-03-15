@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import entities.Habitat;
-
+import helpers.HttpRoutes;
 /**
  * Servlet implementation class SvHabitat
  */
@@ -39,9 +39,9 @@ public class SvHabitat extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		if("form".equals(action)) {
-			rd = request.getRequestDispatcher("habitatForms.jsp");}
+			rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));}
 		else {
-			rd = request.getRequestDispatcher("habitats.jsp");
+			rd = request.getRequestDispatcher(HttpRoutes.HABITATS_JSP(""));
 		}
 		String getOneMsg = "";
 		String findAllMsg = "";
@@ -54,14 +54,6 @@ public class SvHabitat extends HttpServlet {
 				getOneMsg = "Hábitat no encontrada";	
 			} 
 			request.setAttribute("getOneMsg", getOneMsg);
-		}else {
-			LinkedList<Habitat> hts = new LinkedList<>();
-			hts = controlador.findAll();
-			for(Habitat ht : hts) {
-				findAllMsg = findAllMsg + ht + "<br><br>";
-			}
-			request.setAttribute("findAllMsg", findAllMsg);
-			request.setAttribute("habitats", hts);
 		}
 		rd.forward(request, response);
 	}
@@ -73,7 +65,7 @@ public class SvHabitat extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
 		String flag = request.getParameter("flag");
-		RequestDispatcher rd = request.getRequestDispatcher("habitatForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
 		String saveMsg = "";
 		if(flag.equals("post")) {
 			Habitat ht = new Habitat(0, nombre, null, localizacion);

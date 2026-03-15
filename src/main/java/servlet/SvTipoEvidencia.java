@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedList;
 import entities.TipoEvidencia;
+import helpers.Constantes;
 import logic.LogicTipoEvidencia;
 
 /**
@@ -35,7 +36,7 @@ public class SvTipoEvidencia extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.TIPO_EVIDENCIA_FORM_JSP);
 		String msj = "";
 		if(id != null) {
 			TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), null);
@@ -64,7 +65,7 @@ public class SvTipoEvidencia extends HttpServlet {
 		String desc = request.getParameter("descripcion");
 		String msj = "";
 		String flag = request.getParameter("flag");
-		RequestDispatcher rd = request.getRequestDispatcher("tipoEvidenciaForms.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(Constantes.TIPO_EVIDENCIA_FORM_JSP);
 		if("create".equals(flag)) {
 			if(desc != null) {
 				TipoEvidencia tipo = new TipoEvidencia(0, null);
