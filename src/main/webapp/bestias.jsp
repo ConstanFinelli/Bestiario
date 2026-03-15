@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
+<%@ page import="logic.LogicRegistro" %>
 <%@ page import="entities.Bestia" %>
 <%@ page import="entities.Habitat" %>
+<%@ page import="entities.Registro" %>
 <%@ page import="entities.Categoria" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.LocalDateTime" %>
 
 <!DOCTYPE html>
 <html>
@@ -14,6 +17,10 @@
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/bestias.css">
 <link rel="stylesheet" href="css/navbar.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+<script
+	src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 </head>
 <body>
 <%@ include file="components/navbar.jsp" %>	
@@ -43,73 +50,94 @@
         session.removeAttribute("errorMsg"); // para que no se repita
     	}
 	%>
-	
-	<section class="bestias">
-	<%
+
+
+		<section class="slides">
+			<%
 			boolean verTodo = false;
-			if(usuario != null){
-				if(usuario.getEstado().equals("investigador")){
+			if (usuario != null) {
+				if (usuario.getEstado().equals("investigador")) {
 					verTodo = true;
 				}
 			}
-            LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
-            if (bestias != null) {
-                for (Bestia bestia : bestias) { 
-                if(bestia.getEstado().equals("aprobado") || verTodo == true){ %>
-                    <article class="bestia">
-                    	<%if (verTodo == true){%>
-                    		<div class="container-btn-deleteBestia">
-		                    	<button type="button" class="btn-deleteBestia" onClick="abrirModal('<%=bestia.getIdBestia()%>', '<%= bestia.getNombre() %>')" >
-		                    		x
-		                    	</button>	
-		                    </div>			
-	                    <%}%>
-                    	<h1><%= bestia.getNombre() %></h1>
-                    	<aside>
-                    		<h4>Peligrosidad</h4>
-                    		<p><%= bestia.getPeligrosidad() %></p>
-                    		<h4>Categorías</h4>
-                    		<p>
-                    		<% if(bestia.getCategorias().isEmpty()){ %>
-                    			No tiene categorías definidas.
-                    			<%}else{ 
-                    				for(Categoria cat:bestia.getCategorias()){
-                    			%>
-                    				<a class="catBadge" href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
-                    			<%}} %>
-                    		</p>
-                    	</aside>
-                    	<a class="btnBestia" href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>">Examinar</a>
-                    	<%if(usuario != null && usuario.getEstado().equals("investigador") ){ %>
-                    	<a class="btnBestia" href="SvBestia?action=registrosPendientes&id=<%= bestia.getIdBestia() %>">Ver Reg. Pendientes</a>
-                    	<%}%>
-                        <% if(bestia.getEstado().equals("pendiente")){%>
-                    	<form action="SvBestia" method="post" style="display:inline;">
-						  <input type="hidden" name="flag" value="put">
-						  <input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
-						  <input type="hidden" name="nombre" value="<%= bestia.getNombre() %>">
-						  <input type="hidden" name="peligrosidad" value="<%= bestia.getPeligrosidad() %>">
-						  <input type="hidden" name="estado" value="aprobado">
-						  <button type="submit" class="btnBestia">Aprobar Bestia</button>
-						</form>
+			LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
+			LogicRegistro controladorRegistro = new LogicRegistro();
+			if (bestias != null) {
+			%>
+			<div class="swiper mySwiper">
+				<div class="swiper-wrapper">
+					<%
+					for (Bestia bestia : bestias) {
+						if (bestia.getEstado().equals("aprobado") || verTodo == true) {
+					%>
+					<article class="bestia swiper-slide">
+						<h1><%=bestia.getNombre()%></h1>
+						<% Registro ultRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+							String imagen = null;
+							if(ultRegistro != null){
+								imagen = ultRegistro.getMainPic(); 
+							}
+						%>
+						<img src="SvImagen?file=<%=imagen != null ? imagen : "default.avif"%>" alt="Imagen de: <%=bestia.getNombre()%>">
+						<div class="overlay-buttons">
+							<a class="btnBestia"
+								href="SvBestia?action=registro&id=<%=bestia.getIdBestia()%>">Examinar</a>
+							<%
+							if (usuario != null && usuario.getEstado().equals("investigador")) {
+							%>
+							<a class="btnBestia"
+								href="SvBestia?action=registrosPendientes&id=<%=bestia.getIdBestia()%>">Ver
+								Reg. Pendientes</a>
+							<%}%>
+							<%
+							if (bestia.getEstado().equals("pendiente")) {
+							%>
+							<form action="SvBestia" method="post" style="display: inline;">
+								<input type="hidden" name="flag" value="put"> <input
+									type="hidden" name="id" value="<%=bestia.getIdBestia()%>">
+								<input type="hidden" name="nombre"
+									value="<%=bestia.getNombre()%>"> <input type="hidden"
+									name="peligrosidad" value="<%=bestia.getPeligrosidad()%>">
+								<input type="hidden" name="estado" value="aprobado">
+								<button type="submit" class="btnBestia">Aprobar Bestia</button>
+							</form>
+							<%
+							}
+							if (verTodo == true) {
+							%>
+							<button type="button" class="btnEliminar"
+								onClick="abrirModal('<%=bestia.getIdBestia()%>', '<%=bestia.getNombre()%>')">Eliminar</button>
+									<%
+						}
+						%>
+						</div>
+					</article>
+					<%}
+						} %>
+				</div>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+			</div>
+			<%
+			} else {
+			%>
 
-                    <%} %>
-                    </article>
-        <%
-                } 
-              }
-            }else{
-        %> 
-        <section>
-        	<div class="notFound">No se pudieron encontrar Bestias.</div>
-        </section>
-        <%} %>
-        
-        
-        </section>
-        <%if(usuario != null){%>
+			<section>
+				<div class="notFound">No se pudieron encontrar Bestias.</div>
+			</section>
+			<%
+			}
+			%>
+
+
+		</section>
+		<%
+		if (usuario != null) {
+		%>
         <a class="btnAgregar" href="crearPropuestaBestia.jsp"> + Proponer Nueva Bestia</a>
-        <% }%>
+        <%
+        }
+        %>
 </section>
 <footer>
 </footer>
@@ -127,24 +155,50 @@
 			</div>
 		</div>
 	</div>
-	<script> // javascript para modal
-            function abrirModal(id, nombre) {
-                document.getElementById('modal-titulo').innerText = "ELIMINAR BESTIA";
-                document.getElementById('modal-cuerpo').innerHTML = '¿Estas seguro que deseas eliminar a la bestia ' + nombre + '?';
-                document.getElementById('idAEliminar').value = id;
-                document.getElementById('modal').classList.add('is-visible');
-            }
+	<script>
+		// javascript para modal
+		function abrirModal(id, nombre) {
+			document.getElementById('modal-titulo').innerText = "ELIMINAR BESTIA";
+			document.getElementById('modal-cuerpo').innerHTML = '¿Estas seguro que deseas eliminar a la bestia '
+					+ nombre + '?';
+			document.getElementById('idAEliminar').value = id;
+			document.getElementById('modal').classList.add('is-visible');
+		}
 
-            function cerrarModal() {
-                document.getElementById('modal').classList.remove('is-visible');
-            }
-            
-            window.onclick = function(event) {
-                let modal = document.getElementById('modal');
-                if (event.target == modal) {
-                    cerrarModal();
-                }
-            }
-</script>
+		function cerrarModal() {
+			document.getElementById('modal').classList.remove('is-visible');
+		}
+
+		window.onclick = function(event) {
+			let modal = document.getElementById('modal');
+			if (event.target == modal) {
+				cerrarModal();
+			}
+		}
+	</script>
+	<script>
+		var swiper = new Swiper(".mySwiper", {
+			effect : "coverflow",
+			grabCursor : true,
+			centeredSlides : true,
+			slidesPerView : "auto",
+			loop : false,
+			observer: true,
+		    observeParents: true,
+			loopPreventsSliding : false,
+			coverflowEffect : {
+				rotate : 30,
+				stretch : 0,
+				depth : 150,
+				modifier : 1,
+				slideShadows : true,
+			},
+			slideToClickedSlide : true,
+			navigation : {
+				nextEl : '.swiper-button-next',
+				prevEl : '.swiper-button-prev',
+			},
+		});
+	</script>
 </body>
 </html>
