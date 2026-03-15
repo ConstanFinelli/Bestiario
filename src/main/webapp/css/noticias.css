@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+.new {
+	height: 300px;
+	width: 400px;
+}
+
+.new h2 {
+	font-size: 1.4rem;
+}
+
+.newInfo {
+	font-size: 1rem;
+	color: gray;
+}
+
+.newContainer {
+	background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 60%),
+        linear-gradient(135deg, rgba(139, 69, 19, 0.05) 25%, transparent 25%, transparent 50%, rgba(139, 69, 19, 0.05) 50%, rgba(139, 69, 19, 0.05) 75%, transparent 75%, transparent),
+        linear-gradient(to bottom, #f5deb3 0%, #e8dcb9 40%, #d2b48c 80%, #c1a171 100%);
+	padding: 15px;
+}
+
+.newContent {
+	padding: 15px 0;
+	font-size: 1rem;
+}
+
+.newsContainer{
+	display: flex;
+	flex-direction: row;
+	gap: 15px;
+}

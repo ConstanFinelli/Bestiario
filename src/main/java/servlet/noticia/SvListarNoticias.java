@@ -40,12 +40,12 @@ public class SvListarNoticias extends HttpServlet {
 		
 		RequestDispatcher rd = null;
 		
-		if(flag.equals("ultimasNoticias")) { 
+		if("ultimasNoticias".equals(flag)) { 
 			noticias = controlador.getUltimasNoticias();
 			rd = request.getRequestDispatcher("../home.jsp");
 		}else {
 			noticias = controlador.findAll();
-			rd = request.getRequestDispatcher("noticias.jsp");
+			rd = request.getRequestDispatcher("../noticias.jsp");
 		}
 		request.setAttribute("noticias", noticias);
 		rd.forward(request, response);

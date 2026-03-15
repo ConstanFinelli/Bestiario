@@ -10,7 +10,7 @@
 }
 
 .newsContent {
-	background-color: rgba(0, 0, 0, 0.25);
+	background-color: color(srgb 0.795 0.7327 0.5764);
 	padding: 3vh;
 	max-height: 800px;
 	min-height: 100vh;
@@ -31,7 +31,9 @@
 }
 
 .new {
-	background-color: var(--secondary-color);
+	background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 60%),
+        linear-gradient(135deg, rgba(139, 69, 19, 0.05) 25%, transparent 25%, transparent 50%, rgba(139, 69, 19, 0.05) 50%, rgba(139, 69, 19, 0.05) 75%, transparent 75%, transparent),
+        linear-gradient(to bottom, #f5deb3 0%, #e8dcb9 40%, #d2b48c 80%, #c1a171 100%);
 	height: fit-content;
 	width: 450px;
 	border-radius: 1rem;
@@ -80,9 +82,4 @@
 .aboutUsBg {
 	color: wheat;
 	padding: 15px;
-}
-
-.newsContent {
-	background-color: rgba(0, 0, 0, 0.25);
-	padding: 3vh;
 }
