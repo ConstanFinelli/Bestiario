@@ -1,4 +1,4 @@
-package servlet.Bestia;
+package servlet.bestia;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
