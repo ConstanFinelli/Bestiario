@@ -1,23 +1,31 @@
-package servlet.Bestia;
+package servlet.habitat;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import logic.LogicHabitat;
+
 import java.io.IOException;
+import java.util.LinkedList;
+
+import entities.Habitat;
+import helpers.HttpRoutes;
 
 /**
- * Servlet implementation class ActualizarBestia
+ * Servlet implementation class ListarHabitat
  */
-@WebServlet("/Bestia/Actualizar")
-public class ActualizarBestia extends HttpServlet {
+@WebServlet("/habitats/listar")
+public class ListarHabitat extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private LogicHabitat controlador = new LogicHabitat();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ActualizarBestia() {
+    public ListarHabitat() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,8 +34,11 @@ public class ActualizarBestia extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITATS_JSP(""));
+		LinkedList<Habitat> hts = new LinkedList<>();
+		hts = controlador.findAll();
+		request.setAttribute("habitats", hts);
+		rd.forward(request, response);
 	}
 
 	/**

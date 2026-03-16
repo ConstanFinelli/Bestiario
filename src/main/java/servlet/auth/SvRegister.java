@@ -1,4 +1,4 @@
-package servlet.Auth;
+package servlet.auth;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,12 +9,9 @@ import logic.LogicUsuario;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import entities.Investigador;
 import entities.Lector;
 import entities.Usuario;
-import helpers.Constantes;
+import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class SvRegister
@@ -54,12 +51,12 @@ public class SvRegister extends HttpServlet {
 					fechaSinHora.atStartOfDay()
 				);
 				logicUsuario.save(userLector);
-			response.sendRedirect(Constantes.LOGIN_JSP);	
+			response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	
 			return;
 		}
 		
 		request.setAttribute("logMsg", logMessage);
-		request.getRequestDispatcher(Constantes.REGISTER_JSP).forward(request, response);
+		request.getRequestDispatcher(HttpRoutes.REGISTER_JSP("")).forward(request, response);
 	}
 
 }
