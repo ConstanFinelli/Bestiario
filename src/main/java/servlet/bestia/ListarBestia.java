@@ -17,7 +17,7 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class Listar
  */
-@WebServlet("/bestia/listar")
+@WebServlet("/bestias/listar")
 public class ListarBestia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LogicBestia controladorBestia = new LogicBestia();
@@ -46,9 +46,6 @@ public class ListarBestia extends HttpServlet {
 	}
 
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+
 
 }

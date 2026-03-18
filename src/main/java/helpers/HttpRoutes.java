@@ -31,7 +31,27 @@ public final class HttpRoutes {
 	}
 	
 	public static String LISTAR_BESTIAS(String base) {
-		return base + "/bestia/listar";
+		return base + "/bestias/listar";
+	}
+	
+	public static String CAMBIAR_HABITAT(String base) {
+		return base + "/bestias/cambiarHabitat";
+	}
+	
+	public static String CAMBIAR_CATEGORIA(String base) {
+		return base + "/bestias/cambiarCategoria";
+	}
+	
+	public static String ACTUALIZAR_BESTIA(String base) {
+		return base + "/bestias/actualizar";
+	}
+	
+	public static String ELIMINAR_BESTIA(String base) {
+		return base + "/bestias/eliminar";
+	}
+	
+	public static String CREAR_BESTIA(String base) {
+		return base + "/bestias/crear";
 	}
 
 	// Registros
@@ -49,6 +69,18 @@ public final class HttpRoutes {
 	
 	public static String ACEPTAR_REGISTRO(String base) {
 		return base + "/registros/aceptarRegistro";
+	}
+	
+	public static String ACTUALIZAR_REGISTRO(String base) {
+		return base + "/registros/actualizarRegistro";
+	}
+	
+	public static String OBTENER_REGISTRO_BESTIA(String base) {
+		return base + "/registros/obtenerRegistroConBestia";
+	}
+	
+	public static String OBTENER_REGISTROS_PENDIENTES_BESTIA(String base) {
+		return base + "/registros/obtenerRegistrosPendientesBestia";
 	}
 
 	// Habitats
@@ -82,6 +114,22 @@ public final class HttpRoutes {
 	
 	public static String OBTENER_HABITAT(String base) {
 		return base + "/habitats/obtener";
+	}
+	
+	public static String LISTAR_CARACTERISTICAHABITAT(String base) {
+		return base + "/habitats/listarCaracteristicaHabitat";
+	}
+	
+	public static String CREAR_CARACTERISTICAHABITAT(String base) {
+		return base + "/habitats/crearCaracteristicaHabitat";
+	}
+	
+	public static String ACTUALIZAR_CARACTERISTICAHABITAT(String base) {
+		return base + "/habitats/actualizarCaracteristicaHabitat";
+	}
+
+	public static String ELIMINAR_CARACTERISTICAHABITAT(String base) {
+		return base + "/habitats/eliminarCaracteristicaHabitat";
 	}
 
 	// Noticias
@@ -192,6 +240,12 @@ public final class HttpRoutes {
 	public static String CREAR_SOLICITUD(String base) {
 		return base + "/investigadores/crearSolicitud";
 	}
+	
+	// Comentarios
+	public static String AGREGAR_COMENTARIO(String base) {
+		return base + "/comentarios/agregar";
+	}
+	
 	
 	
 }

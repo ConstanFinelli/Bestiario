@@ -13,16 +13,14 @@ import java.io.IOException;
 
 import entities.Bestia;
 import entities.Usuario;
+import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class CrearBestia
  */
-@WebServlet("/Bestia/Crear")
+@WebServlet("/bestias/crear")
 public class CrearBestia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	// CONSTANTES
-	private final String BESTIA_FORMS_JSP = "bestiaForms.jsp";
 	
 	// CONTROLADORES
 	private LogicBestia controlador = new LogicBestia();
@@ -33,7 +31,7 @@ public class CrearBestia extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	RequestDispatcher rd = request.getRequestDispatcher(BESTIA_FORMS_JSP); 
+    	RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.BESTIA_FORMS_JSP("")); 
 		HttpSession session = request.getSession();
 		
 		String nombre = request.getParameter("nombre");

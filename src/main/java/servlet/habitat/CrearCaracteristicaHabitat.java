@@ -9,17 +9,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCaracteristicaHabitat;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
 import helpers.HttpRoutes;
 
 /**
- * Servlet implementation class ListarCaracteristicasHabitat
+ * Servlet implementation class CrearCaracteristicaHabitat
  */
-@WebServlet("/habitats/listarCaracteristicasHabitat")
-public class ListarCaracteristicasHabitat extends HttpServlet {
+@WebServlet("/habitats/crearCaracteristicaHabitat")
+public class CrearCaracteristicaHabitat extends HttpServlet {
 	private LogicCaracteristicaHabitat controlador = new LogicCaracteristicaHabitat();
 	
 	private static final long serialVersionUID = 1L;
@@ -27,18 +26,20 @@ public class ListarCaracteristicasHabitat extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListarCaracteristicasHabitat() {
+    public CrearCaracteristicaHabitat() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.CARAC_HABITAT_FORM_JSP(""));
+		String id = request.getParameter("id");
+		String descripcion = request.getParameter("descripcion");
 		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
-		LinkedList<CaracteristicaHabitat> hts = new LinkedList<>();
-		hts = controlador.findAllById(ht);
-		request.setAttribute("foundCaracteristicas", hts);
+		CaracteristicaHabitat ch = new CaracteristicaHabitat(ht.getId(), descripcion);
+		ch = controlador.save(ch, ht);
+		request.setAttribute("savedCaracteristica", ch);
 		rd.forward(request, response);
-		}
+	}
+
 }
