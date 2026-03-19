@@ -16,7 +16,7 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class SvRegister
  */
-@WebServlet("/Auth/Register")
+@WebServlet("/auth/register")
 public class SvRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public LogicUsuario logicUsuario = new LogicUsuario();
