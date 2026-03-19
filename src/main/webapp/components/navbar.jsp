@@ -12,7 +12,7 @@ page import="entities.Usuario, helpers.HttpRoutes"
             
 	        <%
 			    Usuario usuario = (Usuario) session.getAttribute("user");
-			    if (usuario != null) {%>
+			    if (usuario != null){%>
 			    	<%
 			    	if(usuario.getEstado().equals("investigador")){
 			    	%>
@@ -21,6 +21,8 @@ page import="entities.Usuario, helpers.HttpRoutes"
 			    	<%
 			    	} else if(usuario.getEstado().equals("lector")){ %>
 			    		<a class="navLink" href=<%=HttpRoutes.PRESENTAR_CANDIDATURA_JSP(request.getContextPath()) %> >Volverse Investigador</a>    	
+			<% } else if(usuario.getEstado().equals("solicitante")){%>
+						<span class="navLink"> Ya ha enviado una solicitud</span>
 			<% }%>
 			        <a href=<%=HttpRoutes.LOGOUT_JSP(request.getContextPath()) %>  class="logInOut">Cerrar sesión</a>
 			<%

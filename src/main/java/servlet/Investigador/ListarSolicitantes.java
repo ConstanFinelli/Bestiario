@@ -34,22 +34,13 @@ public class ListarSolicitantes extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(""));
-		String action = request.getParameter("action");
-		if("findAllSolicitantes".equals(action)) {
-			doFindAll(request, response);
-		}
-		rd.forward(request, response);	
-	}
-
-
-
-	protected void doFindAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		LinkedList<Investigador> solicitantes = controladorUsuario.findAllSolicitantes();
 		if(solicitantes.size() != 0) {
 			request.setAttribute("solicitantes", solicitantes);
 		} else {
 			request.setAttribute("errorMsg", "No hay candidaturas en este momento");
 		}
-		
+		rd.forward(request, response);	
 	}
+
 }
