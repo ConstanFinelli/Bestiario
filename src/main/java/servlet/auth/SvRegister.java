@@ -16,7 +16,7 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class SvRegister
  */
-@WebServlet("/Auth/Register")
+@WebServlet("/auth/register")
 public class SvRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public LogicUsuario logicUsuario = new LogicUsuario();
@@ -29,6 +29,10 @@ public class SvRegister extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("register.jsp").forward(request, response);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

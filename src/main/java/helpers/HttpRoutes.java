@@ -11,6 +11,10 @@ public final class HttpRoutes {
 	public static String LOGIN_JSP(String base) {
 		return base + "/auth/login.jsp";
 	}
+	
+	public static String LOGIN(String base) {
+		return base + "/auth/login";
+	}
 
 	public static String LOGOUT_JSP(String base) {
 		return base + "/auth/logout.jsp";
@@ -20,11 +24,16 @@ public final class HttpRoutes {
 		return base + "/auth/register.jsp";
 	}
 	
+	public static String REGISTER(String base) {
+		return base + "/auth/register";
+	}
+	
 	// Imagen
 	
 	public static String IMAGENES(String base) {
 		return base + "/imagenes/obtener";
 	}
+	
 
 	// Bestias
 	public static String BESTIA_FORMS_JSP(String base) {

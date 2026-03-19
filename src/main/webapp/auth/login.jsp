@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="helpers.HttpRoutes"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../css/login.css">
 </head>
 <body class='logBody'>
-       <form class="logForm" action="<%= request.getContextPath() %>/Auth/Login" method="POST">
+       <form class="logForm" action="<%=HttpRoutes.LOGIN(request.getContextPath())%>" method="POST">
             <header class="logContainerHeader">
                 <h1 class="logContainerHeaderText">Ingresar</h1>
             </header>
@@ -25,7 +25,7 @@
               	
                 <div class='otherMsgs'>
                     <span class='otherMsg'>¿Has olvidado tu contraseña?</span>
-                    <a class='otherMsg' href="SvRegister">¿Aun no tienes una cuenta? Registrate	</a>
+                    <a class='otherMsg' href="<%= HttpRoutes.REGISTER(request.getContextPath()) %>">¿Aun no tienes una cuenta? Registrate	</a>
                 </div>
             </section>
             <aside class="logSubmitContainer">
