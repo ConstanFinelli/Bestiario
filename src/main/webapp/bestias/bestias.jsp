@@ -8,15 +8,16 @@
 <%@ page import="entities.Categoria" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.LocalDateTime" %>
+<%@ page import="helpers.HttpRoutes" %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Bestiario - Bestias</title>
-<link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="css/bestias.css">
-<link rel="stylesheet" href="css/navbar.css">
+<link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
+<link rel="stylesheet" href="<%= HttpRoutes.BESTIAS_CSS(request.getContextPath()) %>">
+<link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath()) %>">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
 <script
@@ -31,7 +32,7 @@
 	
 		if (searchedFilter == null) { searchedFilter = "";}
 	 %>
-	<form action="ListarBestia" method="get">
+	<form action="<%= HttpRoutes.LISTAR_BESTIAS(request.getContextPath()) %>" method="get">
 		<input type="hidden" name="action" value="list">
     	
     	<input placeholder="Ingresar categoría..." name="filter" class="inputFilter" type="search" id="filter" value=<%= searchedFilter %>>
@@ -76,21 +77,21 @@
 								imagen = ultRegistro.getMainPic(); 
 							}
 						%>
-						<img src="SvImagen?file=<%=imagen != null ? imagen : "default.avif"%>" alt="Imagen de: <%=bestia.getNombre()%>">
+						<img src="<%= HttpRoutes.IMAGENES(request.getContextPath()) %>?file=<%=imagen != null ? imagen : "default.png"%>" alt="Imagen de: <%=bestia.getNombre()%>">
 						<div class="overlay-buttons">
 							<a class="btnBestia"
-								href="SvBestia?action=registro&id=<%=bestia.getIdBestia()%>">Examinar</a>
+								href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>&id=<%=bestia.getIdBestia()%>">Examinar</a>
 							<%
 							if (usuario != null && usuario.getEstado().equals("investigador")) {
 							%>
 							<a class="btnBestia"
-								href="SvBestia?action=registrosPendientes&id=<%=bestia.getIdBestia()%>">Ver
+								href="<%= HttpRoutes.OBTENER_REGISTROS_PENDIENTES_BESTIA(request.getContextPath()) %>&id=<%=bestia.getIdBestia()%>">Ver
 								Reg. Pendientes</a>
 							<%}%>
 							<%
 							if (bestia.getEstado().equals("pendiente")) {
 							%>
-							<form action="SvBestia" method="post" style="display: inline;">
+							<form action="<%= HttpRoutes.ACTUALIZAR_BESTIA(request.getContextPath()) %>" method="post" style="display: inline;">
 								<input type="hidden" name="flag" value="put"> <input
 									type="hidden" name="id" value="<%=bestia.getIdBestia()%>">
 								<input type="hidden" name="nombre"
@@ -132,7 +133,7 @@
 		<%
 		if (usuario != null) {
 		%>
-        <a class="btnAgregar" href="crearPropuestaBestia.jsp"> + Proponer Nueva Bestia</a>
+        <a class="btnAgregar" href="<%= HttpRoutes.CREAR_BESTIA(request.getContextPath())%>"> + Proponer Nueva Bestia</a>
         <%
         }
         %>
@@ -144,7 +145,7 @@
 			<h2 id="modal-titulo"></h2>
 			<div id="modal-cuerpo"></div>
 			<div class="modalButtons">
-				<form action="SvBestia" method="post" style="display:inline;">
+				<form action="<%= HttpRoutes.ELIMINAR_BESTIA(request.getContextPath()) %>>" method="post" style="display:inline;">
 					<input type="hidden" name="flag" value="delete">
 					<input type="hidden" name="id" id="idAEliminar">
 					<button type="button" class="closeButton" onclick="cerrarModal()">Volver</button>

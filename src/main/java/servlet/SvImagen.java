@@ -16,7 +16,7 @@ import helpers.ImagesHelper;
 /**
  * Servlet implementation class SvImagenes
  */
-@WebServlet("/SvImagen")
+@WebServlet("/imagenes/obtener")
 public class SvImagen extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

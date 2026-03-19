@@ -20,6 +20,11 @@ public final class HttpRoutes {
 		return base + "/auth/register.jsp";
 	}
 	
+	// Imagen
+	
+	public static String IMAGENES(String base) {
+		return base + "/imagenes/obtener";
+	}
 
 	// Bestias
 	public static String BESTIA_FORMS_JSP(String base) {
