@@ -56,14 +56,17 @@ h1 {
     font-weight: 700;
 }
 
-.mainContent p, .mainContent textarea {
+.mainContent p, .entrada textarea {
     border-bottom: 1px solid rgba(0, 0, 0, 0.234);
     text-align: left;
 }
 
-.entrada, .mainContent textarea{
+.entrada textarea{
 	min-width: 400px;
 	padding-bottom: 1.5rem;
+	font-size: 1.4rem;
+	height: 300px;
+	width: 700px;
 }
 
 .evidencias{
@@ -201,7 +204,6 @@ textarea{
 	width: fit-content;
 	gap: 7px;
 	background: rgba(245, 245, 66,0.075);
-	border: 2px solid var(--primary-color);
 	border-radius: 12px;
 	padding: 1vh 2vw;
 	margin: 10px;
