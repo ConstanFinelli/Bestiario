@@ -14,7 +14,7 @@ import java.io.IOException;
 import entities.Usuario;
 import helpers.HttpRoutes;
 
-@WebServlet("/Auth/Login")
+@WebServlet("/auth/login")
 public class SvLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public LogicUsuario controladorUsuario = new LogicUsuario();   
@@ -25,12 +25,12 @@ public class SvLogin extends HttpServlet {
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LOGIN_JSP(request.getContextPath()));
+    	RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LOGIN_JSP(""));
     	rd.forward(request, response);
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LOGIN_JSP(request.getContextPath()));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LOGIN_JSP(""));
 		String correo = request.getParameter("correo");
 		String contrasena = request.getParameter("contrasena");
 		String logMsg = "";
