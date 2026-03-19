@@ -246,6 +246,50 @@ public final class HttpRoutes {
 		return base + "/comentarios/agregar";
 	}
 	
+	// Estilos
+	
+	public static String MAIN_CSS(String base) {
+		return base + "/css/main.css";
+	}
+	
+	public static String HOME_CSS(String base) {
+		return base + "/css/home.css";
+	}
+	
+	public static String NAVBAR_CSS(String base) {
+		return base + "/css/navbar.css";
+	}
+	
+	public static String BESTIAS_CSS(String base) {
+		return base + "/css/bestias.css";
+	}
+
+	public static String HABITATS_CSS(String base) {
+		return base + "/css/habitats.css";
+	}
+	
+	public static String LOGIN_CSS(String base) {
+		return base + "/css/login.css";
+	}
+	
+	public static String NOTICIAS_CSS(String base) {
+		return base + "/css/noticias.css";
+	}
+	
+	public static String NUEVABESTIA_CSS(String base) {
+		return base + "/css/nuevaBestia.css";
+	}
+	
+	public static String REGISTRO_CSS(String base) {
+		return base + "/css/registro.css";
+	}
+	
+	public static String REGISTROS_CSS(String base) {
+		return base + "/css/registros.css";
+	}
+	
+	
+	
 	
 	
 }
