@@ -80,7 +80,7 @@
 						<img src="<%= HttpRoutes.IMAGENES(request.getContextPath()) %>?file=<%=imagen != null ? imagen : "default.png"%>" alt="Imagen de: <%=bestia.getNombre()%>">
 						<div class="overlay-buttons">
 							<a class="btnBestia"
-								href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>&id=<%=bestia.getIdBestia()%>">Examinar</a>
+								href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Examinar</a>
 							<%
 							if (usuario != null && usuario.getEstado().equals("investigador")) {
 							%>

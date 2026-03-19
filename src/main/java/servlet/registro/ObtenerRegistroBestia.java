@@ -10,6 +10,7 @@ import logic.LogicBestia;
 import logic.LogicRegistro;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import entities.Bestia;
 import entities.Registro;
@@ -41,8 +42,12 @@ public class ObtenerRegistroBestia extends HttpServlet {
 		String nroRegistro = request.getParameter("nroRegistro");
 		Registro registro = null;
 		
-		registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, null, bestia);
-		registro = controladorRegistro.getOne(registro);
+		if(nroRegistro != null) {
+			registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, null, bestia);
+			registro = controladorRegistro.getOne(registro);
+		}else {
+			registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		}
 			
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", registro);
