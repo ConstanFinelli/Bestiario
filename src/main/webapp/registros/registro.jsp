@@ -7,20 +7,21 @@
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
 <%@ page import="entities.Comentario" %>
+<%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <html>
     <head>
     	<% 
-        	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro registro = (Registro) session.getAttribute("registro");  
+        	Bestia bestia = (Bestia) request.getAttribute("foundBestia");
+    		Registro registro = (Registro) request.getAttribute("foundRegistro");  
         %>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Aubrey&family=Iosevka+Charon+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Outfit:wght@100&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="../css/main.css">
-        <link rel="stylesheet" href="../css/registro.css">
-        <link rel="stylesheet" href="../css/navbar.css">
+        <link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath())%>">
+        <link rel="stylesheet" href="<%= HttpRoutes.REGISTRO_CSS(request.getContextPath())%>">
+        <link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath())%>">
     </head>
     <body>
         <%@ include file="../../components/navbar.jsp" %>
@@ -74,7 +75,7 @@
             </section>
             <aside class="infoBestia">
             	<% if(registro != null){ %>
-                <img src="SvImagen?file=<%=registro.getMainPic() != null ? registro.getMainPic() : "default.png"%>" alt="Imagen de la bestia">
+                <img src="<%= HttpRoutes.IMAGENES(base) %>>?file=<%=registro.getMainPic() != null ? registro.getMainPic() : "default.png"%>" alt="Imagen de la bestia">
                 <%}else{%>
                 <img src="SvImagen?file=default.png" alt="Imagen de la bestia">
                 <% } %>
@@ -94,7 +95,7 @@
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
                     				<li>
-                    					<a href="SvCategoria?action=bestias" class="catBadge"><%= cat.getNombre() %></a>
+                    					<span class="catBadge"><%= cat.getNombre() %></span>
                     				</li>
                     			<%} %>
                    			<%} %>
@@ -133,7 +134,7 @@
         <section class="comentarios mainContent">
         	<% if(registro != null){ %>
             	<% if(usuario != null){ %>
-            	<form action="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>" method="post">
+            	<form action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>&id=<%= bestia.getIdBestia() %>" method="post">
             		<input type="hidden" name="flag" value="comentario">
 	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" required>
 	            	<input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">
@@ -161,7 +162,7 @@
 				    </form>
 				</div>
 				<%} %>
-                <% if(usuario != null){%><a class="registroProposal" href="SvBestia?action=actualizacion&id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>		
+                <% if(usuario != null){%><a class="registroProposal" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>&id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>		
             </section>
             <%} %>
         <footer>
