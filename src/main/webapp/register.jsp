@@ -25,7 +25,7 @@
                 
 				<div id="camposLector" class="extraFields" style="display:flex;">
 				    <div class="logInput">
-				        <input type="date" placeholder=' ' id="fechaNacimiento" name="fechaNacimiento" required/>
+				        <input type="date" placeholder=' ' id="fechaNacimiento" name="fechaNacimiento" min="1000-01-01" max="9999-12-31" required/>
 				        <label for="fechaNacimiento">Fecha de nacimiento</label>
 				    </div>
 				</div>         	
