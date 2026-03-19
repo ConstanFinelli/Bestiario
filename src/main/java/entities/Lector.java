@@ -16,12 +16,12 @@ public class Lector extends Usuario {
 	}
 	
 	public Lector(String correo, String contraseña, LocalDateTime fecha, String state) {
-		super(correo, contraseña, "solicitante");
+		super(correo, contraseña, state);
 		this.fechaNacimiento = fecha;
 	}
 	
 	public Lector(int id, String correo, String contraseña, LocalDateTime fecha, String state) {
-		super(id, correo, contraseña, "solicitante");
+		super(id, correo, contraseña, state);
 		this.fechaNacimiento = fecha;
 	}
 	

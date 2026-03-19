@@ -6,13 +6,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import logic.LogicUsuario;
 
 import java.io.IOException;
 
 import entities.Investigador;
 import entities.Lector;
-import entities.Usuario;
 import helpers.HttpRoutes;
 
 /**
@@ -33,20 +33,17 @@ public class CrearSolicitud extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idUsuario = request.getParameter("idUsuario");
+		HttpSession sesion = request.getSession();
+		Lector user = (Lector) sesion.getAttribute("user");
+		System.out.println(user.getContraseña());
 		String nombre = request.getParameter("nombre");
 		String apellido = request.getParameter("apellido");
 		String dni = request.getParameter("dni");
-		Lector user = (Lector) controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario)));
 		
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.PRESENTAR_CANDIDATURA_JSP(""));
-		
-		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), user.getContraseña(), nombre, apellido, dni, "solicitante");
+		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), LogicUsuario.dehashPassword(user.getContraseña()), nombre, apellido, dni, "solicitante");
 		if(controladorUsuario.update(solicitud) != null) {
+			user.setEstado("solicitante");
 			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
-		}else {
-			request.setAttribute("errorMsg", "Ya hay un investigador registrado con este DNI.");
-			rd.forward(request, response);
 		}
 	}
 

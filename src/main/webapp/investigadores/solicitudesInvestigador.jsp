@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="entities.Investigador" %>
-<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.LocalDate, helpers.HttpRoutes" %>
 
 <!DOCTYPE html>
 <html>
@@ -41,13 +41,11 @@
            					<%= candidato.getDni()%>
                     		</p>
                     	</aside>
-                    	<form action="SvUsuario" method="post" style="display:inline;">
-    					<input type="hidden" name="action" value="aprobarSolicitud">
+                    	<form action="<%=HttpRoutes.APROBAR_SOLICITUD(request.getContextPath()) %>" method="post" style="display:inline;">
     					<input type="hidden" name="idUsuario" value="<%= candidato.getIdUsuario() %>">
     					<button type="submit" class="btnBestia">Aprobar</button>
 						</form>
-                    	<form action="SvUsuario" method="post" style="display:inline;">
-					    <input type="hidden" name="action" value="rechazarSolicitud">
+                    	<form action="<%= HttpRoutes.RECHAZAR_SOLICITUD(request.getContextPath()) %>" method="post" style="display:inline;">
 					    <input type="hidden" name="idUsuario" value="<%= candidato.getIdUsuario() %>">
 					    <button type="submit" class="btnBestia">Rechazar</button>
 						</form>
