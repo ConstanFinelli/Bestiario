@@ -32,17 +32,6 @@ public class CrearSolicitud extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idUsuario = request.getParameter("idUsuario");
 		String nombre = request.getParameter("nombre");
@@ -54,7 +43,7 @@ public class CrearSolicitud extends HttpServlet {
 		
 		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), user.getContraseña(), nombre, apellido, dni, "solicitante");
 		if(controladorUsuario.update(solicitud) != null) {
-			response.sendRedirect(HttpRoutes.HOME_JSP(""));
+			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
 		}else {
 			request.setAttribute("errorMsg", "Ya hay un investigador registrado con este DNI.");
 			rd.forward(request, response);

@@ -15,6 +15,16 @@ public class Lector extends Usuario {
 		this.fechaNacimiento = fecha;
 	}
 	
+	public Lector(String correo, String contraseña, LocalDateTime fecha, String state) {
+		super(correo, contraseña, "solicitante");
+		this.fechaNacimiento = fecha;
+	}
+	
+	public Lector(int id, String correo, String contraseña, LocalDateTime fecha, String state) {
+		super(id, correo, contraseña, "solicitante");
+		this.fechaNacimiento = fecha;
+	}
+	
 	public LocalDateTime getFechaNacimiento() {
 		return fechaNacimiento;
 	}

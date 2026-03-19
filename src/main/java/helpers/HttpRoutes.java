@@ -236,7 +236,7 @@ public final class HttpRoutes {
 	}
 	
 	public static String PRESENTAR_CANDIDATURA_JSP(String base) {
-		return base + "/invesigadores/presentarCandidatura.jsp";
+		return base + "/investigadores/presentarCandidatura.jsp";
 	}
 	
 	public static String LISTAR_SOLICITANTES(String base) {
