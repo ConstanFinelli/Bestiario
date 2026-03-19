@@ -254,7 +254,7 @@ public class DataUsuario {
 					us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
 				}else {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
-					us = new Lector(id, correo, contraseña, fechaNacimiento);
+					us = new Lector(id, correo, contraseña, fechaNacimiento, estado);
 				}
 			}
 		}catch(SQLException ex) {

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="helpers.HttpRoutes"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +19,7 @@
 	<% if(usuario != null){ %>
     <h1>Registrar Candidatura a Investigador</h1>
     
-    <form action="SvUsuario?action=crearSolicitud&idUsuario=<%= usuario.getIdUsuario() %>" method="post" class="formBestia">
+    <form action="<%=HttpRoutes.CREAR_SOLICITUD(request.getContextPath())%>?idUsuario=<%= usuario.getIdUsuario() %>" method="post" class="formBestia">
         <label for="nombre"><strong>Nombre:</strong></label><br>
         <input type="text" id="nombre" name="nombre" class="inputText" placeholder="Ej: Juan" required><br><br>
 
@@ -29,7 +29,7 @@
         <label for="dni"><strong>DNI:</strong></label><br>
         <input type="text" id="dni" name="dni" class="inputText" placeholder="Ej: 12345678" required><br><br>
 
-        <a href="home.jsp" class="btnBestia">Cancelar</a>
+        <a href="<%= HttpRoutes.HOME_JSP(request.getContextPath()) %>" class="btnBestia">Cancelar</a>
         <button type="submit" class="btnBestia">Guardar →</button>
     </form>
     <%}else{ %>
