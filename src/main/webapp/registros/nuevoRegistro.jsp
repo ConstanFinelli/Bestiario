@@ -146,7 +146,7 @@
                 <%} %>
                 </ul>
                 <%} %>
-                <button type="button" id="agregar">Agregar otra evidencia</button>
+                <button type="button" id="agregar" class="btnRegistro">Agregar otra evidencia</button>
                 <section class="contenedorEvidencias" id="contenedorEvidencias">
 				</section>
 				<button type="submit" class="btnRegistro">Enviar registro</button>

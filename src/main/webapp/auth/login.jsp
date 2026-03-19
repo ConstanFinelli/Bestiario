@@ -10,7 +10,7 @@
 <body class='logBody'>
        <form class="logForm" action="<%= request.getContextPath() %>/Auth/Login" method="POST">
             <header class="logContainerHeader">
-                <h1 class="logContainerHeaderText">Inicio de sesión</h1>
+                <h1 class="logContainerHeaderText">Ingresar</h1>
             </header>
             <section class="logInputs">
                 <div class="logInput">
