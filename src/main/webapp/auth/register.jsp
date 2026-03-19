@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="helpers.HttpRoutes"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../css/login.css">
 </head>
 <body class='logBody'>
-        <form class="logForm" action="SvRegister" method="POST">
+        <form class="logForm" action="<%= HttpRoutes.REGISTER(request.getContextPath()) %>" method="POST">
             <header class="logContainerHeader">
                 <h1 class="logContainerHeaderText">Registrarse</h1>
             </header>
