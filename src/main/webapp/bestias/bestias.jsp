@@ -85,7 +85,7 @@
 							if (usuario != null && usuario.getEstado().equals("investigador")) {
 							%>
 							<a class="btnBestia"
-								href="<%= HttpRoutes.OBTENER_REGISTROS_PENDIENTES_BESTIA(request.getContextPath()) %>&id=<%=bestia.getIdBestia()%>">Ver
+								href="<%= HttpRoutes.OBTENER_REGISTROS_PENDIENTES_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Ver
 								Reg. Pendientes</a>
 							<%}%>
 							<%
@@ -145,8 +145,7 @@
 			<h2 id="modal-titulo"></h2>
 			<div id="modal-cuerpo"></div>
 			<div class="modalButtons">
-				<form action="<%= HttpRoutes.ELIMINAR_BESTIA(request.getContextPath()) %>>" method="post" style="display:inline;">
-					<input type="hidden" name="flag" value="delete">
+				<form action="<%= HttpRoutes.ELIMINAR_BESTIA(request.getContextPath()) %>" method="post" style="display:inline;">
 					<input type="hidden" name="id" id="idAEliminar">
 					<button type="button" class="closeButton" onclick="cerrarModal()">Volver</button>
 					<button type="submit" class="deleteButton" onclick="cerrarModal()">Eliminar</button>
