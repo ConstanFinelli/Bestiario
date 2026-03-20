@@ -9,7 +9,6 @@
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_NOTICIAS("") + "?flag=ultimasNoticias");
 		rd.forward(request, response);
 	}
-	System.out.println("HE LLEGADO AQUI");
 %>
 <html>
     <head>
