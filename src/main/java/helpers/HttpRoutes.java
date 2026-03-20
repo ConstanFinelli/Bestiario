@@ -159,8 +159,16 @@ public final class HttpRoutes {
 		return base + "/noticias/listar";
 	}
 	
+	public static String CREAR_NOTICIA(String base) {
+		return base + "/noticias/crear";
+	}
+	
 	public static String NOTICIAS_JSP(String base) {
 		return base + "/noticias/noticias.jsp";
+	}
+	
+	public static String REDACTARNOTICIA_JSP(String base) {
+		return base + "/noticias/redactarNoticia.jsp";
 	}
 
 	// Categorias
@@ -169,23 +177,23 @@ public final class HttpRoutes {
 	}
 	
 	public static String OBTENER_CATEGORIA(String base) {
-		return base + "/categorias/obtenerCategoria";
+		return base + "/categorias/obtener";
 	}
 	
 	public static String LISTAR_CATEGORIAS(String base) {
-		return base + "/categorias/listarCategorias";
+		return base + "/categorias/listar";
 	}
 	
 	public static String CREAR_CATEGORIA(String base) {
-		return base + "/categorias/crearCategoria";
+		return base + "/categorias/crear";
 	}
 	
 	public static String ELIMINAR_CATEGORIA(String base) {
-		return base + "/categorias/eliminarCategoria";
+		return base + "/categorias/eliminar";
 	}
 	
 	public static String ACTUALIZAR_CATEGORIA(String base) {
-		return base + "/categorias/actualizarCategoria";
+		return base + "/categorias/actualizar";
 	}
 
 	// Evidencias
@@ -314,7 +322,9 @@ public final class HttpRoutes {
 		return base + "/css/registros.css";
 	}
 	
-	
+	public static String REDACTARNOTICIA_CSS(String base) {
+		return base + "/css/redactarNoticia.css";
+	}
 	
 	
 	

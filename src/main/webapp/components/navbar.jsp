@@ -9,6 +9,7 @@ page import="entities.Usuario, helpers.HttpRoutes"
 			<a class="navTitle" href=<%=HttpRoutes.HOME_JSP(request.getContextPath()) %> >Bestiario</a>
             <a class="navLink" href=<%=HttpRoutes.LISTAR_BESTIAS(request.getContextPath())%>>Bestias</a>
             <a class="navLink" href=<%=HttpRoutes.LISTAR_HABITATS(request.getContextPath())%>>Habitats</a>
+            <a class="navLink" href=<%=HttpRoutes.LISTAR_NOTICIAS(request.getContextPath())%>>Noticias</a>
             
 	        <%
 			    Usuario usuario = (Usuario) session.getAttribute("user");
