@@ -75,9 +75,9 @@
             </section>
             <aside class="infoBestia">
             	<% if(registro != null){ %>
-                <img src="<%= HttpRoutes.IMAGENES(base) %>>?file=<%=registro.getMainPic() != null ? registro.getMainPic() : "default.png"%>" alt="Imagen de la bestia">
+                <img src="<%= HttpRoutes.IMAGENES(request.getContextPath()) %>?file=<%=registro.getMainPic() != null ? registro.getMainPic() : "default.png"%>" alt="Imagen de la bestia">
                 <%}else{%>
-                <img src="SvImagen?file=default.png" alt="Imagen de la bestia">
+                <img src="<%= HttpRoutes.IMAGENES(request.getContextPath()) %>?file=default.png" alt="Imagen de la bestia">
                 <% } %>
                 <div>
 	                <h3>Detalles de la bestia</h3>
