@@ -158,6 +158,10 @@ public final class HttpRoutes {
 	public static String LISTAR_NOTICIAS(String base) {
 		return base + "/noticias/listar";
 	}
+	
+	public static String NOTICIAS_JSP(String base) {
+		return base + "/noticias/noticias.jsp";
+	}
 
 	// Categorias
 	public static String CATEGORIA_FORM_JSP(String base) {

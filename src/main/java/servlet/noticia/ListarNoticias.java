@@ -46,7 +46,7 @@ public class ListarNoticias extends HttpServlet {
 			rd = request.getRequestDispatcher(HttpRoutes.HOME_JSP(""));
 		}else {
 			noticias = controlador.findAll();
-			rd = request.getRequestDispatcher("../noticias.jsp");
+			rd = request.getRequestDispatcher(HttpRoutes.NOTICIAS_JSP(""));
 		}
 		request.setAttribute("noticias", noticias);
 		rd.forward(request, response);
