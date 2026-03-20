@@ -154,6 +154,10 @@ public final class HttpRoutes {
 	public static String NOTICIA_FORM_JSP(String base) {
 		return base + "/noticias/noticiaForms.jsp";
 	}
+	
+	public static String LISTAR_NOTICIAS(String base) {
+		return base + "/noticias/listar";
+	}
 
 	// Categorias
 	public static String CATEGORIA_FORM_JSP(String base) {

@@ -4,7 +4,12 @@
 <%@ page import="java.util.LinkedList" %>
 <!DOCTYPE html>
 <%
-	LinkedList<Noticia> noticias = (LinkedList<Noticia>) request.getAttribute("noticias");		
+	LinkedList<Noticia> noticias = (LinkedList<Noticia>) request.getAttribute("noticias");	
+	if(noticias == null ){
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_NOTICIAS("") + "?flag=ultimasNoticias");
+		rd.forward(request, response);
+	}
+	System.out.println("HE LLEGADO AQUI");
 %>
 <html>
     <head>

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import entities.Noticia;
+import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class SvListarNoticias
@@ -42,7 +43,7 @@ public class ListarNoticias extends HttpServlet {
 		
 		if("ultimasNoticias".equals(flag)) { 
 			noticias = controlador.getUltimasNoticias();
-			rd = request.getRequestDispatcher("../home.jsp");
+			rd = request.getRequestDispatcher(HttpRoutes.HOME_JSP(""));
 		}else {
 			noticias = controlador.findAll();
 			rd = request.getRequestDispatcher("../noticias.jsp");
