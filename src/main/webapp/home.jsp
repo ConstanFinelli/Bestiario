@@ -62,6 +62,8 @@
 								</div>
 							</article>
 					<%} %>
+				<%}else{ %>
+					<span class="nonContent">No hay noticias registradas.</span>
 				<%} %>
 				</div>
 			</aside>

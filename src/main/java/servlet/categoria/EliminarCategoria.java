@@ -16,7 +16,7 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class EliminarCategoria
  */
-@WebServlet("/categorias/eliminarCategoria")
+@WebServlet("/categorias/eliminar")
 public class EliminarCategoria extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
 	

@@ -14,7 +14,7 @@ import entities.Categoria;
 /**
  * Servlet implementation class CrearCategoria
  */
-@WebServlet("/categorias/crearCategoria")
+@WebServlet("/categorias/crear")
 public class CrearCategoria extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
 	

@@ -13,15 +13,26 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=MedievalSharp&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="../css/main.css">
-        <link rel="stylesheet" href="../css/noticias.css">
-        <link rel="stylesheet" href="../css/navbar.css">
+        <link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
+		<link rel="stylesheet" href="<%= HttpRoutes.NOTICIAS_CSS(request.getContextPath()) %>">
+		<link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath()) %>">
     </head>
     <body>
-        <%@ include file="components/navbar.jsp" %>
+        <%@ include file="../components/navbar.jsp" %>
         <section class="mainContent">
 			<h2>NOTICIAS</h2>
-			<div class="newsContainer">
+		<%
+		if (usuario != null) {
+			if (usuario.getEstado().equals("investigador")) {
+		%>
+		<a class="btnAgregar"
+			href="<%=HttpRoutes.REDACTARNOTICIA_JSP(request.getContextPath())%>">
+			+ Redactar nueva noticia</a>
+		<%
+		}
+		}
+		%>
+		<div class="newsContainer">
 				<%if(noticias != null){ %>
 					<% for(Noticia noticia : noticias){%>
 							<article class="new">

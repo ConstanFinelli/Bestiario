@@ -15,7 +15,7 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class ObtenerCategoria
  */
-@WebServlet("/categorias/obtenerCategoria")
+@WebServlet("/categorias/obtener")
 public class ObtenerCategoria extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
 	
