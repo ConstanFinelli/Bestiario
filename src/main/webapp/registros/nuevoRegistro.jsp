@@ -6,7 +6,7 @@
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
-<%@ page import="entities.TipoEvidencia" %>
+<%@ page import="entities.TipoEvidencia, helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,9 +33,9 @@
         	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
         %> 
         	<% if(usuario == null){
-        	response.sendRedirect("SvBestia?action=registro&id="+bestia.getIdBestia());
+        	response.sendRedirect(HttpRoutes.REGISTRO_JSP(request.getContextPath()) + "?id="+bestia.getIdBestia());
         } %>
-        <form action="SvBestia?action=actualizacion&id=<%= bestia.getIdBestia()%>" method="POST" enctype="multipart/form-data">
+        <form action="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%= bestia.getIdBestia()%>" method="POST" enctype="multipart/form-data">
         <section class="mainContent">
         <section>
                 <h1><%= bestia.getNombre() %></h1>
@@ -98,7 +98,7 @@
 							<%}else{ 
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
-							<li><a href="SvCategoria?action=bestias"><%= cat.getNombre() %></a>
+							<li><spam><%= cat.getNombre() %></span>
 							</li>
 							<%}} %>
 						</ul>

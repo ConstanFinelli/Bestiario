@@ -134,7 +134,7 @@
         <section class="comentarios mainContent">
         	<% if(registro != null){ %>
             	<% if(usuario != null){ %>
-            	<form action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>&id=<%= bestia.getIdBestia() %>" method="post">
+            	<form action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>?id=<%= bestia.getIdBestia() %>" method="post">
             		<input type="hidden" name="flag" value="comentario">
 	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" required>
 	            	<input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">

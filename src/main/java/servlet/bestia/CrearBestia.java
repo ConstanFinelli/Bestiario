@@ -31,7 +31,7 @@ public class CrearBestia extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.BESTIA_FORMS_JSP("")); 
+    	RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ACTUALIZACION_REGISTRO_JSP("")); 
 		HttpSession session = request.getSession();
 		
 		String nombre = request.getParameter("nombre");
@@ -46,6 +46,7 @@ public class CrearBestia extends HttpServlet {
 				} 
 				Bestia bestia = new Bestia(nombre, peligrosidad, estado);
 				bestia = controlador.save(bestia);
+				request.setAttribute("bestia", bestia);
 			} 
 		} catch (NumberFormatException e) {
 			e.getMessage();
