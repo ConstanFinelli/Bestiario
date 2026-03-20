@@ -2,6 +2,7 @@ package servlet.registro;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ import helpers.ImagesHelper;
 /**
  * Servlet implementation class ActualizarRegistro
  */
+@MultipartConfig
 @WebServlet("/registros/actualizarRegistro")
 public class ActualizarRegistro extends HttpServlet {
 	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
@@ -73,6 +75,7 @@ public class ActualizarRegistro extends HttpServlet {
 		
 		Usuario usuario = (Usuario) session.getAttribute("user");	
 		String bestiaId = request.getParameter("id");
+		Bestia bestia = new Bestia(Integer.parseInt(bestiaId));
 		
 		Part filePart = request.getPart("mainPic");
 		if(filePart != null && filePart.getSize() > 0 ) {
@@ -84,7 +87,7 @@ public class ActualizarRegistro extends HttpServlet {
 		
 		ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
 		
-		Registro registroActual = (Registro) session.getAttribute("registro");
+		Registro registroActual = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 		if(registroActual != null) {
 			ContenidoRegistro crActual = registroActual.getContenido();	
 			if(contenido.getDescripcion().equals(crActual.getDescripcion()) && contenido.getHistoria().equals(crActual.getHistoria()) 
@@ -93,7 +96,7 @@ public class ActualizarRegistro extends HttpServlet {
 				contenido = null;
 			}
 		}
-		Bestia bestia = controladorBestia.getOne(new Bestia(Integer.parseInt(bestiaId),null,null, null));
+		bestia = controladorBestia.getOne(new Bestia(Integer.parseInt(bestiaId),null,null, null));
 		
 		String[] fechas = request.getParameterValues("fechaObtencion");
 		String[] tipos = request.getParameterValues("tipo");
@@ -137,6 +140,7 @@ public class ActualizarRegistro extends HttpServlet {
 			
 			controladorRegistro.save(registro);
 		}
+		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + bestiaId);
 	}
 	
 

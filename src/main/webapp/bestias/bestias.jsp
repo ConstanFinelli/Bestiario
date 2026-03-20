@@ -133,7 +133,7 @@
 		<%
 		if (usuario != null) {
 		%>
-        <a class="btnAgregar" href="<%= HttpRoutes.CREAR_BESTIA(request.getContextPath())%>"> + Proponer Nueva Bestia</a>
+        <a class="btnAgregar" href="<%= HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP(request.getContextPath())%>"> + Proponer Nueva Bestia</a>
         <%
         }
         %>

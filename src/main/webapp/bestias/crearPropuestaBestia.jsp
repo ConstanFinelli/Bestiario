@@ -16,7 +16,7 @@
 <section class="mainContent">
     <h1>Proponer Nueva Bestia</h1>
     
-    <form action="SvBestia?action=add" method="post" class="formBestia">
+    <form action="<%=HttpRoutes.CREAR_BESTIA(request.getContextPath()) %>" method="post" class="formBestia">
         <label for="nombre" class="inputLabel"><strong>Nombre:</strong></label><br>
         <input type="text" id="nombre" name="nombre" class="inputText" placeholder="Ej: Dragón Carmesí" required><br><br>
         
