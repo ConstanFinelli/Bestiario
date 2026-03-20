@@ -1,6 +1,5 @@
 package servlet.comentario;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -38,10 +37,10 @@ public class AgregarComentario extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.REGISTRO_JSP(""));
 		String contenido = request.getParameter("contenido");
 		String idUsuario = request.getParameter("idUsuario");
 		String idBestia = request.getParameter("idBestia");
+		String nroRegistro = request.getParameter("nroRegistro");
 		if(contenido != null && idUsuario != null && idBestia != null) {
 			LocalDateTime fechaComentario = LocalDateTime.now();
 			Usuario publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario)));
@@ -49,7 +48,7 @@ public class AgregarComentario extends HttpServlet {
 			Comentario comentario = new Comentario(publicador, bestia, fechaComentario, contenido);
 			controladorComentario.save(comentario);
 		}
-		rd.forward(request, response);
+		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + idBestia + "&nroRegistro=" + nroRegistro + "#comentarios");
 	}
 
 }

@@ -14,7 +14,7 @@
     	<% 
         	Bestia bestia = (Bestia) request.getAttribute("foundBestia");
     		Registro registro = (Registro) request.getAttribute("foundRegistro");  
-        %>  
+    		%>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -127,16 +127,16 @@
             </aside>
             <% } %>
         </section>
-        <% if(request.getParameter("nroRegistro") == null){
+        <%
         	if(bestia != null){
 				
             		LinkedList<Comentario> comentarios = bestia.getComentarios(); %>
-        <section class="comentarios mainContent">
+        <section id="comentarios" class="comentarios mainContent">
         	<% if(registro != null){ %>
             	<% if(usuario != null){ %>
             	<form action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>?id=<%= bestia.getIdBestia() %>" method="post">
-            		<input type="hidden" name="flag" value="comentario">
 	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" required>
+	            	<input type="hidden" name="nroRegistro" value=<%= registro.getNroRegistro() %>>
 	            	<input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">
 	            	<input type="hidden" name="idBestia" value="<%=bestia.getIdBestia()%>">
 	            	<input class="btnComentario" type="submit">
@@ -162,9 +162,8 @@
 				    </form>
 				</div>
 				<%} %>
-                <% if(usuario != null){%><a class="registroProposal" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>&id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>		
+                <% if(usuario != null){%><a class="registroProposal" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>		
             </section>
-            <%} %>
         <footer>
         </footer>
     </body>
