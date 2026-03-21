@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `bestiario` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `bestiario`;
--- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bestiario
 -- ------------------------------------------------------
--- Server version	8.0.42
+-- Server version	8.4.5
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -62,11 +62,11 @@ CREATE TABLE `bestia_evidencia` (
   `idBestia` int NOT NULL,
   `idTipoEvidencia` int NOT NULL,
   `detalle` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`nroEvidencia`,`idBestia`, `idTipoEvidencia`),
+  PRIMARY KEY (`nroEvidencia`,`idBestia`,`idTipoEvidencia`),
   KEY `idBestia-Evidencia_idx` (`idBestia`),
-  CONSTRAINT `idBestia-Evidencia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`),
-  CONSTRAINT `idEvidencia-Bestia` FOREIGN KEY (`nroEvidencia` , `idTipoEvidencia`)
-  REFERENCES `bestiario`.`evidencia` (`nroEvidencia` , `idTipoEvidencia`)
+  KEY `idEvidencia-Bestia` (`nroEvidencia`,`idTipoEvidencia`),
+  CONSTRAINT `idBestia-Evidencia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `idEvidencia-Bestia` FOREIGN KEY (`nroEvidencia`, `idTipoEvidencia`) REFERENCES `evidencia` (`nroEvidencia`, `idTipoEvidencia`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,7 +203,7 @@ DROP TABLE IF EXISTS `noticia`;
 CREATE TABLE `noticia` (
   `idNoticia` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(45) NOT NULL,
-  `estado` varchar(45) NOT NULL DEFAULT 'pendiente',
+  `contenido` text NOT NULL,
   `fechaPublicacion` date DEFAULT NULL,
   `idUsuario` int DEFAULT NULL,
   PRIMARY KEY (`idNoticia`),
@@ -227,7 +227,7 @@ CREATE TABLE `registro` (
   `idUsuario` int DEFAULT NULL,
   `estado` varchar(45) NOT NULL DEFAULT '"pendiente"',
   `idBestia` int NOT NULL,
-  `main_picture` varchar(45) DEFAULT NULL,
+  `main_picture_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`nroRegistro`,`idBestia`),
   UNIQUE KEY `idContenido_UNIQUE` (`idContenido`),
   KEY `idUsuario_idx` (`idUsuario`),
@@ -284,4 +284,4 @@ CREATE TABLE `usuario` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-05 15:16:07
+-- Dump completed on 2026-03-21 18:00:10
