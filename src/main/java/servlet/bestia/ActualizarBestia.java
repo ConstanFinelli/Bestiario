@@ -1,21 +1,16 @@
 package servlet.bestia;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
-import logic.LogicCategoria;
-import logic.LogicHabitat;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
 import entities.Bestia;
-import entities.Categoria;
-import entities.Habitat;
-import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class ActualizarBestia
@@ -40,9 +35,13 @@ public class ActualizarBestia extends HttpServlet {
 		String peligrosidad = request.getParameter("peligrosidad");
 		String estado = request.getParameter("estado");
 		Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
+		String referer = request.getHeader("referer");
+		String toRedirect = referer.substring(referer.indexOf(request.getContextPath())); // hacerlo en un helper
+		
 		bestia = controlador.update(bestia);	
-		request.setAttribute("updateBestia", bestia);		
-		request.getRequestDispatcher(HttpRoutes.BESTIA_FORMS_JSP("")).forward(request, response);
+		request.getSession().setAttribute("updateBestia", bestia);		
+
+		response.sendRedirect(toRedirect);;
 	}
 
 	}

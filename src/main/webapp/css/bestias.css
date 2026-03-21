@@ -3,7 +3,7 @@ ul{
 }
 
 .inputFilter{
-    padding: 0.75rem 1.75rem;
+    height: 6vh;
     width: 18vw;
     border-radius: 10px;
     outline: none;

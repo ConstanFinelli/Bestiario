@@ -26,7 +26,7 @@
 				<label for="titulo" class="inputLabel"><strong>Contenido</strong></label><br>
 				<textarea id="contenido" name="contenido" class="inputContenido" placeholder="Insertar contenido de la noticia a comentar a los lectores." required></textarea><br><br>
 				<div>
-					<a href=<%=HttpRoutes.LISTAR_NOTICIAS(request.getContextPath())%> class="submitButton">Cancelar</a>
+					<button onclick="location.href='<%=HttpRoutes.LISTAR_NOTICIAS(request.getContextPath())%>'" class="submitButton">Cancelar</button>
 					<button type="submit" class="submitButton">Continuar →</button>
 				</div>
 			</form>
