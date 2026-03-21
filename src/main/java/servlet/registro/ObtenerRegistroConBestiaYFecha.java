@@ -10,6 +10,7 @@ import logic.LogicBestia;
 import logic.LogicRegistro;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import entities.Bestia;
@@ -19,14 +20,14 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class ObtenerBestia
  */
-@WebServlet("/registros/obtenerRegistroConBestia")
-public class ObtenerRegistroBestia extends HttpServlet {
+@WebServlet("/registros/obtenerRegistroConBestiaYFecha")
+public class ObtenerRegistroConBestiaYFecha extends HttpServlet {
 	private LogicBestia controlador = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
 	
 	private static final long serialVersionUID = 1L;
      
-    public ObtenerRegistroBestia() {
+    public ObtenerRegistroConBestiaYFecha() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,22 +38,18 @@ public class ObtenerRegistroBestia extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.REGISTRO_JSP(""));
 		String id = request.getParameter("id");
-		Bestia bestia = null;
-		if(id != null) { 
-			bestia = new Bestia(Integer.parseInt(id));
-			bestia = controlador.getOne(bestia);
-			}
-		String nroRegistro = request.getParameter("nroRegistro");
+		Bestia bestia = new Bestia(Integer.parseInt(id));
+		String fecha = request.getParameter("fecha");
+		bestia = controlador.getOne(bestia);
 		Registro registro = null;
-		if(id != null) {
-			if(nroRegistro != null) {
-				registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, null, bestia);
-				registro = controladorRegistro.getOne(registro);
-			}else {
-				registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
-			}
-		}
 		
+		if(fecha != null) {
+			LocalDateTime fechaParseada = LocalDate.parse(fecha).atStartOfDay();
+			registro = controladorRegistro.getRegistroToShow(bestia, fechaParseada);
+		}else {
+			registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		}
+			
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", registro);
 		rd.forward(request, response);

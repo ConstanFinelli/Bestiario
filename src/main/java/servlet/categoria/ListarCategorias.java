@@ -1,5 +1,6 @@
 package servlet.categoria;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,10 +33,22 @@ public class ListarCategorias extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LinkedList<Categoria> categorias = new LinkedList<>();
+		String flag = request.getParameter("flag");
+		RequestDispatcher rd = null;
 		categorias = controlador.findAll();
 		request.setAttribute("foundCategorias", categorias);
 		
-		request.getRequestDispatcher(HttpRoutes.CATEGORIA_FORM_JSP("")).forward(request, response);
+		if(flag.equals("listaBestias")) {
+			rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
+		}else {
+			rd = request.getRequestDispatcher(HttpRoutes.CATEGORIA_FORM_JSP(""));
+		}
+		
+		rd.forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request,response);
 	}
 
 	
