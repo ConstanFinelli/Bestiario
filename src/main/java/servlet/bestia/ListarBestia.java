@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.Bestia;
+import entities.Registro;
 import helpers.CloudinaryHelper;
+import helpers.ConstantesHelper;
 import helpers.HttpRoutes;
 
 /**
@@ -42,7 +44,8 @@ public class ListarBestia extends HttpServlet {
 		}
 		if (!bestias.isEmpty()) {
 			for(Bestia bestia: bestias) {
-				bestia.setPictureUrl(CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now()).getMainPic()));
+				Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+				bestia.setPictureUrl(CloudinaryHelper.getImagenListadoBestia(registro != null? registro.getMainPic() : ConstantesHelper.DEFAULT_IMAGE));
 			}
 			request.setAttribute("bestias", bestias);
 		}
