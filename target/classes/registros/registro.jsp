@@ -74,7 +74,7 @@
                 <%} %>
             </section>
             <aside class="infoBestia">
-            	<img src="<%=request.getAttribute("mainPic")%>" alt="Imagen de la bestia">
+            	<img src="<%=bestia.getPictureUrl()%>" alt="Imagen de la bestia">
                 <div>
 	                <h3>Detalles de la bestia</h3>
 	                <ul>

@@ -23,7 +23,8 @@ public class CloudinaryHelper {
 	
 	public static String upload(Part archivo){		
 		try {
-		return getInstancia().uploader().upload(archivo, ObjectUtils.emptyMap()).get("public_id").toString();
+		byte[] fileBytes = archivo.getInputStream().readAllBytes();
+		return getInstancia().uploader().upload(fileBytes, ObjectUtils.emptyMap()).get("public_id").toString();
 		}catch(IOException e) {
 			throw new RuntimeException("Error al subir imagen", e); 
 		}
