@@ -1,0 +1,62 @@
+nav{
+    display: flex;
+    gap: 20px;
+    padding: 2vh;
+    height: fit-content;
+    background-color: var(--primary-color);
+    overflow: hidden;
+    align-items: center;
+    box-sizing: border-box;
+    font-family: 'Consolas',system-ui;
+}
+
+.navLink{
+    color:aliceblue;
+    font-weight: 400;
+    padding: 0.3rem 0.5rem;
+    font-size: 1.5rem;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    transition: all 0.3s ease;
+}
+
+.navLink:hover{
+	color: #F8F0E3;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+}
+
+nav a:last-child{
+    margin-left: auto;
+}
+
+.logInOut {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary-button);
+    color: #2C2C2C;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.logInOut:hover {
+    background: var(--primary-button-hover);
+    transform: scale(1.02);
+}
+
+.navTitle{
+	color: aliceblue;
+	font-size: 2.5rem;
+	font-family: 'Poppins';
+	font-weight: 550;
+	text-decoration: none;
+}
+
+.navTitle:hover{
+	cursor: pointer;
+}

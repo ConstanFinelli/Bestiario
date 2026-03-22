@@ -39,7 +39,4 @@ public class LogicRegistro {
 		rDao.updateEstado(r);
 	}
 	
-	public String obtenerNombreImagen(String id) {
-		return rDao.obtenerNombreImagen(id);
-	}
 }

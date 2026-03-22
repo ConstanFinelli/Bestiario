@@ -93,5 +93,6 @@ public class Registro {
 				"<br>Investigador que lo aprobo: " + publicador +
 				"<br>Estado: " + estado);
 	}
+
 	
 }

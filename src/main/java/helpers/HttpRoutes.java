@@ -27,13 +27,6 @@ public final class HttpRoutes {
 	public static String REGISTER(String base) {
 		return base + "/auth/register";
 	}
-	
-	// Imagen
-	
-	public static String IMAGENES(String base) {
-		return base + "/imagenes/obtener";
-	}
-	
 
 	// Bestias
 	public static String BESTIA_FORMS_JSP(String base) {

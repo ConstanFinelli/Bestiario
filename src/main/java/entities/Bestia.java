@@ -12,7 +12,8 @@ public class Bestia {
 	private LinkedList<Comentario> comentarios = new LinkedList<>();
 	private LinkedList<Evidencia> evidencias = new LinkedList<>();
 	private String estado;
-
+	private String pictureUrl;
+	
 	public Bestia(int id, String name, String danger, String state) {
 		idBestia = id;
 		nombre = name;
@@ -138,4 +139,12 @@ public class Bestia {
 	 public void setEstado(String estado) {
 		this.estado = estado;
 	 }
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
 }

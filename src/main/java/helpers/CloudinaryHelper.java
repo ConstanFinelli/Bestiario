@@ -1,16 +1,17 @@
 package helpers;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 
+import jakarta.servlet.http.Part;
+
 public class CloudinaryHelper {
-	private Cloudinary instancia;
+	private static Cloudinary instancia;
 	
-	public Cloudinary getInstancia() {
+	public static Cloudinary getInstancia() {
 		if(instancia == null) {
 		instancia = new Cloudinary(ObjectUtils.asMap(
 					  "cloud_name", EnvHelper.get("CLOUD_NAME"),
@@ -20,7 +21,7 @@ public class CloudinaryHelper {
 		return instancia;
 	};
 	
-	public String upload(File archivo){		
+	public static String upload(Part archivo){		
 		try {
 		return getInstancia().uploader().upload(archivo, ObjectUtils.emptyMap()).get("public_id").toString();
 		}catch(IOException e) {
@@ -28,21 +29,29 @@ public class CloudinaryHelper {
 		}
 	}
 	
-	public String getImagenRegistro(String publicId) {
+	public static String isImagenDefault(String publicId) {
+		if(publicId == null) {
+			publicId = EnvHelper.get("DEFAULT_ID");
+		}
+		return publicId;
+	}
+	
+	public static String getImagenRegistro(String publicId) {
+		publicId = isImagenDefault(publicId);
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
-	public String getImagenListadoBestia(String publicId) {
+	public static String getImagenListadoBestia(String publicId) {
+		publicId = isImagenDefault(publicId);
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
-	public void delete(String publicId) {
+	public static void delete(String publicId) {
 	    try {
 	        getInstancia().uploader().destroy(publicId, ObjectUtils.emptyMap());
 	    } catch (IOException e) {
 	        throw new RuntimeException("Error eliminando imagen", e);
 	    }
 	}
-	
 	
 }
