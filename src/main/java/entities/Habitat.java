@@ -7,13 +7,17 @@ public class Habitat {
 	private String nombre;
 	private LinkedList<String> caracteristicas = new LinkedList<>();
 	private LinkedList<Bestia> bestias = new LinkedList<>();
-	private String localizacion;
+	private String latitud;
+	private String longitud;
+	private String tipo; 
 	
-	public Habitat(int id, String nombre, LinkedList<String> caracteristicas, String localizacion) {
+	public Habitat(int id, String nombre, LinkedList<String> caracteristicas, String latitud, String longitud, String tipo) {
 		setId(id);
 		setNombre(nombre);
 		setCaracteristicas(caracteristicas);
-		setLocalizacion(localizacion);
+		setLatitud(latitud);
+		setLongitud(longitud);
+		setTipo(tipo);
 	}
 	
 	public int getId() {
@@ -34,12 +38,30 @@ public class Habitat {
 	public void setCaracteristicas(LinkedList<String>  caracteristicas) {
 		this.caracteristicas = caracteristicas;
 	}
-	public String getLocalizacion() {
-		return localizacion;
+	public String getLatitud() {
+		return latitud;
 	}
-	public void setLocalizacion(String localizacion) {
-		this.localizacion = localizacion;
+
+	public void setLatitud(String latitud) {
+		this.latitud = latitud;
 	}
+
+	public String getLongitud() {
+		return longitud;
+	}
+
+	public void setLongitud(String longitud) {
+		this.longitud = longitud;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	public void setBestias(LinkedList<Bestia> bestias) {
 		this.bestias = bestias;
 	}
@@ -47,14 +69,5 @@ public class Habitat {
 		return bestias;
 	}
 
-	@Override
-	public String toString() {
-		return (
-				"ID: " + id
-				+ "<br>Nombre: " + nombre
-				+ "<br>Localización: " + localizacion
-				+ "<br>Caracteristicas: " + caracteristicas
-		);
-	}
 	
 }

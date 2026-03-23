@@ -26,12 +26,15 @@ public class DataHabitat {
 				int id = rs.getInt("idHabitat");
 				String localizacion = rs.getString("localizacion");
 				String nombre = rs.getString("nombre");
+				String latitud = rs.getString("latitud");
+				String longitud = rs.getString("longitud");
+				String tipo = rs.getString("tipo");
 				if(rsC != null) {
 					while(rsC.next()){
 						caracteristicas.add(rsC.getString("descripcion"));
 					}
 				}
-				htEncontrada = new Habitat(id, nombre, caracteristicas, localizacion);
+				htEncontrada = new Habitat(id, nombre, caracteristicas, latitud, longitud, tipo);
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -68,6 +71,9 @@ public class DataHabitat {
 					int id = rs.getInt("idHabitat");
 					String localizacion = rs.getString("localizacion");
 					String nombre = rs.getString("nombre");
+					String latitud = rs.getString("latitud");
+					String longitud = rs.getString("longitud");
+					String tipo = rs.getString("tipo");
 					try {
 						pstmtC = DbConnector.getInstancia().getConn().prepareStatement("SELECT * FROM caracteristica WHERE idHabitat=?");
 						pstmtC.setInt(1, id);
@@ -83,7 +89,7 @@ public class DataHabitat {
 			            System.out.println("SQLState: " + ex.getSQLState());
 			            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
 					}
-					htEncontrada = new Habitat(id, nombre, caracteristicas, localizacion);
+					htEncontrada = new Habitat(id, nombre, caracteristicas, latitud, longitud, tipo);
 					htsEncontradas.add(htEncontrada);
 				}
 			}
@@ -111,9 +117,11 @@ public class DataHabitat {
 		ResultSet rs = null;
 		Habitat htGuardada = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("INSERT INTO habitat(nombre, localizacion) VALUES (?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("INSERT INTO habitat(nombre, latitud, longitud, tipo) VALUES (?,?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, ht.getNombre());
-			pstmt.setString(2, ht.getLocalizacion());
+			pstmt.setString(2, ht.getLatitud());
+			pstmt.setString(3, ht.getLongitud());
+			pstmt.setString(4, ht.getTipo());
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
@@ -142,9 +150,11 @@ public class DataHabitat {
 	public Habitat update(Habitat ht) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE habitat SET nombre = ?, localizacion = ? WHERE idHabitat = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE habitat SET nombre = ?, latitud = ?, longitud = ?, tipo = ? WHERE idHabitat = ?");
 			pstmt.setString(1, ht.getNombre());
-			pstmt.setString(2, ht.getLocalizacion());
+			pstmt.setString(2, ht.getLatitud());
+			pstmt.setString(3, ht.getLongitud());
+			pstmt.setString(4, ht.getTipo());
 			pstmt.setInt(3, ht.getId());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
@@ -204,7 +214,7 @@ public class DataHabitat {
 			rs = pstmt.executeQuery();
 			if(rs != null) {
 				while(rs.next()) {
-					Habitat habitat = new Habitat(rs.getInt("idHabitat"), null, null, null);
+					Habitat habitat = new Habitat(rs.getInt("idHabitat"), null, null, null, null, null);
 					habitat = this.getOne(habitat);
 					habitatsBestia.add(habitat);
 				}
