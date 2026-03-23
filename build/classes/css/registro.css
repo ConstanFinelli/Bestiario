@@ -1,0 +1,269 @@
+
+.mainContent section{
+    padding: 10px 10px 0px 10px;
+    display: block;
+}
+
+.mainContent{
+	flex-direction: row;
+	min-height: 50vh;
+	height: fit-content; /* necesario o se rompe la página al modificar el tamaño horizontal del navegador*/
+	font-family: 'Consolas',system-ui;
+}
+
+h2{
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+h1 {
+	font-size: 2.2rem;
+	margin-bottom: 25px;
+	text-align: left;
+	padding-bottom: 0.2rem;
+	border-bottom: 1px solid gray;
+}
+
+.infoBestia{
+    box-shadow: 0 4px 6px 0 rgba(7, 35, 60, 0.317);
+    background: #d1cec6;
+    padding: 20px;
+    margin: 2vh 2vw;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: fit-content;
+    width: 20vw;
+    margin-left: auto;
+}
+
+.infoBestia:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(7, 35, 60, 0.4);
+}
+
+.infoBestia img {
+    height: 20vh;
+    width: 20vw;
+    border-radius: 8px;
+}
+
+.infoBestia h3{
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.mainContent p, .entrada textarea {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.234);
+    text-align: left;
+}
+
+.entrada textarea{
+	min-width: 400px;
+	padding-bottom: 1.5rem;
+	font-size: 1.4rem;
+	height: 300px;
+	width: 700px;
+}
+
+.evidencias{
+	text-align: left;
+	list-style: upper-roman;
+	height: fit-content;
+	margin-left: 5px;
+	padding-bottom: 40px;
+}
+
+.mainContent p:last-child{
+    border-bottom: none;
+}
+
+ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.comentarios{
+	border-top: 10px solid var(--third-color);
+    padding: 2rem;
+    min-height: 200px;
+    height: fit-content;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.comentario{
+	display: flex;
+	flex-direction: column;
+	border: 2px solid var(--primary-color);
+	background: rgba(245, 245, 66,0.075);
+	border-radius: 12px;
+	padding: 1vh 2vw;
+	box-shadow: 0 5px 20px rgba(7, 35, 60, 0.317);
+}
+
+.comentarioDatos{
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: var(--primary-color);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.comentarioContenido{
+	font-size: 1rem;
+	font-weight: 500;
+	padding-bottom: 1.2rem;
+	text-align: left;
+}
+
+.fechaComentario{
+	color: gray;
+}
+
+
+.comentarios form{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.inputComentario{
+	padding: 12px 16px;
+	width: 50vw;
+	font-size: 1rem;
+	border-radius: 12px;
+	border-radius: 12px 0px 0px 12px;
+}
+
+
+.btnComentario{
+	padding: 12px 16px;
+	width: 15vw;
+	font-size: 1rem;
+	border-left: none;
+	border-radius: 0px 12px 12px 0px;
+}
+
+.btnComentario:hover{
+	background: #fff;
+}
+
+.anotherRegistros{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 4vh;
+	padding: 3vh 3vw;
+	background: #d1cec6;
+}
+
+.anotherRegistros input{
+	padding: 0.50rem 1rem;
+	height: 3vh;
+	width: 7vw;	
+}
+
+.registrosForm{
+	display: block; 
+	gap: 10px; 
+	flex-direction: column;
+}
+
+.btnRegistro {
+    padding: 12px 28px;
+    border-radius: 12px;
+    color: #2C2C2C;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    background: rgba(245, 245, 66,0.075);
+}
+
+.btnRegistro:hover {
+    background: rgba(245, 245, 66,0.125);
+    transform: scale(1.02);
+}
+
+textarea{
+	resize: none;
+}
+
+.evidenciaForm{
+	display:flex;
+	flex-direction: column;
+	width: fit-content;
+	gap: 7px;
+	background: rgba(245, 245, 66,0.075);
+	border-radius: 12px;
+	padding: 1vh 2vw;
+	margin: 10px;
+}
+
+.contenedorEvidencias{
+	max-width: 800px;
+	margin: 0 auto;
+	display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 20px;
+}
+
+.evidenciasContent{
+	border-top: 10px solid var(--third-color);
+    padding: 2rem;
+    min-height: 200px;
+    height: fit-content;
+    flex-direction: column;
+    gap: 7px;
+}
+
+#agregar{
+	width: 15vw;
+}
+
+.registroProposal{
+	font-size: 1rem;
+	border: 1px solid black;
+	text-decoration:none;
+	margin:10px;
+	padding: 8px 20px;
+    border-radius: 12px;
+    background: rgba(245, 245, 66,0.075);
+    transition: all 0.2s ease;
+}
+
+.registroProposal:hover{
+    background: rgba(245, 245, 66,0.125);
+}
+
+.entrada p{
+	font-family: "Aubrey", system-ui;
+	font-weight: 400;
+	font-size: 1.4rem;
+}
+
+.catBadge{
+	display: inline-block;
+    background-color: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    padding: 0.3rem;
+    font-weight: 500;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.catBadge::before{
+    content: '⫸';
+    font-size: 1.3rem;
+    color: gray;
+}

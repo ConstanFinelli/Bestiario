@@ -410,37 +410,5 @@ public class DataRegistro {
 		
 	}
 
-	public String obtenerNombreImagen(String idBestia) {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int nroRegistro = 0;
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select max(nroRegistro) as nroRegistro from registro where idBestia = ?");
-			pstmt.setString(1, idBestia);
-			rs = pstmt.executeQuery();
-			if(rs != null && rs.next()) {
-				nroRegistro = rs.getInt("nroRegistro") + 1;
-			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			}
-		}
-		return(idBestia + "_" + nroRegistro);
-	}
 	
 }

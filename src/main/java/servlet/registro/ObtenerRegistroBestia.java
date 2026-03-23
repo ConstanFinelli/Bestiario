@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 
 import entities.Bestia;
 import entities.Registro;
+import helpers.CloudinaryHelper;
+import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
 /**
@@ -52,7 +54,8 @@ public class ObtenerRegistroBestia extends HttpServlet {
 				registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 			}
 		}
-		
+			
+		bestia.setPictureUrl(CloudinaryHelper.getImagenRegistro(registro != null ? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID")));
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", registro);
 		rd.forward(request, response);

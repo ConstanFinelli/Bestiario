@@ -7,11 +7,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
+import logic.LogicRegistro;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import entities.Bestia;
+import entities.Registro;
+import helpers.CloudinaryHelper;
+import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
 /**
@@ -21,6 +26,7 @@ import helpers.HttpRoutes;
 public class ListarBestia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LogicBestia controladorBestia = new LogicBestia();
+	private LogicRegistro controladorRegistro = new LogicRegistro();
 	
     public ListarBestia() {
         super();
@@ -37,6 +43,10 @@ public class ListarBestia extends HttpServlet {
 			bestias = controladorBestia.findAll();
 		}
 		if (!bestias.isEmpty()) {
+			for(Bestia bestia: bestias) {
+				Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+				bestia.setPictureUrl(CloudinaryHelper.getImagenListadoBestia(registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
+			}
 			request.setAttribute("bestias", bestias);
 		}
 		if(filter != null) {

@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+.formBestia{
+	padding: 3vh 5vw;
+	border: 2px solid var(--primary-color);
+	border-radius: 12px;
+	background: rgba(245, 245, 66,0.075);
+}
+
+.inputText, .inputSelect{
+	padding: 12px 16px;
+	width: 20vw;
+	font-size: 1rem;
+	border-radius: 12px;
+}
+
+.inputLabel{
+	font-size: 1.2rem;
+}

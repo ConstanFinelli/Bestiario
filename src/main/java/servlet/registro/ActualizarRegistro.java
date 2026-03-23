@@ -27,8 +27,8 @@ import entities.Investigador;
 import entities.Registro;
 import entities.TipoEvidencia;
 import entities.Usuario;
+import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
-import helpers.ImagesHelper;
 
 /**
  * Servlet implementation class ActualizarRegistro
@@ -79,7 +79,7 @@ public class ActualizarRegistro extends HttpServlet {
 		
 		Part filePart = request.getPart("mainPic");
 		if(filePart != null && filePart.getSize() > 0 ) {
-			mainPic = ImagesHelper.saveImage(filePart, controladorRegistro.obtenerNombreImagen(bestiaId));
+			mainPic = CloudinaryHelper.upload(filePart);
 		}else if(controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()) != null){
 			mainPic = controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()).getMainPic();
 		}

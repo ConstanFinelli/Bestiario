@@ -1,75 +1,39 @@
-# Directories #
-build/
-bin/
-target/
-Servers/
-
-# OS Files #
-.DS_Store
-
+# Compilación y Binarios
 *.class
-
-# Package Files #
+*.log
 *.jar
 *.war
 *.ear
-*.db
+target/
+build/
 
-# Whitelist connector/j #
-!/**/lib/*.jar
+# Entorno y Secretos
+.env
+.env.local
+stacktrace.log
 
-######################
-# Windows
-######################
+# Configuración de Maven
+.mtj.tmp/
+*.dll
+*.exe
+*.so
+*.lnx
 
-# Windows image file caches
-Thumbs.db
+# Configuración de Gradle
+.gradle/
+/build/
 
-# Folder config file
-Desktop.ini
-
-######################
-# OSX
-######################
-
-.DS_Store
-.svn
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-
-######################
-# Eclipse
-######################
-
-*.pydevproject
-.metadata/
-bin/**
-tmp/**
-tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-src/main/resources/rebel.xml
-# External tool builders
-.externalToolBuilders/
-.recommenders
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# CDT-specific
-.cproject
-
-# PDT-specific
-.buildpath
+# IDEs (IntelliJ, Eclipse, NetBeans)
+.idea/
+*.iml
 .classpath
+.project
+.settings/
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Sistema
+.DS_Store

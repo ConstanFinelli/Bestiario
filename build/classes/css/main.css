@@ -1,0 +1,82 @@
+:root{
+    --primary-color: #8E6E53;
+    --secondary-color: #F4F1EA;
+    --third-color: rgb(201, 201, 202);
+    --font-color: #2C3E50;
+    --primary-button: linear-gradient(105deg, #d9bd62, #c49623);
+    --primary-button-hover: linear-gradient(135deg, #E5C158, #C9960C);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.mainContent{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 5vh;
+    min-height: 100vh;
+    padding: 3vh 3vw;
+    text-align: center;
+    background-color: var(--secondary-color);
+    margin: 0 6vw;
+}
+
+body{
+    background-color: var(--third-color);
+    color: var(--font-color);
+}
+
+footer {
+	width: 100vw;
+	height: 7vh;
+	background-color: var(--primary-color);
+	text-align: center;
+	padding: 15px 0;
+	font-size: 1.6rem;
+	color: white;
+}
+
+.notFound {
+    color: #b91c1c;
+    font-size: 2.2rem;
+    font-weight: 600;
+    padding: 1.5rem;
+    background-color: #fef2f2;
+    border: 2px solid #fecaca;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.notFound::before {
+    content: "⚠️";
+    font-size: 2rem;
+}
+
+h1, h2, h3, h4 {
+	font-family: "MedievalSharp", cursive;
+	line-height: 2lh;
+	font-weight: 600;
+}
+
+.btnAgregar{
+	padding: 0.75rem 1.75rem;
+    border: 4px dashed var(--primary-color);
+    border-radius: 20px;
+    background: rgba(245, 245, 66,0.075);
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btnAgregar:hover{
+	transform: scale(1.01);
+}
