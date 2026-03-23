@@ -9,15 +9,13 @@ public class Habitat {
 	private LinkedList<Bestia> bestias = new LinkedList<>();
 	private String latitud;
 	private String longitud;
-	private String tipo; 
 	
-	public Habitat(int id, String nombre, LinkedList<String> caracteristicas, String latitud, String longitud, String tipo) {
+	public Habitat(int id, String nombre, LinkedList<String> caracteristicas, String latitud, String longitud) {
 		setId(id);
 		setNombre(nombre);
 		setCaracteristicas(caracteristicas);
 		setLatitud(latitud);
 		setLongitud(longitud);
-		setTipo(tipo);
 	}
 	
 	public int getId() {
@@ -52,14 +50,6 @@ public class Habitat {
 
 	public void setLongitud(String longitud) {
 		this.longitud = longitud;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
 	}
 
 	public void setBestias(LinkedList<Bestia> bestias) {

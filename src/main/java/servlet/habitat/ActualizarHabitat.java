@@ -33,9 +33,11 @@ public class ActualizarHabitat extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
-		String localizacion = request.getParameter("localizacion");
+		String latitud = request.getParameter("latitud");
+		String longitud = request.getParameter("longitud");
 		
-		Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, localizacion);
+		
+		Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, latitud, longitud);
 		ht = controladorHabitat.update(ht);
 		request.setAttribute("updatedHabitat", ht);
 		rd.forward(request, response);
