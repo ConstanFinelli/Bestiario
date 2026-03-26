@@ -47,6 +47,11 @@ public class CloudinaryHelper {
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
+	public static String getImagenEditarBestia(String publicId) {
+		publicId = isImagenDefault(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
 	public static void delete(String publicId) {
 	    try {
 	        getInstancia().uploader().destroy(publicId, ObjectUtils.emptyMap());

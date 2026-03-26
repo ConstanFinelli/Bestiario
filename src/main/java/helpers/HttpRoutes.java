@@ -323,6 +323,10 @@ public final class HttpRoutes {
 		return base + "/css/redactarNoticia.css";
 	}
 	
+	public static String EDITARBESTIA_CSS(String base) {
+		return base + "/css/editarBestia.css";
+	}
+	
 	
 	
 }

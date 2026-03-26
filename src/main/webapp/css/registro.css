@@ -44,9 +44,12 @@ h1 {
 }
 
 .infoBestia img {
-    height: 20vh;
+    min-height: 200px;
+    max-height: 350px;
     width: 20vw;
     border-radius: 8px;
+    object-fit:cover;
+    object-position: center;
 }
 
 .infoBestia h3{
