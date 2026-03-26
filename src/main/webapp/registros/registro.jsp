@@ -14,6 +14,7 @@
     	<% 
         	Bestia bestia = (Bestia) request.getAttribute("foundBestia");
     		Registro registro = (Registro) request.getAttribute("foundRegistro");  
+    		String UrlImagen = (String) request.getAttribute("UrlImagen");
     		%>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,7 +79,7 @@
                 <%} %>
             </section>
             <aside class="infoBestia">
-            	<img src="<%=bestia.getPictureUrl()%>" alt="Imagen de la bestia">
+            	<img src="<%=UrlImagen%>" alt="Imagen de la bestia">
                 <div>
 	                <h3>Detalles de la bestia</h3>
 	                <ul>

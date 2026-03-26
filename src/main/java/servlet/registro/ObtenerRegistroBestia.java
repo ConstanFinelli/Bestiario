@@ -55,7 +55,8 @@ public class ObtenerRegistroBestia extends HttpServlet {
 			}
 		}
 			
-		bestia.setPictureUrl(CloudinaryHelper.getImagenRegistro(registro != null ? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID")));
+		String imagen = (CloudinaryHelper.getImagenRegistro(registro != null ? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID")));
+		request.setAttribute("UrlImagen", imagen);
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", registro);
 		rd.forward(request, response);
