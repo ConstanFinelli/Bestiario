@@ -58,6 +58,7 @@ public class ActualizarRegistro extends HttpServlet {
 		Bestia bestia = new Bestia(Integer.parseInt(idBestia));
 		bestia = controladorBestia.getOne(bestia);
 		LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
+		request.setAttribute("bestia", bestia);
 		request.setAttribute("tiposEvidencia", tes);
 		request.setAttribute("foundBestia", bestia);
 		
