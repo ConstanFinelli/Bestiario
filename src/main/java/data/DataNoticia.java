@@ -139,7 +139,7 @@ public class DataNoticia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into noticia(titulo, contenido, fechaPublicacion, idUsuario) values (?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into noticia(titulo, contenido, fechaPublicacion, idUsuario) values (?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, noticia.getTitulo());
 			pstmt.setString(2, noticia.getContenido());
 			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(noticia.getFechaPublicacion()));
