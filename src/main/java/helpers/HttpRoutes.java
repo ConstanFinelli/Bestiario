@@ -277,6 +277,11 @@ public final class HttpRoutes {
 		return base + "/comentarios/agregar";
 	}
 	
+	// Admin
+	public static String ADMIN_DASHBOARD_JSP(String base) {
+		return base + "/admin/adminDashboard.jsp";
+	}
+	
 	// Estilos
 	
 	public static String MAIN_CSS(String base) {
@@ -327,6 +332,8 @@ public final class HttpRoutes {
 		return base + "/css/editarBestia.css";
 	}
 	
-	
+	public static String ADMINDASHBOARD_CSS(String base) {
+		return base + "/css/adminDashboard.css";
+	}
 	
 }

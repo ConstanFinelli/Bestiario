@@ -67,9 +67,9 @@
             </aside>
         <div>
         <div class="formButtons">
-        	<button class="changeButton" onclick="changeFormTo('formInfo');">Información general</button>
-        	<button class="changeButton" onclick="changeFormTo('formCategoria');">Categorías</button>
-        	<button class="changeButton" onclick="changeFormTo('formHabitat');">Habitats</button>
+        	<button class="changeButton" onclick="changeFormTo('formInfo');" id="formInfoBtn">Información general</button>
+        	<button class="changeButton" onclick="changeFormTo('formCategoria');" id="formCategoriaBtn">Categorías</button>
+        	<button class="changeButton" onclick="changeFormTo('formHabitat');" id="formHabitatBtn">Habitats</button>
         </div>
         <form class="formEditar" action="" method="POST" id="formInfo">
 			<h1>Información general</h1>
@@ -156,8 +156,10 @@
 			for(const form of forms){
 				if(form === to){
 					document.getElementById(to).classList.remove('hiddenForm');
+					document.getElementById(form + 'Btn').classList.remove('activeButton');
 				}else{
 					document.getElementById(form).classList.add('hiddenForm');
+					document.getElementById(form + 'Btn').classList.add('activeButton');
 				}
 			}
 		}
