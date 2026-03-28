@@ -33,8 +33,9 @@ public class CrearHabitat extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
 		String nombre = request.getParameter("nombre");
-		String localizacion = request.getParameter("localizacion");
-		Habitat ht = new Habitat(0, nombre, null, localizacion);
+		String latitud = request.getParameter("latitud");
+		String longitud = request.getParameter("longitud");
+		Habitat ht = new Habitat(0, nombre, null, latitud, longitud);
 		ht = controladorHabitat.save(ht);
 		request.setAttribute("habitatCreado", ht);
 		rd.forward(request, response);

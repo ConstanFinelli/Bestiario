@@ -33,7 +33,7 @@ public class EliminarHabitat extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
 		String id = request.getParameter("id");
-		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null, null);
 		ht = controladorHabitat.delete(ht);
 		request.setAttribute("deletedHabitat", ht);
 		rd.forward(request, response);

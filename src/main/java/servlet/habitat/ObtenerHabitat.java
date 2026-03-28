@@ -32,7 +32,7 @@ public class ObtenerHabitat extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
 		String id = request.getParameter("id");
-		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null, null);
 		ht = controladorHabitat.getOne(ht);
 		request.setAttribute("gottenHabitat", ht);
 		rd.forward(request, response);

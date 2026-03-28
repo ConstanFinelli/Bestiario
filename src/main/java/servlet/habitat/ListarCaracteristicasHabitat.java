@@ -35,7 +35,7 @@ public class ListarCaracteristicasHabitat extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.CARAC_HABITAT_FORM_JSP(""));
-		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null, null);
 		LinkedList<CaracteristicaHabitat> hts = new LinkedList<>();
 		hts = controlador.findAllById(ht);
 		request.setAttribute("foundCaracteristicas", hts);
