@@ -114,20 +114,22 @@ public class DataUsuario {
 		try {
 			if(us.getEstado().equals("investigador")) {
 				inv = (Investigador) us;
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,nombre,apellido,dni,estado) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,nombre,apellido,dni,estado,recibirNotificaciones) values(?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, inv.getCorreo());
 				pstmt.setString(2, inv.getContraseña());
 				pstmt.setString(3, inv.getNombre());
 				pstmt.setString(4, inv.getApellido());
 				pstmt.setString(5, inv.getDni());
 				pstmt.setString(6, inv.getEstado());
+				pstmt.setBoolean(7, inv.getRecibirNotificaciones());
 			}else {
 				le = (Lector) us;
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,fechaNacimiento,estado) values(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,fechaNacimiento,estado,recibirNotificaciones) values(?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContraseña());
 				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
 				pstmt.setString(4, le.getEstado());
+				pstmt.setBoolean(5, le.getRecibirNotificaciones());
 			}
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
@@ -170,21 +172,23 @@ public class DataUsuario {
 		try {
 			if(!us.getEstado().equals("lector")) {
 				inv = (Investigador) us;
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ?, estado = ? where idUsuario = ?");
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ?, estado = ?, recibirNotificaciones = ? where idUsuario = ?");
 				pstmt.setString(1, inv.getCorreo());
 				pstmt.setString(2, inv.getContraseña());
 				pstmt.setString(3, inv.getNombre());
 				pstmt.setString(4, inv.getApellido());
 				pstmt.setString(5, inv.getDni());
 				pstmt.setString(6, inv.getEstado());
-				pstmt.setInt(7, inv.getIdUsuario());
+				pstmt.setInt(8, inv.getIdUsuario());
+				pstmt.setBoolean(7, inv.getRecibirNotificaciones());
 			}else {
 				le = new Lector(us.getIdUsuario(), us.getCorreo(), us.getContraseña(), getFechaNacimiento(us.getIdUsuario()));
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ?, estado = 'lector' where idUsuario = ?");
+				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ?, estado = 'lector', recibirNotificaciones = ? where idUsuario = ?");
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContraseña());
 				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
-				pstmt.setInt(4, le.getIdUsuario());
+				pstmt.setInt(5, le.getIdUsuario());
+				pstmt.setBoolean(4, le.getRecibirNotificaciones());
 			}
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
@@ -354,6 +358,93 @@ public class DataUsuario {
 			}
 		}
 		return fechaEncontrada;
+	}
+	
+	public LinkedList<Usuario>findByRecibirNotifcaciones() {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Usuario us = null;
+		LinkedList<Usuario> usuarios = new LinkedList<>();
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from usuario where recibirNotificaciones = true");
+			
+			rs = pstmt.executeQuery();
+			if(rs != null && rs.next()) {
+				int id = rs.getInt("idUsuario");
+				String contraseña = rs.getString("contraseña");
+				String estado = rs.getString("estado");
+				String correo = rs.getString("correo");
+				if(estado.equals("investigador")) {
+					String nombre = rs.getString("nombre");
+					String apellido = rs.getString("apellido");
+					String dni = rs.getString("dni");
+					us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+				}else {
+					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
+					us = new Lector(id, correo, contraseña, fechaNacimiento, estado);
+				}
+				usuarios.add(us);
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return usuarios;
+	}
+	
+	public LinkedList<Investigador> getCorreosInvestigadoresYRecibNot(){
+		Statement stmt = null;
+		ResultSet rs = null;
+		Investigador i = null;
+		LinkedList<Investigador> investigadores= new LinkedList<>();
+		try {
+			stmt = DbConnector.getInstancia().getConn().createStatement();
+			rs = stmt.executeQuery("Select correo, recibirNotificaciones from usuario where estado = 'investigador'");
+			if(rs != null) {
+				while(rs.next()) {
+					i = new Investigador();
+					
+					i.setCorreo(rs.getString("correo"));
+					i.setRecibirNotificaciones(rs.getBoolean("recibirNotificaciones"));
+	
+					investigadores.add(i);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(stmt != null) {
+					stmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return investigadores;
 	}
 		
 }

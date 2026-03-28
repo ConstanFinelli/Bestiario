@@ -28,7 +28,12 @@
 				        <input type="date" placeholder=' ' id="fechaNacimiento" name="fechaNacimiento" min="1000-01-01" max="9999-12-31" required/>
 				        <label for="fechaNacimiento">Fecha de nacimiento</label>
 				    </div>
-				</div>         	
+				</div>     
+				
+				<div class="logInputCheckbox">
+                    <input type="checkbox" id="recibirNotificaciones" name='recibirNotificaciones'/>
+                    <label for="recibirNotificaciones">¿Desea recibir notificaciones?</label>
+                </div>    	
               	
                 <div class='otherMsgs'>
                     <a class='otherMsg' href="#">¿Problemas para registrarse? Contáctanos</a>

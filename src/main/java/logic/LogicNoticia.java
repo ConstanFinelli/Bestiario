@@ -27,7 +27,7 @@ public class LogicNoticia {
 	public Noticia save(Noticia noticia) {
 		Noticia newNoticia = dataNoticia.save(noticia);
 		
-		LinkedList<Usuario> usuarios = dataUsuario.findAll();
+		LinkedList<Usuario> usuarios = dataUsuario.findByRecibirNotifcaciones();
 		
 		new Thread(() -> {
 		    for (Usuario u : usuarios) {

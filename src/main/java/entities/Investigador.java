@@ -5,6 +5,10 @@ public class Investigador extends Usuario{
 	private String apellido;
 	private String dni;
 	
+	public Investigador() {
+		
+	}
+	
 	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni) {
 		super(id, correo, contraseña, "investigador");
 		this.nombre = nombre;

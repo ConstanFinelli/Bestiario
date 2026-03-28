@@ -118,6 +118,7 @@ public class DataRegistro {
 		ResultSet rs = null;
 		Registro registro = null;
 		LinkedList<Registro> registros = new LinkedList<>();
+		
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from Registro where idBestia = ? and estado = ?");
 			pstmt.setInt(1, b.getIdBestia());
@@ -139,6 +140,59 @@ public class DataRegistro {
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
+					registro = new Registro(id, mainPic, contenido, fechaA, fechaB, pub, estado, bestia);
+					registros.add(registro);
+				}
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return registros;
+	}
+	
+	public LinkedList<Registro> findRegistrosAprobadosHoy(){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Registro registro = null;
+		LinkedList<Registro> registros = new LinkedList<>();
+		DataBestia bestiaDao = new DataBestia();
+		
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from Registro where fechaAprobacion = current_date()");
+			rs = pstmt.executeQuery();
+			if(rs != null) {
+				while(rs.next()) {
+					int id = rs.getInt("nroRegistro");
+					LocalDateTime fechaA = null;
+					LocalDateTime fechaB = null;
+					String mainPic = rs.getString("main_picture");
+					ContenidoRegistro contenido = cRDAO.getOne(Integer.parseInt(rs.getString("idContenido")));
+					if(rs.getTimestamp("fechaAprobacion") != null) {
+						fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
+					}
+					if(rs.getTimestamp("fechaBaja") != null) {
+					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
+					}
+					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
+					Bestia bestia = (Bestia) bestiaDao.getOne(new Bestia(rs.getInt("idBestia")));
+					
+					String estado = rs.getString("estado");
 					registro = new Registro(id, mainPic, contenido, fechaA, fechaB, pub, estado, bestia);
 					registros.add(registro);
 				}

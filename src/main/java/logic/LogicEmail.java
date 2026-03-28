@@ -3,6 +3,8 @@ package logic;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
+import java.util.LinkedList;
+import entities.Registro;
 
 import helpers.EnvHelper;
 
@@ -58,6 +60,12 @@ public class LogicEmail {
         String asunto = "📰 Nueva noticia en Bestiario";
         String mensaje = "Se ha publicado una nueva noticia:\n\n" + tituloNoticia;
 
+        enviarEmail(emailUsuario, asunto, mensaje);
+    }
+    
+    public void notificarRegistrosAprobadosHoy(String emailUsuario, String mensaje) {
+        String asunto = "📰 Introduccion de los registros aprobados el dia de hoy (por bestia) ";
+        
         enviarEmail(emailUsuario, asunto, mensaje);
     }
     

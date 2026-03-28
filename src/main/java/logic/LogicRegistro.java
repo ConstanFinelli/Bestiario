@@ -23,6 +23,11 @@ public class LogicRegistro {
 		return rDao.findRegistrosPendientes(b);
 	}
 	
+	public LinkedList<Registro> findRegistrosAprobadosHoy() {
+		return rDao.findRegistrosAprobadosHoy();
+	}
+
+	
 	public Registro save(Registro r) {
 		return rDao.save(r);
 	}

@@ -54,6 +54,9 @@ public class SvRegister extends HttpServlet {
 					request.getParameter("contrasena"),
 					fechaSinHora.atStartOfDay()
 				);
+				
+				userLector.setRecibirNotificaciones(Boolean.parseBoolean(request.getParameter("recibirNotiticaciones")));
+				
 				logicUsuario.save(userLector);
 			response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	
 			return;
