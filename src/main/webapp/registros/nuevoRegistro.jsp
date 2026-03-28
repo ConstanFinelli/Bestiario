@@ -11,9 +11,9 @@
 <html>
     <head>
     	<% 
-        	Bestia bestia = (Bestia) request.getAttribute("bestia");
-    		Registro registro = (Registro) session.getAttribute("registro");
-    		LinkedList<TipoEvidencia> tes = (LinkedList<TipoEvidencia>) request.getAttribute("tes");
+        	Bestia bestia = (Bestia) request.getAttribute("foundBestia");
+    		Registro registro = (Registro) request.getAttribute("foundRegistro");
+    		LinkedList<TipoEvidencia> tes = (LinkedList<TipoEvidencia>) request.getAttribute("tiposEvidencia");
         %>  
       
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Actualización de bestia</title>

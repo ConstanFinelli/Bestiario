@@ -64,6 +64,10 @@ public final class HttpRoutes {
 	public static String CREAR_BESTIA(String base) {
 		return base + "/bestias/crear";
 	}
+	
+	public static String EDITAR_BESTIA(String base) {
+		return base + "/bestias/editar";
+	}
 
 	// Registros
 	public static String REGISTRO_JSP(String base) {

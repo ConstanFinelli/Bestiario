@@ -31,12 +31,19 @@ public class ActualizarCategoria extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.CATEGORIA_FORM_JSP(""));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 		String id = request.getParameter("id");
 		String name = request.getParameter("nombre");
 		String desc = request.getParameter("descripcion");
+		String feedbackMessage = "";
 		Categoria cat = new Categoria(Integer.parseInt(id), name, desc);
 		cat = controlador.update(cat);
+		if(cat == null) {
+			feedbackMessage = "¡No se ha podido actualizar la categoría!";
+		}else {
+			feedbackMessage = "¡Categoría actualizada con éxito!";
+		}
+		request.setAttribute("feedbackMessage", feedbackMessage);
 		request.setAttribute("updatedCategoria", cat);
 		rd.forward(request, response);
 	}

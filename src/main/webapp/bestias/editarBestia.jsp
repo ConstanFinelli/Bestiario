@@ -7,9 +7,9 @@
 <%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <%
-	Bestia bestia = (Bestia) request.getAttribute("bestia");
-	LinkedList<Habitat> habitats = (LinkedList<Habitat>) request.getAttribute("foundHabitats");
-	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");
+	Bestia bestia = (Bestia) session.getAttribute("bestia");
+	LinkedList<Habitat> habitats = (LinkedList<Habitat>) session.getAttribute("habitats");
+	LinkedList<Categoria> categorias = (LinkedList<Categoria>) session.getAttribute("categorias");
 %>
 <html>
 <head>
@@ -42,8 +42,7 @@
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
                     				<li>
-                    					<span class="catBadge"><%= cat.getNombre() %>
-                    					<button onClick="abrirModal('<%=cat.getIdCategoria()%>', '<%=cat.getNombre()%>', 'categoria')"></button></span>
+                    					<span class="catBadge"><%= cat.getNombre() %></span>
                     				</li>
                     			<%} %>
                    			<%} %>
@@ -55,9 +54,7 @@
 	                	<% if(!bestia.getHabitats().isEmpty()){ 
 	                	for(Habitat habitat:bestia.getHabitats()){
 	                	%>
-		                    <li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %>
-		                    	<button onClick="abrirModal('<%=habitat.getId()%>', '<%=habitat.getNombre()%>', 'habitat')"></button>
-		                    </li>
+		                    <li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %></li>
 	                    <%} %>
 	                    <% } else{%>
 	                    	<li>No hay habitats registradas para esta bestia.</li>
@@ -71,9 +68,10 @@
         	<button class="changeButton" onclick="changeFormTo('formCategoria');" id="formCategoriaBtn">Categorías</button>
         	<button class="changeButton" onclick="changeFormTo('formHabitat');" id="formHabitatBtn">Habitats</button>
         </div>
-        <form class="formEditar" action="" method="POST" id="formInfo">
+        <form class="formEditar formInfo" action="<%= HttpRoutes.EDITAR_BESTIA(request.getContextPath()) %>?action=info" method="POST">
 			<h1>Información general</h1>
 			<input type="hidden" name="update" value="update">
+			<input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
 			<label for="nombre" class="inputLabel">Nombre</label>
 			<input type="text" id="nombre" name="nombre" class="inputForm" value="<%= bestia.getNombre()%>" required/>
 			<label for="peligrosidad" class="inputLabel">Peligrosidad</label>
@@ -85,9 +83,10 @@
         	</select>
 			<button type="submit" class="submitButton">Guardar cambios</button>
 		</form>
-		<form class="formEditar hiddenForm" action="" method="POST" id="formCategoria">
+		<form class="formEditar hiddenForm formCategoria" action="<%= HttpRoutes.EDITAR_BESTIA(request.getContextPath()) %>?action=category" method="POST">
 			<h1>Asignar categoría a bestia</h1>
-			<input type="hidden" name="addCategory" value="addCategory">
+			<input type="hidden" name="relationChange" value="addCategory">
+			<input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
 			<label for="idCategoria" class="inputLabel">Categoría a agregar: </label>
 			<select class="inputForm" name="idCategoria" id="idCategoria" required>
 				<%
@@ -98,9 +97,25 @@
 			</select>
 			<button type="submit" class="submitButton">Agregar categoría</button>
 		</form>
-		<form class="formEditar hiddenForm" action="" method="POST" id="formHabitat">
+		<form class="formEditar hiddenForm formCategoria" action="<%= HttpRoutes.EDITAR_BESTIA(request.getContextPath()) %>?action=category" method="POST" >
+			<h1>Eliminar categoría a bestia</h1>
+			<input type="hidden" name="relationChange" value="removeCategory">
+			<input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
+			<label for="idCategoria" class="inputLabel">Categoría a eliminar: </label>
+			<select class="inputForm" name="idCategoria" id="idCategoria" required>
+				<%
+				if(!bestia.getCategorias().isEmpty()) {
+					for(Categoria categoria: bestia.getCategorias()){ %>
+						<option value="<%= categoria.getIdCategoria() %>"><%= categoria.getNombre() %></option>
+					<%} %>
+				<%} %>
+			</select>
+			<button type="submit" class="submitButton">Eliminar categoría</button>
+		</form>
+		<form class="formEditar hiddenForm formHabitat" action="<%= HttpRoutes.EDITAR_BESTIA(request.getContextPath()) %>?action=habitat" method="POST">
 			<h1>Asignar habitat a bestia</h1>
-			<input type="hidden" name="addHabitat" value="addHabitat">
+			<input type="hidden" name="relationChange" value="addHabitat">
+			<input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
 			<label for="idHabitat" class="inputLabel">Habitat a agregar: </label>
 			<select class="inputForm" name="idHabitat" id="idHabitat" required>
 				<%
@@ -111,55 +126,41 @@
 			</select>
 			<button type="submit" class="submitButton">Agregar habitat</button>
 		</form>
+		<form class="formEditar hiddenForm formHabitat" action="<%= HttpRoutes.EDITAR_BESTIA(request.getContextPath()) %>?action=habitat" method="POST">
+			<h1>Eliminar habitat a bestia</h1>
+			<input type="hidden" name="relationChange" value="removeHabitat">
+			<input type="hidden" name="id" value="<%= bestia.getIdBestia() %>">
+			<label for="idHabitat" class="inputLabel">Habitat a eliminar: </label>
+			<select class="inputForm" name="idHabitat" id="idHabitat" required>
+				<%
+				if(!bestia.getHabitats().isEmpty()) {
+				for(Habitat habitat: bestia.getHabitats()){ %>
+				<option value="<%= habitat.getId() %>"><%= habitat.getNombre() %></option>
+				<%}} %>
+			</select>
+			<button type="submit" class="submitButton">Eliminar habitat</button>
+		</form>
 		</div>
 	</section>
 	</section>
 	<footer>
 	</footer>
-	<div id="modal" class="modal-container">
-		<div class="modal-content">
-			<h2 id="modal-titulo"></h2>
-			<div id="modal-cuerpo"></div>
-			<div class="modalButtons">
-				<form action="<%= HttpRoutes.ELIMINAR_CATEGORIA(request.getContextPath()) %>" method="post" style="display:inline;">
-					<input type="hidden" name="id" id="idAEliminar">
-					<input type="hidden" name="tipo" id="tipo">
-					<button type="button" class="closeButton" onclick="cerrarModal()">Volver</button>
-					<button type="submit" class="deleteButton" onclick="cerrarModal()">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
 	<script>
-		// javascript para modal
-		function abrirModal(id, nombre, tipo) {
-			document.getElementById('modal-titulo').innerText = "ELIMINAR " + (tipo === 'categoria' ?  "CATEGORÍA" : "HÁBITAT");
-			document.getElementById('modal-cuerpo').innerHTML = '¿Estas seguro que deseas eliminar ' + nombre + '?';
-			document.getElementById('idAEliminar').value = id;
-			document.getElementById('tipo').value = tipo;
-			document.getElementById('modal').classList.add('is-visible');
-		}
-
-		function cerrarModal() {
-			document.getElementById('modal').classList.remove('is-visible');
-		}
-
-		window.onclick = function(event) {
-			let modal = document.getElementById('modal');
-			if (event.target == modal) {
-				cerrarModal();
-			}
-		}
-		
 		function changeFormTo(to){
 			const forms = ['formInfo', 'formCategoria', 'formHabitat'];
 			for(const form of forms){
 				if(form === to){
-					document.getElementById(to).classList.remove('hiddenForm');
-					document.getElementById(form + 'Btn').classList.remove('activeButton');
-				}else{
-					document.getElementById(form).classList.add('hiddenForm');
+					const hiddenForms = document.getElementsByClassName(to);
+					Array.from(hiddenForms).forEach((hiddenForm) =>{
+						hiddenForm.classList.remove('hiddenForm')
+					})
 					document.getElementById(form + 'Btn').classList.add('activeButton');
+				}else{
+					const shownForms = document.getElementsByClassName(form);
+					Array.from(shownForms).forEach((shownForm) =>{
+						shownForm.classList.add('hiddenForm')
+					})
+					document.getElementById(form + 'Btn').classList.remove('activeButton');
 				}
 			}
 		}

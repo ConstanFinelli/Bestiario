@@ -38,10 +38,10 @@ public class ListarCategorias extends HttpServlet {
 		categorias = controlador.findAll();
 		request.setAttribute("foundCategorias", categorias);
 		
-		if(flag.equals("listaBestias")) {
+		if("listaBestias".equals(flag)) {
 			rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
 		}else {
-			rd = request.getRequestDispatcher(HttpRoutes.CATEGORIA_FORM_JSP(""));
+			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 		}
 		
 		rd.forward(request, response);

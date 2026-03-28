@@ -31,10 +31,16 @@ public class EliminarCategoria extends HttpServlet {
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.CATEGORIA_FORM_JSP(""));
+		String feedbackMessage = "";
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 		Categoria cat = new Categoria(Integer.parseInt(id),null, null);
 		cat = controlador.delete(cat);
-		request.setAttribute("deletedCategoria", cat);
+		if(cat == null) {
+			feedbackMessage = "¡No se ha podido eliminar la categoría!";
+		}else {
+			feedbackMessage = "¡Categoría eliminada con éxito!";
+		}
+		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

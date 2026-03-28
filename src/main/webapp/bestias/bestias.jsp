@@ -104,6 +104,8 @@
 							<a class="btnBestia"
 								href="<%= HttpRoutes.OBTENER_REGISTROS_PENDIENTES_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Ver
 								Reg. Pendientes</a>
+								<a class="btnBestia"
+								href="<%= HttpRoutes.EDITAR_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Editar</a>
 							<%}%>
 							<%
 							if (bestia.getEstado().equals("pendiente")) {
