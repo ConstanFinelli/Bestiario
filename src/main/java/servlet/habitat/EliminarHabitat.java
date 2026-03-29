@@ -27,15 +27,20 @@ public class EliminarHabitat extends HttpServlet {
      */
     public EliminarHabitat() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
 		String id = request.getParameter("id");
+		String feedbackMessage = "";
 		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
 		ht = controladorHabitat.delete(ht);
-		request.setAttribute("deletedHabitat", ht);
+		if(ht == null) {
+			feedbackMessage = "¡No se ha podido eliminar el habitat!";
+		}else {
+			feedbackMessage = "¡Habitat eliminada con éxito!";
+		}
+		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

@@ -62,7 +62,6 @@
 			<%} else if ("habitats".equals(crud)){ %>
 				<%@ include file="adminHabitats.jsp" %>
 			<%} %>
-			
 		</main>
 	</div>
 	<footer>

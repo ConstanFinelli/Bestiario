@@ -30,14 +30,20 @@ public class ActualizarHabitat extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
+		String feedbackMessage = "";
 		
 		Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, localizacion);
 		ht = controladorHabitat.update(ht);
-		request.setAttribute("updatedHabitat", ht);
+		if(ht == null) {
+			feedbackMessage = "¡No se ha podido actualizar el habitat!";
+		}else {
+			feedbackMessage = "¡Habitat actualizada con éxito!";
+		}
+		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

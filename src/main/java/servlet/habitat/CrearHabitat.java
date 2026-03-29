@@ -31,12 +31,18 @@ public class CrearHabitat extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.HABITAT_FORM_JSP(""));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
 		String nombre = request.getParameter("nombre");
 		String localizacion = request.getParameter("localizacion");
+		String feedbackMessage = "";
 		Habitat ht = new Habitat(0, nombre, null, localizacion);
 		ht = controladorHabitat.save(ht);
-		request.setAttribute("habitatCreado", ht);
+		if(ht == null) {
+			feedbackMessage = "¡No se ha podido crear el habitat!";
+		}else {
+			feedbackMessage = "¡Habitat creada con éxito!";
+		}
+		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

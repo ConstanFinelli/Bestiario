@@ -11,12 +11,13 @@
 	left: 0;
 	width: 320px;
 	min-height: 100vh;
-	background-color: color(srgb 0.795 0.7327 0.5764);
+	background-color: color(srgb 0.795 0.7848 0.7592);
 	overflow-x: hidden;
 	scrollbar-width: none;
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	padding: 15px;
 	padding-top: 30px;
 	text-align: center;
 	flex-shrink: 0;
@@ -26,25 +27,31 @@
 	background: var(--secondary-color);
 	flex-grow: 1;
 	padding: 20px;
+	gap: 15px;
+	display: flex;
+	flex-direction: column;
 }
 
 .dashboardLink {
-	transition: background 0.3s ease-in-out;
+	transition: filter 0.3s ease-in-out;
 	text-decoration: none;
 	color: black;
 	font-size: 1.5rem;
 	font-weight: 500;
 	padding: 16px 20px;
-	background-color: gainsboro;
+	background-image: linear-gradient(to bottom, #f5deb3 0%, #e8dcb9 40%, #d2b48c 80%, #c1a171 100%);
+	font-family: "MedievalSharp", cursive;
+	border-top-left-radius: 1.6rem;
+	border-bottom-right-radius: 1rem;
 }
 
 .dashboardLink:hover {
-	background: rgb(189, 178, 178);
+	filter: brightness(0.9);
+	transform: scale(1.02);
 }
 
 .formAdmin{
-	padding: 3vh 5vw;
-	width: 400px;
+	padding: 3vh 30px;
 	border: 2px solid var(--primary-color);
 	border-radius: 12px;
 	background: rgba(245, 245, 66,0.075);
@@ -55,11 +62,23 @@
 	align-items: center;
 }
 
+.formsFlex{
+	display:flex;
+	flex-direction: column;
+	gap:15px;
+}
+
 .inputForm{
 	font-size: 1rem;
 	border-radius: 12px;
 	padding: 12px 16px;
 	width: 20vw;
+	border: 2px solid transparent;
+}
+
+.inputForm:focus{
+	border: 2px solid var(--primary-color);
+	outline: none;
 }
 
 .inputLabel{
@@ -108,8 +127,7 @@
 .listItem {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
-    width: 100%;
+    align-items: center;
     padding: 15px;
     border-bottom: 1px solid #eee;
     background-color: rgba(0,0,0,0.1);
@@ -155,3 +173,4 @@
 .deleteItem:hover {
     background-color: #c0392b;
 }
+

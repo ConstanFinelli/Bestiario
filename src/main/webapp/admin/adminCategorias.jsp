@@ -38,7 +38,7 @@
         <p>No hay categorías registradas en el Bestiario.</p>
     <% } %>
 </section>
-<div>
+<div class="formsFlex">
 <form class="formAdmin formCrear" action="<%= HttpRoutes.CREAR_CATEGORIA(request.getContextPath()) %>" method="POST">
 			<h1>Crear categoría</h1>
 			<label for="nombre" class="inputLabel">Nombre</label>
