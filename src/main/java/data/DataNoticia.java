@@ -24,11 +24,10 @@ public class DataNoticia {
 				int id = rs.getInt("idNoticia");
 				String contenido = rs.getString("contenido");
 				String titulo = rs.getString("titulo");
-				String estado = rs.getString("estado");
 				LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 				Investigador publicador = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
 				
-				noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, publicador);
+				noticiaFound = new Noticia(id, titulo, contenido, fechaPublicacion, publicador);
 			}
 		} catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -65,11 +64,10 @@ public class DataNoticia {
 					int id = rs.getInt("idNoticia");
 					String contenido = rs.getString("contenido");
 					String titulo = rs.getString("titulo");
-					String estado = rs.getString("estado");
 					LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 					Investigador publicador = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
 					
-					noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, publicador);
+					noticiaFound = new Noticia(id, titulo, contenido, fechaPublicacion, publicador);
 					noticias.add(noticiaFound);
 				}
 			}
@@ -108,11 +106,10 @@ public class DataNoticia {
 					Integer id = rs.getInt("idNoticia");
 					String contenido = rs.getString("contenido");
 					String titulo = rs.getString("titulo");
-					String estado = rs.getString("estado");
 					LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 					Investigador publicador = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
 					
-					noticiaFound = new Noticia(id, titulo, contenido, estado, fechaPublicacion, publicador);
+					noticiaFound = new Noticia(id, titulo, contenido, fechaPublicacion, publicador);
 					noticias.add(noticiaFound);
 				}
 			}
@@ -142,12 +139,11 @@ public class DataNoticia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into noticia(titulo, contenido, estado, fechaPublicacion, idUsuario) values (?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into noticia(titulo, contenido, fechaPublicacion, idUsuario) values (?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, noticia.getTitulo());
 			pstmt.setString(2, noticia.getContenido());
-			pstmt.setString(3, noticia.getEstado());
-			pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(noticia.getFechaPublicacion()));
-			pstmt.setInt(5, noticia.getPublicador().getIdUsuario());
+			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(noticia.getFechaPublicacion()));
+			pstmt.setInt(4, noticia.getPublicador().getIdUsuario());
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
@@ -182,13 +178,12 @@ public class DataNoticia {
 	public Noticia update(Noticia noticiaNueva) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update noticia set contenido = ?, titulo = ?, estado = ?, fechaPublicacion = ?, idUsuario = ? where idNoticia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update noticia set contenido = ?, titulo = ?, fechaPublicacion = ?, idUsuario = ? where idNoticia = ?");
 			pstmt.setString(1, noticiaNueva.getContenido());
 			pstmt.setString(2, noticiaNueva.getTitulo());
-			pstmt.setString(3, noticiaNueva.getEstado());
-			pstmt.setTimestamp(4, java.sql.Timestamp.valueOf(noticiaNueva.getFechaPublicacion()));
-			pstmt.setInt(5, noticiaNueva.getPublicador().getIdUsuario());
-			pstmt.setInt(6, noticiaNueva.getId());
+			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(noticiaNueva.getFechaPublicacion()));
+			pstmt.setInt(4, noticiaNueva.getPublicador().getIdUsuario());
+			pstmt.setInt(5, noticiaNueva.getId());
 			pstmt.executeUpdate();
 		}catch(SQLException ex){
 			System.out.println("Mensaje: " + ex.getMessage());

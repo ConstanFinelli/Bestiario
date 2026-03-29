@@ -9,6 +9,8 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="helpers.HttpRoutes" %>
+<%@ page import="java.util.Map" %>
+
 <%
 	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");	
 	if(categorias == null ){
@@ -80,21 +82,21 @@
 					verTodo = true;
 				}
 			}
-			LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
+			Map<Bestia, String> imagenes = (Map<Bestia, String>) request.getAttribute("imagenes");
 			LogicRegistro controladorRegistro = new LogicRegistro();
-			if (bestias != null) {
+			if (imagenes != null) {
 			%>
 			<div class="swiper mySwiper">
 				<div class="swiper-wrapper">
 					<%
-					for (Bestia bestia : bestias) {
+					for (Bestia bestia: imagenes.keySet()) {
 						if (bestia.getEstado().equals("aprobado") || verTodo == true) {
 					%>
 					<article class="bestia swiper-slide">
 						<h1><%=bestia.getNombre()%></h1>
 						<% Registro ultRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 						%>
-						<img src="<%= bestia.getPictureUrl()%>" alt="Imagen de: <%=bestia.getNombre()%>">
+						<img src="<%= imagenes.get(bestia)%>" alt="Imagen de: <%=bestia.getNombre()%>">
 						<div class="overlay-buttons">
 							<a class="btnBestia"
 								href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Examinar</a>

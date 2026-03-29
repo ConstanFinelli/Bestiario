@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `bestiario` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `bestiario`;
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bestiario
 -- ------------------------------------------------------
--- Server version	8.4.5
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,10 +26,20 @@ CREATE TABLE `bestia` (
   `idBestia` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `peligrosidad` varchar(45) NOT NULL,
+  `estado` varchar(45) NOT NULL,
   PRIMARY KEY (`idBestia`),
   UNIQUE KEY `idbestia_UNIQUE` (`idBestia`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bestia`
+--
+
+LOCK TABLES `bestia` WRITE;
+/*!40000 ALTER TABLE `bestia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bestia` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `bestia_categoria`
@@ -51,6 +59,15 @@ CREATE TABLE `bestia_categoria` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `bestia_categoria`
+--
+
+LOCK TABLES `bestia_categoria` WRITE;
+/*!40000 ALTER TABLE `bestia_categoria` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bestia_categoria` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `bestia_evidencia`
 --
 
@@ -65,10 +82,19 @@ CREATE TABLE `bestia_evidencia` (
   PRIMARY KEY (`nroEvidencia`,`idBestia`,`idTipoEvidencia`),
   KEY `idBestia-Evidencia_idx` (`idBestia`),
   KEY `idEvidencia-Bestia` (`nroEvidencia`,`idTipoEvidencia`),
-  CONSTRAINT `idBestia-Evidencia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idEvidencia-Bestia` FOREIGN KEY (`nroEvidencia`, `idTipoEvidencia`) REFERENCES `evidencia` (`nroEvidencia`, `idTipoEvidencia`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `idBestia-Evidencia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`),
+  CONSTRAINT `idEvidencia-Bestia` FOREIGN KEY (`nroEvidencia`, `idTipoEvidencia`) REFERENCES `evidencia` (`nroEvidencia`, `idTipoEvidencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bestia_evidencia`
+--
+
+LOCK TABLES `bestia_evidencia` WRITE;
+/*!40000 ALTER TABLE `bestia_evidencia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bestia_evidencia` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `bestia_habitat`
@@ -88,6 +114,15 @@ CREATE TABLE `bestia_habitat` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `bestia_habitat`
+--
+
+LOCK TABLES `bestia_habitat` WRITE;
+/*!40000 ALTER TABLE `bestia_habitat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bestia_habitat` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `caracteristica`
 --
 
@@ -104,6 +139,15 @@ CREATE TABLE `caracteristica` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `caracteristica`
+--
+
+LOCK TABLES `caracteristica` WRITE;
+/*!40000 ALTER TABLE `caracteristica` DISABLE KEYS */;
+/*!40000 ALTER TABLE `caracteristica` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `categoria`
 --
 
@@ -118,6 +162,15 @@ CREATE TABLE `categoria` (
   UNIQUE KEY `idCategoria_UNIQUE` (`idCategoria`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categoria`
+--
+
+LOCK TABLES `categoria` WRITE;
+/*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
+/*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `comentario`
@@ -138,8 +191,17 @@ CREATE TABLE `comentario` (
   KEY `fk_comentario_idUsuario_idx` (`idUsuario`),
   CONSTRAINT `fk_comentario_idBestia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`),
   CONSTRAINT `fk_comentario_idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comentario`
+--
+
+LOCK TABLES `comentario` WRITE;
+/*!40000 ALTER TABLE `comentario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `comentario` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `contenido_registro`
@@ -156,8 +218,17 @@ CREATE TABLE `contenido_registro` (
   `resumen` text NOT NULL,
   PRIMARY KEY (`idContenido`),
   UNIQUE KEY `nro_registro_UNIQUE` (`idContenido`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contenido_registro`
+--
+
+LOCK TABLES `contenido_registro` WRITE;
+/*!40000 ALTER TABLE `contenido_registro` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contenido_registro` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `evidencia`
@@ -178,6 +249,15 @@ CREATE TABLE `evidencia` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `evidencia`
+--
+
+LOCK TABLES `evidencia` WRITE;
+/*!40000 ALTER TABLE `evidencia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `evidencia` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `habitat`
 --
 
@@ -194,6 +274,15 @@ CREATE TABLE `habitat` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `habitat`
+--
+
+LOCK TABLES `habitat` WRITE;
+/*!40000 ALTER TABLE `habitat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `habitat` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `noticia`
 --
 
@@ -203,7 +292,7 @@ DROP TABLE IF EXISTS `noticia`;
 CREATE TABLE `noticia` (
   `idNoticia` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(45) NOT NULL,
-  `contenido` text NOT NULL,
+  `contenido` varchar(255) NOT NULL,
   `fechaPublicacion` date DEFAULT NULL,
   `idUsuario` int DEFAULT NULL,
   PRIMARY KEY (`idNoticia`),
@@ -211,6 +300,15 @@ CREATE TABLE `noticia` (
   CONSTRAINT `fk_noticia_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `noticia`
+--
+
+LOCK TABLES `noticia` WRITE;
+/*!40000 ALTER TABLE `noticia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `noticia` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `registro`
@@ -227,7 +325,7 @@ CREATE TABLE `registro` (
   `idUsuario` int DEFAULT NULL,
   `estado` varchar(45) NOT NULL DEFAULT '"pendiente"',
   `idBestia` int NOT NULL,
-  `main_picture_id` varchar(255) DEFAULT NULL,
+  `main_picture` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`nroRegistro`,`idBestia`),
   UNIQUE KEY `idContenido_UNIQUE` (`idContenido`),
   KEY `idUsuario_idx` (`idUsuario`),
@@ -236,6 +334,15 @@ CREATE TABLE `registro` (
   CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `registro`
+--
+
+LOCK TABLES `registro` WRITE;
+/*!40000 ALTER TABLE `registro` DISABLE KEYS */;
+/*!40000 ALTER TABLE `registro` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `tipo_evidencia`
@@ -249,8 +356,17 @@ CREATE TABLE `tipo_evidencia` (
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`idTipoEvidencia`),
   UNIQUE KEY `idTipoEvidencia_UNIQUE` (`idTipoEvidencia`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_evidencia`
+--
+
+LOCK TABLES `tipo_evidencia` WRITE;
+/*!40000 ALTER TABLE `tipo_evidencia` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tipo_evidencia` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario`
@@ -272,8 +388,17 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `correo_UNIQUE` (`correo`),
   UNIQUE KEY `idUsuario_UNIQUE` (`idUsuario`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

@@ -11,7 +11,9 @@ import logic.LogicRegistro;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import entities.Bestia;
 import entities.Registro;
@@ -37,6 +39,7 @@ public class ListarBestia extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
 		String filter = request.getParameter("filter");
 		LinkedList<Bestia> bestias = new LinkedList<>();
+		Map<Bestia, String> imagenes = new HashMap<Bestia, String>();
 		if(filter != null && !filter.isEmpty()) {
 			bestias = controladorBestia.findByCategoria(filter);
 		}else {
@@ -45,9 +48,10 @@ public class ListarBestia extends HttpServlet {
 		if (!bestias.isEmpty()) {
 			for(Bestia bestia: bestias) {
 				Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
-				bestia.setPictureUrl(CloudinaryHelper.getImagenListadoBestia(registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
+				imagenes.put(bestia, CloudinaryHelper.getImagenListadoBestia(registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
 			}
 			request.setAttribute("bestias", bestias);
+			request.setAttribute("imagenes", imagenes);
 		}
 		if(filter != null) {
 			request.setAttribute("searchedFilter", filter); 
