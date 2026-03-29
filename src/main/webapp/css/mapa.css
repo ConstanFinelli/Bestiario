@@ -51,9 +51,32 @@ html, body {
 	
 }
 .contenedorOpciones{
+	width: 25%;
+    height: 100vh;
+    float: left;
+    background-color: #4B3621; 
+    border-right: 5px solid #2c1e14; 
+    box-sizing: border-box;
+    padding: 20px;
+    overflow-y: auto; 
+    color: #f3e5ab;   
+    font-family: 'Georgia', serif; 
 	
 }
 
-.contenedorHabitat{
-	
+.contenedorHabitats{
+	width: 95%;
+	height: 95%;
+	background-color: #8a692e;	
+	border-radius: 20px;
+	padding-top: 5px;
+}
+
+.HabitatCard{
+	width: 85%;
+	height: auto;
+	margin: 10px auto;
+	background-color:#8a692e; 
+	border: 5px solid #4B3621;
+	border-radius: 20px;
 }

@@ -26,6 +26,10 @@
         }).addTo(map);
         
     <% Map<Bestia, String> bestias = (Map<Bestia, String>) request.getAttribute("bestias");
+    Bestia selectedB = null;
+    if(bestias.size() == 1){
+    	selectedB = bestias.entrySet().iterator().next().getKey();
+    }
         for(Bestia b : bestias.keySet()){
             for(Habitat h : b.getHabitats()) {%>
             L.marker([<%= h.getLatitud() %>, <%= h.getLongitud() %>])
@@ -44,6 +48,13 @@
 
 <div class="contenedorOpciones">
 	<div class="contenedorHabitats">
+	<%for(Habitat h: selectedB.getHabitats()){%>
+		<div class="HabitatCard">
+		<h2><%= h.getNombre()%></h2>
+		<h2><%= h.getLocalizacion()%></h2>
+		<h2>Coordenadas: <%= h.getLatitud()%>, <%= h.getLongitud()%></h2>
+		</div>
+	<%} %>
 	</div>
 </div>>
 </body>
