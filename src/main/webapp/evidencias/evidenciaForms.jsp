@@ -22,7 +22,7 @@
 </style>
 </head>
 <body>
-<%@ include file="../../components/adminNavbar.jsp" %>	
+<%@ include file="../components/adminNavbar.jsp" %>	
 <div class="mainContent" style="height:fit-content">
 	<div class="container-md text-center border border-secondary">
 		<h1>Conseguir evidencias</h1>

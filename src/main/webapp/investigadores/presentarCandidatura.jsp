@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="../css/navbar.css">
 </head>
 <body>
-<%@ include file="../../components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 <%
 	String errorMsg = (String) request.getAttribute("errorMsg");
 %>

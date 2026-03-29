@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="../css/navbar.css">
 </head>
 <body>
-<%@ include file="../../components/adminNavbar.jsp" %>
+<%@ include file="../components/adminNavbar.jsp" %>
 <div class="mainContent" style="height:fit-content">	
 	<div class="container-md text-center my-4 border p-4">
 		<h1>Conseguir Tipos de evidencia</h1>

@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../css/navbar.css">
 </head>
 <body>
-<%@ include file="../../components/adminNavbar.jsp" %>
+<%@ include file="../components/adminNavbar.jsp" %>
 <%
 		LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("categorias");
 	%>	

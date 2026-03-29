@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="../css/navbar.css">
 </head>
 <body>
-<%@ include file="../../components/navbar.jsp" %>	
+<%@ include file="../components/navbar.jsp" %>	
 <section class="mainContent">
 <h1>Candidaturas</h1>
 	

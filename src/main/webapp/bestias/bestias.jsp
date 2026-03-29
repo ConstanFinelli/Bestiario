@@ -32,7 +32,7 @@
 	src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 </head>
 <body>
-<%@ include file="../../components/navbar.jsp" %>	
+<%@ include file="../components/navbar.jsp" %>	
 <section class="mainContent">
 <h1>Bestias registradas</h1>
 	<% 

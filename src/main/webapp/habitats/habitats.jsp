@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath()) %>">
 </head>
 <body>
-<%@ include file="../../components/navbar.jsp" %>
+<%@ include file="../components/navbar.jsp" %>
 <section class="mainContent" style="height:fit-content">
 <h1>Habitats registradas</h1>
 	<section class="habitats">

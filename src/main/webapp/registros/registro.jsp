@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath())%>">
     </head>
     <body>
-        <%@ include file="../../components/navbar.jsp" %>
+        <%@ include file="../components/navbar.jsp" %>
         <section class="mainContent">
         <% if(bestia == null){ %>
         <section>

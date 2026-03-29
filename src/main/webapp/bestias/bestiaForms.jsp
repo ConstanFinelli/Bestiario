@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="../css/navbar.css">
 </head>
 <body>
-	<%@ include file="../../components/adminNavbar.jsp" %>
+	<%@ include file="../components/adminNavbar.jsp" %>
 	<%
 		LinkedList<Bestia> bestias = (LinkedList<Bestia>) session.getAttribute("bestias");
 		LinkedList<Habitat> habitats = (LinkedList<Habitat>) session.getAttribute("habitats");
