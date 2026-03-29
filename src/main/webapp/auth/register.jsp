@@ -19,8 +19,8 @@
                 </div>
                 
                 <div class="logInput">
-                    <input type="password" required placeholder=' ' id="contrasena" name='contrasena' required/>
-                    <label for="contrasena">🔐 Contraseña</label>
+                    <input type="password" required placeholder=' ' id="password" name='password' required/>
+                    <label for="password">🔐 Contraseña</label>
                 </div>
                 
 				<div id="camposLector" class="extraFields" style="display:flex;">

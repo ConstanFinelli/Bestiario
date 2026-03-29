@@ -23,6 +23,10 @@
 	flex-shrink: 0;
 }
 
+h2{
+	font-size: 1.8rem;
+}
+
 .adminContent{
 	background: var(--secondary-color);
 	flex-grow: 1;
@@ -130,13 +134,13 @@
 
 .listItem {
     display: flex;
+    gap:15px;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
     border-bottom: 1px solid #eee;
     background-color: rgba(0,0,0,0.1);
     transition: background-color 0.2s ease;
-    overflow-y: scroll;
 }
 
 .listItem:hover {

@@ -276,6 +276,19 @@ public final class HttpRoutes {
 		return base + "/investigadores/crearSolicitud";
 	}
 	
+	// Lectores
+	public static String LISTAR_LECTORES(String base) {
+		return base + "/lectores/listar";
+	}
+	
+	public static String ELIMINAR_LECTOR(String base) {
+		return base + "/lectores/eliminar";
+	}
+	
+	public static String ACTUALIZAR_LECTOR(String base) {
+		return base + "/lectores/actualizar";
+	}
+	
 	// Comentarios
 	public static String AGREGAR_COMENTARIO(String base) {
 		return base + "/comentarios/agregar";

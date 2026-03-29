@@ -46,6 +46,7 @@
 			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=categorias" class="dashboardLink" id="catLink">Categorías</a>
 			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=habitats" class="dashboardLink" id="habLink">Habitats</a>
 			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=usuarios" class="dashboardLink" id="usLink">Usuarios</a>
+			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=tiposEvidencia" class="dashboardLink" id="teLink">Tipos de evidencia</a>
 		</aside>
 		<main class="adminContent">
 			<% if(feedbackMessage != null){ %>
@@ -67,6 +68,9 @@
 			<%} else if ("carHabitat".equals(crud)){%>
 				<%@ include file="adminCarHabitats.jsp" %>
 				<script type="text/javascript">document.getElementById("habLink").classList.add("activeLink")</script>
+			<%} else if ("tiposEvidencia".equals(crud)){%>
+				<%@ include file="adminTipoEvidencia.jsp" %>
+				<script type="text/javascript">document.getElementById("teLink").classList.add("activeLink")</script>
 			<%} %>
 		</main>
 	</div>

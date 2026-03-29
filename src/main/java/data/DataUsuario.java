@@ -73,10 +73,10 @@ public class DataUsuario {
 						String nombre = rs.getString("nombre");
 						String apellido = rs.getString("apellido");
 						String dni = rs.getString("dni");
-						us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+						us = new Investigador(id, correo, contraseña, nombre, apellido, dni, estado);
 					}else {
 						LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
-						us = new Lector(id, correo, contraseña, fechaNacimiento);
+						us = new Lector(id, correo, contraseña, fechaNacimiento, estado);
 					}
 					usuarios.add(us);
 				}
@@ -179,7 +179,7 @@ public class DataUsuario {
 				pstmt.setString(6, inv.getEstado());
 				pstmt.setInt(7, inv.getIdUsuario());
 			}else {
-				le = new Lector(us.getIdUsuario(), us.getCorreo(), us.getContraseña(), getFechaNacimiento(us.getIdUsuario()));
+				le = (Lector) us;
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ?, estado = 'lector' where idUsuario = ?");
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContraseña());
