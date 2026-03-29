@@ -114,16 +114,17 @@
     height: 6vh;
     width: 12vw;
     font-size: 1.4rem;
-    background-color: var(--button-color);
+    background-image: linear-gradient(105deg, #d9bd62, #c49623);
     outline: none;
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    transition: filter 0.3s ease-in-out;
 }
 
 .logSubmit:hover{
-    background-color: var(--primary-color);
-    transition: 0.6s;
+    filter: brightness(0.9);
+    transform: scale(1.02);
 }
 
 .otherMsg{
