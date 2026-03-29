@@ -42,6 +42,16 @@ public class CloudinaryHelper {
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
+	public static String getImagenMapa(String publicId) {
+		publicId = isImagenDefault(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
+	public static String getImagenMapaButton(String publicId) {
+		publicId = isImagenDefault(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
 	public static String getImagenListadoBestia(String publicId) {
 		publicId = isImagenDefault(publicId);
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);

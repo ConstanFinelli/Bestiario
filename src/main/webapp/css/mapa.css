@@ -1,0 +1,59 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #8E6E53;
+}
+
+.contenedorMapa {
+    width: 75%; 
+    height: 100vh;
+    float: right;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border-right: 5px solid #8E6E53;
+    box-sizing: border-box;
+    background-color: #f3e5ab;
+}
+
+.mapa {
+    width: 100%;
+    height: 100%;
+    background-color: #f3e5ab;
+}
+
+
+.leaflet-tile-pane {
+    filter: invert(1) sepia(1.8) saturate(2.5) 
+}
+
+.leaflet-marker-pane, 
+.leaflet-popup-pane, 
+.leaflet-tooltip-pane,
+.leaflet-control-container {
+    filter: none !important;
+}
+
+.leaflet-container {
+    background: #f3e5ab !important;
+}
+
+.leaflet-marker-icon{
+	filter: sepia(1) saturate(1.8) brightness(0.8) !important;
+}
+
+.leaflet-tooltip{
+	border-radius: 15px !important;
+	background: linear-gradient(90deg, #4b3621 0%, #5d4037 50%, #4b3621 100%) !important;
+	
+}
+.contenedorOpciones{
+	
+}
+
+.contenedorHabitat{
+	
+}

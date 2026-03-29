@@ -277,6 +277,16 @@ public final class HttpRoutes {
 		return base + "/comentarios/agregar";
 	}
 	
+	
+	// Mapas
+	
+	public static String MAPA_JSP(String base) {
+		return base + "/mapas/mapa.jsp";
+	}
+	
+	public static String MAPA_BESTIA(String base) {
+		return base + "/mapas/bestia";
+	}
 	// Estilos
 	
 	public static String MAIN_CSS(String base) {
@@ -323,6 +333,9 @@ public final class HttpRoutes {
 		return base + "/css/redactarNoticia.css";
 	}
 	
+	public static String MAPA_CSS(String base) {
+		return base + "css/mapa.css";
+	}
 	
 	
 }

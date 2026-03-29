@@ -7,7 +7,7 @@
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
 <%@ page import="entities.Comentario" %>
-<%@ page import="helpers.HttpRoutes" %>
+<%@ page import="helpers.HttpRoutes, helpers.CloudinaryHelper, helpers.EnvHelper" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -124,6 +124,11 @@
 	                		<li>Último cambio: <% if(registro.getPublicador() != null){%><%= registro.getFechaAprobacion() %><%}else{ %>Sin cambios <%} %></li>
 	                	</ul>
 	                	<%} %>
+                </div>
+                
+                <div>
+                <h3>Ver ubicaciones conocidas</h3>
+                <a href="<%= HttpRoutes.MAPA_BESTIA(request.getContextPath())%>?id=<%= bestia.getIdBestia() %>"><img src="<%= CloudinaryHelper.getImagenMapaButton(EnvHelper.get("MAP_PICTURE_ID")) %>" class="mapaButton"></a>
                 </div>
             </aside>
             <% } %>
