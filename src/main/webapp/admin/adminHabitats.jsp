@@ -26,10 +26,13 @@
                         <span class="itemTitle"><%= hab.getNombre() %> <small>(ID: <%= hab.getId() %>)</small></span>
                         <span class="itemDesc"><%= hab.getLocalizacion() %></span>
                     </div>
-                    <form action="<%= HttpRoutes.ELIMINAR_HABITAT(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Eliminar <%= hab.getNombre() %>?');">
-                        <input type="hidden" name="id" value="<%= hab.getId() %>">
-                        <button type="submit" class="deleteItem">Eliminar</button>
-                    </form>
+                    <div class="editButtons">
+	                    <form action="<%= HttpRoutes.ELIMINAR_HABITAT(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Eliminar <%= hab.getNombre() %>?');">
+	                        <input type="hidden" name="id" value="<%= hab.getId() %>">
+	                        <button type="submit" class="deleteItem">Eliminar</button>
+	                    </form>
+	                    <a class="caractItem" href="<%= HttpRoutes.LISTAR_CARACTERISTICAHABITAT(request.getContextPath()) %>?id=<%=hab.getId()%>">Ver mas</a>
+                    </div>
                 </li>
             <%  }
              } %>
@@ -40,7 +43,7 @@
 </section>
 <div class="formsFlex">
 <form class="formAdmin formCrear" action="<%= HttpRoutes.CREAR_HABITAT(request.getContextPath()) %>" method="POST">
-			<h1>Crear categoría</h1>
+			<h1>Crear habitat</h1>
 			<label for="nombre" class="inputLabel">Nombre</label>
 			<input type="text" id="nombre" name="nombre" class="inputForm" placeholder="Ingresar nombre de el habitat..." required/>
 			<label for="localizacion" class="inputLabel">Localización</label>

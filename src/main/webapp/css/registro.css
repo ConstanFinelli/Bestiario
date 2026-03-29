@@ -270,3 +270,8 @@ textarea{
     font-size: 1.3rem;
     color: gray;
 }
+
+.registroContent{
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+}

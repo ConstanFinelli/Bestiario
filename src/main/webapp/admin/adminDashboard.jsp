@@ -43,9 +43,9 @@
 	<div class="adminLayout">
 		<aside class="dashboardMenu">
 			<h2>Menu de Administrador</h2>
-			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=categorias" class="dashboardLink">Categorías</a>
-			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=habitats" class="dashboardLink">Habitats</a>
-			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=usuarios" class="dashboardLink">Usuarios</a>
+			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=categorias" class="dashboardLink" id="catLink">Categorías</a>
+			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=habitats" class="dashboardLink" id="habLink">Habitats</a>
+			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=usuarios" class="dashboardLink" id="usLink">Usuarios</a>
 		</aside>
 		<main class="adminContent">
 			<% if(feedbackMessage != null){ %>
@@ -57,10 +57,16 @@
 				<p>Seleccione una opción para gestionar en el menú de la izquierda.</p>
 			<%} else if ("categorias".equals(crud)){ %>
 				<%@ include file="adminCategorias.jsp" %>
+				<script type="text/javascript">document.getElementById("catLink").classList.add("activeLink")</script>
 			<%} else if ("usuarios".equals(crud)){ %>
 				<%@ include file="adminUsuarios.jsp" %>
+				<script type="text/javascript">document.getElementById("usLink").classList.add("activeLink")</script>
 			<%} else if ("habitats".equals(crud)){ %>
 				<%@ include file="adminHabitats.jsp" %>
+				<script type="text/javascript">document.getElementById("habLink").classList.add("activeLink")</script>
+			<%} else if ("carHabitat".equals(crud)){%>
+				<%@ include file="adminCarHabitats.jsp" %>
+				<script type="text/javascript">document.getElementById("habLink").classList.add("activeLink")</script>
 			<%} %>
 		</main>
 	</div>

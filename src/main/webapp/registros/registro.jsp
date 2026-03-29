@@ -34,6 +34,7 @@
         <% if(bestia != null){ 
         	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
         %>
+        <div class="registroContent">
             <section>
                 <h1><%= bestia.getNombre() %> </h1>
                 <% if(registro != null){ %>
@@ -105,7 +106,7 @@
 	                <h3>Hábitats localizados</h3>
 	                <ul>
 	                	<% LinkedList<Habitat> habitats = bestia.getHabitats(); %>
-	                	<% if(habitats != null){ 
+	                	<% if(habitats != null && !habitats.isEmpty()){ 
 	                	for(Habitat habitat:habitats){
 	                	%>
 	                    <li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %></li>
@@ -125,6 +126,7 @@
 	                	<%} %>
                 </div>
             </aside>
+        </div>
             <% } %>
         </section>
         <%

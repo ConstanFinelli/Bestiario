@@ -17,9 +17,9 @@
         %>  
       
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Actualización de bestia</title>
-        <link rel="stylesheet" href="../css/main.css">
-        <link rel="stylesheet" href="../css/registro.css">
-        <link rel="stylesheet" href="../css/navbar.css">
+        <link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
+        <link rel="stylesheet" href="<%= HttpRoutes.REGISTRO_CSS(request.getContextPath()) %>">
+        <link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath()) %>">
     </head>
     <body>
         <%@ include file="../../components/navbar.jsp" %>
@@ -37,6 +37,7 @@
         } %>
         <form action="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%= bestia.getIdBestia()%>" method="POST" enctype="multipart/form-data">
         <section class="mainContent">
+        <div class="registroContent">
         <section>
                 <h1><%= bestia.getNombre() %></h1>
                 <% if(registro != null){ %>
@@ -107,7 +108,7 @@
 						<h3>Hábitats localizados</h3>
 						<ul>
 							<% LinkedList<Habitat> habitats = bestia.getHabitats(); %>
-							<% if(habitats != null){ 
+							<% if(habitats != null && !habitats.isEmpty()){ 
 	                	for(Habitat habitat:habitats){
 	                	%>
 							<li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %></li>
@@ -127,8 +128,8 @@
 	                	<%} %>
 					</div>
 			</aside>
-            
         </section>
+        </div>
         		<section class="mainContent evidenciasContent">
                         <% if(!evidencias.isEmpty()){ %>
                 <h2>Evidencias</h2>

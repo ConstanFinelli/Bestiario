@@ -136,7 +136,7 @@ public final class HttpRoutes {
 	}
 	
 	public static String LISTAR_CARACTERISTICAHABITAT(String base) {
-		return base + "/habitats/listarCaracteristicaHabitat";
+		return base + "/habitats/listarCaracteristicasHabitat";
 	}
 	
 	public static String CREAR_CARACTERISTICAHABITAT(String base) {

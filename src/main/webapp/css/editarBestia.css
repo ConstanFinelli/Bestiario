@@ -48,6 +48,12 @@
 	grid-template-columns: 1fr 2fr;
 }
 
+.formsFlex{
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
 .infoBestia{
     box-shadow: 0 4px 6px 0 rgba(7, 35, 60, 0.317);
     background: #d1cec6;

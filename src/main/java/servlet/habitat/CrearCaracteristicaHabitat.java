@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCaracteristicaHabitat;
+import logic.LogicHabitat;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ import helpers.HttpRoutes;
 @WebServlet("/habitats/crearCaracteristicaHabitat")
 public class CrearCaracteristicaHabitat extends HttpServlet {
 	private LogicCaracteristicaHabitat controlador = new LogicCaracteristicaHabitat();
+	private LogicHabitat controladorHabitat = new LogicHabitat();
 	
 	private static final long serialVersionUID = 1L;
        
@@ -32,13 +34,20 @@ public class CrearCaracteristicaHabitat extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.CARAC_HABITAT_FORM_JSP(""));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=carHabitat");
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
+		String feedbackMessage = "";
 		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		ht = controladorHabitat.getOne(ht);
 		CaracteristicaHabitat ch = new CaracteristicaHabitat(ht.getId(), descripcion);
 		ch = controlador.save(ch, ht);
-		request.setAttribute("savedCaracteristica", ch);
+		if(ch == null) {
+			feedbackMessage = "¡No se ha podido crear la característica!";
+		}else {
+			feedbackMessage = "¡Característica creada con éxito!";
+		}
+		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 
