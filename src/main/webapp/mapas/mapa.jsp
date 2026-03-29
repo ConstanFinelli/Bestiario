@@ -50,7 +50,7 @@
 	<div class="contenedorHabitats">
 	<%for(Habitat h: selectedB.getHabitats()){%>
 		<div class="HabitatCard">
-		<h2><%= h.getNombre()%></h2>
+		<h1><%= h.getNombre()%></h1>
 		<h2><%= h.getLocalizacion()%></h2>
 		<h2>Coordenadas: <%= h.getLatitud()%>, <%= h.getLongitud()%></h2>
 		</div>
