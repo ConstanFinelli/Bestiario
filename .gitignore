@@ -6,6 +6,7 @@
 *.ear
 target/
 build/
+bin/
 
 # Entorno y Secretos
 .env

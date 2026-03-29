@@ -3,14 +3,15 @@
 <%@ page import="java.util.*" %>
 <%@ page import="entities.Bestia" %>
 <%@ page import="entities.Habitat" %>
+<%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Bestiario - Habitats</title>
-<link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/habitats.css">
-<link rel="stylesheet" href="../css/navbar.css">
+<link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
+<link rel="stylesheet" href="<%= HttpRoutes.HABITATS_CSS(request.getContextPath()) %>">
+<link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath()) %>">
 </head>
 <body>
 <%@ include file="../../components/navbar.jsp" %>
@@ -34,7 +35,7 @@
                     				for(Bestia bestia: habitat.getBestias()){
                     			%>
                     			<li>
-                    				<a href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>"><%= bestia.getNombre() %></a>
+                    				<a href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%= bestia.getIdBestia() %>"><%= bestia.getNombre() %></a>
                     			</li>
                     			<%}}else{ %>
                     				<li>No hay bestias registradas.</li>

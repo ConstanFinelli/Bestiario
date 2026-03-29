@@ -93,6 +93,10 @@ public final class HttpRoutes {
 	public static String OBTENER_REGISTROS_PENDIENTES_BESTIA(String base) {
 		return base + "/registros/obtenerRegistrosPendientesBestia";
 	}
+	
+	public static String OBTENER_REGISTRO_BESTIA_CON_FECHA(String base) {
+		return base + "/registros/obtenerRegistroConBestiaYFecha";
+	}
 
 	// Habitats
 	public static String CARAC_HABITAT_FORM_JSP(String base) {

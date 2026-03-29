@@ -9,7 +9,15 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="helpers.HttpRoutes" %>
+<%@ page import="java.util.Map" %>
 
+<%
+	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");	
+	if(categorias == null ){
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_CATEGORIAS("")+"?flag=listaBestias");
+		rd.forward(request, response);
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,12 +41,27 @@
 		if (searchedFilter == null) { searchedFilter = "";}
 	 %>
 	<form action="<%= HttpRoutes.LISTAR_BESTIAS(request.getContextPath()) %>" method="get">
-		<input type="hidden" name="action" value="list">
-    	
-    	<input placeholder="Ingresar categoría..." name="filter" class="inputFilter" type="search" id="filter" value=<%= searchedFilter %>>
-    	
-    	<button class="btnBestia" type="submit">Buscar</button>
-	</form>
+    
+    <select name="filter" class="inputFilter" id="filter">
+    <% if(categorias != null){ %>
+        <option value="">-- Categoría --</option>
+        
+        <% for(Categoria cat : categorias){ 
+            String nombreCat = cat.getNombre();
+            if (nombreCat != null) { 
+        %>
+            <option value="<%= nombreCat %>" <%= nombreCat.equals(searchedFilter) ? "selected" : "" %>>
+                <%= nombreCat %>
+            </option>
+        <%  }
+         } %>
+    <% } %>
+</select>
+    
+    <button class="btnBestia" type="submit" <%= (categorias == null) ? "disabled" : "" %>>
+        Buscar
+    </button>
+</form>
 	
 	<%
     	String errorMsg = (String) session.getAttribute("errorMsg");
@@ -59,21 +82,21 @@
 					verTodo = true;
 				}
 			}
-			LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
+			Map<Bestia, String> imagenes = (Map<Bestia, String>) request.getAttribute("imagenes");
 			LogicRegistro controladorRegistro = new LogicRegistro();
-			if (bestias != null) {
+			if (imagenes != null) {
 			%>
 			<div class="swiper mySwiper">
 				<div class="swiper-wrapper">
 					<%
-					for (Bestia bestia : bestias) {
+					for (Bestia bestia: imagenes.keySet()) {
 						if (bestia.getEstado().equals("aprobado") || verTodo == true) {
 					%>
 					<article class="bestia swiper-slide">
 						<h1><%=bestia.getNombre()%></h1>
 						<% Registro ultRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 						%>
-						<img src="<%= bestia.getPictureUrl()%>" alt="Imagen de: <%=bestia.getNombre()%>">
+						<img src="<%= imagenes.get(bestia)%>" alt="Imagen de: <%=bestia.getNombre()%>">
 						<div class="overlay-buttons">
 							<a class="btnBestia"
 								href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Examinar</a>
@@ -88,11 +111,9 @@
 							if (bestia.getEstado().equals("pendiente")) {
 							%>
 							<form action="<%= HttpRoutes.ACTUALIZAR_BESTIA(request.getContextPath()) %>" method="post" style="display: inline;">
-								<input type="hidden" name="flag" value="put"> <input
-									type="hidden" name="id" value="<%=bestia.getIdBestia()%>">
-								<input type="hidden" name="nombre"
-									value="<%=bestia.getNombre()%>"> <input type="hidden"
-									name="peligrosidad" value="<%=bestia.getPeligrosidad()%>">
+								<input type="hidden" name="id" value="<%=bestia.getIdBestia()%>">
+								<input type="hidden" name="nombre" value="<%=bestia.getNombre()%>"> 
+									<input type="hidden" name="peligrosidad" value="<%=bestia.getPeligrosidad()%>">
 								<input type="hidden" name="estado" value="aprobado">
 								<button type="submit" class="btnBestia">Aprobar Bestia</button>
 							</form>

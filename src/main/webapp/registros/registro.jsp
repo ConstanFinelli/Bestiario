@@ -14,6 +14,7 @@
     	<% 
         	Bestia bestia = (Bestia) request.getAttribute("foundBestia");
     		Registro registro = (Registro) request.getAttribute("foundRegistro");  
+    		String UrlImagen = (String) request.getAttribute("UrlImagen");
     		%>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,7 +55,11 @@
 	                <p><%= registro.getContenido().getResumen() %></p>
                 </article>
                 <% }else{ %>
-                <div class="notFound">No hay un registro encontrado para esta bestia.</div>
+                	<% if(request.getParameter("fecha") == null){ %>
+                		<div class="notFound">No hay un registro encontrado para esta bestia.</div>
+                	<%}else{ %>
+                		<div class="notFound">No hay un registro encontrado para esta bestia en la fecha seleccionada.</div>
+                	<%} %>
                 <% } %>
                 <% if(!evidencias.isEmpty()){ %>
                 <h2>Evidencias</h2>
@@ -74,7 +79,7 @@
                 <%} %>
             </section>
             <aside class="infoBestia">
-            	<img src="<%=bestia.getPictureUrl()%>" alt="Imagen de la bestia">
+            	<img src="<%=UrlImagen%>" alt="Imagen de la bestia">
                 <div>
 	                <h3>Detalles de la bestia</h3>
 	                <ul>
@@ -150,8 +155,7 @@
             	<%}} %>
             	<div class="anotherRegistros">
             		<h3>Cargar registro en determinada fecha</h3>
-				    <form action="SvBestia" method="get" class="registrosForm">
-				        <input type="hidden" name="action" value="registro">
+				    <form action="<%=HttpRoutes.OBTENER_REGISTRO_BESTIA_CON_FECHA(request.getContextPath())%>" method="get" class="registrosForm">
 				        <input type="hidden" name="id" value="<%= bestia != null ? bestia.getIdBestia() : "" %>">
 				        <input type="date" id="fecha" name="fecha" required>
 				        <button type="submit" class="btnRegistro">Cargar registro</button>
