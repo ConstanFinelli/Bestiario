@@ -31,10 +31,18 @@ public class CrearTipoEvidencia extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String desc = request.getParameter("descripcion");
-			TipoEvidencia tipo = new TipoEvidencia(0, null);
-			tipo.setDescripcion(desc);
-			tipo = controlador.save(tipo);
-			request.setAttribute("gottenTipo", tipo);
-			request.getRequestDispatcher(HttpRoutes.TIPO_EVIDENCIA_FORM_JSP("")).forward(request, response);
+		TipoEvidencia tipo = new TipoEvidencia(0, null);
+		tipo.setDescripcion(desc);
+		tipo = controlador.save(tipo);
+			
+		String feedbackMessage = "";
+		if(tipo == null) {
+			feedbackMessage = "¡No se ha podido crear el tipo de evidencia!";
+		}else {
+			feedbackMessage = "¡Tipo de evidencia creada con éxito!";
+		}
+			
+		request.setAttribute("feedbackMessage", feedbackMessage);
+		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
 	}
 }

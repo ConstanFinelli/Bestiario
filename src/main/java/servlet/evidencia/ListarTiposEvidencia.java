@@ -33,8 +33,12 @@ public class ListarTiposEvidencia extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LinkedList<TipoEvidencia> tipos = new LinkedList<>();
 		tipos = controlador.findAll();
-		request.setAttribute("gottenTipos", tipos);
-		request.getRequestDispatcher(HttpRoutes.TIPO_EVIDENCIA_FORM_JSP("")).forward(request, response);
+		request.setAttribute("foundTipos", tipos);
+		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
+	}
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }
