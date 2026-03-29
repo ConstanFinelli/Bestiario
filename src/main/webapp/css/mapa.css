@@ -1,97 +1,134 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    background-color: #8E6E53;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #8e6e53;
 }
 
 .contenedorMapa {
-    width: 75%; 
-    height: 100vh;
-    float: right;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    border-right: 5px solid #8E6E53;
-    box-sizing: border-box;
-    background-color: #f3e5ab;
+  width: 75%;
+  height: 100vh;
+  float: right;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border-right: 5px solid #8e6e53;
+  box-sizing: border-box;
+  background-color: #f3e5ab;
 }
 
 .mapa {
-    width: 100%;
-    height: 100%;
-    background-color: #f3e5ab;
+  width: 100%;
+  height: 100%;
+  background-color: #f3e5ab;
 }
-
 
 .leaflet-tile-pane {
-    filter: invert(1) sepia(1.8) saturate(2.5) 
+  filter: invert(1) sepia(1.8) saturate(2.5);
 }
 
-.leaflet-marker-pane, 
-.leaflet-popup-pane, 
+.leaflet-marker-pane,
+.leaflet-popup-pane,
 .leaflet-tooltip-pane,
 .leaflet-control-container {
-    filter: none !important;
+  filter: none !important;
 }
 
 .leaflet-container {
-    background: #f3e5ab !important;
+  background: #f3e5ab !important;
 }
 
-.leaflet-marker-icon{
-	filter: sepia(1) saturate(1.8) brightness(0.8) !important;
+.leaflet-marker-icon {
+  filter: sepia(1) saturate(1.8) brightness(0.8) !important;
 }
 
-.leaflet-tooltip{
-	border-radius: 15px !important;
-	background: linear-gradient(90deg, #4b3621 0%, #5d4037 50%, #4b3621 100%) !important;
-	
+.leaflet-tooltip {
+  border-radius: 15px !important;
+  background: linear-gradient(
+    90deg,
+    #4b3621 0%,
+    #5d4037 50%,
+    #4b3621 100%
+  ) !important;
 }
-.contenedorOpciones{
-	width: 25%;
-    height: 100vh;
-    float: left;
-    background-color: #4B3621; 
-    border-right: 5px solid #2c1e14; 
-    box-sizing: border-box;
-    padding: 20px;
-    overflow-y: auto; 
-    color: #f3e5ab;   
-    font-family: 'Georgia', serif; 
-	
-}
-
-.contenedorHabitats{
-	width: 95%;
-	height: 95%;
-	background-color: #8a692e;	
-	border-radius: 20px;
-	padding: 5px;
+.contenedorOpciones {
+  width: 25%;
+  height: 100vh;
+  float: left;
+  background-color: #4b3621;
+  border-right: 5px solid #2c1e14;
+  box-sizing: border-box;
+  padding: 20px;
+  overflow: hidden;
+  color: #f3e5ab;
+  font-family: 'Georgia', serif;
 }
 
-.HabitatCard{
-	width: 85%;
+.contenedorHabitats {
+  width: 90%;
+  height: 90%;
+  background-color: #f3e5ab;
+  border-radius: 20px;
+  padding: 5px;
+  overflow: auto;
+}
+
+.HabitatCard {
+  width: 85%;
+  height: auto;
+  margin: 10px auto;
+  background-color: #f3e5ab;
+  border: 5px solid #4b3621;
+  border-radius: 20px;
+  cursor:pointer;
+  overflow: hidden;
+}
+
+.HabitatCard:hover{
+  background-color: rgba(196, 164, 132, 0.4); 
+  transition: 0.3s;
+}
+
+
+.nombreHabitat {
+  background-color: #4b3621;
+  padding: 5px;
+  margin: 0px;
+  font-size: 1.2rem;
+  color: #f3e5ab;
+  text-align: center;
+}
+
+.HabitatCard h2 {
+  padding: 0px 5px;
+  font-size: 1rem;
+  color: #4b3621;
+}
+
+.btnMapa{
+	float: left;
+	width: 20%;
 	height: auto;
-	margin: 10px auto;
-	background-color:#8a692e; 
-	border: 5px solid #4B3621;
-	border-radius: 20px;
-	padding: 0px;
+	cursor: pointer;
+	margin: 25px auto;
+	padding: 10px;
+	border-radius: 6px;
+	color: #f3e5ab;
+	font-size: 1.6rem;
+	background: var(--primary-button);
+	display: block;
+	text-align: center;
 }
 
-.HabitatCard h1{
-	margin-top: 0px;
-	border-top-left-radius: 20px;
-	border-top-right-radius: 20px;
-	background-color: #4B3621;
-	font-size: 1.2rem;
-	color: #8a692e;
+.btnMapa:hoover{
+	background: var(--primary-button-hover);
 }
 
-.HabitatCard h2{
-	font-size: 1rem;
-	color: #4B3621;
+.btnMapa a{
+	text-decoration: none;
+	color: black;
 }
+

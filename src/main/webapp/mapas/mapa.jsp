@@ -8,6 +8,7 @@
 <title>Bestiario</title>
 
 <link rel="stylesheet" href="../css/mapa.css">
+<link rel="stylesheet" href="<%=HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
 </head>
@@ -49,12 +50,16 @@
 <div class="contenedorOpciones">
 	<div class="contenedorHabitats">
 	<%for(Habitat h: selectedB.getHabitats()){%>
-		<div class="HabitatCard">
-		<h1><%= h.getNombre()%></h1>
-		<h2><%= h.getLocalizacion()%></h2>
+		<div class="HabitatCard" onClick="map.flyTo([<%= h.getLatitud()%>, <%= h.getLongitud()%>], 8)">
+		<h1 class="nombreHabitat"><%= h.getNombre()%></h1>
+		<h2>Localizacion: <%= h.getLocalizacion()%></h2>
 		<h2>Coordenadas: <%= h.getLatitud()%>, <%= h.getLongitud()%></h2>
 		</div>
 	<%} %>
+	</div>
+	
+	<div class="btnMapa">
+	<a href="javascript:history.back()">Volver</a>
 	</div>
 </div>>
 </body>
