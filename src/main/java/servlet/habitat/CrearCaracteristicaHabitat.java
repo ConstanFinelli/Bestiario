@@ -35,7 +35,7 @@ public class CrearCaracteristicaHabitat extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.CARAC_HABITAT_FORM_JSP(""));
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
-		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		Habitat ht = new Habitat(Integer.parseInt(id));
 		CaracteristicaHabitat ch = new CaracteristicaHabitat(ht.getId(), descripcion);
 		ch = controlador.save(ch, ht);
 		request.setAttribute("savedCaracteristica", ch);

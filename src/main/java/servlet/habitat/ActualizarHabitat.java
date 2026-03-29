@@ -35,9 +35,9 @@ public class ActualizarHabitat extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String latitud = request.getParameter("latitud");
 		String longitud = request.getParameter("longitud");
+		String localizacion = request.getParameter("localizacion");
 		
-		
-		Habitat ht = new Habitat(Integer.parseInt(id), nombre, null, latitud, longitud);
+		Habitat ht = new Habitat(Integer.parseInt(id), nombre, localizacion, Double.parseDouble(latitud), Double.parseDouble(longitud));
 		ht = controladorHabitat.update(ht);
 		request.setAttribute("updatedHabitat", ht);
 		rd.forward(request, response);

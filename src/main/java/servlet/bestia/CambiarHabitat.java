@@ -37,7 +37,7 @@ public class CambiarHabitat extends HttpServlet {
 		String id = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(id));
 		String idHabitat = request.getParameter("idHabitat");
-		Habitat ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat),null,null,null));
+		Habitat ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat)));
 		LinkedList<Habitat> habitatsBestia = bestia.getHabitats();
 		boolean isIn = false;
 		for(Habitat habitat:habitatsBestia) {

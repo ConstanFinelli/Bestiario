@@ -7,15 +7,29 @@ public class Habitat {
 	private String nombre;
 	private LinkedList<String> caracteristicas = new LinkedList<>();
 	private LinkedList<Bestia> bestias = new LinkedList<>();
-	private String latitud;
-	private String longitud;
+	private String localizacion;
+	private double latitud;
+	private double longitud;
 	
-	public Habitat(int id, String nombre, LinkedList<String> caracteristicas, String latitud, String longitud) {
+	public Habitat(int id, String nombre, LinkedList<String> caracteristicas, String localizacion,  double latitud, double longitud) {
 		setId(id);
 		setNombre(nombre);
 		setCaracteristicas(caracteristicas);
+		setLocalizacion(localizacion);
 		setLatitud(latitud);
 		setLongitud(longitud);
+	}
+	
+	public Habitat(int id, String nombre, String localizacion,  double latitud, double longitud) {
+		setId(id);
+		setNombre(nombre);
+		setLocalizacion(localizacion);
+		setLatitud(latitud);
+		setLongitud(longitud);
+	}
+	
+	public Habitat(int id) {
+		setId(id);
 	}
 	
 	public int getId() {
@@ -36,19 +50,19 @@ public class Habitat {
 	public void setCaracteristicas(LinkedList<String>  caracteristicas) {
 		this.caracteristicas = caracteristicas;
 	}
-	public String getLatitud() {
+	public double getLatitud() {
 		return latitud;
 	}
 
-	public void setLatitud(String latitud) {
+	public void setLatitud(double latitud) {
 		this.latitud = latitud;
 	}
 
-	public String getLongitud() {
+	public double getLongitud() {
 		return longitud;
 	}
 
-	public void setLongitud(String longitud) {
+	public void setLongitud(double longitud) {
 		this.longitud = longitud;
 	}
 
@@ -57,6 +71,14 @@ public class Habitat {
 	}
 	public LinkedList<Bestia> getBestias() {
 		return bestias;
+	}
+
+	public String getLocalizacion() {
+		return localizacion;
+	}
+
+	public void setLocalizacion(String localization) {
+		localizacion = localization;
 	}
 
 	

@@ -35,7 +35,7 @@ public class CrearHabitat extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String latitud = request.getParameter("latitud");
 		String longitud = request.getParameter("longitud");
-		Habitat ht = new Habitat(0, nombre, null, latitud, longitud);
+		Habitat ht = new Habitat(0, nombre, null, Double.parseDouble(latitud), Double.parseDouble(longitud));
 		ht = controladorHabitat.save(ht);
 		request.setAttribute("habitatCreado", ht);
 		rd.forward(request, response);

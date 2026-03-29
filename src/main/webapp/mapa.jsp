@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="entities.Bestia, java.util.*, entities.Habitat, logic.*, helpers.*, java.time.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,6 @@
 <body>
 
     <h1>Mapa de Bestias</h1>
-
     <!-- ✅ 2. Contenedor del mapa (DENTRO del body) -->
     <div id="map" style="height: 500px;"></div>
 
@@ -29,14 +29,23 @@
 
         <%-- ✅ 5. Código Java dentro del script --%>
         <%
-            List<Bestia> bestias = (List<Bestia>) request.getAttribute("bestias");
+        	LogicBestia controladorBestia = new LogicBestia();
+        	LogicRegistro controladorRegistro = new LogicRegistro();
+            List<Bestia> bestias = controladorBestia.findAll();
             if (bestias != null) {
-                for (Bestia b : bestias) {
+                for (Bestia bestia : bestias) {
+                	if(bestia.getHabitats() != null){
         %>
-            L.marker([<%= b.getLatitud() %>, <%= b.getLongitud() %>])
+     		<%for(Habitat h : bestia.getHabitats()){ %>
+            L.marker([<%= h.getLatitud() %>, <%= h.getLongitud() %>])
               .addTo(map)
-              .bindPopup("<b><%= b.getNombre() %></b><br><%= b.getDescripcion() %>");
-        <%
+              .bindPopup('<b><%= bestia.getNombre() %></b><br><%= h.getLocalizacion()%>')
+              .bindTooltip(
+            		    '<img src="<%=CloudinaryHelper.getImagenRegistro("dnsffrvnfxs37pay9weg")%>" width="60" style="border-radius: 10px;">',
+            		    { permanent: true, direction: 'top' }
+            		  );
+        <%				}
+        			} 
                 }
             }
         %>
