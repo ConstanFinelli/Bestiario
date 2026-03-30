@@ -119,6 +119,10 @@ public final class HttpRoutes {
 		return base + "/habitats/crear";
 	}
 	
+	public static String LISTAR_HABITATS(String base) {
+		return base + "/habitats/listar";
+	}
+	
 	public static String ACTUALIZAR_HABITAT(String base) {
 		return base + "/habitats/actualizar";
 	}
