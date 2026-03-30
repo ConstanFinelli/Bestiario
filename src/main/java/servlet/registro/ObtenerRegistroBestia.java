@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import entities.Bestia;
 import entities.Registro;
 import helpers.CloudinaryHelper;
-import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
 /**
@@ -55,7 +54,7 @@ public class ObtenerRegistroBestia extends HttpServlet {
 			}
 		}
 			
-		String imagen = (CloudinaryHelper.getImagenRegistro(registro != null ? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID")));
+		String imagen = (CloudinaryHelper.getImagenRegistro(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
 		request.setAttribute("UrlImagen", imagen);
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", registro);

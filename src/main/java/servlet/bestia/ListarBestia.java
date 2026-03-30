@@ -16,9 +16,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import entities.Bestia;
-import entities.Registro;
 import helpers.CloudinaryHelper;
-import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
 /**
@@ -47,8 +45,7 @@ public class ListarBestia extends HttpServlet {
 		}
 		if (!bestias.isEmpty()) {
 			for(Bestia bestia: bestias) {
-				Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
-				imagenes.put(bestia, CloudinaryHelper.getImagenListadoBestia(registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
+				imagenes.put(bestia, CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
 			}
 			request.setAttribute("bestias", bestias);
 			request.setAttribute("imagenes", imagenes);

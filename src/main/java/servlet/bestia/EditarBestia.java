@@ -19,9 +19,7 @@ import java.util.LinkedList;
 import entities.Bestia;
 import entities.Categoria;
 import entities.Habitat;
-import entities.Registro;
 import helpers.CloudinaryHelper;
-import helpers.EnvHelper;
 
 @WebServlet("/bestias/editar")
 public class EditarBestia extends HttpServlet {
@@ -46,13 +44,13 @@ public class EditarBestia extends HttpServlet {
 		
 		bestia = controlador.getOne(bestia);
 		
-		Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 		
-		bestia.setPictureUrl(CloudinaryHelper.getImagenListadoBestia(registro != null ? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
+		String imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
 		
 		session.setAttribute("categorias", categorias);
 		session.setAttribute("habitats", habitats);
 		session.setAttribute("bestia", bestia);
+		session.setAttribute("imagen", imagen);
 		rd.forward(request, response);
 	}
 
@@ -76,10 +74,9 @@ public class EditarBestia extends HttpServlet {
 			}
 			bestia = controlador.getOne(bestia);
 		}
+		String imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
 		
-		Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
-		bestia.setPictureUrl(CloudinaryHelper.getImagenListadoBestia(registro != null ? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
-		
+		session.setAttribute("imagen", imagen);
 		session.setAttribute("bestia", bestia);
 		rd.forward(request, response);
 	}
@@ -105,7 +102,7 @@ public class EditarBestia extends HttpServlet {
 		String relationChange = request.getParameter("relationChange");
 		String idHabitat = request.getParameter("idHabitat"); 
 		String id = request.getParameter("id");
-		Habitat hab = new Habitat(Integer.parseInt(idHabitat), null, null, null);
+		Habitat hab = new Habitat(Integer.parseInt(idHabitat));
 		hab = controladorHabitat.getOne(hab);
 		Bestia bestia = new Bestia(Integer.parseInt(id),null,null,null);
 		bestia = controlador.getOne(bestia);

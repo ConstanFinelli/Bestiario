@@ -54,7 +54,7 @@ public class LogicBestia {
 		return bDao.delete(b);
 	}
 	
-		public Bestia update(Bestia besActualizada) {
+	public Bestia update(Bestia besActualizada) {
 			Bestia besAnterior = bDao.getOne(besActualizada);
 			if(besAnterior != null) {
 				if(besActualizada.getNombre() == "") {

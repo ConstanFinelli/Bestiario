@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import data.DataRegistro;
 import entities.Registro;
+import helpers.EnvHelper;
 import entities.Bestia;
 
 public class LogicRegistro {
@@ -13,6 +14,11 @@ public class LogicRegistro {
 	
 	public Registro getRegistroToShow(Bestia b, LocalDateTime fecha) {
 		return rDao.getRegistroToShow(b, fecha);
+	}
+	
+	public String getImagen(Bestia b, LocalDateTime fecha) {
+		Registro registro = rDao.getRegistroToShow(b, fecha);
+		return registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID");
 	}
 	
 	public Registro getOne(Registro r) {
