@@ -111,10 +111,6 @@ public final class HttpRoutes {
 		return base + "/habitats/habitats.jsp";
 	}
 	
-	public static String LISTAR_HABITATS(String base) {
-		return base + "/habitats/listar";
-	}
-	
 	public static String CREAR_HABITAT(String base) {
 		return base + "/habitats/crear";
 	}

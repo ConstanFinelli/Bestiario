@@ -27,10 +27,13 @@
     <script>
         var selectedId = <%= idSelected %>;
         
-        var map = L.map('map').setView([20, 0], 2);
+        var map = L.map('map').setView([20, 0], 3);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri',
-            maxZoom: 8
+        	attribution: 'Tiles &copy; Esri',
+            maxZoom: 8,
+            minZomm: 3,
+            noWrap: true,
+            bounds: [[-90, -180], [90, 180]],
         }).addTo(map);
 
         <% if (bestias != null) {
