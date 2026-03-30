@@ -38,12 +38,16 @@
             noWrap: true,
             bounds: [[-90, -180], [90, 180]],
         }).addTo(map);
+        
+        function adaptarCoordenada(coord){
+        	return coord + (Math.random() - 0.5)*1.5;
+        }
 
         <% if (bestias != null) {
             for(Bestia b : bestias.keySet()) {
                 for(Habitat h : b.getHabitats()) { %>
                 
-                L.marker([<%= h.getLatitud() %>, <%= h.getLongitud() %>])
+                L.marker([adaptarCoordenada(<%= h.getLatitud() %>), adaptarCoordenada(<%= h.getLongitud() %>)])
                   .addTo(map)
                   .on("dblclick", function(){
                       var idMarcador = <%= b.getIdBestia() %>;
