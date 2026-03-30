@@ -287,6 +287,10 @@ public final class HttpRoutes {
 	public static String MAPA_BESTIA(String base) {
 		return base + "/mapas/bestia";
 	}
+	
+	public static String MAPA_BESTIAS(String base) {
+		return base + "/mapas/bestias";
+	}
 	// Estilos
 	
 	public static String MAIN_CSS(String base) {

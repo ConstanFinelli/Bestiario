@@ -12,6 +12,7 @@ import logic.LogicRegistro;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import entities.Bestia;
@@ -20,19 +21,18 @@ import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
 /**
- * Servlet implementation class MapaBestia
+ * Servlet implementation class MapaBestias
  */
-@WebServlet("/mapas/bestia")
-public class MapaBestia extends HttpServlet {
+@WebServlet("/mapas/bestias")
+public class MapaBestias extends HttpServlet {
 	LogicBestia controladorBestia = new LogicBestia();
 	LogicRegistro controladorRegistro = new LogicRegistro();
-	
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MapaBestia() {
+    public MapaBestias() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,16 +42,23 @@ public class MapaBestia extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.MAPA_JSP(""));
-		String idBestia = request.getParameter("id");
-		Bestia bestia = new Bestia(Integer.parseInt(idBestia));
-		bestia = controladorBestia.getOne(bestia);
-		Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
-		Map<Bestia, String> bestias = new HashMap<Bestia, String>();
-		bestias.put(bestia, registro != null? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID"));
-		request.getSession().setAttribute("bestias", bestias);
-		request.setAttribute("selectedBestia", bestia);
-	
+		String selectedId = request.getParameter("selectedId");
+		if(selectedId != null) {
+			Bestia bestia = new Bestia(Integer.parseInt(selectedId));
+			bestia = controladorBestia.getOne(bestia);
+			request.setAttribute("selectedBestia", bestia);
+		}
+		LinkedList<Bestia> bestias = controladorBestia.findAll();
+		Map<Bestia, String> bestiasImagenes = new HashMap<>();
+		Registro registro = null;
+		for(Bestia b: bestias) {
+			registro = controladorRegistro.getRegistroToShow(b, LocalDateTime.now());
+			bestiasImagenes.put(b, registro != null? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID"));
+		}
+		request.getSession().setAttribute("bestias", bestiasImagenes);
 		rd.forward(request, response);
 	}
+
+	
 
 }
