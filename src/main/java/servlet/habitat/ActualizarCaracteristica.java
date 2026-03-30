@@ -39,7 +39,7 @@ public class ActualizarCaracteristica extends HttpServlet {
 		String descripcion = request.getParameter("descripcion");
 		String newDescripcion = request.getParameter("newDescripcion");
 		String feedbackMessage = "";
-		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		Habitat ht = new Habitat(Integer.parseInt(id));
 		ht = controladorHabitat.getOne(ht);
 		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
 		ch = controlador.update(ch, newDescripcion);
