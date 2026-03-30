@@ -39,7 +39,7 @@ public class EliminarCaracteristica extends HttpServlet {
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
 		String feedbackMessage = "";
-		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		Habitat ht = new Habitat(Integer.parseInt(id));
 		ht = controladorHabitat.getOne(ht);
 		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
 		ch = controlador.delete(ch);
