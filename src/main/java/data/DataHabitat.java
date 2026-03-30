@@ -115,10 +115,11 @@ public class DataHabitat {
 		ResultSet rs = null;
 		Habitat htGuardada = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("INSERT INTO habitat(nombre, latitud, longitud) VALUES (?,?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("INSERT INTO habitat(nombre, latitud, longitud, localizacion) VALUES (?,?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, ht.getNombre());
 			pstmt.setDouble(2, ht.getLatitud());
 			pstmt.setDouble(3, ht.getLongitud());
+			pstmt.setString(4, ht.getLocalizacion());
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {

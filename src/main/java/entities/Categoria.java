@@ -33,12 +33,15 @@ public class Categoria{
 		this.descripcionCategoria = descripcionCategoria;
 	}
 	
-	@Override public String toString() {
-		return (
-				"ID: " + idCategoria
-				+ "<br>Nombre: " + nombre + 
-				"<br>Descripcion: " + descripcionCategoria
-		);
+	@Override
+	public boolean equals(Object obj) {
+		Categoria cat = null;
+		try {
+			cat = (Categoria) obj;
+		}catch(ClassCastException e) {
+			return false;
+		}
+		return cat.getIdCategoria() == this.getIdCategoria();
 	}
 }
 

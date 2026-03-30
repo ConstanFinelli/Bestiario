@@ -222,3 +222,13 @@ h2{
 .backButton:hover{
 	filter: brightness(0.92);
 }
+
+.datosGeograficos{
+	display:flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
+.datosGeograficos input{
+	width: 50%; 
+}

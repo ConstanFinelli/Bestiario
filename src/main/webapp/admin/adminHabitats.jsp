@@ -48,6 +48,11 @@
 			<input type="text" id="nombre" name="nombre" class="inputForm" placeholder="Ingresar nombre de el habitat..." required/>
 			<label for="localizacion" class="inputLabel">Localización</label>
 			<input type="text" id="localizacion" name="localizacion" class="inputForm" placeholder="Ingresar localización de el habitat..." required>
+			<label for="latitud" class="inputLabel">Datos Geograficos</label>
+			<div class="datosGeograficos">
+			<input type="text" id="latitud" name="latitud" class="inputForm" placeholder="Ingrese la latitud."/>
+			<input type="text" id="longitud" name="longitud" class="inputForm" placeholder="Ingrese la longitud."/>
+			</div>
 			<button type="submit" class="submitButton">Crear</button>
 </form>
 <form class="formAdmin formActualizar" action="<%= HttpRoutes.ACTUALIZAR_HABITAT(request.getContextPath()) %>" method="POST">
@@ -70,6 +75,11 @@
 			<input type="text" id="nombre" name="nombre" class="inputForm" placeholder="Ingresar nombre de el habitat..." required/>
 			<label for="localizacion" class="inputLabel">Localización</label>
 			<input type="text" id="localizacion" name="localizacion" class="inputForm" placeholder="Ingresar localización de el habitat..." required>
+			<label for="latitudUpdate" class="inputLabel">Datos Geograficos</label>
+			<div class="datosGeograficos">
+			<input type="text" id="latitudUpdate" name="latitud" class="inputForm" placeholder="Ingrese la latitud."/>
+			<input type="text" id="longitud" name="longitud" class="inputForm" placeholder="Ingrese la longitud."/>
+			</div>	
 			<button type="submit" class="submitButton">Actualizar</button>
 </form>
 </div>

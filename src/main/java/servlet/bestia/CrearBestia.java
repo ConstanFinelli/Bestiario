@@ -37,8 +37,6 @@ public class CrearBestia extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String peligrosidad= request.getParameter("peligrosidad");
 		Usuario usuario = (Usuario) session.getAttribute("user");
-		
-		try {
 			if (nombre != null && peligrosidad != null) {
 				String estado = "pendiente";
 				if (usuario.getEstado().equals("investigador")) {
@@ -46,12 +44,8 @@ public class CrearBestia extends HttpServlet {
 				} 
 				Bestia bestia = new Bestia(nombre, peligrosidad, estado);
 				bestia = controlador.save(bestia);
-				request.setAttribute("bestia", bestia);
+				request.setAttribute("foundBestia", bestia);
 			} 
-		} catch (NumberFormatException e) {
-			e.getMessage();
-		} 
-	
 		rd.forward(request, response);
 	}
 }

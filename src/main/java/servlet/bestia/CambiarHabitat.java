@@ -36,6 +36,7 @@ public class CambiarHabitat extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(id));
+		bestia = controlador.getOne(bestia);
 		String idHabitat = request.getParameter("idHabitat");
 		Habitat ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat)));
 		LinkedList<Habitat> habitatsBestia = bestia.getHabitats();
@@ -51,9 +52,12 @@ public class CambiarHabitat extends HttpServlet {
 			controlador.saveHabitats(bestia);
 		}else {
 			controlador.removeRelation(bestia, ht);
+			bestia.getHabitats().remove(ht);
 		}
 		
-		request.getRequestDispatcher(HttpRoutes.BESTIA_FORMS_JSP("")).forward(request, response);
+		request.getSession().setAttribute("bestia", bestia);
+		
+		request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP("")).forward(request, response);
 	}
 
 }

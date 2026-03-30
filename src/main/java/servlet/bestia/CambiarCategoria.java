@@ -49,9 +49,10 @@ public class CambiarCategoria extends HttpServlet {
 			controlador.saveCategorias(bestia);
 		}else {
 			controlador.removeRelation(bestia, cat);
+			bestia.getCategorias().remove(cat);
 		}
-		
-		request.getRequestDispatcher(HttpRoutes.BESTIA_FORMS_JSP("")).forward(request, response);
+		request.getSession().setAttribute("bestia", bestia);
+		request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP("")).forward(request, response);
 	}
 
 }

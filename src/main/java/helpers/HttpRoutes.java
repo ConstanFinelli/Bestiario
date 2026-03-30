@@ -41,6 +41,10 @@ public final class HttpRoutes {
 		return base + "/bestias/crearPropuestaBestia.jsp";
 	}
 	
+	public static String EDITAR_BESTIA_JSP(String base) {
+		return base + "/bestias/editarBestia.jsp";
+	}
+	
 	public static String LISTAR_BESTIAS(String base) {
 		return base + "/bestias/listar";
 	}
@@ -360,7 +364,7 @@ public final class HttpRoutes {
 	}
 	
 	public static String MAPA_CSS(String base) {
-		return base + "css/mapa.css";
+		return base + "/css/mapa.css";
 	}
 
 	public static String EDITARBESTIA_CSS(String base) {

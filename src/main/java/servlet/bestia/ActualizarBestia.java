@@ -7,8 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
+import logic.LogicRegistro;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import entities.Bestia;
 
@@ -18,6 +20,7 @@ import entities.Bestia;
 @WebServlet("/bestias/actualizar")
 public class ActualizarBestia extends HttpServlet {
 	private LogicBestia controlador = new LogicBestia();
+	private LogicRegistro controladorRegistro = new LogicRegistro();
 	
 	private static final long serialVersionUID = 1L;
        
@@ -37,10 +40,10 @@ public class ActualizarBestia extends HttpServlet {
 		Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
 		String referer = request.getHeader("referer");
 		String toRedirect = referer.substring(referer.indexOf(request.getContextPath())); // hacerlo en un helper
-		
+		String imagen = controladorRegistro.getImagen(bestia, LocalDateTime.now());
 		bestia = controlador.update(bestia);	
 		request.getSession().setAttribute("updateBestia", bestia);		
-
+		request.getSession().setAttribute("imagen", imagen);
 		response.sendRedirect(toRedirect);;
 	}
 

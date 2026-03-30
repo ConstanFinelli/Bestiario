@@ -80,6 +80,17 @@ public class Habitat {
 	public void setLocalizacion(String localization) {
 		localizacion = localization;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Habitat ht = null;
+		try {
+			ht = (Habitat) obj;
+		}catch(ClassCastException e) {
+			return false;
+		}
+		return ht.getId() == this.getId();
+	}
 
 	
 }

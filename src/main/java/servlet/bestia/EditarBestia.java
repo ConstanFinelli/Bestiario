@@ -20,6 +20,7 @@ import entities.Bestia;
 import entities.Categoria;
 import entities.Habitat;
 import helpers.CloudinaryHelper;
+import helpers.HttpRoutes;
 
 @WebServlet("/bestias/editar")
 public class EditarBestia extends HttpServlet {
@@ -39,7 +40,7 @@ public class EditarBestia extends HttpServlet {
 		Bestia bestia = new Bestia(Integer.parseInt(id), null, null, null);
 		LinkedList<Habitat> habitats = controladorHabitat.findAll();
 		LinkedList<Categoria> categorias = controladorCategoria.findAll();
-		RequestDispatcher rd = request.getRequestDispatcher("editarBestia.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
 		HttpSession session = request.getSession();
 		
 		bestia = controlador.getOne(bestia);

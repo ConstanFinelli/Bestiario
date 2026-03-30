@@ -447,7 +447,7 @@ public class DataBestia {
 	public void removeRelation(Bestia b, Categoria cat) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia_habitat where idBestia = ? and idCategoria = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia_categoria where idBestia = ? and idCategoria = ?");
 			pstmt.setInt(1, b.getIdBestia());
 			pstmt.setInt(2, cat.getIdCategoria());
 			pstmt.executeUpdate();
