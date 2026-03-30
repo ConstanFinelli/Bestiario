@@ -42,7 +42,7 @@ body {
 }
 
 .leaflet-marker-icon {
-  filter: sepia(1) saturate(1.8) brightness(0.8) !important;
+  filter: sepia(1) hue-rotate(-12deg) saturate(2.2) brightness(1.1) contrast(1.1) !important;
 }
 
 .leaflet-tooltip {
