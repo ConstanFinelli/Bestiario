@@ -31,10 +31,19 @@ public class EliminarTipoEvidencia extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
+		
 		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), null);
 		tipo = controlador.delete(tipo);
-		request.setAttribute("deletedTipo", tipo);
-		request.getRequestDispatcher(HttpRoutes.TIPO_EVIDENCIA_FORM_JSP("")).forward(request, response);
+		
+		String feedbackMessage = "";
+		if(tipo == null) {
+			feedbackMessage = "¡No se ha podido eliminar el tipo de evidencia!";
+		}else {
+			feedbackMessage = "¡Tipo de evidencia eliminada con éxito!";
+		}
+		
+		request.setAttribute("feedbackMessage", feedbackMessage);
+		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
 	}
 
 }

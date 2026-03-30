@@ -71,4 +71,8 @@ public class LogicUsuario {
 		return usDAO.findAllSolicitantes();
 	}
 	
+	public Usuario delete(Usuario us) {
+		return usDAO.delete(us);
+	}
+	
 }

@@ -35,6 +35,7 @@
         <% if(bestia != null){ 
         	LinkedList<Evidencia> evidencias = bestia.getEvidencias();
         %>
+        <div class="registroContent">
             <section>
                 <h1><%= bestia.getNombre() %> </h1>
                 <% if(registro != null){ %>
@@ -106,7 +107,7 @@
 	                <h3>Hábitats localizados</h3>
 	                <ul>
 	                	<% LinkedList<Habitat> habitats = bestia.getHabitats(); %>
-	                	<% if(habitats != null){ 
+	                	<% if(habitats != null && !habitats.isEmpty()){ 
 	                	for(Habitat habitat:habitats){
 	                	%>
 	                    <li><%= habitat.getNombre() %>, <%= habitat.getLocalizacion() %></li>
@@ -131,6 +132,7 @@
                 <a href="<%= HttpRoutes.MAPA_BESTIA(request.getContextPath())%>?id=<%= bestia.getIdBestia() %>"><img src="<%= CloudinaryHelper.getImagenMapaButton(EnvHelper.get("MAP_PICTURE_ID")) %>" class="mapaButton"></a>
                 </div>
             </aside>
+        </div>
             <% } %>
         </section>
         <%

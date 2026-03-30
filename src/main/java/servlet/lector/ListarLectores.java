@@ -1,4 +1,4 @@
-package servlet.categoria;
+package servlet.lector;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -7,42 +7,44 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCategoria;
+import logic.LogicUsuario;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import entities.Categoria;
+import entities.Lector;
+import entities.Usuario;
 import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class ListarCategorias
  */
-@WebServlet("/categorias/listar")
-public class ListarCategorias extends HttpServlet {
-	private LogicCategoria controlador = new LogicCategoria();
+@WebServlet("/lectores/listar")
+public class ListarLectores extends HttpServlet {
+	private LogicUsuario controlador = new LogicUsuario();
 	
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ListarCategorias() {
+    public ListarLectores() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LinkedList<Categoria> categorias = new LinkedList<>();
-		String flag = request.getParameter("flag");
+		LinkedList<Usuario> usuarios = new LinkedList<>();
 		RequestDispatcher rd = null;
-		categorias = controlador.findAll();
-		request.setAttribute("foundCategorias", categorias);
+		usuarios = controlador.findAll();
+		LinkedList<Lector> lectores = usuarios.stream().filter(u -> u.getEstado().contains("lector"))
+			    .filter(u -> u instanceof Lector).map(u -> (Lector) u).collect(Collectors.toCollection(LinkedList::new));
+		request.setAttribute("foundLectores", lectores);
 		
-		if("listaBestias".equals(flag)) {
-			rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
-		}else {
-			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
-		}
+		rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=usuarios");
 		
 		rd.forward(request, response);
 	}

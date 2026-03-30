@@ -7,18 +7,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCaracteristicaHabitat;
+import logic.LogicHabitat;
 
 import java.io.IOException;
 
 import entities.CaracteristicaHabitat;
+import entities.Habitat;
 import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class EliminarCaracteristica
  */
-@WebServlet("/habitats/eliminarCaracteristica")
+@WebServlet("/habitats/eliminarCaracteristicaHabitat")
 public class EliminarCaracteristica extends HttpServlet {
 	private LogicCaracteristicaHabitat controlador = new LogicCaracteristicaHabitat();
+	private LogicHabitat controladorHabitat = new LogicHabitat();
 	
 	private static final long serialVersionUID = 1L;
        
@@ -32,12 +35,20 @@ public class EliminarCaracteristica extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.CARAC_HABITAT_FORM_JSP(""));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=carHabitat");
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
+		String feedbackMessage = "";
+		Habitat ht = new Habitat(Integer.parseInt(id), null, null, null);
+		ht = controladorHabitat.getOne(ht);
 		CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
 		ch = controlador.delete(ch);
-		request.setAttribute("deletedCaracteristica", ch);
+		if(ch == null) {
+			feedbackMessage = "¡No se ha podido eliminar la característica!";
+		}else {
+			feedbackMessage = "¡Característica eliminada con éxito!";
+		}
+		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

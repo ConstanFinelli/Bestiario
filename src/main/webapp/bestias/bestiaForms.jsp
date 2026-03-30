@@ -4,14 +4,15 @@
 <%@ page import="entities.Bestia" %>
 <%@ page import="entities.Habitat" %>
 <%@ page import="entities.Categoria" %>
+<%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <html>
 <head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 <meta charset="UTF-8">
-<title>BESTIA CRUD</title>
-<link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/navbar.css">
+<title>Bestiario - CRUD BESTIA</title>
+<link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath())%>">
+<link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath())%>">
 </head>
 <body>
 	<%@ include file="../components/adminNavbar.jsp" %>

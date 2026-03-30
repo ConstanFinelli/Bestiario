@@ -17,7 +17,7 @@ page import="entities.Usuario, helpers.HttpRoutes"
 			    	<%
 			    	if(usuario.getEstado().equals("investigador")){
 			    	%>
-			    	<a class="navLink" href="SvBestia?action=form">Admin</a>
+			    	<a class="navLink" href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>">Admin</a>
 			    	<a class="navLink" href=<%=HttpRoutes.LISTAR_SOLICITANTES(request.getContextPath()) %>>Candidaturas</a>
 			    	<%
 			    	} else if(usuario.getEstado().equals("lector")){ %>

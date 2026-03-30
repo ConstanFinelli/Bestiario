@@ -64,6 +64,10 @@ public final class HttpRoutes {
 	public static String CREAR_BESTIA(String base) {
 		return base + "/bestias/crear";
 	}
+	
+	public static String EDITAR_BESTIA(String base) {
+		return base + "/bestias/editar";
+	}
 
 	// Registros
 	public static String REGISTRO_JSP(String base) {
@@ -128,7 +132,7 @@ public final class HttpRoutes {
 	}
 	
 	public static String LISTAR_CARACTERISTICAHABITAT(String base) {
-		return base + "/habitats/listarCaracteristicaHabitat";
+		return base + "/habitats/listarCaracteristicasHabitat";
 	}
 	
 	public static String CREAR_CARACTERISTICAHABITAT(String base) {
@@ -268,11 +272,23 @@ public final class HttpRoutes {
 		return base + "/investigadores/crearSolicitud";
 	}
 	
+	// Lectores
+	public static String LISTAR_LECTORES(String base) {
+		return base + "/lectores/listar";
+	}
+	
+	public static String ELIMINAR_LECTOR(String base) {
+		return base + "/lectores/eliminar";
+	}
+	
+	public static String ACTUALIZAR_LECTOR(String base) {
+		return base + "/lectores/actualizar";
+	}
+	
 	// Comentarios
 	public static String AGREGAR_COMENTARIO(String base) {
 		return base + "/comentarios/agregar";
 	}
-	
 	
 	// Mapas
 	
@@ -287,6 +303,12 @@ public final class HttpRoutes {
 	public static String MAPA_BESTIAS(String base) {
 		return base + "/mapas/bestias";
 	}
+	
+	// Admin
+	public static String ADMIN_DASHBOARD_JSP(String base) {
+		return base + "/admin/adminDashboard.jsp";
+	}
+	
 	// Estilos
 	
 	public static String MAIN_CSS(String base) {
@@ -336,6 +358,13 @@ public final class HttpRoutes {
 	public static String MAPA_CSS(String base) {
 		return base + "css/mapa.css";
 	}
+
+	public static String EDITARBESTIA_CSS(String base) {
+		return base + "/css/editarBestia.css";
+	}
 	
+	public static String ADMINDASHBOARD_CSS(String base) {
+		return base + "/css/adminDashboard.css";
+	}
 	
 }

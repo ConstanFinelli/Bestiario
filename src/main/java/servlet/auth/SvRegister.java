@@ -1,5 +1,6 @@
 package servlet.auth;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -42,25 +43,37 @@ public class SvRegister extends HttpServlet {
 		String logMessage = "";
 		Usuario user = logicUsuario.getByEmail(email);
 		String fecha = request.getParameter("fechaNacimiento");
+		String password = request.getParameter("password");
+		String flag = request.getParameter("flag");
+		RequestDispatcher rd = null;
 		LocalDate fechaSinHora = null;
 		if(fecha != null) {
 			fechaSinHora = LocalDate.parse(fecha);
 		}
 		if(user != null) {
 			logMessage = "Ya existe un usario registrado con ese email";
-		} else { 
+		} else {
 				Lector userLector = new Lector(
 					email,
-					request.getParameter("contrasena"),
+					password,
 					fechaSinHora.atStartOfDay()
 				);
 				logicUsuario.save(userLector);
-			response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	
-			return;
+			if(flag == null) {
+				response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	
+				return;
+			}
+		}
+		
+		if("admin".equals(flag)) {
+			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=usuarios");
+			request.setAttribute("feedbackMessage", "¡Usuario creado con éxito!");
+		}else {
+			rd = request.getRequestDispatcher(HttpRoutes.REGISTER_JSP(""));
 		}
 		
 		request.setAttribute("logMsg", logMessage);
-		request.getRequestDispatcher(HttpRoutes.REGISTER_JSP("")).forward(request, response);
+		rd.forward(request, response);
 	}
 
 }

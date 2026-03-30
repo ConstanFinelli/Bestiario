@@ -1,4 +1,4 @@
-package servlet.categoria;
+package servlet.lector;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -7,38 +7,40 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCategoria;
+import logic.LogicUsuario;
 
 import java.io.IOException;
 
 import entities.Categoria;
+import entities.Usuario;
 import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class EliminarCategoria
  */
-@WebServlet("/categorias/eliminar")
-public class EliminarCategoria extends HttpServlet {
-	private LogicCategoria controlador = new LogicCategoria();
+@WebServlet("/lectores/eliminar")
+public class EliminarLector extends HttpServlet {
+	private LogicUsuario controlador = new LogicUsuario();
 	
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EliminarCategoria() {
+    public EliminarLector() {
         super();
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String feedbackMessage = "";
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
-		Categoria cat = new Categoria(Integer.parseInt(id),null, null);
-		cat = controlador.delete(cat);
-		if(cat == null) {
-			feedbackMessage = "¡No se ha podido eliminar la categoría!";
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=usuarios");
+		Usuario us = new Usuario(Integer.parseInt(id),null, null,null);
+		us = controlador.delete(us);
+		if(us == null) {
+			feedbackMessage = "¡No se ha podido eliminar el usuario!";
 		}else {
-			feedbackMessage = "¡Categoría eliminada con éxito!";
+			feedbackMessage = "¡Usuario eliminada con éxito!";
 		}
 		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);

@@ -44,9 +44,12 @@ h1 {
 }
 
 .infoBestia img {
-    height: 20vh;
+    min-height: 200px;
+    max-height: 350px;
     width: 20vw;
     border-radius: 8px;
+    object-fit:cover;
+    object-position: center;
 }
 
 .infoBestia h3{
@@ -266,4 +269,9 @@ textarea{
     content: '⫸';
     font-size: 1.3rem;
     color: gray;
+}
+
+.registroContent{
+	display: grid;
+	grid-template-columns: 2fr 1fr;
 }

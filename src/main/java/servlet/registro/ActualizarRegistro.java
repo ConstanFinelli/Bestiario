@@ -58,9 +58,10 @@ public class ActualizarRegistro extends HttpServlet {
 		Bestia bestia = new Bestia(Integer.parseInt(idBestia));
 		bestia = controladorBestia.getOne(bestia);
 		LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
-		request.setAttribute("bestia", bestia);
+		Registro ultimoRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 		request.setAttribute("tiposEvidencia", tes);
 		request.setAttribute("foundBestia", bestia);
+		request.setAttribute("foundRegistro", ultimoRegistro);
 		
 		rd.forward(request, response);
 		

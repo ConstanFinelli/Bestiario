@@ -28,10 +28,19 @@ public class ActualizarTipoEvidencia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String desc = request.getParameter("descripcion");
+		
 		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), desc);
 		tipo = controlador.update(tipo);
-		request.setAttribute("updatedTipo", tipo);
-		request.getRequestDispatcher(HttpRoutes.TIPO_EVIDENCIA_FORM_JSP("")).forward(request, response);
+		
+		String feedbackMessage = "";
+		if(tipo == null) {
+			feedbackMessage = "¡No se ha podido actualizar el tipo de evidencia!";
+		}else {
+			feedbackMessage = "¡Tipo de evidencia actualizada con éxito!";
+		}
+		
+		request.setAttribute("feedbackMessage", feedbackMessage);
+		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
 	}
 
 }
