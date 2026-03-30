@@ -76,7 +76,7 @@
     <% } %>
 
     <div class="btnMapa">
-        <a href="javascript:history.back()">Volver</a>
+        <a href="<%=HttpRoutes.HOME_JSP(request.getContextPath())%>">Volver</a>
     </div>
 </div>
 
