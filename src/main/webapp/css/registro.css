@@ -206,7 +206,7 @@ textarea{
 	flex-direction: column;
 	width: fit-content;
 	gap: 7px;
-	background: rgba(245, 245, 66,0.075);
+	background: rgba(121, 121, 85, 0.31);
 	border-radius: 12px;
 	padding: 1vh 2vw;
 	margin: 10px;

@@ -154,6 +154,7 @@
 				</section>
 				            <script> // javascript para agregar evidencias
 	            let evidenciaCounter = 0;
+				const MAX_EVIDENCIAS = 6;
 
 	            const btnAgregar = document.getElementById('agregar');
 	            const contenedor = document.getElementById('contenedorEvidencias');
@@ -163,6 +164,10 @@
 	            });
 	
 	            function agregarNuevaEvidencia() {
+	            	if(evidenciaCounter >= MAX_EVIDENCIAS){
+	            		alert('¡No se pueden agregar mas de' + MAX_EVIDENCIAS + 'evidencias en simultáneo!');
+	            		return;
+	            	}
 	               
 	                const newArticle = document.createElement('article');
 	                newArticle.classList.add('evidenciaForm'); 
