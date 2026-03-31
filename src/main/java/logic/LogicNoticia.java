@@ -2,11 +2,15 @@ package logic;
 
 import entities.Noticia;
 import java.util.LinkedList;
+import entities.Usuario;
+import data.DataUsuario;
 
 import data.DataNoticia;
 
 public class LogicNoticia {
 	private DataNoticia dataNoticia = new DataNoticia();
+	private DataUsuario dataUsuario = new DataUsuario();
+	private LogicEmail logicEmail = new LogicEmail();
 	
 	public Noticia getOne(Noticia noticia) {
 		return(dataNoticia.getOne(noticia));
@@ -21,7 +25,24 @@ public class LogicNoticia {
 	}
 
 	public Noticia save(Noticia noticia) {
-		return (dataNoticia.save(noticia));
+		Noticia newNoticia = dataNoticia.save(noticia);
+		
+		LinkedList<Usuario> usuarios = dataUsuario.findByRecibirNotifcaciones();
+		
+		new Thread(() -> {
+		    for (Usuario u : usuarios) {
+		        try {
+		            logicEmail.notificarNuevaNoticia(
+		                u.getCorreo(),
+		                noticia.getTitulo()
+		            );
+		        } catch (Exception e) {
+		            System.out.println("❌ Falló envío a: " + u.getCorreo());
+		        }
+		    }
+		}).start();
+		
+		return newNoticia;
 	}
 
 	public Noticia update(Noticia noticiaNueva) {

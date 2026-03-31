@@ -36,7 +36,7 @@ public class CrearNoticia extends HttpServlet {
 		
 		Investigador publicador = (Investigador) session.getAttribute("user");
 		
-		Noticia noticia = new Noticia(0, titulo, contenido, LocalDateTime.now(), publicador);
+		Noticia noticia = new Noticia(titulo, contenido, "aprobado", LocalDateTime.now(), publicador);
 		
 		if(titulo != null && contenido != null) {
 			controlador.save(noticia);

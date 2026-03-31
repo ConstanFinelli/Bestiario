@@ -58,6 +58,9 @@ public class SvRegister extends HttpServlet {
 					password,
 					fechaSinHora.atStartOfDay()
 				);
+				
+				userLector.setRecibirNotificaciones(Boolean.parseBoolean(request.getParameter("recibirNotiticaciones")));
+				
 				logicUsuario.save(userLector);
 			if(flag == null) {
 				response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	

@@ -24,18 +24,49 @@
               	
               	
                 <div class='otherMsgs'>
-                    <span class='otherMsg'>¿Has olvidado tu contraseña?</span>
+                    <button 
+					    type="submit"
+					    formaction="<%=HttpRoutes.FORGOT_PASSWORD(request.getContextPath())%>"
+					    class="linkButton otherMsg"
+					    onclick="if(document.getElementById('correo').value === '') { alert('Ingresa tu correo primero'); return false; }">
+					    ¿Has olvidado tu contraseña?
+					</button>
                     <a class='otherMsg' href="<%= HttpRoutes.REGISTER(request.getContextPath()) %>">¿Aun no tienes una cuenta? Registrate	</a>
                 </div>
             </section>
             <aside class="logSubmitContainer">
                 <input type="submit" class="logSubmit" value="Iniciar sesión" />
             </aside>
-            <div class='errorBox'>
-                    <ul>
-                        <li class="errorMsg">${logMsg}</li>
-                    </ul>
-            </div>
-        </form>
+            
+			
+			<% 
+			    String errorMsg = (String) session.getAttribute("logMsg");
+			    if (errorMsg != null) { 
+			%>
+			    <div class='errorBox'>
+			        <ul>
+			            <li class="errorMsg">⚠️<%= errorMsg %></li>
+			        </ul>
+			    </div>
+			<% 
+			        session.removeAttribute("logMsg"); // Lo borramos después de usarlo
+			    } 
+			%>
+			
+			
+			<% 
+			    String successMsg = (String) session.getAttribute("successMsg");
+			    if (successMsg != null) { 
+			%>
+			    <div class='successBox'>
+			        <ul>
+			            <li class="successMsg">✅ <%= successMsg %></li>
+			        </ul>
+			    </div>
+			<% 
+			        session.removeAttribute("successMsg"); // Lo borramos después de usarlo
+			    } 
+			%>
+		</form>
 </body>
 </html>

@@ -210,7 +210,7 @@ CREATE TABLE `noticia` (
   PRIMARY KEY (`idNoticia`),
   KEY `fk_noticia_usuario` (`idUsuario`),
   CONSTRAINT `fk_noticia_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,6 +269,7 @@ CREATE TABLE `usuario` (
   `nombre` varchar(50) DEFAULT NULL,
   `apellido` varchar(45) DEFAULT NULL,
   `dni` varchar(45) DEFAULT NULL,
+  `recibirNotificaciones` tinyint NOT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `correo_UNIQUE` (`correo`),
   UNIQUE KEY `idUsuario_UNIQUE` (`idUsuario`),

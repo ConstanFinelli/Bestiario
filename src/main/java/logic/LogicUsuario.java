@@ -71,6 +71,10 @@ public class LogicUsuario {
 		return usDAO.findAllSolicitantes();
 	}
 	
+	public LinkedList<Investigador> getCorreosInvestigadoresYRecibNot(){
+		return usDAO.getCorreosInvestigadoresYRecibNot();
+	}
+	
 	public Usuario delete(Usuario us) {
 		return usDAO.delete(us);
 	}

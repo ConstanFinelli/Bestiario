@@ -86,7 +86,7 @@
 .logInputCheckbox {
     display: flex;
     gap: 10px; 
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .logInputCheckbox input[type="checkbox"] {
@@ -94,13 +94,13 @@
     height: 18px;
     accent-color: var(--primary-color); 
     cursor: pointer;
-    margin-top:8px;
+    margin-top:4px;
     
 }
 
 .logInputCheckbox label {
     position: static; 
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     cursor: pointer;
 }
 
@@ -139,10 +139,6 @@
     gap: 7px;
 }
 
-.errorMsg{
-    color: rgb(252, 30, 30);
-}
-
 ul{
 	list-style: none;
 }
@@ -157,4 +153,81 @@ ul{
 	border-bottom: 1px solid gray;
 	width: 100%;
 	text-align: center;
+}
+
+.linkButton {
+    all: unset; /* Resetea absolutamente todos los estilos por defecto del botón */
+    display: block; /* Lo ponemos como block para que ocupe su propia línea */
+    cursor: pointer;
+    
+    /* Estilos de texto para que parezca un link */
+    color: #666; /* Gris, o el color que uses en tus otros links */
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: 1rem;
+    
+    /* Alineación */
+    text-align: left; 
+    margin-bottom: 10px; /* Espacio con el link de abajo */
+    width: fit-content; /* Para que el área de clic solo sea el texto */
+}
+
+.linkButton:hover {
+    color: #333; /* Oscurece un poco al pasar el mouse */
+}
+
+/* Reseteo extra por si acaso el navegador insiste */
+.linkButton:focus, .linkButton:active {
+    outline: none !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.successBox {
+    background-color: #d4edda; /* Verde claro */
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 15px 0;
+    list-style: none;
+}
+
+/* Texto del mensaje de éxito */
+.successMsg {
+    color: #155724; /* Verde oscuro para legibilidad */
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    list-style-type: none; /* Quita el punto de la lista */
+}
+
+/* Ajuste por si usas <ul> dentro */
+.successBox ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor de mensajes de ERROR */
+.errorBox {
+    background-color: #f8d7da; /* Rojo/Rosado claro */
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 15px 0;
+    list-style: none;
+}
+
+/* Texto del mensaje de ERROR */
+.errorMsg {
+    color: #721c24; /* Rojo oscuro para legibilidad */
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    list-style-type: none; /* Quita el punto de la lista */
+}
+
+/* Ajuste por si usas <ul> dentro */
+.errorBox ul {
+    margin: 0;
+    padding: 0;
 }
