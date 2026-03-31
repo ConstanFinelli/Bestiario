@@ -57,7 +57,8 @@ String correo = request.getParameter("correo");
 			resetToken.setIdUsuario(usuario.getIdUsuario());
 			resetToken.setExpiration(LocalDateTime.now().plusMinutes(30));
 			resetToken.setUsed(false);
-
+			
+			daoToken.deleteByUser(usuario.getIdUsuario());
 			daoToken.save(resetToken);
 			
 			String link = "http://localhost:8080/Bestiario/reset-password?token=" + token;
@@ -71,7 +72,6 @@ String correo = request.getParameter("correo");
 			            "Recuperar contraseña",
 			            "Haz clic aquí para cambiar tu contraseña:\n" + link
 			        );
-			        System.out.println("📧 Email de recuperación enviado en segundo plano a: " + usuario.getCorreo());
 			    } catch (Exception e) {
 			        System.err.println("❌ Error en el hilo de envío de mail: " + e.getMessage());
 			    }

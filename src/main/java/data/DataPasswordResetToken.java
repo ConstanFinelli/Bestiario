@@ -104,5 +104,31 @@ public class DataPasswordResetToken {
 		}
     }
 	
+	public void deleteByUser(int idUser) {
+		PreparedStatement ps = null;
+		try {
+			ps = DbConnector.getInstancia().getConn().prepareStatement("DELETE FROM password_reset_token WHERE idUsuario = ?");
+			ps.setInt(1, idUser);
+			
+			ps.executeUpdate();
+			
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(ps != null) {
+					ps.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+	}
+	
 	
 }
