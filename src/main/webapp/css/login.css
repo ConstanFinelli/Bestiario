@@ -138,10 +138,6 @@
     gap: 7px;
 }
 
-.errorMsg{
-    color: rgb(252, 30, 30);
-}
-
 ul{
 	list-style: none;
 }
@@ -206,6 +202,31 @@ ul{
 
 /* Ajuste por si usas <ul> dentro */
 .successBox ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor de mensajes de ERROR */
+.errorBox {
+    background-color: #f8d7da; /* Rojo/Rosado claro */
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 15px 0;
+    list-style: none;
+}
+
+/* Texto del mensaje de ERROR */
+.errorMsg {
+    color: #721c24; /* Rojo oscuro para legibilidad */
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    list-style-type: none; /* Quita el punto de la lista */
+}
+
+/* Ajuste por si usas <ul> dentro */
+.errorBox ul {
     margin: 0;
     padding: 0;
 }

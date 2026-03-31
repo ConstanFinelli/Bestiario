@@ -45,7 +45,7 @@
 			%>
 			    <div class='errorBox'>
 			        <ul>
-			            <li class="errorMsg"><%= errorMsg %></li>
+			            <li class="errorMsg">⚠️<%= errorMsg %></li>
 			        </ul>
 			    </div>
 			<% 
