@@ -12,6 +12,7 @@ import data.DataPasswordResetToken;
 import data.DataUsuario;
 import entities.PasswordResetToken;
 import entities.Usuario;
+import helpers.HttpRoutes;
 import logic.LogicEmail;
 /**
  * Servlet implementation class SvForgotPassword
@@ -32,7 +33,16 @@ public class SvForgotPassword extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String correo = request.getParameter("correo");
+		request.getRequestDispatcher(HttpRoutes.LOGIN(request.getContextPath())).forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+String correo = request.getParameter("correo");
+		
+		System.out.println(correo);
 		
 		DataUsuario daoUsuario = new DataUsuario();
 		
@@ -54,21 +64,26 @@ public class SvForgotPassword extends HttpServlet {
 			
 			LogicEmail logicEmail = new LogicEmail();
 			
-			logicEmail.enviarEmail(
-			    usuario.getCorreo(),
-			    "Recuperar contraseña",
-			    "Click acá para cambiar tu contraseña:\n" + link
-			);
+			new Thread(() -> {
+			    try {
+			        logicEmail.enviarEmail(
+			            usuario.getCorreo(),
+			            "Recuperar contraseña",
+			            "Haz clic aquí para cambiar tu contraseña:\n" + link
+			        );
+			        System.out.println("📧 Email de recuperación enviado en segundo plano a: " + usuario.getCorreo());
+			    } catch (Exception e) {
+			        System.err.println("❌ Error en el hilo de envío de mail: " + e.getMessage());
+			    }
+			}).start();
 			
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+			request.getSession().setAttribute("successMsg", "Mail de recuperción enviado a: " + correo);
+			response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
+		} else {
+			
+			request.getSession().setAttribute("logMsg", "El Correo ingresado no pertenece a nigún usuario");
+			response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		
 	}
 

@@ -31,6 +31,10 @@ public final class HttpRoutes {
 	public static String FORGOT_PASSWORD(String base) {
 		return base + "/forgot-password";
 	}
+	
+	public static String RESET_PASSWORD_JSP(String base) {
+		return base + "/auth/resetPassword.jsp";
+	}
 
 	// Bestias
 	public static String BESTIA_FORMS_JSP(String base) {

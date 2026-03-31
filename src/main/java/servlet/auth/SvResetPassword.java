@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import data.DataPasswordResetToken;
 import data.DataUsuario;
 import entities.PasswordResetToken;
+import helpers.HttpRoutes;
 import logic.LogicUsuario;
 
 /**
@@ -44,7 +45,7 @@ public class SvResetPassword extends HttpServlet {
 
 		// válido → mostrar form
 		request.setAttribute("token", token);
-		request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+		request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
 	}
 
 	/**
@@ -55,9 +56,9 @@ public class SvResetPassword extends HttpServlet {
 		String nuevaPassword = request.getParameter("password");
 		String confirmPassword = request.getParameter("confirmPassword");
 		
-		if(confirmPassword != nuevaPassword) {
+		if(!confirmPassword.equals(nuevaPassword)) {
 			request.setAttribute("logMsg", "Las contraseñas ingresadas no coinciden");
-			request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+			request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
 		}
 		
 		DataPasswordResetToken tokenDao = new DataPasswordResetToken();
@@ -76,8 +77,9 @@ public class SvResetPassword extends HttpServlet {
 		// invalidar token
 		tokenDao.markAsUsed(token);
 		
-		request.setAttribute("msg", "Contraseña actualizada correctamente");
-		request.getRequestDispatcher("login.jsp").forward(request, response);
+		
+		request.getSession().setAttribute("successMsg", "Contraseña cambiada correctamente");
+		response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
 	}
 
 }

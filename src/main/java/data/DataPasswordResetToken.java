@@ -18,7 +18,6 @@ public class DataPasswordResetToken {
 	        ps.setInt(2, token.getIdUsuario());
 	        ps.setTimestamp(3, Timestamp.valueOf(token.getExpiration()));
 	        ps.setBoolean(4, token.isUsed());
-	        ps.setInt(5, token.getIdUsuario());
 			ps.executeUpdate();
 			
 			
