@@ -32,14 +32,6 @@ public class SvForgotPassword extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String correo = request.getParameter("correo");
 		
 		DataUsuario daoUsuario = new DataUsuario();
@@ -67,7 +59,16 @@ public class SvForgotPassword extends HttpServlet {
 			    "Recuperar contraseña",
 			    "Click acá para cambiar tu contraseña:\n" + link
 			);
+			
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		
 	}
 

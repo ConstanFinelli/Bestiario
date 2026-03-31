@@ -24,7 +24,7 @@
               	
               	
                 <div class='otherMsgs'>
-                    <span class='otherMsg'>¿Has olvidado tu contraseña?</span>
+                    <a class='otherMsg' href="<%= HttpRoutes.FORGOT_PASSWORD(request.getContextPath()) %>">¿Has olvidado tu contraseña?</a>
                     <a class='otherMsg' href="<%= HttpRoutes.REGISTER(request.getContextPath()) %>">¿Aun no tienes una cuenta? Registrate	</a>
                 </div>
             </section>

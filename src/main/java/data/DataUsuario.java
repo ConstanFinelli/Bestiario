@@ -446,5 +446,31 @@ public class DataUsuario {
 		}
 		return investigadores;
 	}
-		
+	
+	public void updatePassword(int idUsuario, String pass) {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set contraseña = ? where idUsuario = ?");
+			pstmt.setString(1, pass);
+			pstmt.setInt(2, idUsuario);
+			
+			pstmt.executeUpdate();
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+            
+		}finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+	}
 }

@@ -49,7 +49,7 @@ public class BackgroundJobListener implements ServletContextListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } ,0, 20, TimeUnit.SECONDS); //, delayInicial, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
+        } ,delayInicial, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS); //, delayInicial, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
     }
 
     
