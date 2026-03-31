@@ -9,6 +9,8 @@
 </head>
 <body class='logBody'>
        <form class="logForm" action="<%=HttpRoutes.LOGIN(request.getContextPath())%>" method="POST">
+            <input type="submit" hidden="true" />
+            
             <header class="logContainerHeader">
                 <h1 class="logContainerHeaderText">Ingresar</h1>
             </header>
@@ -21,18 +23,17 @@
                     <input type="password" required placeholder=' ' id="contrasena" name='contrasena' value='123'/>
                     <label for="contrasena">🔐 Contraseña</label>
                 </div>
-              	
-              	
-                <div class='otherMsgs'>
-                    <button 
+	            <div class='otherMsgs'>
+	                 	<button 
 					    type="submit"
 					    formaction="<%=HttpRoutes.FORGOT_PASSWORD(request.getContextPath())%>"
 					    class="linkButton otherMsg"
 					    onclick="if(document.getElementById('correo').value === '') { alert('Ingresa tu correo primero'); return false; }">
 					    ¿Has olvidado tu contraseña?
 					</button>
-                    <a class='otherMsg' href="<%= HttpRoutes.REGISTER(request.getContextPath()) %>">¿Aun no tienes una cuenta? Registrate	</a>
-                </div>
+		            <a class='otherMsg' href="<%= HttpRoutes.REGISTER(request.getContextPath()) %>">¿Aun no tienes una cuenta? Registrate	</a>
+	           	</div>
+              	
             </section>
             <aside class="logSubmitContainer">
                 <input type="submit" class="logSubmit" value="Iniciar sesión" />

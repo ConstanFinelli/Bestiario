@@ -50,7 +50,7 @@ public class SvLogin extends HttpServlet {
 		}else {
 			logMsg = "Usuario no encontrado";
 		}
-		request.setAttribute("logMsg", logMsg);
+		request.getSession().setAttribute("logMsg", logMsg);
 		rd.forward(request, response);
 	}
 
