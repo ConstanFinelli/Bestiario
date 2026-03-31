@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import entities.Comentario;
 import entities.PasswordResetToken;
 
 public class DataPasswordResetToken {
@@ -39,6 +40,42 @@ public class DataPasswordResetToken {
 				}
 			}
 	}
+	
+	public PasswordResetToken getOne(String token) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		PasswordResetToken t = new PasswordResetToken();
+		try {
+			ps = DbConnector.getInstancia().getConn().prepareStatement("SELECT * FROM password_reset_token WHERE token = ?");
+			ps.setString(1, token);
+			rs = ps.executeQuery();
+			if(rs != null && rs.next()) {	
+	            t.setToken(rs.getString("token"));
+	            t.setIdUsuario(rs.getInt("idUsuario"));
+	            t.setExpiration(rs.getTimestamp("expiration").toLocalDateTime());
+	            t.setUsed(rs.getBoolean("used"));
+			}
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(ps != null) {
+					ps.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return t;
+	} 
 	
 	
 }
