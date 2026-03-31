@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import entities.Comentario;
 import entities.PasswordResetToken;
 
 public class DataPasswordResetToken {
@@ -76,6 +75,32 @@ public class DataPasswordResetToken {
 		}
 		return t;
 	} 
+	
+	public void markAsUsed(String token) {
+		PreparedStatement ps = null;
+		try {
+			ps = DbConnector.getInstancia().getConn().prepareStatement("UPDATE password_reset_token SET used = true WHERE token = ?");
+			ps.setString(1, token);
+			
+			ps.executeUpdate();
+			
+		}catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(ps != null) {
+					ps.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			}catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+	            System.out.println("SQLState: " + ex.getSQLState());
+	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+    }
 	
 	
 }
