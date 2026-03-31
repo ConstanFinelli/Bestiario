@@ -275,3 +275,15 @@ textarea{
 	display: grid;
 	grid-template-columns: 2fr 1fr;
 }
+
+.deleteButton{
+	display: flex;
+	justify-content: right;
+	font-size: 1.1rem;
+	color: gray;
+	text-transform: uppercase;
+}
+
+.deleteButton:hover{
+	cursor: pointer;
+}

@@ -168,9 +168,20 @@
 	            		alert('¡No se pueden agregar mas de' + MAX_EVIDENCIAS + 'evidencias en simultáneo!');
 	            		return;
 	            	}
+	            	
+	            	const formId = 'form-' + evidenciaCounter;
 	               
 	                const newArticle = document.createElement('article');
 	                newArticle.classList.add('evidenciaForm'); 
+	                newArticle.id = formId;
+	                
+	                const deleteButton = document.createElement('span');
+	                deleteButton.textContent = 'x';
+	                deleteButton.addEventListener('click', function () {
+	                	document.getElementById(formId).remove();
+		            	evidenciaCounter--;
+	                });
+	                deleteButton.classList.add('deleteButton'); 
 	
 	                const newH2 = document.createElement('h2');
 	                newH2.textContent = 'Nueva evidencia'; 
@@ -224,7 +235,8 @@
 	                inputLink.id = linkId;
 	                inputLink.name = 'link'; 
 	                inputLink.required = true;
-	
+	                
+	              	newArticle.appendChild(deleteButton);
 	                newArticle.appendChild(newH2);
 	                newArticle.appendChild(labelFecha);
 	                newArticle.appendChild(inputFecha);
@@ -237,6 +249,7 @@
 
 	                evidenciaCounter++;
 	            }
+	            
 		    </script>
          </form>
         <% } %>
