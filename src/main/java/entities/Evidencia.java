@@ -6,16 +6,22 @@ public class Evidencia {
 	private int nroEvidencia;
 	private LocalDateTime fechaObtencion;
 	private String estado;
-	private String link;
+	private String fileId;
 	private TipoEvidencia tipo;
 	
-	public Evidencia(int nroEvidencia, LocalDateTime fechaObtencion, String estado, String link, TipoEvidencia tip) {
+	public Evidencia(int nroEvidencia, LocalDateTime fechaObtencion, String estado, String fileId, TipoEvidencia tip) {
 		this.nroEvidencia = nroEvidencia;
 		this.fechaObtencion = fechaObtencion;
 		this.estado = estado;
-		this.link = link;
+		this.fileId = fileId;
 		this.tipo = tip;
 	}
+	
+	public Evidencia(int nroEvidencia, TipoEvidencia tip) {
+		this.nroEvidencia = nroEvidencia;
+		this.tipo = tip;
+	}
+	
 	public int getNroEvidencia() {
 		return nroEvidencia;
 	}
@@ -34,11 +40,11 @@ public class Evidencia {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public String getLink() {
-		return link;
+	public String getFileId() {
+		return fileId;
 	}
-	public void setLink(String link) {
-		this.link = link;
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
 	}
 	public TipoEvidencia getTipo() {
 		return tipo;
@@ -50,7 +56,7 @@ public class Evidencia {
 		return ("Numero de Evidencia: " + getNroEvidencia() + 
 				"<br>Fecha de Obtencion: " + getFechaObtencion() +
 				"<br>Estado: " + getEstado() +
-				"<br>Enlace: " + getLink());
+				"<br>Enlace: " + getfileId());
 	}
 	
 }

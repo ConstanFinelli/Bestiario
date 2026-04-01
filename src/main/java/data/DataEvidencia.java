@@ -101,11 +101,11 @@ public class DataEvidencia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into evidencia(nroEvidencia, fechaObtencion, estado, link, idTipoEvidencia) values(?, ?, ?, ? ,?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into evidencia(nroEvidencia, fechaObtencion, estado, fileId, idTipoEvidencia) values(?, ?, ?, ? ,?)");
 			pstmt.setInt(1, e.getNroEvidencia()); 
 			pstmt.setTimestamp(2, java.sql.Timestamp.valueOf( e.getFechaObtencion()));
 			pstmt.setString(3, e.getEstado());
-			pstmt.setString(4, e.getLink());
+			pstmt.setString(4, e.getFileId());
 			pstmt.setInt(5, e.getTipo().getId());
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
@@ -133,10 +133,10 @@ public class DataEvidencia {
 	public Evidencia update(Evidencia e) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update evidencia set fechaObtencion = ?, estado = ?, link = ? where idTipoEvidencia = ? and nroEvidencia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update evidencia set fechaObtencion = ?, estado = ?, fileId = ? where idTipoEvidencia = ? and nroEvidencia = ?");
 			pstmt.setTimestamp(1, java.sql.Timestamp.valueOf(e.getFechaObtencion()));
 			pstmt.setString(2, e.getEstado());
-			pstmt.setString(3, e.getLink());
+			pstmt.setString(3, e.getFileId());
 			pstmt.setInt(4,e.getTipo().getId());
 			pstmt.setInt(5, e.getNroEvidencia());
 			int error = pstmt.executeUpdate();
