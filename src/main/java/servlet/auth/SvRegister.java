@@ -63,6 +63,7 @@ public class SvRegister extends HttpServlet {
 				
 				logicUsuario.save(userLector);
 			if(flag == null) {
+				request.getSession().setAttribute("successMsg", "Usuario creado con éxito");
 				response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	
 				return;
 			}

@@ -43,11 +43,17 @@
             <aside class="logSubmitContainer">
                 <input type="submit" class="logSubmit" value="Registrarse" />
             </aside>
-            <div class='errorBox'>
-                    <ul>
-                        <li class="errorMsg">${logMsg}</li>
-                    </ul>
-            </div>
+            
+            <% 
+			    String logMsg = (String) request.getAttribute("logMsg");
+			    if (logMsg != null && !logMsg.isEmpty()) { 
+			%>
+			    <div class='errorBox'>
+			        <ul>
+			            <li class="errorMsg"><%= logMsg %></li>
+			        </ul>
+			    </div>
+			<% } %>
         </form>
        
 </body>
