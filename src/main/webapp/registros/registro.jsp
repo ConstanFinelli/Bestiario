@@ -76,7 +76,7 @@
                 		<a href="<%= switch(evidencia.getTipo().getDescripcion()){
                 		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
                 		case "imagen" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
-                		case "audio" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
+                		case "audio" -> CloudinaryHelper.getAudioEvidencia(evidencia.getFileId());
                 		default -> "No se ha encontrado archivo";
                 		}%>"><%= evText %></a>
                 	</li>

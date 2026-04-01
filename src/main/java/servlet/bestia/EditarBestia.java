@@ -1,0 +1,80 @@
+package servlet.bestia;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import logic.LogicBestia;
+import logic.LogicCategoria;
+import logic.LogicHabitat;
+import logic.LogicRegistro;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+
+import entities.Bestia;
+import entities.Categoria;
+import entities.Habitat;
+import helpers.CloudinaryHelper;
+import helpers.HttpRoutes;
+
+@WebServlet("/bestias/editar")
+public class EditarBestia extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	private LogicBestia controlador = new LogicBestia();
+	private LogicRegistro controladorRegistro = new LogicRegistro();
+	private LogicCategoria controladorCategoria = new LogicCategoria();
+	private LogicHabitat controladorHabitat = new LogicHabitat();
+       
+    public EditarBestia() {
+        super();
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		Bestia bestia = new Bestia(Integer.parseInt(id), null, null, null);
+		LinkedList<Habitat> habitats = controladorHabitat.findAll();
+		LinkedList<Categoria> categorias = controladorCategoria.findAll();
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
+		HttpSession session = request.getSession();
+		
+		bestia = controlador.getOne(bestia);
+		
+		
+		String imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+		
+		session.setAttribute("categorias", categorias);
+		session.setAttribute("habitats", habitats);
+		session.setAttribute("bestia", bestia);
+		session.setAttribute("imagen", imagen);
+		rd.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		String nombre = request.getParameter("nombre");
+		String peligrosidad = request.getParameter("peligrosidad");
+		String estado = "aprobado";
+		String action = request.getParameter("action");
+		Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
+		RequestDispatcher rd = request.getRequestDispatcher("editarBestia.jsp");
+		HttpSession session = request.getSession();
+		
+		if("info".equals(action)) {
+			bestia = controlador.update(bestia);
+		}else {
+			bestia = controlador.getOne(bestia);
+		}
+		String imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+		
+		session.setAttribute("imagen", imagen);
+		session.setAttribute("bestia", bestia);
+		rd.forward(request, response);
+	}
+	
+}

@@ -102,7 +102,7 @@ public class ActualizarRegistro extends HttpServlet {
 		
 		String[] fechas = request.getParameterValues("fechaObtencion");
 		String[] tipos = request.getParameterValues("tipo");
-		String[] links = request.getParameterValues("link");
+		String[] archivos = request.getParameterValues("archivos");
 		
 		
 		if(fechas != null) {
@@ -111,14 +111,14 @@ public class ActualizarRegistro extends HttpServlet {
 				LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
 			    LocalDateTime fecha = fechaSinHora.atStartOfDay();
 			    String tipo = tipos[i];
-			    String link = links[i];
+			    String archivo = archivos[i];
 			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
 			    te = controladorTipoEvidencia.getOne(te);
 			    String estadoRegistro = "pendiente";
 				if(usuario.getEstado().equals("investigador")) {
 					estadoRegistro = "aprobado";
 				}
-			    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,link,te);
+			    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,archivo,te);
 			    controladorEvidencia.save(evidencia);
 			    evidencias.add(evidencia);
 			}
