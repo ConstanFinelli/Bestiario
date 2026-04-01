@@ -23,13 +23,13 @@ public class LogicEvidencia {
 	}
 	
 	public Evidencia update(Evidencia e) {
-		String fileId = getOne(e).getfileId();
+		String fileId = getOne(e).getFileId();
 		CloudinaryHelper.delete(fileId);
 		return eDAO.update(e);
 	}
 	
 	public Evidencia delete(Evidencia e) {
-		String fileId = getOne(e).getfileId();
+		String fileId = getOne(e).getFileId();
 		CloudinaryHelper.delete(fileId);
 		return eDAO.delete(e);
 	}

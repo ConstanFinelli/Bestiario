@@ -62,6 +62,18 @@ public class CloudinaryHelper {
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
+	public static String getVideoEvidencia(String publicId) {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
+	public static String getImagenEvidencia(String publicId) {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
+	public static String getAudioEvidencia(String publicId) {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
 	public static void delete(String publicId) {
 	    try {
 	        getInstancia().uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "auto"));

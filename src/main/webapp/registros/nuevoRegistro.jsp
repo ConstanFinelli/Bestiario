@@ -6,7 +6,7 @@
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
-<%@ page import="entities.TipoEvidencia, helpers.HttpRoutes" %>
+<%@ page import="entities.TipoEvidencia, helpers.HttpRoutes, helpers.CloudinaryHelper" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -142,7 +142,12 @@
                 	
                 	%>
                 	<li class="evidencias-item">
-                		<a href="<%= evidencia.getLink() %>"><%= evText %></a>
+                		<a href="<%= switch(evidencia.getTipo().getDescripcion()){
+                		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
+                		case "imagen" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
+                		case "audio" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
+                		default -> "No se ha encontrado archivo";
+                		}%>"><%= evText %></a>
                 	</li>
                 <%} %>
                 </ul>

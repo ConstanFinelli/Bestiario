@@ -52,11 +52,5 @@ public class Evidencia {
 	public void setTipo(TipoEvidencia tipo) {
 		this.tipo = tipo;
 	}
-	@Override public String toString() {
-		return ("Numero de Evidencia: " + getNroEvidencia() + 
-				"<br>Fecha de Obtencion: " + getFechaObtencion() +
-				"<br>Estado: " + getEstado() +
-				"<br>Enlace: " + getfileId());
-	}
 	
 }
