@@ -50,7 +50,7 @@
             for(Bestia b : bestias.keySet()) {
                 for(Habitat h : b.getHabitats()) { %>
                 
-                L.marker([adaptarCoordenada(<%= h.getLatitud() %>), adaptarCoordenada(<%= h.getLongitud() %>)])
+                L.marker([adaptarCoordenada(<%= h.getLatitud() %>), adaptarCoordenada(<%= h.getLongitud() %>)], {opacity: 0})
                   .addTo(map)
                   .on("dblclick", function(){
                       var idMarcador = <%= b.getIdBestia() %>;
@@ -63,7 +63,7 @@
                   .bindPopup('<b><%= b.getNombre() %></b><br><%= h.getLocalizacion()%>')
                   .bindTooltip(
                         '<img src="<%=CloudinaryHelper.getImagenMapa(bestias.get(b))%>" width="60" style="border-radius: 10px; cursor: pointer;">',
-                        { permanent: true, direction: 'top' }
+                        {permanent: true, direction: 'top', offset: L.point(-15	, 0)}
                       );
 
         <%      } 
