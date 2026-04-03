@@ -6,7 +6,7 @@
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
-<%@ page import="entities.TipoEvidencia, helpers.HttpRoutes" %>
+<%@ page import="entities.TipoEvidencia, helpers.HttpRoutes, helpers.CloudinaryHelper" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -142,7 +142,12 @@
                 	
                 	%>
                 	<li class="evidencias-item">
-                		<a href="<%= evidencia.getLink() %>"><%= evText %></a>
+                		<a href="<%= switch(evidencia.getTipo().getDescripcion()){
+                		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
+                		case "imagen" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
+                		case "audio" -> CloudinaryHelper.getAudioEvidencia(evidencia.getFileId());
+                		default -> "No se ha encontrado archivo";
+                		}%>"><%= evText %></a>
                 	</li>
                 <%} %>
                 </ul>
@@ -224,26 +229,28 @@
 				        inputTipo.appendChild(option);
 			    	}
 	                <%}%>
-	                const linkId = 'link-' + evidenciaCounter;
+	                const archivoId = 'archivo-' + evidenciaCounter;
 	                
-	                const labelLink = document.createElement('label');
-	                labelLink.setAttribute('for', linkId);
-	                labelLink.textContent = 'Link';
+	                const labelArchivo = document.createElement('label');
+	                labelArchivo.setAttribute('for', archivoId);
+	                labelArchivo.textContent = 'Archivo';
 	
-	                const inputLink = document.createElement('input');
-	                inputLink.type = 'text';
-	                inputLink.id = linkId;
-	                inputLink.name = 'link'; 
-	                inputLink.required = true;
 	                
 	              	newArticle.appendChild(deleteButton);
+	
+	              	const inputArchivo = document.createElement('input');
+	                inputArchivo.type = 'file';
+	                inputArchivo.id = archivoId;
+	                inputArchivo.name = 'archivo'; 
+	                inputArchivo.required = true;
+	
 	                newArticle.appendChild(newH2);
 	                newArticle.appendChild(labelFecha);
 	                newArticle.appendChild(inputFecha);
 	                newArticle.appendChild(labelTipo);
 	                newArticle.appendChild(inputTipo);
-	                newArticle.appendChild(labelLink);
-	                newArticle.appendChild(inputLink);
+	                newArticle.appendChild(labelArchivo);
+	                newArticle.appendChild(inputArchivo);
 	
 	                contenedor.appendChild(newArticle);
 

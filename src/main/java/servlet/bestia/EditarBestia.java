@@ -68,11 +68,6 @@ public class EditarBestia extends HttpServlet {
 		if("info".equals(action)) {
 			bestia = controlador.update(bestia);
 		}else {
-			if("category".equals(action)) {
-				doCategoryRelation(request, response);
-			}else {
-				doHabitatRelation(request,response);
-			}
 			bestia = controlador.getOne(bestia);
 		}
 		String imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
@@ -82,37 +77,4 @@ public class EditarBestia extends HttpServlet {
 		rd.forward(request, response);
 	}
 	
-	protected void doCategoryRelation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String relationChange = request.getParameter("relationChange");
-		String idCategoria = request.getParameter("idCategoria");
-		String id = request.getParameter("id");
-		Categoria cat = new Categoria(Integer.parseInt(idCategoria), null, null);
-		cat = controladorCategoria.getOne(cat);
-		Bestia bestia = new Bestia(Integer.parseInt(id),null,null,null);
-		bestia = controlador.getOne(bestia);
-		
-		if("removeCategory".equals(relationChange)) {
-			controlador.removeRelation(bestia, cat);
-		}else {
-			bestia.getCategorias().add(cat);
-			controlador.saveCategorias(bestia);
-		}
-	}
-	
-	protected void doHabitatRelation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String relationChange = request.getParameter("relationChange");
-		String idHabitat = request.getParameter("idHabitat"); 
-		String id = request.getParameter("id");
-		Habitat hab = new Habitat(Integer.parseInt(idHabitat));
-		hab = controladorHabitat.getOne(hab);
-		Bestia bestia = new Bestia(Integer.parseInt(id),null,null,null);
-		bestia = controlador.getOne(bestia);
-		
-		if("removeHabitat".equals(relationChange)) {
-			controlador.removeRelation(bestia, hab);
-		}else {
-			bestia.getHabitats().add(hab);
-			controlador.saveHabitats(bestia);
-		}
-	}
 }

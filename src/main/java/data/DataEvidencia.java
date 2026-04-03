@@ -27,10 +27,10 @@ public class DataEvidencia {
 				int id = rs.getInt("nroEvidencia");
 				LocalDateTime fechaO = rs.getTimestamp("fechaObtencion").toLocalDateTime();
 				String estado = rs.getString("estado");
-				String link = rs.getString("link");
+				String fileId = rs.getString("fileId");
 				int idTipo = rs.getInt("idTipoEvidencia");
 				TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo, null));
-				evidenciaEncontrada = new Evidencia(id, fechaO, estado, link, tipo);
+				evidenciaEncontrada = new Evidencia(id, fechaO, estado, fileId, tipo);
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -67,10 +67,10 @@ public class DataEvidencia {
 					int id = rs.getInt("nroEvidencia");
 					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
-					String link = rs.getString("link");
+					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
 					TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo, null));
-					evidencia = new Evidencia(id, fechaO, estado, link, tipo);
+					evidencia = new Evidencia(id, fechaO, estado, fileId, tipo);
 					evidencias.add(evidencia);
 				}
 			}
@@ -101,11 +101,11 @@ public class DataEvidencia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into evidencia(nroEvidencia, fechaObtencion, estado, link, idTipoEvidencia) values(?, ?, ?, ? ,?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into evidencia(nroEvidencia, fechaObtencion, estado, fileId, idTipoEvidencia) values(?, ?, ?, ? ,?)");
 			pstmt.setInt(1, e.getNroEvidencia()); 
 			pstmt.setTimestamp(2, java.sql.Timestamp.valueOf( e.getFechaObtencion()));
 			pstmt.setString(3, e.getEstado());
-			pstmt.setString(4, e.getLink());
+			pstmt.setString(4, e.getFileId());
 			pstmt.setInt(5, e.getTipo().getId());
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
@@ -133,10 +133,10 @@ public class DataEvidencia {
 	public Evidencia update(Evidencia e) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update evidencia set fechaObtencion = ?, estado = ?, link = ? where idTipoEvidencia = ? and nroEvidencia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update evidencia set fechaObtencion = ?, estado = ?, fileId = ? where idTipoEvidencia = ? and nroEvidencia = ?");
 			pstmt.setTimestamp(1, java.sql.Timestamp.valueOf(e.getFechaObtencion()));
 			pstmt.setString(2, e.getEstado());
-			pstmt.setString(3, e.getLink());
+			pstmt.setString(3, e.getFileId());
 			pstmt.setInt(4,e.getTipo().getId());
 			pstmt.setInt(5, e.getNroEvidencia());
 			int error = pstmt.executeUpdate();
@@ -230,8 +230,8 @@ public class DataEvidencia {
 					int id = rs.getInt("nroEvidencia");
 					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
-					String link = rs.getString("link");
-					evidencia = new Evidencia(id, fechaO, estado, link, te);
+					String fileId = rs.getString("fileId");
+					evidencia = new Evidencia(id, fechaO, estado, fileId, te);
 					evidencias.add(evidencia);
 				}
 			}
@@ -271,10 +271,10 @@ public class DataEvidencia {
 					int nroEvidencia = rs.getInt("nroEvidencia");
 					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
-					String link = rs.getString("link");
+					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
 					TipoEvidencia te = teDao.getOne(new TipoEvidencia(idTipo, null));
-					evidencia = new Evidencia(nroEvidencia,fechaO, estado, link, te);
+					evidencia = new Evidencia(nroEvidencia,fechaO, estado, fileId, te);
 					evidencias.add(evidencia);
 				}
 			}

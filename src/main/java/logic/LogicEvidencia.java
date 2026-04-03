@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import entities.Evidencia;
 import entities.TipoEvidencia;
+import helpers.CloudinaryHelper;
 import data.DataEvidencia;
 
 public class LogicEvidencia {
@@ -22,10 +23,14 @@ public class LogicEvidencia {
 	}
 	
 	public Evidencia update(Evidencia e) {
+		String fileId = getOne(e).getFileId();
+		CloudinaryHelper.delete(fileId);
 		return eDAO.update(e);
 	}
 	
 	public Evidencia delete(Evidencia e) {
+		String fileId = getOne(e).getFileId();
+		CloudinaryHelper.delete(fileId);
 		return eDAO.delete(e);
 	}
 	

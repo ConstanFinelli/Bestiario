@@ -30,11 +30,14 @@
     <script>
         var selectedId = <%= idSelected %>;
         
-        var map = L.map('map').setView([20, 0], 3);
+        var map = L.map('map',{
+        	maxBounds: [[-90, -180], [90, 180]],
+        	maxBoundsViscosity: 1,
+        	maxZoom: 8,
+            minZoom: 3,
+        }).setView([20, 0], 3);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
         	attribution: 'Tiles &copy; Esri',
-            maxZoom: 8,
-            minZomm: 3,
             noWrap: true,
             bounds: [[-90, -180], [90, 180]],
         }).addTo(map);
@@ -47,7 +50,7 @@
             for(Bestia b : bestias.keySet()) {
                 for(Habitat h : b.getHabitats()) { %>
                 
-                L.marker([adaptarCoordenada(<%= h.getLatitud() %>), adaptarCoordenada(<%= h.getLongitud() %>)])
+                L.marker([adaptarCoordenada(<%= h.getLatitud() %>), adaptarCoordenada(<%= h.getLongitud() %>)], {opacity: 0})
                   .addTo(map)
                   .on("dblclick", function(){
                       var idMarcador = <%= b.getIdBestia() %>;
@@ -60,7 +63,7 @@
                   .bindPopup('<b><%= b.getNombre() %></b><br><%= h.getLocalizacion()%>')
                   .bindTooltip(
                         '<img src="<%=CloudinaryHelper.getImagenMapa(bestias.get(b))%>" width="60" style="border-radius: 10px; cursor: pointer;">',
-                        { permanent: true, direction: 'top' }
+                        {permanent: true, direction: 'top', offset: L.point(-15	, 0)}
                       );
 
         <%      } 

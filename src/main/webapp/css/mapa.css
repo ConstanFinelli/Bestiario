@@ -41,8 +41,16 @@ body {
   background: #f3e5ab !important;
 }
 
-.leaflet-marker-icon {
-  filter: sepia(1) hue-rotate(-12deg) saturate(2.2) brightness(1.1) contrast(1.1) !important;
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out{
+	background-color: #4b3621 !important;
+	color: #f3e5ab !important;
+	border-bottom: 1px solid #70543f !important;
+}
+
+.leaflet-control-zoom{
+	border-radius: 20px !important;	
+	overflow: hidden;
 }
 
 .leaflet-tooltip {

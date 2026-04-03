@@ -24,9 +24,9 @@ public class CloudinaryHelper {
 	public static String upload(Part archivo){		
 		try {
 		byte[] fileBytes = archivo.getInputStream().readAllBytes();
-		return getInstancia().uploader().upload(fileBytes, ObjectUtils.emptyMap()).get("public_id").toString();
+		return getInstancia().uploader().upload(fileBytes, ObjectUtils.asMap("resource_type", "auto")).get("public_id").toString();
 		}catch(IOException e) {
-			throw new RuntimeException("Error al subir imagen", e); 
+			throw new RuntimeException("Error al subir archivo", e); 
 		}
 	}
 	
@@ -62,11 +62,23 @@ public class CloudinaryHelper {
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
+	public static String getVideoEvidencia(String publicId) {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
+	public static String getImagenEvidencia(String publicId) {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
+	public static String getAudioEvidencia(String publicId) {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+	}
+	
 	public static void delete(String publicId) {
 	    try {
-	        getInstancia().uploader().destroy(publicId, ObjectUtils.emptyMap());
+	        getInstancia().uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "auto"));
 	    } catch (IOException e) {
-	        throw new RuntimeException("Error eliminando imagen", e);
+	        throw new RuntimeException("Error eliminando archivo", e);
 	    }
 	}
 	

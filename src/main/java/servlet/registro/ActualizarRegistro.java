@@ -18,6 +18,7 @@ import logic.LogicTipoEvidencia;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import entities.Bestia;
@@ -102,8 +103,14 @@ public class ActualizarRegistro extends HttpServlet {
 		
 		String[] fechas = request.getParameterValues("fechaObtencion");
 		String[] tipos = request.getParameterValues("tipo");
-		String[] links = request.getParameterValues("link");
-		
+		Collection<Part> parts = request.getParts();
+		LinkedList<String> archivos = new LinkedList<>();
+		for(Part p: parts) {
+			if(p.getName().equals("archivo") && p.getSize() > 0) {
+				String id = CloudinaryHelper.upload(p);
+				archivos.add(id);	
+			}
+		}
 		
 		if(fechas != null) {
 			LinkedList<Evidencia> evidencias = new LinkedList<>();
@@ -111,14 +118,14 @@ public class ActualizarRegistro extends HttpServlet {
 				LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
 			    LocalDateTime fecha = fechaSinHora.atStartOfDay();
 			    String tipo = tipos[i];
-			    String link = links[i];
+			    String archivo = archivos.get(i);
 			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
 			    te = controladorTipoEvidencia.getOne(te);
 			    String estadoRegistro = "pendiente";
 				if(usuario.getEstado().equals("investigador")) {
 					estadoRegistro = "aprobado";
 				}
-			    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,link,te);
+			    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,archivo,te);
 			    controladorEvidencia.save(evidencia);
 			    evidencias.add(evidencia);
 			}
