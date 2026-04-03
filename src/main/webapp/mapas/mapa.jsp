@@ -86,6 +86,12 @@
         </div>
     <% } else { %>
         <h1 class="tituloHabitat">Selecciona un marcador en el mapa</h1>
+        <div class="contenedorHabitats">
+        <h2 class= "unselectedText">Cuando seleccione una bestia, aqui podra ver las ubucaciones donde consideramos habita la misma.</h2>
+        <h2 class= "unselectedText">Estas ubicaciones fueron determinadas utilizando la informacion suministrada por la comunidad
+        y verificada por nuestros investigadores.</h2>
+        <h2 class="unselectedText"> Seleccione una bestia y podra ir a sus diferentes habitats mas agilmente.</h2>
+        </div>
     <% } %>
 
     <div class="btnMapa">
