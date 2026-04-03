@@ -39,7 +39,6 @@
     	<div class="notFound">${errorMsg}</div>
     <%} %>
 </section>
-
-<footer></footer>
+<%@ include file="../components/footer.jsp" %>
 </body>
 </html>

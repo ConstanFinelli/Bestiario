@@ -35,7 +35,6 @@
         <button type="submit" class="btnBestia">Continuar →</button>
     </form>
 </section>
-
-<footer></footer>
+<%@ include file="../components/footer.jsp" %>
 </body>
 </html>

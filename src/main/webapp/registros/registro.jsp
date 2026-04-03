@@ -176,7 +176,6 @@
 				<%} %>
                 <% if(usuario != null){%><a class="registroProposal" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>		
             </section>
-        <footer>
-        </footer>
+        <%@ include file="../components/footer.jsp" %>
     </body>
 </html>

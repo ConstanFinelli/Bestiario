@@ -260,7 +260,6 @@
 		    </script>
          </form>
         <% } %>
-        <footer>
-        </footer>
+        <%@ include file="../components/footer.jsp" %>
     </body>
 </html>

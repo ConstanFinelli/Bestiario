@@ -68,8 +68,6 @@
 				</div>
 			</aside>
 		</section>
-        <footer>
-        	<p>© 2026 Bestiario S.A. Todos los derechos reservados.</p>
-        </footer>
+        <%@ include file="components/footer.jsp" %>
     </body>
 </html>

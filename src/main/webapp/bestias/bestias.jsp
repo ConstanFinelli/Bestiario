@@ -155,8 +155,7 @@
         }
         %>
 </section>
-<footer>
-</footer>
+<%@ include file="../components/footer.jsp" %>
 	<div id="modal" class="modal-container">
 		<div class="modal-content">
 			<h2 id="modal-titulo"></h2>

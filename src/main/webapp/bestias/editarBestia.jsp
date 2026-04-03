@@ -145,8 +145,7 @@
 		</div>
 	</section>
 	</section>
-	<footer>
-	</footer>
+	<%@ include file="../components/footer.jsp" %>
 	<script>
 		function changeFormTo(to){
 			const forms = ['formInfo', 'formCategoria', 'formHabitat'];
