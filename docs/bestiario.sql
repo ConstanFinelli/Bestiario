@@ -29,7 +29,7 @@ CREATE TABLE `bestia` (
   `estado` varchar(45) DEFAULT '`pendiente`',
   PRIMARY KEY (`idBestia`),
   UNIQUE KEY `idbestia_UNIQUE` (`idBestia`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +155,7 @@ CREATE TABLE `contenido_registro` (
   `resumen` text NOT NULL,
   PRIMARY KEY (`idContenido`),
   UNIQUE KEY `nro_registro_UNIQUE` (`idContenido`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +169,7 @@ CREATE TABLE `evidencia` (
   `nroEvidencia` int NOT NULL,
   `fechaObtencion` date NOT NULL,
   `estado` varchar(45) NOT NULL DEFAULT '"pendiente"',
-  `link` varchar(255) DEFAULT NULL,
+  `fileId` varchar(255) DEFAULT NULL,
   `idTipoEvidencia` int NOT NULL,
   PRIMARY KEY (`nroEvidencia`,`idTipoEvidencia`),
   KEY `idTipoEvidencia_idx` (`idTipoEvidencia`)
@@ -191,7 +191,7 @@ CREATE TABLE `habitat` (
   `localizacion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idHabitat`),
   UNIQUE KEY `idhabitat_UNIQUE` (`idHabitat`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,7 +250,7 @@ CREATE TABLE `tipo_evidencia` (
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`idTipoEvidencia`),
   UNIQUE KEY `idTipoEvidencia_UNIQUE` (`idTipoEvidencia`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,4 +285,4 @@ CREATE TABLE `usuario` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-03-29  3:56:55
+-- Dump completed on 2026-04-03  0:35:59
