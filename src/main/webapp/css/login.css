@@ -231,3 +231,21 @@ ul{
     margin: 0;
     padding: 0;
 }
+
+.backButton{
+	display: flex;
+	align-self: flex-start;
+	text-decoration: none;
+	color: black;
+	width: max-content;
+	font-size: 1.2rem;
+	font-weight: 600;
+	gap: 7px;
+	transition: filter 0.2s ease-in-out;
+	border-radius: 0.4rem;
+}
+
+.backButton svg{
+	height: 22px;
+	width: 26px;
+}
