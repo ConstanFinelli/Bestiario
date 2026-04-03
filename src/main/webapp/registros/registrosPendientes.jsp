@@ -8,9 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Registros pendientes</title>
-<link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/navbar.css">
-<link rel="stylesheet" href="../css/registros.css">
+<link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
+<link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath()) %>">
+<link rel="stylesheet" href="<%= HttpRoutes.REGISTROS_CSS(request.getContextPath()) %>">
 </head>
 <body>
 <%@ include file="../components/navbar.jsp" %>
