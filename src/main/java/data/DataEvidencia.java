@@ -27,10 +27,10 @@ public class DataEvidencia {
 				int id = rs.getInt("nroEvidencia");
 				LocalDateTime fechaO = rs.getTimestamp("fechaObtencion").toLocalDateTime();
 				String estado = rs.getString("estado");
-				String link = rs.getString("link");
+				String fileId = rs.getString("fileId");
 				int idTipo = rs.getInt("idTipoEvidencia");
 				TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo, null));
-				evidenciaEncontrada = new Evidencia(id, fechaO, estado, link, tipo);
+				evidenciaEncontrada = new Evidencia(id, fechaO, estado, fileId, tipo);
 			}
 		}catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -67,10 +67,10 @@ public class DataEvidencia {
 					int id = rs.getInt("nroEvidencia");
 					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
-					String link = rs.getString("link");
+					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
 					TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo, null));
-					evidencia = new Evidencia(id, fechaO, estado, link, tipo);
+					evidencia = new Evidencia(id, fechaO, estado, fileId, tipo);
 					evidencias.add(evidencia);
 				}
 			}
@@ -230,8 +230,8 @@ public class DataEvidencia {
 					int id = rs.getInt("nroEvidencia");
 					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
-					String link = rs.getString("link");
-					evidencia = new Evidencia(id, fechaO, estado, link, te);
+					String fileId = rs.getString("fileId");
+					evidencia = new Evidencia(id, fechaO, estado, fileId, te);
 					evidencias.add(evidencia);
 				}
 			}
@@ -271,10 +271,10 @@ public class DataEvidencia {
 					int nroEvidencia = rs.getInt("nroEvidencia");
 					LocalDateTime fechaO= rs.getTimestamp("fechaObtencion").toLocalDateTime();
 					String estado = rs.getString("estado");
-					String link = rs.getString("link");
+					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
 					TipoEvidencia te = teDao.getOne(new TipoEvidencia(idTipo, null));
-					evidencia = new Evidencia(nroEvidencia,fechaO, estado, link, te);
+					evidencia = new Evidencia(nroEvidencia,fechaO, estado, fileId, te);
 					evidencias.add(evidencia);
 				}
 			}
