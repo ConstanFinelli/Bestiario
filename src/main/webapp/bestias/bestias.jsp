@@ -42,23 +42,21 @@
 	 %>
 	<form action="<%= HttpRoutes.LISTAR_BESTIAS(request.getContextPath()) %>" method="get">
     
-    <select name="filter" class="inputFilter" id="filter">
-    <% if(categorias != null){ %>
-        <option value="">-- Categoría --</option>
-        
-        <% for(Categoria cat : categorias){ 
-            String nombreCat = cat.getNombre();
-            if (nombreCat != null) { 
-        %>
-            <option value="<%= nombreCat %>" <%= nombreCat.equals(searchedFilter) ? "selected" : "" %>>
-                <%= nombreCat %>
-            </option>
-        <%  }
-         } %>
-    <% } %>
-</select>
+    <input list="categorias-list" name="filter" class="inputFilter" id="filter" placeholder="--Ingrese Categoria--" value= "<%= searchedFilter %>" autocomplete="on">
     
-    <button class="btnBestia" type="submit" <%= (categorias == null) ? "disabled" : "" %>>
+    <datalist id="categorias-list">
+        <% if(categorias != null){ %>
+            <% for(Categoria cat : categorias){ 
+                String nombreCat = cat.getNombre();
+                if (nombreCat != null) { 
+            %>
+                <option value="<%= nombreCat %>"></option>
+            <%  }
+             } %>
+        <% } %>
+    </datalist>
+    
+       <button class="btnBestia" type="submit" <%= (categorias == null) ? "disabled" : "" %>>
         Buscar
     </button>
 </form>

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 import entities.Bestia;
+import helpers.CloudinaryHelper;
+import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class ActualizarBestia
@@ -38,13 +40,13 @@ public class ActualizarBestia extends HttpServlet {
 		String peligrosidad = request.getParameter("peligrosidad");
 		String estado = request.getParameter("estado");
 		Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
-		String referer = request.getHeader("referer");
-		String toRedirect = referer.substring(referer.indexOf(request.getContextPath())); // hacerlo en un helper
-		String imagen = controladorRegistro.getImagen(bestia, LocalDateTime.now());
+		String imagen = CloudinaryHelper.getImagenEditarBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now())); 
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
 		bestia = controlador.update(bestia);	
 		request.getSession().setAttribute("updateBestia", bestia);		
 		request.getSession().setAttribute("imagen", imagen);
-		response.sendRedirect(toRedirect);;
+		rd.forward(request, response);
+		
 	}
 
 	}
