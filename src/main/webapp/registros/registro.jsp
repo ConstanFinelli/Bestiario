@@ -65,20 +65,21 @@
                 <% if(!evidencias.isEmpty()){ %>
                 <h2>Evidencias</h2>
                 <ul class="evidencias">
-                <% for(Evidencia evidencia : evidencias){ %>
+                <% 
+                for(Evidencia evidencia : evidencias){ %>
                 	<%
                 	String teDesc = evidencia.getTipo().getDescripcion();
                 	String fechaOb = evidencia.getFechaObtencion().toString();
-                	String evText = teDesc + ", obtenido el " + fechaOb;
+                	String evText = " Obtenido el " + fechaOb;
                 	
                 	%>
-                	<li class="evidencias-item">
-                		<a href="<%= switch(evidencia.getTipo().getDescripcion()){
+                	<li class="evidenciasItem">
+                		<a class="evidenciasLink" href="javascript:void(0)" 
+                		onclick="abrirModal('<%= switch(evidencia.getTipo().getDescripcion().trim().toLowerCase()){
                 		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
                 		case "imagen" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
-                		case "audio" -> CloudinaryHelper.getAudioEvidencia(evidencia.getFileId());
-                		default -> "No se ha encontrado archivo";
-                		}%>"><%= evText %></a>
+                		default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
+                		}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
                 	</li>
                 <%} %>
                 </ul>
@@ -174,8 +175,81 @@
 				    </form>
 				</div>
 				<%} %>
-                <% if(usuario != null){%><a class="registroProposal" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>		
+                <% if(usuario != null){%><a class="btnAgregar" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>	
+                <div id="modal" class="modal-container">
+					<div class="modal-content">
+						<div id="modal-body"></div>
+					</div>
+				</div>	
             </section>
         <%@ include file="../components/footer.jsp" %>
+        <script>
+		// javascript para modal
+		function abrirModal(link) {
+			if (!link) {
+		        alert("Esta evidencia no tiene un archivo multimedia asociado.");
+		        return;
+		    }
+			
+			const modalBody = document.getElementById('modal-body');
+			modalBody.innerHTML = "";
+			const esVideo = link.toLowerCase().match(/\.(mp4|webm|ogg)$/) || link.includes("video/upload");
+		    const esImagen = link.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp|svg)$/) || link.includes("image/upload");
+		    
+		    if (esVideo) {
+		    	const video = document.createElement('video');
+		        video.src = link;
+		        video.controls = true;
+		        video.autoplay = true;
+		        video.classList.add('modal-evidencia');
+		        modalBody.appendChild(video);
+		    } 
+		    else if (esImagen) {
+		    	const img = document.createElement('img');
+		        img.src = link;
+		        img.classList.add('modal-evidencia');
+		        modalBody.appendChild(img);
+		    }else {
+		    	descarga = document.createElement('div');
+		    	descarga.style.textAlign = "center";
+		    	descarga.style.padding = "20px";
+
+		        const p = document.createElement('p');
+		        p.textContent = "El archivo no se puede previsualizar en el navegador.";
+		        p.style.marginBottom = "15px";
+
+		        const a = document.createElement('a');
+		        a.href = link;
+		        a.download = "";
+		        a.target = "_blank";
+		        a.textContent = "Haz click para descargar el archivo";
+		        a.className = "modal-download"; 
+		        
+		        a.style.display = "inline-block";
+		        a.style.padding = "10px 20px";
+		        a.style.background = "#2563eb";
+		        a.style.color = "white";
+		        a.style.textDecoration = "none";
+		        a.style.borderRadius = "5px";
+
+		        descarga.appendChild(p);
+		        descarga.appendChild(a);
+		        modalBody.appendChild(descarga);
+		    }
+		    
+			document.getElementById('modal').classList.add('is-visible');
+		}
+
+		function cerrarModal() {
+			document.getElementById('modal').classList.remove('is-visible');
+		}
+
+		window.onclick = function(event) {
+			let modal = document.getElementById('modal');
+			if (event.target == modal) {
+				cerrarModal();
+			}
+		}
+	</script>
     </body>
 </html>

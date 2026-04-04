@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bestiario-Register</title>
+<title>Bestiario - Registrarse</title>
 <link rel="stylesheet" href="<%= HttpRoutes.LOGIN_CSS(request.getContextPath()) %>">
 </head>
 <body class='logBody'>
