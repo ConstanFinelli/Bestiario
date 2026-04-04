@@ -22,7 +22,7 @@
 }
 
 .logForm{
-	padding: 5vh 5vw;
+	padding: 7vh 5vw;
     background-color: var(--secondary-color);
     display:flex;
     flex-direction: column;
@@ -42,6 +42,7 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    width: 100%;
 }
 
 .extraFields {
@@ -53,13 +54,15 @@
 
 .logInput{
     position: relative;
+    width: 100%;
 }
 
 .logInput input{
     padding: 20px 20px 20px 10px;
     font-size: 1.2rem;
     display: block;
-    width: 25vw;
+    width: 100%;
+	box-sizing: border-box;
     outline: none;
     background: transparent;
     border: none;
@@ -107,12 +110,14 @@
 .logSubmitContainer{
     display:flex;
     flex-direction: row;
-    gap: 2vw;
+    justify-content: space-around;
+	width: 100%;
+	gap: 5px;
 }
 
 .logSubmit{
     height: 6vh;
-    width: 12vw;
+    width: 100%;
     font-size: 1.4rem;
     background-image: linear-gradient(105deg, #d9bd62, #c49623);
     outline: none;
@@ -146,11 +151,11 @@ ul{
 .logContainerHeaderText{
 	font-size: 2.1rem;
 	font-weight: 500;
+	color: white;
 }
 
 .logContainerHeader{
 	padding-bottom: 10px;
-	border-bottom: 1px solid gray;
 	width: 100%;
 	text-align: center;
 }
@@ -233,19 +238,34 @@ ul{
 }
 
 .backButton{
-	display: flex;
-	align-self: flex-start;
-	text-decoration: none;
-	color: black;
-	width: max-content;
-	font-size: 1.2rem;
-	font-weight: 600;
-	gap: 7px;
-	transition: filter 0.2s ease-in-out;
-	border-radius: 0.4rem;
+    height: 6vh;
+    width: 100%;
+    font-size: 1.4rem;
+    outline: none;
+    border: 2px solid var(--primary-color);
+	box-sizing: border-box;
+    border-radius: 6px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    transition: filter 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.backButton:hover{
+    filter: brightness(0.9);
+    transform: scale(1.02);
 }
 
 .backButton svg{
 	height: 22px;
 	width: 26px;
+}
+
+.logDiv{
+	display: flex;
+	flex-direction: column;
 }
