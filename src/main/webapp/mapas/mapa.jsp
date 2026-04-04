@@ -43,7 +43,7 @@
         }).addTo(map);
         
         function adaptarCoordenada(coord){
-        	return coord + (Math.random() - 0.5)*1.5;
+        	return coord + (Math.random() - 0.5)*0.3;
         }
 
         <% if (bestias != null) {
