@@ -12,14 +12,15 @@
 }
 
 h2{
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     margin-bottom: 15px;
+    text-align: left;
 }
 
 h1 {
 	font-size: 2.2rem;
 	margin-bottom: 25px;
-	text-align: left;
+	text-align: center;
 	padding-bottom: 0.2rem;
 	border-bottom: 1px solid gray;
 }
