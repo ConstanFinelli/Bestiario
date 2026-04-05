@@ -3,14 +3,16 @@
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="entities.Habitat" %>
 <%@ page import="java.util.LinkedList" %>
-<!DOCTYPE html>
 <%
 	LinkedList<Habitat> habitats = (LinkedList<Habitat>) request.getAttribute("habitats");	
-	if(habitats == null ){
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_HABITATS("") + "?flag=admin");
-		rd.forward(request, response);
-	}
+	if(habitats == null ){%>
+		<script>
+        window.location.href = "<%= HttpRoutes.LISTAR_HABITATS(request.getContextPath()) %>?flag=admin";
+    </script>
+	<%}
 %>
+
+<!DOCTYPE html>
 <h2>Gestionar habitats</h2>
 <main class="adminForms">
 <section class="formAdmin">
@@ -48,10 +50,17 @@
 			<input type="text" id="nombre" name="nombre" class="inputForm" placeholder="Ingresar nombre de el habitat..." required/>
 			<label for="localizacion" class="inputLabel">Localización</label>
 			<input type="text" id="localizacion" name="localizacion" class="inputForm" placeholder="Ingresar localización de el habitat..." required>
-			<label for="latitud" class="inputLabel">Datos Geograficos</label>
+			<div style=display: flex; align-items: center;>
+			<label for="latitudCreate" class="inputLabel">Datos Geograficos</label>
+			<button type="button" onClick="abrirMapa('latitudCreate', 'longitudCreate')">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="imgButtonModal">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+</svg>
+			</button>
+			</div>
 			<div class="datosGeograficos">
-			<input type="text" id="latitud" name="latitud" class="inputForm" placeholder="Ingrese la latitud."/>
-			<input type="text" id="longitud" name="longitud" class="inputForm" placeholder="Ingrese la longitud."/>
+			<input type="text" id="latitudCreate" name="latitud" class="inputForm" placeholder="Ingrese la latitud."/>
+			<input type="text" id="longitudCreate" name="longitud" class="inputForm" placeholder="Ingrese la longitud."/>
 			</div>
 			<button type="submit" class="submitButton">Crear</button>
 </form>
@@ -75,12 +84,68 @@
 			<input type="text" id="nombre" name="nombre" class="inputForm" placeholder="Ingresar nombre de el habitat..." required/>
 			<label for="localizacion" class="inputLabel">Localización</label>
 			<input type="text" id="localizacion" name="localizacion" class="inputForm" placeholder="Ingresar localización de el habitat..." required>
+			<div style=display: flex; align-items: center;>
 			<label for="latitudUpdate" class="inputLabel">Datos Geograficos</label>
+			<button type="button" onClick="abrirMapa('latitudUpdate', 'longitudUpdate')">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="imgButtonModal">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+</svg>
+			</button>
+			</div>
 			<div class="datosGeograficos">
 			<input type="text" id="latitudUpdate" name="latitud" class="inputForm" placeholder="Ingrese la latitud."/>
-			<input type="text" id="longitud" name="longitud" class="inputForm" placeholder="Ingrese la longitud."/>
+			<input type="text" id="longitudUpdate" name="longitud" class="inputForm" placeholder="Ingrese la longitud."/>
 			</div>	
 			<button type="submit" class="submitButton">Actualizar</button>
 </form>
 </div>
+<script>
+let campoLatDestino = '';
+let campoLngDestino = '';
+
+function abrirMapa(idLat, idLng) {
+    campoLatDestino = idLat;
+    campoLngDestino = idLng;
+    document.getElementById('mapModal').style.display = 'flex';
+}
+
+function cerrarMapa() {
+    document.getElementById('mapModal').style.display = 'none';
+}
+
+function obtenerDatosDelIframe() {
+   
+    const iframe = document.getElementById('iframeMapa');
+    const iframeWindow = iframe.contentWindow;
+    
+  
+    const latCalculada = iframeWindow.document.getElementById('latitud').innerText;
+    const lngCalculada = iframeWindow.document.getElementById('longitud').innerText;
+
+    if (latCalculada !== "--") {
+        document.getElementById(campoLatDestino).value = latCalculada;
+        document.getElementById(campoLngDestino).value = lngCalculada;
+        
+        cerrarMapa();
+    } else {
+        alert("Por favor, selecciona un punto en el mapa primero.");
+    }
+}
+</script>
+
+<div id="mapModal" class="modalMapa">
+	<div class="modalContainer">
+	 <div class="modalHeader">
+            <span class="closeModal" onclick="cerrarMapa()">&times;</span>
+        </div>
+        
+        <iframe id="iframeMapa" class="iframeMapa" src="<%= HttpRoutes.MAPA_CARGA_HABITAT_JSP(request.getContextPath()) %>">
+        </iframe>
+        
+        <div class="modalFooter">
+        	<button type="button" class="submitButton" onClick="obtenerDatosDelIframe()">Confirmar Ubicacion</button>
+        </div>
+	</div>
+</div>
+
 </main>

@@ -37,6 +37,10 @@ body {
   filter: none !important;
 }
 
+.leaflet-marker-icon{
+	filter: brightness(0.9) sepia(1) saturate(5) hue-rotate(10deg);
+}
+
 .leaflet-container {
   background: #f3e5ab !important;
 }

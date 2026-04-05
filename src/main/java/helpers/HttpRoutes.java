@@ -320,6 +320,10 @@ public final class HttpRoutes {
 		return base + "/mapas/bestias";
 	}
 	
+	public static String MAPA_CARGA_HABITAT_JSP(String base) {
+		return base + "/mapas/mapaCargaHabitat.jsp";
+	}
+	
 	// Admin
 	public static String ADMIN_DASHBOARD_JSP(String base) {
 		return base + "/admin/adminDashboard.jsp";
