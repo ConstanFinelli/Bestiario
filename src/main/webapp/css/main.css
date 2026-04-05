@@ -40,22 +40,24 @@ footer {
 }
 
 .notFound {
-    color: #b91c1c;
-    font-size: 2.2rem;
-    font-weight: 600;
+    color: #92400e;
+    font-size: 1.8rem;
+    font-weight: 500;
     padding: 1.5rem;
-    background-color: #fef2f2;
-    border: 2px solid #fecaca;
+    background-color: #fffbeb;
+    border: 1px solid #fde68a;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .notFound::before {
     content: "⚠️";
     font-size: 2rem;
+    filter: sepia(1) saturate(5);
 }
 
 h1, h2, h3, h4 {
@@ -66,12 +68,12 @@ h1, h2, h3, h4 {
 
 .btnAgregar{
 	padding: 0.75rem 1.75rem;
-    border: 4px dashed var(--primary-color);
+    border: 2px solid var(--primary-color);
     border-radius: 20px;
     background: rgba(245, 245, 66,0.075);
-    color: var(--primary-color);
+    color: var(--font-color);
+	font-weight: 600;
     font-size: 1.2rem;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -79,6 +81,7 @@ h1, h2, h3, h4 {
 
 .btnAgregar:hover{
 	transform: scale(1.01);
+	filter: brightness(1.2);
 }
 
 .mapaButton:hover{

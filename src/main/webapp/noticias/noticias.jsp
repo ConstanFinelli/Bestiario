@@ -21,6 +21,11 @@
         <%@ include file="../components/navbar.jsp" %>
         <section class="mainContent">
 			<h2>NOTICIAS</h2>
+			<% if(noticias.isEmpty()){ %>
+				<div class="notFound">
+					No hay noticias cargadas por el momento.
+				</div>
+			<%} %>
 		<%
 		if (usuario != null) {
 			if (usuario.getEstado().equals("investigador")) {

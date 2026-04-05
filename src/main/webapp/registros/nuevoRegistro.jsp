@@ -99,7 +99,7 @@
 							<%}else{ 
                     				for(Categoria cat:bestia.getCategorias()){
                     			%>
-							<li><spam><%= cat.getNombre() %></span>
+							<li><span><%= cat.getNombre() %></span>
 							</li>
 							<%}} %>
 						</ul>
@@ -157,107 +157,104 @@
 				</section>
 				<button type="submit" class="btnRegistro">Enviar registro</button>
 				</section>
-				            <script> // javascript para agregar evidencias
-	            let evidenciaCounter = 0;
-				const MAX_EVIDENCIAS = 6;
-
-	            const btnAgregar = document.getElementById('agregar');
-	            const contenedor = document.getElementById('contenedorEvidencias');
-	
-	            btnAgregar.addEventListener('click', function() {
-	                agregarNuevaEvidencia();
-	            });
-	
-	            function agregarNuevaEvidencia() {
-	            	if(evidenciaCounter >= MAX_EVIDENCIAS){
-	            		alert('¡No se pueden agregar mas de' + MAX_EVIDENCIAS + 'evidencias en simultáneo!');
-	            		return;
-	            	}
-	            	
-	            	const formId = 'form-' + evidenciaCounter;
-	               
-	                const newArticle = document.createElement('article');
-	                newArticle.classList.add('evidenciaForm'); 
-	                newArticle.id = formId;
-	                
-	                const deleteButton = document.createElement('span');
-	                deleteButton.textContent = 'x';
-	                deleteButton.addEventListener('click', function () {
-	                	document.getElementById(formId).remove();
-		            	evidenciaCounter--;
-	                });
-	                deleteButton.classList.add('deleteButton'); 
-	
-	                const newH2 = document.createElement('h2');
-	                newH2.textContent = 'Nueva evidencia'; 
-	
-	                const fechaId = 'fechaObtencion-' + evidenciaCounter;
-	                
-	                const labelFecha = document.createElement('label');
-	                labelFecha.setAttribute('for', fechaId); 
-	                labelFecha.textContent = 'Fecha de obtención';
-	                
-	                const inputFecha = document.createElement('input');
-	                inputFecha.type = 'date';
-	                inputFecha.id = fechaId;
-	                inputFecha.name = 'fechaObtencion'; 
-	                inputFecha.required = true;
-	
-	                const tipoId = 'tipo-' + evidenciaCounter;
-	                
-	                const labelTipo = document.createElement('label');
-	                labelTipo.setAttribute('for', tipoId);
-	                labelTipo.textContent = 'Tipo';
-	
-	                const inputTipo = document.createElement('select');
-	                inputTipo.id = tipoId;
-	                inputTipo.name = 'tipo';
-	                inputTipo.required = true;
-	                <% if(tes != null){%>
-	                const tiposDeEvidencia = [
-	                    <% for(TipoEvidencia te : tes) { %>
-	                        { 
-	                          id: <%= te.getId() %>, 
-	                          descripcion: '<%= te.getDescripcion() %>'
-	                        },
-	                    <% } %>
-	                ];
-	                for (const te of tiposDeEvidencia) {
-				        const option = document.createElement('option');
-				        option.value = te.id;
-				        option.textContent = te.descripcion; 
-				        inputTipo.appendChild(option);
-			    	}
-	                <%}%>
-	                const archivoId = 'archivo-' + evidenciaCounter;
-	                
-	                const labelArchivo = document.createElement('label');
-	                labelArchivo.setAttribute('for', archivoId);
-	                labelArchivo.textContent = 'Archivo';
-	
-	                
-	              	newArticle.appendChild(deleteButton);
-	
-	              	const inputArchivo = document.createElement('input');
-	                inputArchivo.type = 'file';
-	                inputArchivo.id = archivoId;
-	                inputArchivo.name = 'archivo'; 
-	                inputArchivo.required = true;
-	
-	                newArticle.appendChild(newH2);
-	                newArticle.appendChild(labelFecha);
-	                newArticle.appendChild(inputFecha);
-	                newArticle.appendChild(labelTipo);
-	                newArticle.appendChild(inputTipo);
-	                newArticle.appendChild(labelArchivo);
-	                newArticle.appendChild(inputArchivo);
-	
-	                contenedor.appendChild(newArticle);
-
-	                evidenciaCounter++;
-	            }
-	            
-		    </script>
+				 <script>
+				    let idGlobal = 0; 
+				    let evidenciasActivas = 0;
+				    const MAX_EVIDENCIAS = 6;
+				
+				    const btnAgregar = document.getElementById('agregar');
+				    const contenedor = document.getElementById('contenedorEvidencias');
+				
+				    btnAgregar.addEventListener('click', function() {
+				        agregarNuevaEvidencia();
+				    });
+				
+				    function agregarNuevaEvidencia() {
+				        if(evidenciasActivas >= MAX_EVIDENCIAS){
+				            alert('¡No se pueden agregar más de ' + MAX_EVIDENCIAS + ' evidencias en simultáneo!');
+				            return;
+				        }
+				        
+				        const formId = 'form-' + idGlobal;
+				       
+				        const newArticle = document.createElement('article');
+				        newArticle.classList.add('evidenciaForm'); 
+				        newArticle.id = formId;
+				        
+				        const deleteButton = document.createElement('span');
+				        deleteButton.textContent = 'x';
+				        deleteButton.classList.add('deleteButton'); 
+				        
+			
+				        deleteButton.addEventListener('click', function () {
+				            newArticle.remove();
+				            evidenciasActivas--; 
+				        });
+				
+				        const newH2 = document.createElement('h2');
+				        newH2.textContent = 'Nueva evidencia'; 
+				
+				        const fechaId = 'fechaObtencion-' + idGlobal;
+				        const labelFecha = document.createElement('label');
+				        labelFecha.setAttribute('for', fechaId); 
+				        labelFecha.textContent = 'Fecha de obtención';
+				        
+				        const inputFecha = document.createElement('input');
+				        inputFecha.type = 'date';
+				        inputFecha.id = fechaId;
+				        inputFecha.name = 'fechaObtencion'; 
+				        inputFecha.required = true;
+				
+				        const tipoId = 'tipo-' + idGlobal;
+				        const labelTipo = document.createElement('label');
+				        labelTipo.setAttribute('for', tipoId);
+				        labelTipo.textContent = 'Tipo';
+				
+				        const inputTipo = document.createElement('select');
+				        inputTipo.id = tipoId;
+				        inputTipo.name = 'tipo';
+				        inputTipo.required = true;
+				
+				        <% if(tes != null){%>
+				        const tiposDeEvidencia = [
+				            <% for(TipoEvidencia te : tes) { %>
+				                { id: <%= te.getId() %>, descripcion: '<%= te.getDescripcion() %>' },
+				            <% } %>
+				        ];
+				        for (const te of tiposDeEvidencia) {
+				            const option = document.createElement('option');
+				            option.value = te.id;
+				            option.textContent = te.descripcion; 
+				            inputTipo.appendChild(option);
+				        }
+				        <%}%>
+				
+				        const archivoId = 'archivo-' + idGlobal;
+				        const labelArchivo = document.createElement('label');
+				        labelArchivo.setAttribute('for', archivoId);
+				        labelArchivo.textContent = 'Archivo';
+				
+				        const inputArchivo = document.createElement('input');
+				        inputArchivo.type = 'file';
+				        inputArchivo.id = archivoId;
+				        inputArchivo.name = 'archivo'; 
+				        inputArchivo.required = true;
+				
+				        newArticle.appendChild(deleteButton);
+				        newArticle.appendChild(newH2);
+				        newArticle.appendChild(labelFecha);
+				        newArticle.appendChild(inputFecha);
+				        newArticle.appendChild(labelTipo);
+				        newArticle.appendChild(inputTipo);
+				        newArticle.appendChild(labelArchivo);
+				        newArticle.appendChild(inputArchivo);
+				
+				        contenedor.appendChild(newArticle);
+				
+				        idGlobal++;
+				        evidenciasActivas++;
+				    }
+				</script>
          </form>
         <% } %>
         <%@ include file="../components/footer.jsp" %>
