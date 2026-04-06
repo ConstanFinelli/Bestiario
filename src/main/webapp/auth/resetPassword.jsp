@@ -10,44 +10,47 @@
 </head>
 
 <body class='logBody'>
+<div class="logDiv">
 
-<form class="logForm" action="<%=request.getContextPath()%>/reset-password" method="POST">
-
-    <header class="logContainerHeader">
+	<header class="logContainerHeader">
         <h1 class="logContainerHeaderText">Nueva contraseña</h1>
     </header>
-
-    <section class="logInputs">
-
-        <input type="hidden" name="token" value="${token}" />
-
-        <div class="logInput">
-            <input type="password" required placeholder=" " id="password" name="password" />
-            <label for="password">🔐 Nueva contraseña</label>
-        </div>
-		
-		<div class="logInput">
-		    <input type="password" required placeholder=" " id="confirmPassword" name="confirmPassword" />
-		    <label for="confirmPassword">🔐 Confirmar contraseña</label>
-		</div>
-		
-        <div class='otherMsgs'>
-            <span class='otherMsg'>Ingresa una nueva contraseña para tu cuenta</span>
-        </div>
-
-    </section>
-
-    <aside class="logSubmitContainer">
-        <input type="submit" class="logSubmit" value="Cambiar contraseña" />
-    </aside>
-
-    <div class='errorBox'>
-        <ul>
-            <li class="errorMsg">${logMsg}</li>
-        </ul>
-    </div>
-
-</form>
+    
+	<form class="logForm" action="<%=request.getContextPath()%>/reset-password" method="POST">
+	
+	    <section class="logInputs">
+	
+	        <input type="hidden" name="token" value="${token}" />
+	
+	        <div class="logInput">
+	            <input type="password" required placeholder=" " id="password" name="password" />
+	            <label for="password">🔐 Nueva contraseña</label>
+	        </div>
+			
+			<div class="logInput">
+			    <input type="password" required placeholder=" " id="confirmPassword" name="confirmPassword" />
+			    <label for="confirmPassword">🔐 Confirmar contraseña</label>
+			</div>
+			
+	        <div class='otherMsgs'>
+	            <span class='otherMsg'>Ingresa una nueva contraseña para tu cuenta</span>
+	        </div>
+	
+	    </section>
+	
+	    <aside class="logSubmitContainer">
+	        <input type="submit" class="logSubmit" value="Cambiar contraseña" />
+	    </aside>
+	
+	    <div class='errorBox'>
+	        <ul>
+	            <li class="errorMsg">${logMsg}</li>
+	        </ul>
+	    </div>
+	
+	</form>
+	
+</div>
 
 </body>
 </html>
