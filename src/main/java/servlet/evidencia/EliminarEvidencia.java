@@ -32,7 +32,7 @@ public class EliminarEvidencia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int idTipo = Integer.parseInt(request.getParameter("idTipoEvidencia"));
 		int nroEvidencia = Integer.parseInt(request.getParameter("nroEvidencia"));
-		Evidencia evidencia = controladorEvidencia.delete(new Evidencia(nroEvidencia, null, null, null, new TipoEvidencia(idTipo, null)));
+		Evidencia evidencia = controladorEvidencia.delete(new Evidencia(nroEvidencia, null, null, null, new TipoEvidencia(idTipo)));
 		request.setAttribute("deletedEvidencia", evidencia);
 	}
 

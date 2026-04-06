@@ -37,7 +37,7 @@ public class ObtenerEvidencia extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EVIDENCIA_FORM_JSP(""));
 		String idTipo = request.getParameter("IdTipo");
 		String nroEvidencia = request.getParameter("nroEvidencia");
-		TipoEvidencia t = new TipoEvidencia(Integer.parseInt(idTipo), null);
+		TipoEvidencia t = new TipoEvidencia(Integer.parseInt(idTipo));
 		t = controladorTipoEvidencia.getOne(t);
 		Evidencia e = new Evidencia(Integer.parseInt(nroEvidencia), null, null, null, t);
 		e = controladorEvidencia.getOne(e);

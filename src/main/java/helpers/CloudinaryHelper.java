@@ -70,10 +70,6 @@ public class CloudinaryHelper {
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
-	public static String getAudioEvidencia(String publicId) {
-		return getInstancia().url().resourceType("video").transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
-	}
-	
 	public static String getArchivoEvidencia(String publicId) {
 		return getInstancia().url().resourceType("raw").transformation(new Transformation<>().flags("attachment")).generate(publicId);
 	}

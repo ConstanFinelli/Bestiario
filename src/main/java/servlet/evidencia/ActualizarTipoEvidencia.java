@@ -28,8 +28,8 @@ public class ActualizarTipoEvidencia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String desc = request.getParameter("descripcion");
-		
-		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), desc);
+		String resourceType = request.getParameter("resourceType");
+		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), desc, resourceType);
 		tipo = controlador.update(tipo);
 		
 		String feedbackMessage = "";

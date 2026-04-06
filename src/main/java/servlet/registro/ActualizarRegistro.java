@@ -119,7 +119,7 @@ public class ActualizarRegistro extends HttpServlet {
 			    LocalDateTime fecha = fechaSinHora.atStartOfDay();
 			    String tipo = tipos[i];
 			    String archivo = archivos.get(i);
-			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
+			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo));
 			    te = controladorTipoEvidencia.getOne(te);
 			    String estadoRegistro = "pendiente";
 				if(usuario.getEstado().equals("investigador")) {

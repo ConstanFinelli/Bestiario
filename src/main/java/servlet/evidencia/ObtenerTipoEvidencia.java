@@ -36,7 +36,7 @@ public class ObtenerTipoEvidencia extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.TIPO_EVIDENCIA_FORM_JSP(""));
 		String id = request.getParameter("id");
-		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), null);
+		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id));
 		tipo = controlador.getOne(tipo);
 		request.setAttribute("gottenTipo", tipo);
 		rd.forward(request, response);

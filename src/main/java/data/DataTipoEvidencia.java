@@ -17,7 +17,8 @@ public class DataTipoEvidencia {
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("idTipoEvidencia");
 				String descripcion = rs.getString("descripcion");
-				tipoEncontrado = new TipoEvidencia(id, descripcion);
+				String resourceType = rs.getString("resourceType");
+				tipoEncontrado = new TipoEvidencia(id, descripcion, resourceType);
 			}
 		} catch(SQLException ex) {
 			System.out.println("Mensaje: " + ex.getMessage());
@@ -53,7 +54,8 @@ public class DataTipoEvidencia {
 				while(rs.next()) {
 					int id = rs.getInt("idTipoEvidencia");
 					String descripcion = rs.getString("descripcion");
-					tipoEncontrado = new TipoEvidencia(id, descripcion);
+					String resourceType = rs.getString("resourceType");
+					tipoEncontrado = new TipoEvidencia(id, descripcion, resourceType);
 					tipos.add(tipoEncontrado);
 				}
 			}
@@ -83,8 +85,9 @@ public class DataTipoEvidencia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into tipo_evidencia(descripcion) values (?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into tipo_evidencia(descripcion) values (?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, tipoS.getDescripcion());
+			pstmt.setString(2, tipoS.getResourceType());
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
@@ -116,7 +119,7 @@ public class DataTipoEvidencia {
 	public TipoEvidencia update(TipoEvidencia datos) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update tipo_evidencia set descripcion = ? where idTipoEvidencia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update tipo_evidencia set descripcion = ?, resourceType = ? where idTipoEvidencia = ?");
 			pstmt.setString(1, datos.getDescripcion());
 			pstmt.setInt(2, datos.getId());
 			int error = pstmt.executeUpdate();

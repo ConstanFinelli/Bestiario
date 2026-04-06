@@ -40,7 +40,7 @@ public class ListarEvidenciasTipo extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EVIDENCIA_FORM_JSP(""));
 		String idTipo = request.getParameter("idTipo");
-		TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(idTipo), null));
+		TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(idTipo)));
 		LinkedList<Evidencia> evidencias = null;
 		if(tipo != null) {
 			evidencias = controladorEvidencia.findAllType(tipo);
