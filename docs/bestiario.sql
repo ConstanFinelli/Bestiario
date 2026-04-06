@@ -1,4 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `bestiario` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `bestiario`;
+-- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bestiario
 -- ------------------------------------------------------
@@ -29,7 +31,7 @@ CREATE TABLE `bestia` (
   `estado` varchar(45) DEFAULT '`pendiente`',
   PRIMARY KEY (`idBestia`),
   UNIQUE KEY `idbestia_UNIQUE` (`idBestia`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +117,7 @@ CREATE TABLE `categoria` (
   `nombre` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idCategoria`),
   UNIQUE KEY `idCategoria_UNIQUE` (`idCategoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,7 +157,7 @@ CREATE TABLE `contenido_registro` (
   `resumen` text NOT NULL,
   PRIMARY KEY (`idContenido`),
   UNIQUE KEY `nro_registro_UNIQUE` (`idContenido`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +193,7 @@ CREATE TABLE `habitat` (
   `localizacion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idHabitat`),
   UNIQUE KEY `idhabitat_UNIQUE` (`idHabitat`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +212,7 @@ CREATE TABLE `noticia` (
   PRIMARY KEY (`idNoticia`),
   KEY `fk_noticia_usuario` (`idUsuario`),
   CONSTRAINT `fk_noticia_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,9 +250,10 @@ DROP TABLE IF EXISTS `tipo_evidencia`;
 CREATE TABLE `tipo_evidencia` (
   `idTipoEvidencia` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(255) NOT NULL,
+  `resourceType` varchar(45) NOT NULL,
   PRIMARY KEY (`idTipoEvidencia`),
   UNIQUE KEY `idTipoEvidencia_UNIQUE` (`idTipoEvidencia`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,12 +272,11 @@ CREATE TABLE `usuario` (
   `nombre` varchar(50) DEFAULT NULL,
   `apellido` varchar(45) DEFAULT NULL,
   `dni` varchar(45) DEFAULT NULL,
-  `recibirNotificaciones` tinyint NOT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `correo_UNIQUE` (`correo`),
   UNIQUE KEY `idUsuario_UNIQUE` (`idUsuario`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -286,4 +288,4 @@ CREATE TABLE `usuario` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-03  0:35:59
+-- Dump completed on 2026-04-06 16:28:19

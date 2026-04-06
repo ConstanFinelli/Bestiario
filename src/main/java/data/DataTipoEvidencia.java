@@ -85,7 +85,7 @@ public class DataTipoEvidencia {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into tipo_evidencia(descripcion) values (?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into tipo_evidencia(descripcion, resourceType) values (?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, tipoS.getDescripcion());
 			pstmt.setString(2, tipoS.getResourceType());
 			pstmt.executeUpdate();
