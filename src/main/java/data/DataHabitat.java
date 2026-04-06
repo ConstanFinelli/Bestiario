@@ -148,11 +148,12 @@ public class DataHabitat {
 	public Habitat update(Habitat ht) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE habitat SET nombre = ?, latitud = ?, longitud = ? WHERE idHabitat = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("UPDATE habitat SET nombre = ?, latitud = ?, longitud = ?, localizacion = ? WHERE idHabitat = ?");
 			pstmt.setString(1, ht.getNombre());
 			pstmt.setDouble(2, ht.getLatitud());
 			pstmt.setDouble(3, ht.getLongitud());
-			pstmt.setInt(4, ht.getId());
+			pstmt.setString(4, ht.getLocalizacion());
+			pstmt.setInt(5, ht.getId());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
 				ht = null;

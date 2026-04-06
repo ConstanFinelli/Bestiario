@@ -241,7 +241,6 @@ textarea{
 .evidenciaForm{
 	display:flex;
 	flex-direction: column;
-	width: fit-content;
 	gap: 7px;
 	background: rgba(121, 121, 85, 0.31);
 	border-radius: 12px;
