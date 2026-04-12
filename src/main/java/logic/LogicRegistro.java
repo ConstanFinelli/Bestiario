@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import data.DataRegistro;
 import entities.Registro;
+import helpers.CloudinaryHelper;
 import helpers.EnvHelper;
 import entities.Bestia;
 
@@ -23,6 +24,10 @@ public class LogicRegistro {
 	
 	public Registro getOne(Registro r) {
 		return rDao.getOne(r);
+	}
+	
+	public LinkedList<Registro> findAllByBestia(Bestia b){
+		return rDao.findAllByBestia(b);
 	}
 	
 	public LinkedList<Registro> findRegistrosPendientes(Bestia b) {
@@ -44,6 +49,15 @@ public class LogicRegistro {
 	
 	public Registro delete(Registro r) {
 		return rDao.delete(r);
+	}
+	
+	public void deleteImages(Bestia b) {
+		LinkedList<Registro> registros = findAllByBestia(b);
+		for(Registro registro: registros) {
+			if (registro.getMainPic() != EnvHelper.get("DEFAULT_PICTURE_ID")) {
+				CloudinaryHelper.delete(registro.getMainPic());
+			};
+		}
 	}
 	
 	public void updateEstado(Registro r) {

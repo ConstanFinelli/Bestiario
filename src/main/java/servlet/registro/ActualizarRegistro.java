@@ -83,8 +83,8 @@ public class ActualizarRegistro extends HttpServlet {
 		Part filePart = request.getPart("mainPic");
 		if(filePart != null && filePart.getSize() > 0 ) {
 			mainPic = CloudinaryHelper.upload(filePart);
-		}else if(controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()) != null){
-			mainPic = controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()).getMainPic();
+		}else {
+			mainPic = controladorRegistro.getImagen(new Bestia(Integer.parseInt(bestiaId)), LocalDateTime.now());
 		}
 		
 		

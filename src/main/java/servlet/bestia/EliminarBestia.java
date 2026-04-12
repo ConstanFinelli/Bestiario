@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
+import logic.LogicRegistro;
 
 import java.io.IOException;
 
@@ -18,6 +19,7 @@ import helpers.HttpRoutes;
 @WebServlet("/bestias/eliminar")
 public class EliminarBestia extends HttpServlet {
 	private LogicBestia controlador = new LogicBestia();
+	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -32,8 +34,10 @@ public class EliminarBestia extends HttpServlet {
 		String id = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(id));
 		bestia = controlador.delete(bestia);
+		controladorRegistro.deleteImages(bestia);
 		request.setAttribute("deletedBestia", bestia);
 		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));		
+		
 	}
 
 }
