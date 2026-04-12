@@ -497,7 +497,7 @@ public class DataBestia {
 	public void approve(Bestia b) {
 		PreparedStatement pstmt = null;
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update bestia set estado = aprobado where idBestia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update bestia set estado = 'aprobado' where idBestia = ?");
 			pstmt.setInt(1, b.getIdBestia());
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {

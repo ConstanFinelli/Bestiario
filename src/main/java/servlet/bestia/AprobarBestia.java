@@ -32,7 +32,7 @@ public class AprobarBestia extends HttpServlet {
 		String bestiaId = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(bestiaId));
 		controladorBestia.approve(bestia);
-		response.sendRedirect(HttpRoutes.BESTIA_LIST_JSP(request.getContextPath()));
+		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));
 	}
 
 }
