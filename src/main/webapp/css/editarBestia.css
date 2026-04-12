@@ -129,3 +129,35 @@ ul{
 .activeButton{
 	background: rgba(245, 245, 66,0.325);
 }
+
+.returnButton{
+	height: 6vh;
+	width: 12%;
+    font-size: 1.4rem;
+    outline: none;
+    border: 2px solid var(--primary-color);
+	box-sizing: border-box;
+    border-radius: 6px;
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+    transition: filter 0.3s ease-in-out;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+.returnButton svg{
+	height: 22px;
+	width: 26px;
+}
+
+.header{
+	display: flex;
+	align-items: center;
+}
+
+.header h1{
+	margin: auto;
+}
