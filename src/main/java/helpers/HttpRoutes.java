@@ -69,6 +69,10 @@ public final class HttpRoutes {
 		return base + "/bestias/actualizar";
 	}
 	
+	public static String APROBAR_BESTIA(String base) {
+		return base  + "/bestias/aprobar";
+	}
+	
 	public static String ELIMINAR_BESTIA(String base) {
 		return base + "/bestias/eliminar";
 	}

@@ -67,4 +67,9 @@ public class LogicBestia {
 			}
 			return besAnterior;
 }
+	
+	public void approve(Bestia b) {
+		bDao.approve(b);
+	}
+	
 	}
