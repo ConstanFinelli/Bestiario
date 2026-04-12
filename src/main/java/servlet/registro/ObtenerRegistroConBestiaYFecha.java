@@ -45,7 +45,7 @@ public class ObtenerRegistroConBestiaYFecha extends HttpServlet {
 		Registro registro = null;
 		
 		if(fecha != null) {
-			LocalDateTime fechaParseada = LocalDate.parse(fecha).atStartOfDay();
+			LocalDateTime fechaParseada = LocalDateTime.parse(fecha);
 			registro = controladorRegistro.getRegistroToShow(bestia, fechaParseada);
 		}else {
 			registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
