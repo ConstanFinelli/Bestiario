@@ -52,6 +52,7 @@ public class LogicBestia {
 	}
 	
 	public Bestia delete(Bestia b) {
+		deleteImages(b);
 		return bDao.delete(b);
 	}
 	

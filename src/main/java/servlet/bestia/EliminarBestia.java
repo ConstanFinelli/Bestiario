@@ -34,7 +34,6 @@ public class EliminarBestia extends HttpServlet {
 		String id = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(id));
 		bestia = controlador.delete(bestia);
-		controladorRegistro.deleteImages(bestia);
 		request.setAttribute("deletedBestia", bestia);
 		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));		
 		

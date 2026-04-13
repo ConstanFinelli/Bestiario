@@ -74,9 +74,9 @@ public class CloudinaryHelper {
 		return getInstancia().url().resourceType("raw").transformation(new Transformation<>().flags("attachment")).generate(publicId);
 	}
 	
-	public static void delete(String publicId) {
+	public static void deleteImage(String publicId) {
 	    try {
-	        getInstancia().uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "auto"));
+	        getInstancia().uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "image"));
 	    } catch (IOException e) {
 	        throw new RuntimeException("Error eliminando archivo", e);
 	    }
