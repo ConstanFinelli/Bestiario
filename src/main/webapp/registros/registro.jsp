@@ -75,10 +75,11 @@
                 	%>
                 	<li class="evidenciasItem">
                 		<a class="evidenciasLink" href="javascript:void(0)" 
-                		onclick="abrirModal('<%= switch(evidencia.getTipo().getDescripcion().trim().toLowerCase()){
+                		onclick="abrirModal('<%= switch(evidencia.getTipo().getResourceType()){
                 		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
-                		case "imagen" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
+                		case "image" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
                 		default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
+                		
                 		}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
                 	</li>
                 <%} %>
@@ -170,7 +171,7 @@
             		<h3>Cargar registro en determinada fecha</h3>
 				    <form action="<%=HttpRoutes.OBTENER_REGISTRO_BESTIA_CON_FECHA(request.getContextPath())%>" method="get" class="registrosForm">
 				        <input type="hidden" name="id" value="<%= bestia != null ? bestia.getIdBestia() : "" %>">
-				        <input type="date" id="fecha" name="fecha" required>
+				        <input type="datetime-local" id="fecha" name="fecha" required>
 				        <button type="submit" class="btnRegistro">Cargar registro</button>
 				    </form>
 				</div>

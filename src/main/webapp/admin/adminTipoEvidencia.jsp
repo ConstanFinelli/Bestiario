@@ -44,6 +44,8 @@
 			<h1>Crear tipo de evidencia</h1>
 			<label for="descripcion" class="inputLabel">Descripción</label>
 			<input type="text" id="descripcion" name="descripcion" class="inputForm" placeholder="Ingresar descripcion..." required/>
+			<label for="resourceType" class="inputLabel">Tipo de Recurso(Cloudinary)</label>
+			<input type="text" id="resourceTypeCreate" name="resourceType" class="inputForm" placeholder="Ingresar tipo de recurso"></input>
 			<button type="submit" class="submitButton">Crear</button>
 </form>
 <form class="formAdmin formActualizar" action="<%= HttpRoutes.ACTUALIZAR_TIPO_EVIDENCIA(request.getContextPath()) %>" method="POST">
@@ -64,6 +66,8 @@
 			</select>
 			<label for="descripcion" class="inputLabel">Descripción</label>
 			<input type="text" id="descripcion" name="descripcion" class="inputForm" placeholder="Ingresar descripcion..." required/>
+			<label for="resourceType" class="inputLabel">Tipo de Recurso(Cloudinary)</label>
+			<input type="text" id="resourceTypeUpdate" name="resourceType" class="inputForm" placeholder="Ingresar tipo de recurso"></input>
 			<button type="submit" class="submitButton">Actualizar</button>
 </form>
 </div>

@@ -110,11 +110,8 @@
 							<%
 							if (bestia.getEstado().equals("pendiente")) {
 							%>
-							<form action="<%= HttpRoutes.ACTUALIZAR_BESTIA(request.getContextPath()) %>" method="post" style="display: inline;">
+							<form action="<%= HttpRoutes.APROBAR_BESTIA(request.getContextPath()) %>" method="post" style="display: inline;">
 								<input type="hidden" name="id" value="<%=bestia.getIdBestia()%>">
-								<input type="hidden" name="nombre" value="<%=bestia.getNombre()%>"> 
-									<input type="hidden" name="peligrosidad" value="<%=bestia.getPeligrosidad()%>">
-								<input type="hidden" name="estado" value="aprobado">
 								<button type="submit" class="btnBestia">Aprobar Bestia</button>
 							</form>
 							<%

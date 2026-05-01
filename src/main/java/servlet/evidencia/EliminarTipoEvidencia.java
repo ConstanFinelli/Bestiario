@@ -32,7 +32,7 @@ public class EliminarTipoEvidencia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		
-		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id), null);
+		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id));
 		tipo = controlador.delete(tipo);
 		
 		String feedbackMessage = "";

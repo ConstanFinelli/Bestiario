@@ -31,10 +31,9 @@ public class CrearTipoEvidencia extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String desc = request.getParameter("descripcion");
-		TipoEvidencia tipo = new TipoEvidencia(0, null);
-		tipo.setDescripcion(desc);
+		String resourceType = request.getParameter("resourceType");
+		TipoEvidencia tipo = new TipoEvidencia(desc, resourceType);
 		tipo = controlador.save(tipo);
-			
 		String feedbackMessage = "";
 		if(tipo == null) {
 			feedbackMessage = "¡No se ha podido crear el tipo de evidencia!";

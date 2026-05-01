@@ -37,7 +37,7 @@ public class ActualizarEvidencia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(request.getParameter("idTipo")), null));
+		TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(request.getParameter("idTipo"))));
 		Part archivo = request.getPart("archivo");
 		String nroEvidencia = request.getParameter("nroEvidencia");
 		String fileId = CloudinaryHelper.upload(archivo);

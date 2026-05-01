@@ -83,8 +83,8 @@ public class ActualizarRegistro extends HttpServlet {
 		Part filePart = request.getPart("mainPic");
 		if(filePart != null && filePart.getSize() > 0 ) {
 			mainPic = CloudinaryHelper.upload(filePart);
-		}else if(controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()) != null){
-			mainPic = controladorRegistro.getRegistroToShow(new Bestia(Integer.parseInt(bestiaId), null, null, null), LocalDateTime.now()).getMainPic();
+		}else {
+			mainPic = controladorRegistro.getImagen(new Bestia(Integer.parseInt(bestiaId)), LocalDateTime.now());
 		}
 		
 		
@@ -119,7 +119,7 @@ public class ActualizarRegistro extends HttpServlet {
 			    LocalDateTime fecha = fechaSinHora.atStartOfDay();
 			    String tipo = tipos[i];
 			    String archivo = archivos.get(i);
-			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo), null);
+			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo));
 			    te = controladorTipoEvidencia.getOne(te);
 			    String estadoRegistro = "pendiente";
 				if(usuario.getEstado().equals("investigador")) {

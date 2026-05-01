@@ -42,7 +42,7 @@ public class CrearEvidencia extends HttpServlet {
 		String fileId = CloudinaryHelper.upload(archivo);
 		String estado = request.getParameter("estado");
 		String idTipoEvidencia = request.getParameter("idTipoEvidencia");
-		TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(idTipoEvidencia), null)); 
+		TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(idTipoEvidencia))); 
 		LocalDateTime fechaO = LocalDateTime.parse(request.getParameter("fechaObtencion"));
 		Evidencia evidencia = controladorEvidencia.save(new Evidencia(0, fechaO, estado, fileId, tipo)); 
 		request.setAttribute("createdEvidencia", evidencia);

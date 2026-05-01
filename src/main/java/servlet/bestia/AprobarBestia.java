@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
-import logic.LogicRegistro;
 
 import java.io.IOException;
 
@@ -14,29 +13,26 @@ import entities.Bestia;
 import helpers.HttpRoutes;
 
 /**
- * Servlet implementation class EliminarBestia
+ * Servlet implementation class AprobarBestia
  */
-@WebServlet("/bestias/eliminar")
-public class EliminarBestia extends HttpServlet {
-	private LogicBestia controlador = new LogicBestia();
-	private LogicRegistro controladorRegistro = new LogicRegistro();
+@WebServlet("/bestias/aprobar")
+public class AprobarBestia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private LogicBestia controladorBestia = new LogicBestia();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EliminarBestia() {
+    public AprobarBestia() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		Bestia bestia = new Bestia(Integer.parseInt(id));
-		bestia = controlador.delete(bestia);
-		request.setAttribute("deletedBestia", bestia);
-		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));		
-		
+		String bestiaId = request.getParameter("id");
+		Bestia bestia = new Bestia(Integer.parseInt(bestiaId));
+		controladorBestia.approve(bestia);
+		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));
 	}
 
 }

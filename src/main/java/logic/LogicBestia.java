@@ -9,6 +9,7 @@ import entities.Habitat;
 
 public class LogicBestia {
 	public DataBestia bDao = new DataBestia();
+	public LogicRegistro controladorRegistro = new LogicRegistro();
 	
 	public Bestia getOne(Bestia b) {
 		return bDao.getOne(b);
@@ -51,7 +52,12 @@ public class LogicBestia {
 	}
 	
 	public Bestia delete(Bestia b) {
+		deleteImages(b);
 		return bDao.delete(b);
+	}
+	
+	public void deleteImages(Bestia b) {
+		controladorRegistro.deleteImages(b);
 	}
 	
 	public Bestia update(Bestia besActualizada) {
@@ -67,4 +73,9 @@ public class LogicBestia {
 			}
 			return besAnterior;
 }
+	
+	public void approve(Bestia b) {
+		bDao.approve(b);
+	}
+	
 	}
