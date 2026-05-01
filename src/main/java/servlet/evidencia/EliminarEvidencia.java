@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import entities.Evidencia;
 import entities.TipoEvidencia;
+import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class EliminarEvidencia
@@ -30,10 +31,13 @@ public class EliminarEvidencia extends HttpServlet {
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		int idTipo = Integer.parseInt(request.getParameter("idTipoEvidencia"));
 		int nroEvidencia = Integer.parseInt(request.getParameter("nroEvidencia"));
+		String idBestia = request.getParameter("idBestia");
 		Evidencia evidencia = controladorEvidencia.delete(new Evidencia(nroEvidencia, null, null, null, new TipoEvidencia(idTipo)));
 		request.setAttribute("deletedEvidencia", evidencia);
+		request.getRequestDispatcher(HttpRoutes.OBTENER_REGISTRO_BESTIA("") + "?id="+idBestia).forward(request, response);
 	}
 
 }

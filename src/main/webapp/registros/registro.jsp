@@ -81,6 +81,17 @@
                 		default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
                 		
                 		}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
+                		<%if(usuario != null){
+                			if(usuario.getEstado().equals("investigador")){
+                			%>
+                			<form action="<%= HttpRoutes.ELIMINAR_EVIDENCIA(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Deasea eliminar la evidencia?');">
+			                    <input type="hidden" name="nroEvidencia" value="<%= evidencia.getNroEvidencia() %>">
+			                    <input type="hidden" name="idTipoEvidencia" value="<%= evidencia.getTipo().getId() %>">
+			                    <input type="hidden" name="idBestia" value="<%= bestia.getIdBestia() %>">
+			                    <button type="submit" class="evDelete">Eliminar</button>
+			                </form>
+                		<%	} 
+                		}%>
                 	</li>
                 <%} %>
                 </ul>

@@ -94,6 +94,8 @@ h1 {
     border-radius: 12px;
     transition: transform 0.2s ease;
     cursor: default;
+    display: flex;
+    justify-content: space-between;
 }
 
 .evidenciasItem:hover {
@@ -307,6 +309,23 @@ textarea{
 
 .deleteButton:hover{
 	cursor: pointer;
+}
+
+.evDelete{
+	display: flex;
+	justify-content: right;
+	font-size: 1rem;
+	color: white;
+	background-color: rgb(219, 53, 53);
+	padding: 0px 10px;
+	border-radius: 5px;
+	border: none;
+	text-transform: uppercase;
+}
+
+.evDelete:hover{
+	cursor: pointer;
+	filter: brightness(0.9);
 }
 
 .modal-container {
