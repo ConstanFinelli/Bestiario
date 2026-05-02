@@ -22,6 +22,15 @@ public class Investigador extends Usuario{
 		this.apellido = apellido;
 		this.dni = dni;
 	}
+	
+	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni, String state, Boolean recibirNotificaciones) {
+		super(id, correo, contraseña, state, recibirNotificaciones);
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+		
+	}
+	
 	public Investigador(String correo, String contraseña, String nombre, String apellido, String dni) {
 		super(correo, contraseña, "investigador");
 		this.nombre = nombre;

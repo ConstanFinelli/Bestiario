@@ -35,12 +35,12 @@ public class CrearSolicitud extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();
 		Lector user = (Lector) sesion.getAttribute("user");
-		System.out.println(user.getContraseña());
 		String nombre = request.getParameter("nombre");
 		String apellido = request.getParameter("apellido");
 		String dni = request.getParameter("dni");
 		
-		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), LogicUsuario.dehashPassword(user.getContraseña()), nombre, apellido, dni, "solicitante");
+		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), LogicUsuario.dehashPassword(user.getContraseña()), nombre, apellido, dni, "solicitante", user.getRecibirNotificaciones());
+		System.out.println(solicitud);
 		if(controladorUsuario.update(solicitud) != null) {
 			user.setEstado("solicitante");
 			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
