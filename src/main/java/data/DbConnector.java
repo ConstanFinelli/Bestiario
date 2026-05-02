@@ -1,17 +1,18 @@
 package data;
 
 import java.sql.*;
+import helpers.EnvHelper;
 
 public class DbConnector {
 
     private static DbConnector instancia;
 
-    private String driver="com.mysql.cj.jdbc.Driver";
-    private String host="localhost";
-    private String port="3306";
-    private String user="bestiario";
-    private String password="1234";
-    private String db="bestiario";
+    private String driver=EnvHelper.get("DB_DRIVER");
+    private String host=EnvHelper.get("DB_HOST");
+    private String port=EnvHelper.get("DB_PORT");
+    private String user=EnvHelper.get("DB_USER");
+    private String password=EnvHelper.get("DB_PASSWORD");
+    private String db=EnvHelper.get("DB_NAME");
     private int conectados=0;
     private Connection conn=null;
 
