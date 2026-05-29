@@ -23,14 +23,17 @@ public class DataUsuario {
 				String correo = rs.getString("correo");
 				String contraseña = rs.getString("contraseña");
 				String estado = rs.getString("estado");
+				Boolean recibirNotificaciones = rs.getBoolean("recibirNotificaciones");
 				if("lector".equals(estado)) {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
 					usuarioEncontrado = new Lector(id, correo, contraseña, fechaNacimiento);
+					usuarioEncontrado.setRecibirNotificaciones(recibirNotificaciones);
 				}else {
 					String dni = rs.getString("dni");
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					usuarioEncontrado = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+					usuarioEncontrado.setRecibirNotificaciones(recibirNotificaciones);
 				}
 			}
 		}catch(SQLException ex) {
@@ -251,14 +254,17 @@ public class DataUsuario {
 				int id = rs.getInt("idUsuario");
 				String contraseña = rs.getString("contraseña");
 				String estado = rs.getString("estado");
+				boolean recibirNotificaciones = rs.getBoolean("recibirNotificaciones");
 				if(estado.equals("investigador")) {
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String dni = rs.getString("dni");
 					us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+					us.setRecibirNotificaciones(recibirNotificaciones);
 				}else {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
 					us = new Lector(id, correo, contraseña, fechaNacimiento, estado);
+					us.setRecibirNotificaciones(recibirNotificaciones);
 				}
 			}
 		}catch(SQLException ex) {
