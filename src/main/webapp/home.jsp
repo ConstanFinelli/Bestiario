@@ -47,11 +47,6 @@
 			</section>
 			<aside class="newsContent">
 				<h2>Últimas noticias</h2>
-				<% if(noticias.isEmpty()){ %>
-				<div class="notFound">
-					No hay noticias cargadas por el momento.
-				</div>
-				<%} %>
 				<div class="newsContainer">
 				<%if(noticias != null){ %>
 					<% for(Noticia noticia : noticias){%>
@@ -66,6 +61,9 @@
 									</p>
 								</div>
 							</article>
+					<%} %>
+					<% if(noticias.isEmpty()){ %>
+						<span class="nonContent">No hay noticias registradas por el momento.</span>
 					<%} %>
 				<%}else{ %>
 					<span class="nonContent">No hay noticias registradas.</span>

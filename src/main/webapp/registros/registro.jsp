@@ -161,7 +161,7 @@
         	<% if(registro != null){ %>
             	<% if(usuario != null){ %>
             	<form action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>?id=<%= bestia.getIdBestia() %>" method="post">
-	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" required>
+	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" maxlength="200" required>
 	            	<input type="hidden" name="nroRegistro" value=<%= registro.getNroRegistro() %>>
 	            	<input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">
 	            	<input type="hidden" name="idBestia" value="<%=bestia.getIdBestia()%>">

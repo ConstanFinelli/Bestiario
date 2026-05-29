@@ -147,6 +147,12 @@ ul{
 	border-radius: 12px;
 	padding: 1vh 2vw;
 	box-shadow: 0 5px 20px rgba(7, 35, 60, 0.317);
+	transition: transform 0.2s ease;
+}
+
+.comentario:hover{
+	transform: translateX(15px) scale(1.01);
+	filter: brightness(0.9);
 }
 
 .comentarioDatos{
