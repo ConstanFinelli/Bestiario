@@ -47,7 +47,7 @@ public class BackgroundJobListener implements ServletContextListener {
                 System.out.println("⏳ Iniciando envío de resumen diario...");
                 enviarResumenAdministradores();
             } catch (Exception e) {
-                e.printStackTrace();
+                
             }
         } ,delayInicial, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS); //, delayInicial, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
     }

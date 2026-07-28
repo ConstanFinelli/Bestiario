@@ -2,11 +2,14 @@ package data;
 
 import java.sql.*;
 import helpers.EnvHelper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DbConnector {
 
     private static DbConnector instancia;
-
+    private static final Logger logger = Logger.getLogger(DbConnector.class.getName());
+    
     private String driver=EnvHelper.get("DB_DRIVER");
     private String host=EnvHelper.get("DB_HOST");
     private String port=EnvHelper.get("DB_PORT");
@@ -20,7 +23,7 @@ public class DbConnector {
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        	logger.log(Level.SEVERE, "Error crítico al instanciar el DbConnector", e);
         }
     }
 
@@ -38,8 +41,8 @@ public class DbConnector {
                 conectados=0;
             }
         } catch (SQLException e) {
-        	System.out.println("jdbc:mysql://"+host+":"+port+"/"+db + user + password);
-            e.printStackTrace();
+        	logger.log(Level.SEVERE, "Error crítico al conectar a la base de datos", e);
+        	throw new RuntimeException("No se pudo establecer conexión con la base de datos", e);
         }
         conectados++;
         return conn;
@@ -52,7 +55,7 @@ public class DbConnector {
                 conn.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+        	logger.log(Level.SEVERE, "Error crítico al liberar la conexión a la base de datos", e);
         }
     }
 

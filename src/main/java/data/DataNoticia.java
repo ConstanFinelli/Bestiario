@@ -7,10 +7,13 @@ import entities.Usuario;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataNoticia {
 	
 	public DataUsuario userDAO = new DataUsuario();
+	private static final Logger logger = Logger.getLogger(DataNoticia.class.getName());
 	
 	public Noticia getOne(Noticia noticia) {
 		PreparedStatement pstmt = null;
@@ -33,7 +36,9 @@ public class DataNoticia {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		} finally {
+		} catch(RuntimeException e) {
+        	logger.log(Level.SEVERE, "Error crítico al consultar DbConnector: ", e);
+        }finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -75,7 +80,9 @@ public class DataNoticia {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		}catch(RuntimeException e) {
+        	logger.log(Level.SEVERE, "Error crítico al consultar DbConnector: ", e);
+        }finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -117,7 +124,11 @@ public class DataNoticia {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		}
+        catch(RuntimeException e) {
+        	logger.log(Level.SEVERE, "Error crítico al consultar DbConnector: ", e);
+        }
+        finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -156,7 +167,9 @@ public class DataNoticia {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
             noticia = null; //previsorio para caso que no encuentre un inv con idUsuario 
-		} finally {
+		} catch(RuntimeException e) {
+        	logger.log(Level.SEVERE, "Error crítico al consultar DbConnector: ", e);
+        }finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -190,7 +203,9 @@ public class DataNoticia {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
             noticiaNueva = null; //previsorio para caso que no encuentre un inv con idUsuario 
-		} finally {
+		} catch(RuntimeException e) {
+        	logger.log(Level.SEVERE, "Error crítico al consultar DbConnector: ", e);
+        }finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
@@ -215,7 +230,9 @@ public class DataNoticia {
 			System.out.println("Mensaje: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		} finally {
+		} catch(RuntimeException e) {
+        	logger.log(Level.SEVERE, "Error crítico al consultar DbConnector: ", e);
+        }finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();

@@ -51,7 +51,6 @@ public class LogicEmail {
 
         } catch (MessagingException e) {
             System.out.println("❌ Error enviando email");
-            e.printStackTrace();
         }
     }
 
