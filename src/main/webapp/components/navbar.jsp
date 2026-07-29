@@ -1,6 +1,7 @@
 <%@ 
 page import="entities.Usuario, helpers.HttpRoutes"
 %>
+<%@ include file="error.jsp" %>
 <head>
  <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
