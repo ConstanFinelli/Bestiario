@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import logic.LogicBestia;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Usuario;
@@ -24,7 +26,7 @@ public class CrearBestia extends HttpServlet {
 	
 	// CONTROLADORES
 	private LogicBestia controlador = new LogicBestia();
-	
+	private static final Logger logger = Logger.getLogger(CrearBestia.class.getName());
 
     public CrearBestia() {
         super();
@@ -37,6 +39,7 @@ public class CrearBestia extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String peligrosidad= request.getParameter("peligrosidad");
 		Usuario usuario = (Usuario) session.getAttribute("user");
+		try {
 			if (nombre != null && peligrosidad != null) {
 				String estado = "pendiente";
 				if (usuario.getEstado().equals("investigador")) {
@@ -46,6 +49,10 @@ public class CrearBestia extends HttpServlet {
 				bestia = controlador.save(bestia);
 				request.setAttribute("foundBestia", bestia);
 			} 
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al crear bestia en el servlet CrearBestia", e);
+			request.setAttribute("errorGlobal", "No se ha podido crear la bestia. Por favor, intente mas tarde");
+		}
 		rd.forward(request, response);
 	}
 }

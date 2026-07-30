@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Bestia;
 import helpers.HttpRoutes;
@@ -19,6 +21,8 @@ import helpers.HttpRoutes;
 public class AprobarBestia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LogicBestia controladorBestia = new LogicBestia();
+	private static final Logger logger = Logger.getLogger(AprobarBestia.class.getName());
+
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -31,7 +35,12 @@ public class AprobarBestia extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String bestiaId = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(bestiaId));
-		controladorBestia.approve(bestia);
+		try {
+			controladorBestia.approve(bestia);
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al guardar categoria en la bestia en el servlet CambiarCategoria", e);
+			request.setAttribute("errorGlobal","No se ha podido guardar la categoria en la bestia seleccionada");
+		}
 		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));
 	}
 
