@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCategoria;
+import servlet.bestia.ActualizarBestia;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Categoria;
 import helpers.HttpRoutes;
@@ -19,6 +22,7 @@ import helpers.HttpRoutes;
 @WebServlet("/categorias/crear")
 public class CrearCategoria extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
+	private static final Logger logger = Logger.getLogger(CrearCategoria.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -32,10 +36,13 @@ public class CrearCategoria extends HttpServlet {
 		String feedbackMessage = "";
 		Categoria cat = new Categoria(0, name, desc);
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
-		cat = controlador.save(cat);
-		if(cat == null) {
-			feedbackMessage = "¡No se ha podido crear la categoría!";
-		}else {
+		try {
+			cat = controlador.save(cat);
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error crítico al crear una categoría en el servlet CrearCategoría", e);
+			request.setAttribute("errorGlobal", "No se ha podido crear la categoría. Por favor, intente mas tarde");
+		}
+		if(cat != null) {
 			feedbackMessage = "¡Categoría creada con éxito!";
 		}
 		request.setAttribute("feedbackMessage", feedbackMessage);

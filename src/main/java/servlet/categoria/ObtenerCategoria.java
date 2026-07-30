@@ -6,8 +6,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCategoria;
+import servlet.bestia.ActualizarBestia;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Categoria;
 import helpers.HttpRoutes;
@@ -18,6 +21,7 @@ import helpers.HttpRoutes;
 @WebServlet("/categorias/obtener")
 public class ObtenerCategoria extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
+	private static final Logger logger = Logger.getLogger(ActualizarBestia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -32,7 +36,12 @@ public class ObtenerCategoria extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		Categoria cat = new Categoria(Integer.parseInt(id),null, null);
-		cat = controlador.getOne(cat);
+		try {
+			cat = controlador.getOne(cat);
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error crítico al obtener una categoría en el servlet ObtenerCategoría", e);
+			request.setAttribute("errorGlobal", "No se ha podido obtener la categoría. Por favor, intente mas tarde");
+		}
 		request.setAttribute("foundCategoria", cat);
 		
 		request.getRequestDispatcher(HttpRoutes.CATEGORIA_FORM_JSP("")).forward(request, response);

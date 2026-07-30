@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCategoria;
+import servlet.bestia.ActualizarBestia;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Categoria;
 import helpers.HttpRoutes;
@@ -19,6 +22,7 @@ import helpers.HttpRoutes;
 @WebServlet("/categorias/eliminar")
 public class EliminarCategoria extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
+	private static final Logger logger = Logger.getLogger(EliminarCategoria.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -34,10 +38,13 @@ public class EliminarCategoria extends HttpServlet {
 		String feedbackMessage = "";
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 		Categoria cat = new Categoria(Integer.parseInt(id),null, null);
-		cat = controlador.delete(cat);
-		if(cat == null) {
-			feedbackMessage = "¡No se ha podido eliminar la categoría!";
-		}else {
+		try {
+			cat = controlador.delete(cat);
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error crítico al eliminar una categoría en el servlet EliminarCategoria", e);
+			request.setAttribute("errorGlobal", "No se ha podido eliminar la categoría. Por favor, intente mas tarde");
+		}
+		if(cat != null) {
 			feedbackMessage = "¡Categoría eliminada con éxito!";
 		}
 		request.setAttribute("feedbackMessage", feedbackMessage);

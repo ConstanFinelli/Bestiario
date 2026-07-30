@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicCategoria;
+import servlet.bestia.ActualizarBestia;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Categoria;
 import helpers.HttpRoutes;
@@ -19,6 +22,7 @@ import helpers.HttpRoutes;
 @WebServlet("/categorias/actualizar")
 public class ActualizarCategoria extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
+	private static final Logger logger = Logger.getLogger(ActualizarCategoria.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -37,10 +41,13 @@ public class ActualizarCategoria extends HttpServlet {
 		String desc = request.getParameter("descripcion");
 		String feedbackMessage = "";
 		Categoria cat = new Categoria(Integer.parseInt(id), name, desc);
-		cat = controlador.update(cat);
-		if(cat == null) {
-			feedbackMessage = "¡No se ha podido actualizar la categoría!";
-		}else {
+		try {
+			cat = controlador.update(cat);
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error crítico al actualizar la categoría en el servlet ActualizarCategoria", e);
+			request.setAttribute("errorGlobal", "No se ha podido actualizar la categoría. Por favor, intente mas tarde");
+		}
+		if(cat != null) {
 			feedbackMessage = "¡Categoría actualizada con éxito!";
 		}
 		request.setAttribute("feedbackMessage", feedbackMessage);
