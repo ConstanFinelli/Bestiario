@@ -8,18 +8,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import data.DataPasswordResetToken;
 import data.DataUsuario;
 import entities.PasswordResetToken;
 import entities.Usuario;
 import helpers.HttpRoutes;
 import logic.LogicEmail;
+import servlet.comentario.AgregarComentario;
 /**
  * Servlet implementation class SvForgotPassword
  */
 @WebServlet("/forgot-password")
 public class SvForgotPassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger.getLogger(SvForgotPassword.class.getName());
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,8 +47,6 @@ public class SvForgotPassword extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 String correo = request.getParameter("correo");
 		
-		System.out.println(correo);
-		
 		DataUsuario daoUsuario = new DataUsuario();
 		
 		Usuario usuario = daoUsuario.getByEmail(correo);
@@ -58,9 +61,16 @@ String correo = request.getParameter("correo");
 			resetToken.setExpiration(LocalDateTime.now().plusMinutes(30));
 			resetToken.setUsed(false);
 			
-			daoToken.deleteByUser(usuario.getIdUsuario());
+			try {
+				daoToken.deleteByUser(usuario.getIdUsuario());
+			}catch(Exception e) {
+				logger.log(Level.WARNING, "Error crítico al eliminar el token del usuario en el servlet SvForgotPassword", e);
+			}
+			try {
 			daoToken.save(resetToken);
-			
+			}catch(Exception e) {
+				logger.log(Level.WARNING, "Error crítico al agregar el token del usuario en el servlet SvForgotPassword", e);
+			}
 			String link = "http://localhost:8080/Bestiario/reset-password?token=" + token;
 			
 			LogicEmail logicEmail = new LogicEmail();
@@ -72,9 +82,9 @@ String correo = request.getParameter("correo");
 			            "Recuperar contraseña",
 			            "Haz clic aquí para cambiar tu contraseña:\n" + link
 			        );
-			    } catch (Exception e) {
-			        System.err.println("❌ Error en el hilo de envío de mail: " + e.getMessage());
-			    }
+			    } catch(Exception e) {
+					logger.log(Level.WARNING, "Error crítico en el hilo de envío de mail en el servlet SvForgotPassword", e);
+				}
 			}).start();
 			
 			request.getSession().setAttribute("successMsg", "Mail de recuperción enviado a: " + correo);

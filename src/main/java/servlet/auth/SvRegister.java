@@ -10,6 +10,11 @@ import logic.LogicUsuario;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import entities.Lector;
 import entities.Usuario;
 import helpers.HttpRoutes;
@@ -21,6 +26,7 @@ import helpers.HttpRoutes;
 public class SvRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public LogicUsuario logicUsuario = new LogicUsuario();
+	private static final Logger logger = Logger.getLogger(SvRegister.class.getName());
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -41,7 +47,14 @@ public class SvRegister extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("correo");
 		String logMessage = "";
-		Usuario user = logicUsuario.getByEmail(email);
+		List<String> errores = new ArrayList<>();
+		Usuario user = null;
+		try {
+			user = logicUsuario.getByEmail(email);
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet SvRegister", e);
+			errores.add("No se ha podido conseguir el usuario");
+		}
 		String fecha = request.getParameter("fechaNacimiento");
 		String password = request.getParameter("password");
 		String flag = request.getParameter("flag");
@@ -51,7 +64,7 @@ public class SvRegister extends HttpServlet {
 			fechaSinHora = LocalDate.parse(fecha);
 		}
 		if(user != null) {
-			logMessage = "Ya existe un usario registrado con ese email";
+			logMessage = "Ya existe un usuario registrado con ese email";
 		} else {
 				Lector userLector = new Lector(
 					email,
@@ -61,7 +74,12 @@ public class SvRegister extends HttpServlet {
 				
 				userLector.setRecibirNotificaciones(Boolean.parseBoolean(request.getParameter("recibirNotiticaciones")));
 				
-				logicUsuario.save(userLector);
+				try {
+					logicUsuario.save(userLector);
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al registrar usuario en el servlet SvRegister", e);
+					errores.add("No se ha podido registrar el usuario");
+				}
 			if(flag == null) {
 				request.getSession().setAttribute("successMsg", "Usuario creado con éxito");
 				response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	
@@ -76,6 +94,10 @@ public class SvRegister extends HttpServlet {
 			rd = request.getRequestDispatcher(HttpRoutes.REGISTER_JSP(""));
 		}
 		
+		if(!errores.isEmpty()) {
+			errores.add("Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", errores);
+		}
 		request.setAttribute("logMsg", logMessage);
 		rd.forward(request, response);
 	}
