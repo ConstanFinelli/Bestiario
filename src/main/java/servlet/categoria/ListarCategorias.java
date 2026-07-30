@@ -10,6 +10,8 @@ import logic.LogicCategoria;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Categoria;
 import helpers.HttpRoutes;
@@ -20,6 +22,7 @@ import helpers.HttpRoutes;
 @WebServlet("/categorias/listar")
 public class ListarCategorias extends HttpServlet {
 	private LogicCategoria controlador = new LogicCategoria();
+	private static final Logger logger = Logger.getLogger(ListarCategorias.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -35,15 +38,22 @@ public class ListarCategorias extends HttpServlet {
 		LinkedList<Categoria> categorias = new LinkedList<>();
 		String flag = request.getParameter("flag");
 		RequestDispatcher rd = null;
-		categorias = controlador.findAll();
-		request.setAttribute("foundCategorias", categorias);
 		
-		if("listaBestias".equals(flag)) {
+		try {
+			categorias = controlador.findAll();
+			if("listaBestias".equals(flag)) {
+				rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
+			}else {
+				rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
+			}
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error crítico al listar categorías en el servlet ListarCategorias", e);
+			request.setAttribute("errorGlobal", "No se han podido obtener las categorías");
 			rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
-		}else {
-			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
+			categorias = new LinkedList<>();
 		}
 		
+		request.setAttribute("foundCategorias", categorias);
 		rd.forward(request, response);
 	}
 	

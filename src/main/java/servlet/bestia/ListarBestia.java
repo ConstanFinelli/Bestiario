@@ -8,12 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
 import logic.LogicRegistro;
+import servlet.noticia.CrearNoticia;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Bestia;
 import helpers.CloudinaryHelper;
@@ -27,6 +30,7 @@ public class ListarBestia extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LogicBestia controladorBestia = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
+	private static final Logger logger = Logger.getLogger(ListarBestia.class.getName());
 	
     public ListarBestia() {
         super();
@@ -38,20 +42,26 @@ public class ListarBestia extends HttpServlet {
 		String filter = request.getParameter("filter");
 		LinkedList<Bestia> bestias = new LinkedList<>();
 		Map<Bestia, String> imagenes = new HashMap<Bestia, String>();
-		if(filter != null && !filter.isEmpty()) {
-			bestias = controladorBestia.findByCategoria(filter);
-		}else {
-			bestias = controladorBestia.findAll();
-		}
-		if (!bestias.isEmpty()) {
-			for(Bestia bestia: bestias) {
-				imagenes.put(bestia, CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
+		
+		try {
+			if(filter != null && !filter.isEmpty()) {
+				bestias = controladorBestia.findByCategoria(filter);
+			}else {
+				bestias = controladorBestia.findAll();
 			}
-			request.setAttribute("bestias", bestias);
-			request.setAttribute("imagenes", imagenes);
-		}
-		if(filter != null) {
-			request.setAttribute("searchedFilter", filter); 
+			if (!bestias.isEmpty()) {
+				for(Bestia bestia: bestias) {
+					imagenes.put(bestia, CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
+				}
+				request.setAttribute("bestias", bestias);
+				request.setAttribute("imagenes", imagenes);
+			}
+			if(filter != null) {
+				request.setAttribute("searchedFilter", filter); 
+			}
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error crítico al listar bestias en el servlet ListarBestia", e);
+			request.setAttribute("errorGlobal", "No se han podido recuperar las bestias");
 		}
 		rd.forward(request, response);
 	}
