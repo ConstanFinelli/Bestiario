@@ -61,7 +61,7 @@ public class ListarBestia extends HttpServlet {
 			}
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al listar bestias en el servlet ListarBestia", e);
-			request.setAttribute("errorGlobal", "No se han podido recuperar las bestias");
+			request.setAttribute("errorGlobal", "No se han podido recuperar las bestias. Por favor, intente mas tarde");
 		}
 		rd.forward(request, response);
 	}

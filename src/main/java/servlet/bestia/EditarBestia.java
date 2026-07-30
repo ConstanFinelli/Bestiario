@@ -14,7 +14,12 @@ import logic.LogicRegistro;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import java.util.List;
 
 import entities.Bestia;
 import entities.Categoria;
@@ -30,6 +35,7 @@ public class EditarBestia extends HttpServlet {
 	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private LogicCategoria controladorCategoria = new LogicCategoria();
 	private LogicHabitat controladorHabitat = new LogicHabitat();
+	private static final Logger logger = Logger.getLogger(EditarBestia.class.getName());
        
     public EditarBestia() {
         super();
@@ -37,16 +43,41 @@ public class EditarBestia extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
+		String imagen = null;
+		List<String> errores = new ArrayList<>();
+		
 		Bestia bestia = new Bestia(Integer.parseInt(id), null, null, null);
-		LinkedList<Habitat> habitats = controladorHabitat.findAll();
-		LinkedList<Categoria> categorias = controladorCategoria.findAll();
+		LinkedList<Habitat> habitats = null;
+		LinkedList<Categoria> categorias = null;
+		
+		try {
+			habitats = controladorHabitat.findAll();
+			categorias = controladorCategoria.findAll();
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al conseguir categorías y habitats en el servlet EditarBestia", e);
+			errores.add("No se han podido conseguir las habitats y categorías");
+		}
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
 		HttpSession session = request.getSession();
 		
-		bestia = controlador.getOne(bestia);
+		try {
+			bestia = controlador.getOne(bestia);
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al listar bestia editada en el servlet EditarBestia", e);
+			errores.add("No se ha podido listar la bestia editada");
+		}
 		
+		try {
+			imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al conseguir imagen de la bestia editada el servlet EditarBestia", e);
+			errores.add("No se ha podido conseguir la imagen de la bestia");
+		}
 		
-		String imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+		if(!errores.isEmpty()) {
+			errores.add("Por favor, intente mas tarde.");
+			request.setAttribute("errorGlobal", errores);
+		}
 		
 		session.setAttribute("categorias", categorias);
 		session.setAttribute("habitats", habitats);
@@ -62,15 +93,33 @@ public class EditarBestia extends HttpServlet {
 		String estado = "aprobado";
 		String action = request.getParameter("action");
 		Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
+		String imagen = "";
+		List<String> errores = new ArrayList<>();
 		RequestDispatcher rd = request.getRequestDispatcher("editarBestia.jsp");
 		HttpSession session = request.getSession();
 		
-		if("info".equals(action)) {
-			bestia = controlador.update(bestia);
-		}else {
-			bestia = controlador.getOne(bestia);
+		try {
+			if("info".equals(action)) {
+				bestia = controlador.update(bestia);
+			}else {
+				bestia = controlador.getOne(bestia);
+			}
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al editar bestia en el servlet EditarBestia", e);
+			errores.add("No se han podido editar la bestia seleccionada");
 		}
-		String imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+		
+		try {
+			imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al conseguir imagen de la bestia a editar el servlet EditarBestia", e);
+			errores.add("No se ha podido conseguir la imagen de la bestia");
+		}
+		
+		if(!errores.isEmpty()) {
+			errores.add("Por favor, intente mas tarde.");
+			request.setAttribute("errorGlobal", errores);
+		}
 		
 		session.setAttribute("imagen", imagen);
 		session.setAttribute("bestia", bestia);

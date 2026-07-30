@@ -47,7 +47,7 @@ public class CrearNoticia extends HttpServlet {
 			}
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al crear noticia en el servlet CrearNoticia", e);
-			request.setAttribute("errorGlobal", "No se ha podido crear la noticia");
+			request.setAttribute("errorGlobal", "No se ha podido crear la noticia. Por favor, intente mas tarde");
 		}finally {
 			response.sendRedirect(HttpRoutes.LISTAR_NOTICIAS(request.getContextPath()));
 		}

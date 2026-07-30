@@ -7,6 +7,10 @@
 <%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <%
+	Usuario user = (Usuario) session.getAttribute("user");
+	if(user == null){
+		response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+	}
 	Bestia bestia = (Bestia) session.getAttribute("bestia");
 	String imagen = (String) session.getAttribute("imagen");
 	LinkedList<Habitat> habitats = (LinkedList<Habitat>) session.getAttribute("habitats");
