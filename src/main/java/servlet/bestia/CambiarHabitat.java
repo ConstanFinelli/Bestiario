@@ -51,6 +51,7 @@ public class CambiarHabitat extends HttpServlet {
 		Habitat ht = null;
 		String idHabitat = request.getParameter("idHabitat");
 		try {
+			bestia = controlador.getOne(bestia);
 			ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat)));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener habitat en el servlet CambiarHabitat", e);
