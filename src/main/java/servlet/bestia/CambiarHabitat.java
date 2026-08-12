@@ -51,6 +51,7 @@ public class CambiarHabitat extends HttpServlet {
 		Habitat ht = null;
 		String idHabitat = request.getParameter("idHabitat");
 		try {
+			bestia = controlador.getOne(bestia);
 			ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat)));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener habitat en el servlet CambiarHabitat", e);
@@ -88,9 +89,7 @@ public class CambiarHabitat extends HttpServlet {
 			errores.add("Por favor, intente mas tarde");
 			request.setAttribute("errorGlobal", errores);
 		}
-		
 		request.getSession().setAttribute("bestia", bestia);
-		
 		request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP("")).forward(request, response);
 	}
 
