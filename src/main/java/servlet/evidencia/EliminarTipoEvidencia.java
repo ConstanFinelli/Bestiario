@@ -8,6 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicTipoEvidencia;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.TipoEvidencia;
 import helpers.HttpRoutes;
@@ -18,6 +22,7 @@ import helpers.HttpRoutes;
 @WebServlet("/evidencias/eliminarTipoEvidencia")
 public class EliminarTipoEvidencia extends HttpServlet {
 	private LogicTipoEvidencia controlador = new LogicTipoEvidencia();
+	private static final Logger logger = Logger.getLogger(EliminarTipoEvidencia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -30,19 +35,28 @@ public class EliminarTipoEvidencia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<String> errores = new ArrayList<>();
 		String id = request.getParameter("id");
-		
-		TipoEvidencia tipo = new TipoEvidencia(Integer.parseInt(id));
-		tipo = controlador.delete(tipo);
-		
-		String feedbackMessage = "";
-		if(tipo == null) {
-			feedbackMessage = "¡No se ha podido eliminar el tipo de evidencia!";
-		}else {
-			feedbackMessage = "¡Tipo de evidencia eliminada con éxito!";
+		TipoEvidencia tipo = null;
+		try {
+			tipo = new TipoEvidencia(Integer.parseInt(id));
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al parsear la id del tipo de Evidencia en el servlet EliminarTipoEvidencia", e);
+			errores.add("Id del Tipo de evidencia invalidad");
 		}
 		
-		request.setAttribute("feedbackMessage", feedbackMessage);
+		try {
+			tipo = controlador.delete(tipo);
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error eliminando el tipo de evidencia en el servlet EliminarTipoEvidencia", e);
+			errores.add("No se ha podido eliminar el Tipo de evidencia");
+		}
+		
+		if(!errores.isEmpty()) {
+			errores.add("Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", errores);
+		}
+		
 		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
 	}
 

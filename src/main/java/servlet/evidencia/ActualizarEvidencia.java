@@ -12,6 +12,10 @@ import logic.LogicTipoEvidencia;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Evidencia;
 import entities.TipoEvidencia;
@@ -26,6 +30,7 @@ import helpers.HttpRoutes;
 public class ActualizarEvidencia extends HttpServlet {
 	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
 	private LogicEvidencia controladorEvidencia = new LogicEvidencia();
+	private static final Logger logger = Logger.getLogger(ActualizarEvidencia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -37,11 +42,28 @@ public class ActualizarEvidencia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		TipoEvidencia tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(request.getParameter("idTipo"))));
+		List<String> errores = new ArrayList<>();
+		TipoEvidencia tipo = null;
+		Evidencia evidencia = null;
+		try {
+			tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(request.getParameter("idTipo"))));
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al obtener el tipo de evidencia en el servlet ActualizarEvidencia", e);
+			errores.add("No se ha podido conseguir el tipo de evidencia de la evidencia a actualizar");
+		}
 		Part archivo = request.getPart("archivo");
 		String nroEvidencia = request.getParameter("nroEvidencia");
 		String fileId = CloudinaryHelper.upload(archivo);
-		Evidencia evidencia = controladorEvidencia.update(new Evidencia(Integer.parseInt(nroEvidencia), LocalDateTime.parse(request.getParameter("fechaObtencion")), request.getParameter("estado"), fileId , tipo));
+		try {
+			evidencia = controladorEvidencia.update(new Evidencia(Integer.parseInt(nroEvidencia), LocalDateTime.parse(request.getParameter("fechaObtencion")), request.getParameter("estado"), fileId , tipo));
+			}catch(Exception e) {
+				logger.log(Level.WARNING, "Error al actualizar la evidencia en el servlet ActualizarEvidencia", e);
+				errores.add("No se ha podido actualizar la evidencia a actualizar");
+			}
+		if(!errores.isEmpty()) {
+			errores.add("Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", errores);
+		}
 		request.setAttribute("updatedEvidencia", evidencia);
 		request.getRequestDispatcher(HttpRoutes.EVIDENCIA_FORM_JSP("")).forward(request, response);
 	}

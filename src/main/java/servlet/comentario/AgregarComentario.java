@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
 import logic.LogicComentario;
 import logic.LogicUsuario;
-import servlet.categoria.EliminarCategoria;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

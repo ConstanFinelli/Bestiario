@@ -3,7 +3,6 @@
 <%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <%
- String feedbackMessage = (String) request.getAttribute("feedbackMessage");
 	Usuario user = (Usuario) session.getAttribute("user");
 	if(user == null){
 		response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
@@ -49,9 +48,6 @@
 			<a href="<%= HttpRoutes.ADMIN_DASHBOARD_JSP(request.getContextPath()) %>?crud=tiposEvidencia" class="dashboardLink" id="teLink">Tipos de evidencia</a>
 		</aside>
 		<main class="adminContent">
-			<% if(feedbackMessage != null){ %>
-				<span class="feedbackMessage"><%= feedbackMessage %></span>
-			<%} %>
 			<% String crud = request.getParameter("crud"); %>
 			<% if(crud == null){%>
 				<h2>Bienvenido al menú de Admin</h2>
