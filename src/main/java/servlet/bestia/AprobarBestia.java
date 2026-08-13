@@ -34,12 +34,20 @@ public class AprobarBestia extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String bestiaId = request.getParameter("id");
-		Bestia bestia = new Bestia(Integer.parseInt(bestiaId));
+		Bestia bestia = null;
 		try {
+			bestia = new Bestia(Integer.parseInt(bestiaId));
 			controladorBestia.approve(bestia);
+		}catch(NumberFormatException nfe) {
+			logger.log(Level.WARNING, "Error al parsea el id de la bestia en el servlet AprobarBestia", nfe);
+			request.setAttribute("errorGlobal","Id de bestia invalido");
+			request.getRequestDispatcher(HttpRoutes.LISTAR_BESTIAS("")).forward(request, response);
+			return;
 		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error al guardar categoria en la bestia en el servlet CambiarCategoria", e);
-			request.setAttribute("errorGlobal","No se ha podido guardar la categoria en la bestia seleccionada");
+			logger.log(Level.WARNING, "Error al aprobar la bestia en el servlet AprobarBestia", e);
+			request.setAttribute("errorGlobal","No se ha podido aprobar la bestia");
+			request.getRequestDispatcher(HttpRoutes.LISTAR_BESTIAS("")).forward(request, response);
+			return;
 		}
 		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));
 	}

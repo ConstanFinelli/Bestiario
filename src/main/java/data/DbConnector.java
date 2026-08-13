@@ -36,7 +36,7 @@ public class DbConnector {
 
     public Connection getConn() {
         try {
-            if(conn==null || conn.isClosed()) {
+            if(conn==null ||conn.isClosed() ||conn.isValid(10)) {
                 conn=DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+db, user, password);
                 conectados=0;
             }
