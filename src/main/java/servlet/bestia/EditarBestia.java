@@ -44,9 +44,18 @@ public class EditarBestia extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
 		String imagen = null;
-		List<String> errores = new ArrayList<>();
+		Bestia bestia = null;
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
+		HttpSession session = request.getSession();
+		try {
+			bestia = new Bestia(Integer.parseInt(id), null, null, null);
+		}catch(NumberFormatException nfe) {
+			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet ActualizarBestia");
+			request.setAttribute("errorGlobal","Id invalida");
+			rd.forward(request, response);
+			return;
+		}
 		
-		Bestia bestia = new Bestia(Integer.parseInt(id), null, null, null);
 		LinkedList<Habitat> habitats = null;
 		LinkedList<Categoria> categorias = null;
 		
@@ -55,74 +64,38 @@ public class EditarBestia extends HttpServlet {
 			categorias = controladorCategoria.findAll();
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir categorías y habitats en el servlet EditarBestia", e);
-			errores.add("No se han podido conseguir las habitats y categorías");
+			request.setAttribute("errorGlobal","No se han podido conseguir las habitats y categorías");
+			rd.forward(request, response);
+			return;
 		}
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
-		HttpSession session = request.getSession();
+		
 		
 		try {
 			bestia = controlador.getOne(bestia);
+			if(bestia == null) {
+			request.setAttribute("errorGlobal", "La bestia no ha sido encontrada");
+			rd.forward(request, response);
+			return;
+			}
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al listar bestia editada en el servlet EditarBestia", e);
-			errores.add("No se ha podido listar la bestia editada");
+			request.setAttribute("errorGlobal","Ha habido un error al listar la bestia");
+			rd.forward(request, response);
+			return;
 		}
 		
 		try {
 			imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir imagen de la bestia editada el servlet EditarBestia", e);
-			errores.add("No se ha podido conseguir la imagen de la bestia");
+			request.setAttribute("errorGlobal","No se ha podido conseguir la imagen de la bestia");
+			rd.forward(request, response);
+			return;
 		}
-		
-		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde.");
-			request.setAttribute("errorGlobal", errores);
-		}
-		
 		session.setAttribute("categorias", categorias);
 		session.setAttribute("habitats", habitats);
 		session.setAttribute("bestia", bestia);
 		session.setAttribute("imagen", imagen);
-		rd.forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		String nombre = request.getParameter("nombre");
-		String peligrosidad = request.getParameter("peligrosidad");
-		String estado = "aprobado";
-		String action = request.getParameter("action");
-		Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
-		String imagen = "";
-		List<String> errores = new ArrayList<>();
-		RequestDispatcher rd = request.getRequestDispatcher("editarBestia.jsp");
-		HttpSession session = request.getSession();
-		
-		try {
-			if("info".equals(action)) {
-				bestia = controlador.update(bestia);
-			}else {
-				bestia = controlador.getOne(bestia);
-			}
-		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error al editar bestia en el servlet EditarBestia", e);
-			errores.add("No se han podido editar la bestia seleccionada");
-		}
-		
-		try {
-			imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
-		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error al conseguir imagen de la bestia a editar el servlet EditarBestia", e);
-			errores.add("No se ha podido conseguir la imagen de la bestia");
-		}
-		
-		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde.");
-			request.setAttribute("errorGlobal", errores);
-		}
-		
-		session.setAttribute("imagen", imagen);
-		session.setAttribute("bestia", bestia);
 		rd.forward(request, response);
 	}
 	

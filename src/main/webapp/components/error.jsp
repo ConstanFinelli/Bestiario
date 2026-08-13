@@ -25,7 +25,7 @@
             Swal.fire({
                 icon: 'error',
                 title: '¡Ups!',
-                text: '<%= request.getAttribute("errorGlobal") %>',
+                html: '<%= request.getAttribute("errorGlobal")%><br>Por favor, intente mas tarde.',
                 confirmButtonText: 'Entendido'
             });
         });

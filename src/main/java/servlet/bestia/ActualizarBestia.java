@@ -11,8 +11,6 @@ import logic.LogicRegistro;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,33 +38,39 @@ public class ActualizarBestia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
 		String id = request.getParameter("id");
 		String nombre = request.getParameter("nombre");
 		String peligrosidad = request.getParameter("peligrosidad");
 		String estado = request.getParameter("estado");
-		Bestia bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
+		Bestia bestia = null;
+		try {
+			bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
+		}catch(NumberFormatException nfe) {
+			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet ActualizarBestia");
+			request.setAttribute("errorGlobal", "Id invalida");
+			rd.forward(request, response);
+			return;
+		}
 		String imagen = null;
-		List<String> errores = new ArrayList<>();
 		
 		try {
 			imagen = CloudinaryHelper.getImagenEditarBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener la imagen de la bestia en el servlet ActualizarBestia", e);
-			errores.add("No se ha podido obtener la imagen de la bestia");
+			request.setAttribute("errorGlobal", "No se ha podido obtener la imagen de la bestia");
+			rd.forward(request, response);
+			return;
 		}
-		
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));
 		try {
 			bestia = controlador.update(bestia);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al actualizar la bestia en el servlet ActualizarBestia", e);
-			errores.add("No se ha podido actualizar la bestia");
+			request.setAttribute("errorGlobal", "No se ha podido actualizar la bestia");
+			rd.forward(request, response);
+			return;
 		}
 		
-		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde");
-			request.setAttribute("errorGlobal", errores);
-		}
 		request.getSession().setAttribute("updateBestia", bestia);		
 		request.getSession().setAttribute("imagen", imagen);
 		rd.forward(request, response);
