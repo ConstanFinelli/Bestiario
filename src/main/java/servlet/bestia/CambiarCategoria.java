@@ -42,6 +42,11 @@ public class CambiarCategoria extends HttpServlet {
 		Categoria cat = null;
 		try {
 			bestia = controlador.getOne(new Bestia(Integer.parseInt(id), null, null, null));
+		}catch(NumberFormatException nfe) {
+			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet CambiarCategoria");
+			request.setAttribute("errorGlobal", "Id invalida");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener bestia en el servlet CambiarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido obtener la bestia seleccionada");
@@ -52,8 +57,8 @@ public class CambiarCategoria extends HttpServlet {
 		try {
 			cat = controladorCategoria.getOne(new Categoria(Integer.parseInt(idCategoria),null,null));
 		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error al obtener habitat de la bestia seleccionada en el servlet CambiarCategoria", e);
-			request.setAttribute("errorGlobal", "No se ha podido obtener el habitat de la bestia seleccionada");
+			logger.log(Level.WARNING, "Error al obtener categoría de la bestia seleccionada en el servlet CambiarCategoria", e);
+			request.setAttribute("errorGlobal", "No se ha podido obtener la categoría de la bestia seleccionada");
 			rd.forward(request, response);
 			return;
 		}

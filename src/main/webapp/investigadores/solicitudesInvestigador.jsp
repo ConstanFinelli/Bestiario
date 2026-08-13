@@ -5,6 +5,12 @@
 <%@ page import="java.time.LocalDate, helpers.HttpRoutes" %>
 
 <!DOCTYPE html>
+<%
+	Usuario user = (Usuario) session.getAttribute("user");
+	if(user == null){
+		response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+	}
+%>
 <html>
 <head>
 <meta charset="UTF-8">
