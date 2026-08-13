@@ -35,7 +35,6 @@ public class EliminarCategoria extends HttpServlet {
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		String feedbackMessage = "";
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 		Categoria cat = new Categoria(Integer.parseInt(id),null, null);
 		try {
@@ -44,10 +43,9 @@ public class EliminarCategoria extends HttpServlet {
 			logger.log(Level.SEVERE, "Error crítico al eliminar una categoría en el servlet EliminarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar la categoría.");
 		}
-		if(cat != null) {
-			feedbackMessage = "¡Categoría eliminada con éxito!";
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage", "¡Categoría eliminada con éxito!");
 		}
-		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

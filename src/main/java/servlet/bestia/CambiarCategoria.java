@@ -89,8 +89,11 @@ public class CambiarCategoria extends HttpServlet {
 				bestia.getCategorias().remove(cat);
 			}
 		}
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage","¡Categoría actualizada con éxito!");
+		}
 		request.getSession().setAttribute("bestia", bestia);
-		rd.forward(request, response);
+		rd.forward(request, response);	
 	}
 
 }

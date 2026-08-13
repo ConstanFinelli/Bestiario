@@ -35,29 +35,32 @@ public class EliminarTipoEvidencia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> errores = new ArrayList<>();
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia");
 		String id = request.getParameter("id");
 		TipoEvidencia tipo = null;
 		try {
 			tipo = new TipoEvidencia(Integer.parseInt(id));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al parsear la id del tipo de Evidencia en el servlet EliminarTipoEvidencia", e);
-			errores.add("Id del Tipo de evidencia invalidad");
+			request.setAttribute("errorGlobal", "Id del Tipo de evidencia invalida");
+			rd.forward(request, response);
+			return;
 		}
 		
 		try {
 			tipo = controlador.delete(tipo);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error eliminando el tipo de evidencia en el servlet EliminarTipoEvidencia", e);
-			errores.add("No se ha podido eliminar el Tipo de evidencia");
+			request.setAttribute("errorGlobal", "No se ha podido eliminar el Tipo de evidencia");
+			rd.forward(request, response);
+			return;
 		}
 		
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage", "¡Tipo de evidencia eliminada con éxito!");
 		}
 		
-		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
+		rd.forward(request, response);
 	}
 
 }

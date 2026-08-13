@@ -33,7 +33,6 @@ public class CrearCategoria extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("nombre");
 		String desc = request.getParameter("descripcion");
-		String feedbackMessage = "";
 		Categoria cat = new Categoria(0, name, desc);
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 		try {
@@ -42,10 +41,9 @@ public class CrearCategoria extends HttpServlet {
 			logger.log(Level.SEVERE, "Error crítico al crear una categoría en el servlet CrearCategoría", e);
 			request.setAttribute("errorGlobal", "No se ha podido crear la categoría.");
 		}
-		if(cat != null) {
-			feedbackMessage = "¡Categoría creada con éxito!";
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage", "¡Categoría creada con éxito!");
 		}
-		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

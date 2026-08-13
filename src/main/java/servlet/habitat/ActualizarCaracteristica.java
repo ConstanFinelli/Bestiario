@@ -51,22 +51,27 @@ public class ActualizarCaracteristica extends HttpServlet {
 			ht = controladorHabitat.getOne(ht);
 		}catch(NumberFormatException nfe) {
 			logger.log(Level.WARNING, "Error parseando el id del habitat", nfe);
-			errores.add("Id de habitat invalido");
+			request.setAttribute("errorGlobal", "Id de habitat invalido");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error obteniendo el habitat", e);
-			errores.add("Error buscando el habitat");
+			request.setAttribute("errorGlobal", "Error buscando el habitat");
+			rd.forward(request, response);
+			return;
 		}
 		
 		try {
 			ch = controlador.update(ch, newDescripcion);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error actualizando las caracteristicas del habitat", e);
-			errores.add("Error cargando las caracteristicas");
+			request.setAttribute("errorGlobal", "Error actualizando las caracteristicas");
+			rd.forward(request, response);
+			return;
 		}
 		
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage", "¡Caracteristica del habitat actualizada con éxito!");
 		}
 		
 		rd.forward(request, response);

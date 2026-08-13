@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicHabitat;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import java.io.IOException;
 
 import entities.Habitat;
@@ -32,15 +35,24 @@ public class EliminarHabitat extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
 		String id = request.getParameter("id");
-		String feedbackMessage = "";
+		try{
 		Habitat ht = new Habitat(Integer.parseInt(id));
 		ht = controladorHabitat.delete(ht);
-		if(ht == null) {
-			feedbackMessage = "¡No se ha podido eliminar el habitat!";
-		}else {
-			feedbackMessage = "¡Habitat eliminada con éxito!";
+		}catch(NumberFormatException e) {
+			logger.log(Level.WARNING, "Error parseando la id del habitat en el servlet EliminarHabitat", e);
+			request.setAttribute("errorGlobal", "Id del habitat invalida");
+			rd.forward(request, response);
+			return;
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error eliminando el habitat en el servlet EliminarHabitat", e);
+			request.setAttribute("errorGlobal", "No se ha podido eliminar el habitat");
+			rd.forward(request, response);
+			return;
 		}
-		request.setAttribute("feedbackMessage", feedbackMessage);
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage", "El habitat se ha eliminado correctamente");
+		}
+
 		rd.forward(request, response);
 	}
 
