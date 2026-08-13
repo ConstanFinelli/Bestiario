@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import entities.Categoria;
 import entities.Lector;
@@ -25,6 +27,7 @@ import helpers.HttpRoutes;
 @WebServlet("/lectores/listar")
 public class ListarLectores extends HttpServlet {
 	private LogicUsuario controlador = new LogicUsuario();
+	private static final Logger logger = Logger.getLogger(ListarLectores.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -39,7 +42,12 @@ public class ListarLectores extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LinkedList<Usuario> usuarios = new LinkedList<>();
 		RequestDispatcher rd = null;
-		usuarios = controlador.findAll();
+		try{
+			usuarios = controlador.findAll();
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al conseguir usuarios en el servlet ListarLectores", e);
+			request.setAttribute("errorGlobal", "No se ha podido conseguir los usuarios. ");
+		}
 		LinkedList<Lector> lectores = usuarios.stream().filter(u -> u.getEstado().contains("lector"))
 			    .filter(u -> u instanceof Lector).map(u -> (Lector) u).collect(Collectors.toCollection(LinkedList::new));
 		request.setAttribute("foundLectores", lectores);

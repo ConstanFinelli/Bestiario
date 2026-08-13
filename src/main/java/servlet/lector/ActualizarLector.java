@@ -11,6 +11,8 @@ import logic.LogicUsuario;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import entities.Lector;
 import helpers.HttpRoutes;
@@ -21,6 +23,7 @@ import helpers.HttpRoutes;
 @WebServlet("/lectores/actualizar")
 public class ActualizarLector extends HttpServlet {
 	private LogicUsuario controlador = new LogicUsuario();
+	private static final Logger logger = Logger.getLogger(ActualizarLector.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -41,16 +44,40 @@ public class ActualizarLector extends HttpServlet {
 		String feedbackMessage = "";
 		LocalDate fechaSinHora = null;
 		if(fecha != null) {
-			fechaSinHora = LocalDate.parse(fecha);
+			try{
+				fechaSinHora = LocalDate.parse(fecha);
+			}
+			catch(Exception e) {
+				logger.log(Level.WARNING, "Error al parsear fecha en el servlet ActualizarLector", e);
+				request.setAttribute("errorGlobal", "La fecha ingresada no es válida. ");
+				rd.forward(request, response);
+				return;
+			}
 		}
-		Lector lector = new Lector(Integer.parseInt(id),email, password, fechaSinHora.atStartOfDay(), "lector");
+
+		Lector lector = null;
+		try{
+			lector = new Lector(Integer.parseInt(id),email, password, fechaSinHora.atStartOfDay(), "lector");
+		}
+		catch(Exception e) {
+			logger.log(Level.WARNING, "Error al crear lector en el servlet ActualizarLector", e);
+			request.setAttribute("errorGlobal", "No se ha podido crear el lector. ");
+			rd.forward(request, response);
+			return;
+		}
+		try{
+			lector = (Lector) controlador.getOne(lector);
+		}
+		catch(Exception e) {
+			logger.log(Level.WARNING, "Error al conseguir lector en el servlet ActualizarLector", e);
+			request.setAttribute("errorGlobal", "No se ha podido conseguir el lector. ");
+			rd.forward(request, response);
+			return;
+		}
 		lector = (Lector) controlador.update(lector);
-		if(lector == null) {
-			feedbackMessage = "¡No se ha podido actualizar el usuario!";
-		}else {
-			feedbackMessage = "¡Usuario actualizada con éxito!";
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage","¡Usuario actualizado con éxito!");
 		}
-		request.setAttribute("feedbackMessage", feedbackMessage);
 		rd.forward(request, response);
 	}
 

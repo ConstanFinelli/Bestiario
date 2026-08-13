@@ -10,6 +10,8 @@ import logic.LogicHabitat;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Habitat;
 import helpers.HttpRoutes;
@@ -21,7 +23,8 @@ import helpers.HttpRoutes;
 public class ListarHabitat extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private LogicHabitat controlador = new LogicHabitat();
-       
+	private static final Logger logger = Logger.getLogger(ListarHabitat.class.getName());
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -37,7 +40,13 @@ public class ListarHabitat extends HttpServlet {
 		RequestDispatcher rd = null;
 		String flag = request.getParameter("flag");
 		LinkedList<Habitat> hts = new LinkedList<>();
-		hts = controlador.findAll();
+		try{
+			hts = controlador.findAll();
+		}
+		catch(Exception e) {
+			logger.log(Level.WARNING, "Error al conseguir habitats en el servlet ListarHabitat", e);
+			request.setAttribute("errorGlobal", "No se ha podido conseguir los habitats. ");
+		}
 		request.setAttribute("habitats", hts);
 		
 		if(flag == null) {
