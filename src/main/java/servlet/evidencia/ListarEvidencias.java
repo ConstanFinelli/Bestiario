@@ -42,6 +42,7 @@ public class ListarEvidencias extends HttpServlet {
 		LinkedList<Evidencia> evidencias = null;
 		try {
 			evidencias = controladorEvidencia.findAll();
+			request.setAttribute("gottenEvidencias", evidencias);
 		}catch(Exception e){
 			logger.log(Level.WARNING, "Error buscando las evidencias a listar en el servlet ListarEvidencias", e);
 			errores.add("No se han podido buscar las evidencias");
@@ -51,7 +52,6 @@ public class ListarEvidencias extends HttpServlet {
 			errores.add("Por favor, intente mas tarde");
 			request.setAttribute("errorGlobal", errores);
 		}
-		request.setAttribute("gottenEvidencias", evidencias);
 		rd.forward(request, response);
 	}
 
