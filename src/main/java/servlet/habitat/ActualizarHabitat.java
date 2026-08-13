@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicHabitat;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Habitat;
 import helpers.HttpRoutes;

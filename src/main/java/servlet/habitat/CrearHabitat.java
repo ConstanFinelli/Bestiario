@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicHabitat;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Habitat;
 import helpers.HttpRoutes;
@@ -19,6 +21,7 @@ import helpers.HttpRoutes;
 @WebServlet("/habitats/crear")
 public class CrearHabitat extends HttpServlet {
 	private LogicHabitat controladorHabitat = new LogicHabitat();
+	private static final Logger logger = Logger.getLogger(CrearHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        

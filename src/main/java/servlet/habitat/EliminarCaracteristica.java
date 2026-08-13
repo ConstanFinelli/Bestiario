@@ -58,7 +58,7 @@ public class EliminarCaracteristica extends HttpServlet {
 		try{
 			CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
 			ch = controlador.delete(ch);
-		}catch(NumeberFormatException e) {
+		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error parseando la id de la característica en el servlet EliminarCaracteristica", e);
 			request.setAttribute("errorGlobal", "Id de la característica invalida");
 			rd.forward(request, response);

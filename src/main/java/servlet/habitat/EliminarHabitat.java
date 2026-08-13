@@ -22,6 +22,7 @@ import helpers.HttpRoutes;
 @WebServlet("/habitats/eliminar")
 public class EliminarHabitat extends HttpServlet {
 	private LogicHabitat controladorHabitat = new LogicHabitat();
+	private static final Logger logger = Logger.getLogger(EliminarHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        

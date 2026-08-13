@@ -10,6 +10,8 @@ import logic.LogicCaracteristicaHabitat;
 import logic.LogicHabitat;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
@@ -38,8 +40,9 @@ public class CrearCaracteristicaHabitat extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=carHabitat");
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
+		Habitat ht = null;
 		try{
-		Habitat ht = new Habitat(Integer.parseInt(id));
+		ht = new Habitat(Integer.parseInt(id));
 		ht = controladorHabitat.getOne(ht);
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error parseando la id del habitat en el servlet CrearCaracteristicaHabitat", e);
