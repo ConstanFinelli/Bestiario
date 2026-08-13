@@ -36,15 +36,23 @@ public class CrearHabitat extends HttpServlet {
 		String latitud = request.getParameter("latitud");
 		String longitud = request.getParameter("longitud");
 		String localizacion = request.getParameter("localizacion");
+		try{
 		Habitat ht = new Habitat(0, nombre, localizacion, Double.parseDouble(latitud), Double.parseDouble(longitud));
-		String feedbackMessage = "";
 		ht = controladorHabitat.save(ht);
-		if(ht == null) {
-			feedbackMessage = "¡No se ha podido crear el habitat!";
-		}else {
-			feedbackMessage = "¡Habitat creada con éxito!";
+		}catch(NumberFormatException e) {
+			logger.log(Level.WARNING, "Error parseando los parámetros del habitat en el servlet CrearHabitat", e);
+			request.setAttribute("errorGlobal", "Latitud o longitud inválidos");
+			rd.forward(request, response);
+			return;
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error creando el habitat en el servlet CrearHabitat", e);
+			request.setAttribute("errorGlobal", "No se ha podido crear el habitat");
+			rd.forward(request, response);
+			return;
 		}
-		request.setAttribute("feedbackMessage", feedbackMessage);
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage", "¡Habitat creado con éxito!");
+		}
 		rd.forward(request, response);
 	}
 

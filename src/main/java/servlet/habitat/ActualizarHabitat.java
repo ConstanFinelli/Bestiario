@@ -19,6 +19,7 @@ import helpers.HttpRoutes;
 @WebServlet("/habitats/actualizar")
 public class ActualizarHabitat extends HttpServlet {
 	private LogicHabitat controladorHabitat = new LogicHabitat();
+	private static final Logger logger = Logger.getLogger(ActualizarHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -36,16 +37,26 @@ public class ActualizarHabitat extends HttpServlet {
 		String latitud = request.getParameter("latitud");
 		String longitud = request.getParameter("longitud");
 		String localizacion = request.getParameter("localizacion");
-		String feedbackMessage = "";
 		
+		try{
 		Habitat ht = new Habitat(Integer.parseInt(id), nombre, localizacion, Double.parseDouble(latitud), Double.parseDouble(longitud));
 		ht = controladorHabitat.update(ht);
-		if(ht == null) {
-			feedbackMessage = "¡No se ha podido actualizar el habitat!";
-		}else {
-			feedbackMessage = "¡Habitat actualizada con éxito!";
+		}catch(NumberFormatException e) {
+			logger.log(Level.WARNING, "Error parseando los parámetros del habitat en el servlet ActualizarHabitat", e);
+			request.setAttribute("errorGlobal", "Id, latitud o longitud inválidos");
+			rd.forward(request, response);
+			return;
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error actualizando el habitat en el servlet ActualizarHabitat", e);
+			request.setAttribute("errorGlobal", "Error actualizando el habitat");
+			rd.forward(request, response);
+			return;
 		}
-		request.setAttribute("feedbackMessage", feedbackMessage);
+		
+
+		if(request.getAttribute("errorGlobal") == null) {
+		request.setAttribute("feedbackMessage", "¡Habitat actualizado con éxito!");
+		}
 		rd.forward(request, response);
 	}
 

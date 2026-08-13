@@ -53,6 +53,9 @@ public class ActualizarTipoEvidencia extends HttpServlet {
 			request.setAttribute("errorGlobal","No se ha podido conseguir el tipo de evidencia a actualizar");
 		}
 		
+		if(request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("feedbackMessage", "¡Tipo de evidencia actualizada con éxito!");
+		}
 		rd.forward(request, response);
 	}
 
