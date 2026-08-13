@@ -46,7 +46,7 @@ public class AgregarComentario extends HttpServlet {
 		String idUsuario = request.getParameter("idUsuario");
 		String idBestia = request.getParameter("idBestia");
 		String nroRegistro = request.getParameter("nroRegistro");
-		List<String> errores = new ArrayList<>();
+		String ruta = HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + idBestia + "&nroRegistro=" + nroRegistro + "#comentarios";
 		
 		if(contenido != null && idUsuario != null && idBestia != null) {
 			LocalDateTime fechaComentario = LocalDateTime.now();
@@ -56,27 +56,30 @@ public class AgregarComentario extends HttpServlet {
 				publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario)));
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al conseguir publicador del comentario a agregar en el servlet AgregarComentario", e);
-				errores.add("No se ha podido conseguir el publicador del comentario a agregar");
+				request.setAttribute("errorGlobal","No se ha podido conseguir el publicador del comentario a agregar");
+				request.getRequestDispatcher(ruta).forward(request, response); // para manejar correctamente el error al no limpiar request y mostrar el jsp
+				return;
 			}
 			try {
 				bestia = controladorBestia.getOne(new Bestia(Integer.parseInt(idBestia),null,null, null));
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al conseguir la bestia asociada al comentario a agregar en el servlet AgregarComentario", e);
-				errores.add("No se ha podido conseguir la bestia asociada al comentario a agregar");
+				request.setAttribute("errorGlobal","No se ha podido conseguir la bestia asociada al comentario a agregar");
+				request.getRequestDispatcher(ruta).forward(request, response);
+				return;
 			}
 			Comentario comentario = new Comentario(publicador, bestia, fechaComentario, contenido);
 			try {
 				controladorComentario.save(comentario);
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al crear comentario en el servlet AgregarComentario", e);
-				errores.add("No se ha podido crear el comentario");
+				request.setAttribute("errorGlobal","No se ha podido crear el comentario");
+				request.getRequestDispatcher(ruta).forward(request, response);
+				return; 
 			}
 		}
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
-		}
-		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + idBestia + "&nroRegistro=" + nroRegistro + "#comentarios");
+		
+		response.sendRedirect(ruta);
 	}
 
 }

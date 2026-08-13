@@ -37,17 +37,12 @@ public class ListarTiposEvidencia extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LinkedList<TipoEvidencia> tipos = new LinkedList<>();
-		List<String> errores = new ArrayList<>();
 		try {
 			tipos = controlador.findAll();	
 			request.setAttribute("foundTipos", tipos);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error listando los tipos de evidencia en el servlet ListarTiposEvidencia", e);
-			errores.add("No se ha podido listar los tipos de evidencia");
-		}
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+			request.setAttribute("errorGlobal","No se ha podido listar los tipos de evidencia");
 		}
 		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
 	}

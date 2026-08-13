@@ -1,5 +1,6 @@
 package servlet.evidencia;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,11 +44,12 @@ public class CrearEvidencia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> errores = new ArrayList<>();
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ACTUALIZACION_REGISTRO_JSP(""));
 		Part archivo = request.getPart("archivo");
 		String fileId = CloudinaryHelper.upload(archivo);
 		String estado = request.getParameter("estado");
 		String idTipoEvidencia = request.getParameter("idTipoEvidencia");
+		
 		LocalDateTime fechaO = null;
 		TipoEvidencia tipo = null;
 		Evidencia evidencia = null;
@@ -55,29 +57,30 @@ public class CrearEvidencia extends HttpServlet {
 			tipo = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(idTipoEvidencia)));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error obteniendo el tipo de evidencia en el servlet CrearEvidencia", e);
-			errores.add("Error obteniendo el tipo de evidencia");
+			request.setAttribute("errorGlobal","Error obteniendo el tipo de evidencia");
+			rd.forward(request,response);
+			return;
 		}
 		try {
 			 fechaO = LocalDateTime.parse(request.getParameter("fechaObtencion"));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error parseando la fecha de obtencion en el servlet CrearEvidencia");
-			errores.add("Error leyendo la fecha de obtencion");
+			request.setAttribute("errorGlobal","Error leyendo la fecha de obtencion");
+			rd.forward(request,response);
+			return;
 		}
 		
 		try {
 			evidencia = controladorEvidencia.save(new Evidencia(0, fechaO, estado, fileId, tipo));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error guardando la evidencia creada en el servlet CrearEvidencia", e);
-			errores.add("Error guardando la evidencia creada");
-		}
-		
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+			request.setAttribute("errorGlobal","Error guardando la evidencia creada");
+			rd.forward(request,response);
+			return;
 		}
 		 
 		request.setAttribute("createdEvidencia", evidencia);
-		request.getRequestDispatcher(HttpRoutes.EVIDENCIA_FORM_JSP("")).forward(request, response);
+		rd.forward(request, response);
 	}
 
 }

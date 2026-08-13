@@ -35,7 +35,6 @@ public class CrearTipoEvidencia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> errores = new ArrayList<>();
 		String desc = request.getParameter("descripcion");
 		String resourceType = request.getParameter("resourceType");
 		TipoEvidencia tipo = new TipoEvidencia(desc, resourceType);
@@ -43,11 +42,7 @@ public class CrearTipoEvidencia extends HttpServlet {
 			tipo = controlador.save(tipo);	
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "No se ha podido guardar el tipo de evidencia creado en el servlet CrearTipoEvidencia", e);
-			errores.add("No se ha podido guardar el tipo creado");
-		}
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+			request.setAttribute("errorGlobal","No se ha podido guardar el tipo creado");
 		}
 			
 		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);

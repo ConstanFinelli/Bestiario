@@ -36,7 +36,6 @@ public class EliminarEvidencia extends HttpServlet {
     }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> errores = new ArrayList<>();
 		int idTipo = Integer.parseInt(request.getParameter("idTipoEvidencia"));
 		int nroEvidencia = Integer.parseInt(request.getParameter("nroEvidencia"));
 		String idBestia = request.getParameter("idBestia");
@@ -45,12 +44,7 @@ public class EliminarEvidencia extends HttpServlet {
 			evidencia = controladorEvidencia.delete(new Evidencia(nroEvidencia, null, null, null, new TipoEvidencia(idTipo)));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al eliminar la evidencia en el servlet EliminarEvidencia", e);
-			errores.add("No se ha podido eliminar la evidencia");
-		}
-		
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+			request.setAttribute("errorGlobal","No se ha podido eliminar la evidencia");
 		}
 		
 		request.setAttribute("deletedEvidencia", evidencia);

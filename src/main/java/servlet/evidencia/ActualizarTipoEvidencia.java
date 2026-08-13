@@ -1,5 +1,6 @@
 package servlet.evidencia;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -31,30 +32,28 @@ public class ActualizarTipoEvidencia extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> errores = new ArrayList<>();
 		String id = request.getParameter("id");
 		String desc = request.getParameter("descripcion");
 		String resourceType = request.getParameter("resourceType");
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia");
 		TipoEvidencia tipo = null;
 		try {
 			tipo = new TipoEvidencia(Integer.parseInt(id), desc, resourceType);
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear el id recibido en el servlet ActualizarTipoEvidencia", e);
-			errores.add("La id recibida no es valida");
+			request.setAttribute("errorGlobal","La id recibida no es valida");
+			rd.forward(request, response);
+			return;
 		}
 		
 		try {
 			tipo = controlador.update(tipo);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir tipo de evidencia en el servlet ActualizarTipoEvidencia", e);
-			errores.add("No se ha podido conseguir el tipo de evidencia a actualizar");
-		}
-		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+			request.setAttribute("errorGlobal","No se ha podido conseguir el tipo de evidencia a actualizar");
 		}
 		
-		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
+		rd.forward(request, response);
 	}
 
 }
