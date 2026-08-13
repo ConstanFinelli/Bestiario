@@ -11,6 +11,8 @@ import logic.LogicRegistro;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import entities.Bestia;
 import entities.Registro;
@@ -24,6 +26,7 @@ import helpers.HttpRoutes;
 public class ObtenerRegistroBestia extends HttpServlet {
 	private LogicBestia controlador = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
+	private static final Logger logger = Logger.getLogger(ObtenerRegistroBestia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
      
@@ -40,21 +43,53 @@ public class ObtenerRegistroBestia extends HttpServlet {
 		String id = request.getParameter("id");
 		Bestia bestia = null;
 		if(id != null) { 
-			bestia = new Bestia(Integer.parseInt(id));
-			bestia = controlador.getOne(bestia);
+			try{
+				bestia = new Bestia(Integer.parseInt(id));
+				bestia = controlador.getOne(bestia);
+			}catch(NumberFormatException e) {
+				logger.log(Level.WARNING, "Error al parsear id en el servlet ObtenerRegistroBestia", e);
+				request.setAttribute("errorGlobal", "La id de la bestia es inválida. ");
+				return;
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet ObtenerRegistroBestia", e);
+				request.setAttribute("errorGlobal", "No se ha conseguido la bestia. ");
+				return;
 			}
+		}
 		String nroRegistro = request.getParameter("nroRegistro");
 		Registro registro = null;
 		if(id != null) {
 			if(nroRegistro != null) {
-				registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, null, bestia);
-				registro = controladorRegistro.getOne(registro);
+				try{
+					registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, null, bestia);
+					registro = controladorRegistro.getOne(registro);
+				}catch(NumberFormatException e) {
+					logger.log(Level.WARNING, "Error al parsear nroRegistro en el servlet ObtenerRegistroBestia", e);
+					request.setAttribute("errorGlobal", "El número de registro es inválido. ");
+					return;
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
+					request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");
+					return;
+				}
 			}else {
-				registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+				try{
+					registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
+					request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");
+					return;
+				}
 			}
 		}
-			
-		String imagen = (CloudinaryHelper.getImagenRegistro(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
+
+		try{	
+			String imagen = (CloudinaryHelper.getImagenRegistro(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al conseguir imagen en el servlet ObtenerRegistroBestia", e);
+			request.setAttribute("errorGlobal", "No se ha conseguido la imagen del registro. ");
+			return;
+		}
 		request.setAttribute("UrlImagen", imagen);
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", registro);

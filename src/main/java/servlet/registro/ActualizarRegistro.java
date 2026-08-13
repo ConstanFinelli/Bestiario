@@ -20,6 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import entities.Bestia;
 import entities.ContenidoRegistro;
@@ -42,6 +44,7 @@ public class ActualizarRegistro extends HttpServlet {
 	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private LogicEvidencia controladorEvidencia = new LogicEvidencia();
 	private LogicContenidoRegistro controladorCr = new LogicContenidoRegistro();
+	private static final Logger logger = Logger.getLogger(ActualizarRegistro.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
@@ -56,10 +59,35 @@ public class ActualizarRegistro extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ACTUALIZACION_REGISTRO_JSP(""));
 		String idBestia = request.getParameter("id");
-		Bestia bestia = new Bestia(Integer.parseInt(idBestia));
-		bestia = controladorBestia.getOne(bestia);
-		LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
-		Registro ultimoRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		Bestia bestia = null;
+		try{
+			bestia = new Bestia(Integer.parseInt(idBestia));
+		}catch(NumberFormatException e) {
+			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "El id de la bestia es inválido.");
+			return;
+		}
+		try{
+			bestia = controladorBestia.getOne(bestia);
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "No se ha conseguido la bestia. ");
+			return;
+		}
+		try{
+			LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al conseguir tipos de evidencia en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "No se han conseguido los tipos de evidencia. ");
+			return;
+		}
+		try{
+			Registro ultimoRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al conseguir último registro en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "No se ha conseguido el último registro. ");
+			return;
+		}
 		request.setAttribute("tiposEvidencia", tes);
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", ultimoRegistro);
@@ -78,19 +106,45 @@ public class ActualizarRegistro extends HttpServlet {
 		
 		Usuario usuario = (Usuario) session.getAttribute("user");	
 		String bestiaId = request.getParameter("id");
-		Bestia bestia = new Bestia(Integer.parseInt(bestiaId));
-		
+
+		Bestia bestia = null;
+		try{
+			bestia = new Bestia(Integer.parseInt(bestiaId));
+		}catch(NumberFormatException e) {
+			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "El id de la bestia es inválido.");
+			return;
+		}
+
 		Part filePart = request.getPart("mainPic");
 		if(filePart != null && filePart.getSize() > 0 ) {
-			mainPic = CloudinaryHelper.upload(filePart);
+			try{
+				mainPic = CloudinaryHelper.upload(filePart);
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al subir imagen de bestia en el servlet ActualizarRegistro", e);
+				request.setAttribute("errorGlobal", "No se ha podido subir la imagen de la bestia. ");
+				return;
+			}
 		}else {
-			mainPic = controladorRegistro.getImagen(new Bestia(Integer.parseInt(bestiaId)), LocalDateTime.now());
+			try{
+				mainPic = controladorRegistro.getImagen(new Bestia(Integer.parseInt(bestiaId)), LocalDateTime.now());
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al obtener imagen en el servlet ActualizarRegistro", e);
+				request.setAttribute("errorGlobal", "No se ha podido obtener la imagen de la bestia. ");
+				return;
+			}
 		}
 		
 		
 		ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
 		
-		Registro registroActual = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		try{
+			Registro registroActual = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al conseguir registro actual en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "No se ha conseguido el registro actual. ");
+			return;
+		}
 		if(registroActual != null) {
 			ContenidoRegistro crActual = registroActual.getContenido();	
 			if(contenido.getDescripcion().equals(crActual.getDescripcion()) && contenido.getHistoria().equals(crActual.getHistoria()) 
@@ -99,7 +153,13 @@ public class ActualizarRegistro extends HttpServlet {
 				contenido = null;
 			}
 		}
-		bestia = controladorBestia.getOne(new Bestia(Integer.parseInt(bestiaId),null,null, null));
+		try{
+			bestia = controladorBestia.getOne(new Bestia(Integer.parseInt(bestiaId),null,null, null));
+		}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet ActualizarRegistro", e);
+				request.setAttribute("errorGlobal", "No se ha conseguido la bestia. ");
+				return;
+			}
 		
 		String[] fechas = request.getParameterValues("fechaObtencion");
 		String[] tipos = request.getParameterValues("tipo");
@@ -107,34 +167,76 @@ public class ActualizarRegistro extends HttpServlet {
 		LinkedList<String> archivos = new LinkedList<>();
 		for(Part p: parts) {
 			if(p.getName().equals("archivo") && p.getSize() > 0) {
-				String id = CloudinaryHelper.upload(p);
-				archivos.add(id);	
+				try{
+					String id = CloudinaryHelper.upload(p);
+					archivos.add(id);
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al subir archivo de evidencia en el servlet ActualizarRegistro", e);
+					request.setAttribute("errorGlobal", "No se ha podido subir los archivos de evidencias. ");
+					return;
+				}
 			}
 		}
 		
 		if(fechas != null) {
 			LinkedList<Evidencia> evidencias = new LinkedList<>();
 			for (int i = 0; i < fechas.length; i++) {
-				LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
+				try{
+					LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al parsear fecha en el servlet ActualizarRegistro", e);
+					request.setAttribute("errorGlobal", "No se ha podido parsear la fecha de obtención. ");
+					return;
+				}
 			    LocalDateTime fecha = fechaSinHora.atStartOfDay();
 			    String tipo = tipos[i];
 			    String archivo = archivos.get(i);
-			    TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo));
-			    te = controladorTipoEvidencia.getOne(te);
+				try{
+					TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo));
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al parsear tipo de evidencia en el servlet ActualizarRegistro", e);
+					request.setAttribute("errorGlobal", "No se ha podido parsear el tipo de evidencia. ");
+					return;
+				}
+				try{
+					te = controladorTipoEvidencia.getOne(te);
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al obtener tipo de evidencia en el servlet ActualizarRegistro", e);
+					request.setAttribute("errorGlobal", "No se ha podido obtener el tipo de evidencia. ");
+					return;
+				}
 			    String estadoRegistro = "pendiente";
 				if(usuario.getEstado().equals("investigador")) {
 					estadoRegistro = "aprobado";
 				}
 			    Evidencia evidencia = new Evidencia(0,fecha,estadoRegistro,archivo,te);
-			    controladorEvidencia.save(evidencia);
+				try{
+					controladorEvidencia.save(evidencia);
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al guardar evidencia en el servlet ActualizarRegistro", e);
+					request.setAttribute("errorGlobal", "No se ha podido guardar la evidencia. ");
+					return;
+				}
 			    evidencias.add(evidencia);
 			}
 			bestia.setEvidencias(evidencias);
-			controladorBestia.saveEvidencias(bestia);
+			try{
+				controladorBestia.saveEvidencias(bestia);
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al guardar evidencias de la bestia en el servlet ActualizarRegistro", e);
+				request.setAttribute("errorGlobal", "No se ha podido guardar las evidencias dentro de la bestia. ");
+				return;
+			}
 			
 		}
 		if(contenido != null) {
-			contenido = controladorCr.save(contenido);
+			try{
+				contenido = controladorCr.save(contenido);
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al guardar contenido de registro en el servlet ActualizarRegistro", e);
+				request.setAttribute("errorGlobal", "No se ha podido guardar el contenido del registro. ");
+				return;
+			}
 			String estadoRegistro = null;
 			LocalDateTime fechaAprobacion = null;
 			Investigador user = null;
@@ -146,8 +248,14 @@ public class ActualizarRegistro extends HttpServlet {
 				estadoRegistro = "pendiente";
 			}
 			Registro registro = new Registro(0, mainPic, contenido, fechaAprobacion, null, user, estadoRegistro , bestia );
-			
-			controladorRegistro.save(registro);
+
+			try{
+				controladorRegistro.save(registro);
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al guardar registro en el servlet ActualizarRegistro", e);
+				request.setAttribute("errorGlobal", "No se ha podido guardar el registro. ");
+				return;
+			}
 		}
 		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + bestiaId);
 	}

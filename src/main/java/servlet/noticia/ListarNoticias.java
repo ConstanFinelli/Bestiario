@@ -53,7 +53,7 @@ public class ListarNoticias extends HttpServlet {
 			}
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al listar las noticias en servlet ListarNoticias", e);
-			request.setAttribute("errorGlobal", "No pudimos listar las últimas noticias. Por favor, intenta más tarde.");
+			request.setAttribute("errorGlobal", "No pudimos listar las últimas noticias.");
 			rd = request.getRequestDispatcher(HttpRoutes.HOME_JSP(""));
 			noticias = new LinkedList<>();
 		}
