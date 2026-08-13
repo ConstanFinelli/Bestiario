@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicUsuario;
 
 import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import entities.Investigador;
 import helpers.HttpRoutes;
@@ -18,7 +20,8 @@ import helpers.HttpRoutes;
 @WebServlet("/investigadores/rechazarSolicitud")
 public class RechazarSolicitud extends HttpServlet {
 	private LogicUsuario controladorUsuario = new LogicUsuario();
-	
+	private static final Logger logger = Logger.getLogger(RechazarSolicitud.class.getName());
+
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -31,16 +34,30 @@ public class RechazarSolicitud extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idUsuario = request.getParameter("idUsuario");
+		Investigador user = null;
 		try {
-			Investigador user = new Investigador(Integer.parseInt(idUsuario));
+			user = new Investigador(Integer.parseInt(idUsuario));
 			user = (Investigador) controladorUsuario.getOne(user);	
 			user.setDni(null);
 			user.setApellido(null);
 			user.setNombre(null);
 			user.setEstado("lector");
-			controladorUsuario.update(user);
 		} catch(NumberFormatException e) {
-			e.getMessage();
+			logger.log(Level.WARNING, "Error al parsear idUsuario en el servlet RechazarSolicitud", e);
+			request.setAttribute("errorGlobal", "La id del usuario es inválida. ");
+			return;
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al rechazar solicitud en el servlet RechazarSolicitud", e);
+			request.setAttribute("errorGlobal", "No se ha conseguido el usuario. ");
+			return;
+		}
+
+		try{
+			controladorUsuario.update(user);
+		} catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al rechazar solicitud en el servlet RechazarSolicitud", e);
+			request.setAttribute("errorGlobal", "No se ha podido rechazar la solicitud. ");
+			return;
 		}
 		response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
 	}
