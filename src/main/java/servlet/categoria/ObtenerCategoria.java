@@ -40,7 +40,7 @@ public class ObtenerCategoria extends HttpServlet {
 			cat = controlador.getOne(cat);
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al obtener una categoría en el servlet ObtenerCategoría", e);
-			request.setAttribute("errorGlobal", "No se ha podido obtener la categoría. Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", "No se ha podido obtener la categoría. ");
 		}
 		request.setAttribute("foundCategoria", cat);
 		

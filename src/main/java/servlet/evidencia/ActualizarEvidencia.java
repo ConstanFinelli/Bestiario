@@ -61,7 +61,7 @@ public class ActualizarEvidencia extends HttpServlet {
 				errores.add("No se ha podido actualizar la evidencia a actualizar");
 			}
 		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde");
+			errores.add("");
 			request.setAttribute("errorGlobal", errores);
 		}
 		request.setAttribute("updatedEvidencia", evidencia);

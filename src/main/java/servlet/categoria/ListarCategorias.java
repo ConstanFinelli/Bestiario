@@ -48,7 +48,7 @@ public class ListarCategorias extends HttpServlet {
 			}
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al listar categorías en el servlet ListarCategorias", e);
-			request.setAttribute("errorGlobal", "No se han podido obtener las categorías. Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", "No se han podido obtener las categorías. ");
 			rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
 			categorias = new LinkedList<>();
 		}

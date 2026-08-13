@@ -65,7 +65,7 @@ public class ListarEvidenciasTipo extends HttpServlet {
 		}
 		
 		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde");
+			errores.add("");
 			request.setAttribute("errorGlobal", errores);
 		}
 		

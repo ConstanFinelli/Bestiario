@@ -73,7 +73,7 @@ public class AgregarComentario extends HttpServlet {
 			}
 		}
 		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde");
+			errores.add("");
 			request.setAttribute("errorGlobal", errores);
 		}
 		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + idBestia + "&nroRegistro=" + nroRegistro + "#comentarios");

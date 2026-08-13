@@ -40,7 +40,7 @@ public class CrearCategoria extends HttpServlet {
 			cat = controlador.save(cat);
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al crear una categoría en el servlet CrearCategoría", e);
-			request.setAttribute("errorGlobal", "No se ha podido crear la categoría. Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", "No se ha podido crear la categoría.");
 		}
 		if(cat != null) {
 			feedbackMessage = "¡Categoría creada con éxito!";

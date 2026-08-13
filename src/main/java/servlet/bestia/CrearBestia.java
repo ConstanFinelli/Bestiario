@@ -51,7 +51,7 @@ public class CrearBestia extends HttpServlet {
 			} 
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al crear bestia en el servlet CrearBestia", e);
-			request.setAttribute("errorGlobal", "No se ha podido crear la bestia. Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", "No se ha podido crear la bestia. ");
 		}
 		rd.forward(request, response);
 	}

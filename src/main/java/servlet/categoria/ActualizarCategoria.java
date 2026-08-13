@@ -45,7 +45,7 @@ public class ActualizarCategoria extends HttpServlet {
 			cat = controlador.update(cat);
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al actualizar la categoría en el servlet ActualizarCategoria", e);
-			request.setAttribute("errorGlobal", "No se ha podido actualizar la categoría. Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", "No se ha podido actualizar la categoría.");
 		}
 		if(cat != null) {
 			feedbackMessage = "¡Categoría actualizada con éxito!";

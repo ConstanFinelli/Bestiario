@@ -46,7 +46,7 @@ public class ListarTiposEvidencia extends HttpServlet {
 			errores.add("No se ha podido listar los tipos de evidencia");
 		}
 		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde");
+			errores.add("");
 			request.setAttribute("errorGlobal", errores);
 		}
 		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);

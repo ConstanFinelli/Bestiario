@@ -40,7 +40,7 @@ public class EliminarBestia extends HttpServlet {
 			bestia = controlador.delete(bestia);
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al eliminar bestia en el servlet EliminarBestia", e);
-			request.setAttribute("errorGlobal", "No se ha podido eliminar la bestia seleccionada. Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", "No se ha podido eliminar la bestia seleccionada. ");
 		}
 		request.setAttribute("deletedBestia", bestia);
 		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));		

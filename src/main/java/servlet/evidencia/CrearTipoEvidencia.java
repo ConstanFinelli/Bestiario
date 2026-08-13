@@ -46,7 +46,7 @@ public class CrearTipoEvidencia extends HttpServlet {
 			errores.add("No se ha podido guardar el tipo creado");
 		}
 		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde");
+			errores.add("");
 			request.setAttribute("errorGlobal", errores);
 		}
 			

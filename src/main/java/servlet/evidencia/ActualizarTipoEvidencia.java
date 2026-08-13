@@ -50,7 +50,7 @@ public class ActualizarTipoEvidencia extends HttpServlet {
 			errores.add("No se ha podido conseguir el tipo de evidencia a actualizar");
 		}
 		if(!errores.isEmpty()) {
-			errores.add("Por favor, intente mas tarde");
+			errores.add("");
 			request.setAttribute("errorGlobal", errores);
 		}
 		

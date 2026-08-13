@@ -46,7 +46,7 @@ public class SvLogin extends HttpServlet {
 			usuario = controladorUsuario.getByEmail(correo);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet SvLogin", e);
-			request.setAttribute("errorGlobal", "No se ha podido conseguir el usuario. Por favor, intente mas tarde");
+			request.setAttribute("errorGlobal", "No se ha podido conseguir el usuario. ");
 		}
 		
 		if(usuario != null) {
