@@ -1,6 +1,6 @@
 package servlet.Investigador;
 
-import jakarta.servlet.RequestDispatcher;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -63,9 +63,12 @@ public class CrearSolicitud extends HttpServlet {
 		
 
 		if(actualizacion != null) {
+
+		if(controladorUsuario.update(solicitud) != null) {
 			user.setEstado("solicitante");
 			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
 		}
 	}
+}
 
 }
