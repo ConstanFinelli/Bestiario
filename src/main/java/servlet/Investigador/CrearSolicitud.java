@@ -63,6 +63,8 @@ public class CrearSolicitud extends HttpServlet {
 		
 
 		if(actualizacion != null) {
+
+		if(controladorUsuario.update(solicitud) != null) {
 			user.setEstado("solicitante");
 			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
 		}
