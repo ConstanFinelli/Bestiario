@@ -38,6 +38,7 @@ public class AceptarRegistro extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 		int nroRegistro = 0;
+		int idBestia = 0;
 		try{
 			nroRegistro = Integer.parseInt(request.getParameter("nroRegistro"));
 		}catch(NumberFormatException e) {
@@ -47,7 +48,7 @@ public class AceptarRegistro extends HttpServlet {
 		}
 		
 		try{
-			int idBestia = Integer.parseInt(request.getParameter("idBestia"));
+			idBestia = Integer.parseInt(request.getParameter("idBestia"));
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet AceptarRegistro", e);
 			request.setAttribute("errorGlobal", "El id de la bestia es inválido.");

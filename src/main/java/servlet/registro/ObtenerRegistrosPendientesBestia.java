@@ -37,8 +37,9 @@ public class ObtenerRegistrosPendientesBestia extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.REGISTROS_PENDIENTES_JSP(""));
 		String id = request.getParameter("id");
+		Bestia bestia = null;
 		try{
-			Bestia bestia = new Bestia(Integer.parseInt(id));
+			bestia = new Bestia(Integer.parseInt(id));
 			bestia = controlador.getOne(bestia);
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear id en el servlet ObtenerRegistrosPendientesBestia", e);

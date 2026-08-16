@@ -60,6 +60,8 @@ public class ActualizarRegistro extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ACTUALIZACION_REGISTRO_JSP(""));
 		String idBestia = request.getParameter("id");
 		Bestia bestia = null;
+		LinkedList<TipoEvidencia>  tes = null;
+		Registro ultimoRegistro = null;
 		try{
 			bestia = new Bestia(Integer.parseInt(idBestia));
 		}catch(NumberFormatException e) {
@@ -75,14 +77,14 @@ public class ActualizarRegistro extends HttpServlet {
 			return;
 		}
 		try{
-			LinkedList<TipoEvidencia> tes = controladorTipoEvidencia.findAll();
+			tes = controladorTipoEvidencia.findAll();
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir tipos de evidencia en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "No se han conseguido los tipos de evidencia. ");
 			return;
 		}
 		try{
-			Registro ultimoRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+			ultimoRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir último registro en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido el último registro. ");
@@ -108,6 +110,8 @@ public class ActualizarRegistro extends HttpServlet {
 		String bestiaId = request.getParameter("id");
 
 		Bestia bestia = null;
+		Registro registroActual = null;
+		
 		try{
 			bestia = new Bestia(Integer.parseInt(bestiaId));
 		}catch(NumberFormatException e) {
@@ -139,7 +143,7 @@ public class ActualizarRegistro extends HttpServlet {
 		ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
 		
 		try{
-			Registro registroActual = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+			registroActual = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir registro actual en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido el registro actual. ");
@@ -180,9 +184,11 @@ public class ActualizarRegistro extends HttpServlet {
 		
 		if(fechas != null) {
 			LinkedList<Evidencia> evidencias = new LinkedList<>();
+			LocalDate fechaSinHora = null;
+			TipoEvidencia te = null;
 			for (int i = 0; i < fechas.length; i++) {
 				try{
-					LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
+					fechaSinHora = LocalDate.parse(fechas[i]);
 				}catch(Exception e) {
 					logger.log(Level.SEVERE, "Error al parsear fecha en el servlet ActualizarRegistro", e);
 					request.setAttribute("errorGlobal", "No se ha podido parsear la fecha de obtención. ");
@@ -192,7 +198,7 @@ public class ActualizarRegistro extends HttpServlet {
 			    String tipo = tipos[i];
 			    String archivo = archivos.get(i);
 				try{
-					TipoEvidencia te = new TipoEvidencia(Integer.parseInt(tipo));
+					te = new TipoEvidencia(Integer.parseInt(tipo));
 				}catch(Exception e) {
 					logger.log(Level.SEVERE, "Error al parsear tipo de evidencia en el servlet ActualizarRegistro", e);
 					request.setAttribute("errorGlobal", "No se ha podido parsear el tipo de evidencia. ");

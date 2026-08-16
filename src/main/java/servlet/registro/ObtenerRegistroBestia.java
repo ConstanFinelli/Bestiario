@@ -42,6 +42,7 @@ public class ObtenerRegistroBestia extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.REGISTRO_JSP(""));
 		String id = request.getParameter("id");
 		Bestia bestia = null;
+		String imagen = null;
 		if(id != null) { 
 			try{
 				bestia = new Bestia(Integer.parseInt(id));
@@ -84,7 +85,7 @@ public class ObtenerRegistroBestia extends HttpServlet {
 		}
 
 		try{	
-			String imagen = (CloudinaryHelper.getImagenRegistro(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
+			imagen = (CloudinaryHelper.getImagenRegistro(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir imagen en el servlet ObtenerRegistroBestia", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido la imagen del registro. ");
