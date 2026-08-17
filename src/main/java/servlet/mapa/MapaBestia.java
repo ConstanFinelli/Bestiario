@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Registro;
@@ -26,7 +28,8 @@ import helpers.HttpRoutes;
 public class MapaBestia extends HttpServlet {
 	LogicBestia controladorBestia = new LogicBestia();
 	LogicRegistro controladorRegistro = new LogicRegistro();
-	
+	private static final Logger logger = Logger.getLogger(MapaBestia.class.getName());
+
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -43,9 +46,31 @@ public class MapaBestia extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.MAPA_JSP(""));
 		String idBestia = request.getParameter("id");
-		Bestia bestia = new Bestia(Integer.parseInt(idBestia));
-		bestia = controladorBestia.getOne(bestia);
-		Registro registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		Bestia bestia = null;
+		try{
+			bestia = new Bestia(Integer.parseInt(idBestia));
+			bestia = controladorBestia.getOne(bestia);
+		}catch(NumberFormatException nfe) {
+			logger.log(Level.WARNING, "Error al parsear el id de la bestia en el servlet MapaBestia", nfe);
+			request.setAttribute("errorGlobal","Id de bestia invalido");
+			rd.forward(request, response);
+			return;
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al obtener la bestia en el servlet MapaBestia", e);
+			request.setAttribute("errorGlobal","No se ha podido obtener la bestia");
+			rd.forward(request, response);
+			return;
+		}
+
+		Registro registro = null;
+
+		try{
+			registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error al obtener el registro de la bestia en el servlet MapaBestia", e);
+			request.setAttribute("errorGlobal","No se ha podido obtener el registro de la bestia");
+		}
+
 		Map<Bestia, String> bestias = new HashMap<Bestia, String>();
 		bestias.put(bestia, registro != null? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID"));
 		request.getSession().setAttribute("bestias", bestias);
