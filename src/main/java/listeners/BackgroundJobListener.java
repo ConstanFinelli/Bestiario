@@ -12,7 +12,6 @@ import java.time.ZoneId;
 import logic.LogicEmail;
 import logic.LogicRegistro; // O la lógica de tus bestias
 import entities.Registro;
-import entities.Usuario;
 
 import java.util.LinkedList;
 import entities.Investigador;

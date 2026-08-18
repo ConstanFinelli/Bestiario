@@ -17,7 +17,6 @@ import entities.PasswordResetToken;
 import entities.Usuario;
 import helpers.HttpRoutes;
 import logic.LogicEmail;
-import servlet.comentario.AgregarComentario;
 /**
  * Servlet implementation class SvForgotPassword
  */
@@ -77,11 +76,7 @@ String correo = request.getParameter("correo");
 			
 			new Thread(() -> {
 			    try {
-			        logicEmail.enviarEmail(
-			            usuario.getCorreo(),
-			            "Recuperar contraseña",
-			            "Haz clic aquí para cambiar tu contraseña:\n" + link
-			        );
+			        logicEmail.notificarCambioContraseña(usuario.getCorreo(), link);
 			    } catch(Exception e) {
 					logger.log(Level.WARNING, "Error crítico en el hilo de envío de mail en el servlet SvForgotPassword", e);
 				}

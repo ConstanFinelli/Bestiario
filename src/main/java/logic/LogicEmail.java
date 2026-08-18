@@ -67,4 +67,13 @@ public class LogicEmail {
         enviarEmail(emailUsuario, asunto, mensaje);
     }
     
+    public void notificarCambioContraseña(String emailUsuario, String link) {
+    	String asunto = "Recuperar Contraseña";
+        	
+    	String mensajeHtml = EmailTemplates.recuperacionContraseña(link);
+    	
+        enviarEmail(emailUsuario, asunto, mensajeHtml);
+    }
+    
+    
 }
