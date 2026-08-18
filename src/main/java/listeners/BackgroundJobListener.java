@@ -19,7 +19,8 @@ import logic.LogicUsuario;
 
 @WebListener
 public class BackgroundJobListener implements ServletContextListener {
-
+	private static final boolean MODO_PRUEBA = true;
+	
     private ScheduledExecutorService scheduler;
     private LogicRegistro logicRegistro = new LogicRegistro();
     private LogicEmail logicEmail = new LogicEmail();
@@ -29,26 +30,56 @@ public class BackgroundJobListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         
-        // Configuramos la hora de ejecución (Ejemplo: 23:00)
-        ZonedDateTime ahora = ZonedDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"));
-        ZonedDateTime proximaEjecucion = ahora.withHour(23).withMinute(0).withSecond(0);
+        if (MODO_PRUEBA) {
 
-        // Si ya pasaron las 23:00 hoy, programamos para mañana
-        if (ahora.isAfter(proximaEjecucion)) {
-            proximaEjecucion = proximaEjecucion.plusDays(1);
-        }
+            scheduler.scheduleAtFixedRate(
+                () -> {
+                    try {
+                        System.out.println("⏳ [PRUEBA] Enviando resumen...");
+                        enviarResumenAdministradores();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                5,
+                30,
+                TimeUnit.SECONDS
+            );
 
-        long delayInicial = Duration.between(ahora, proximaEjecucion).toSeconds();
+        } else {
 
-        // Ejecutar cada 24 horas (en segundos)
-        scheduler.scheduleAtFixedRate(() -> {
-            try {
-                System.out.println("⏳ Iniciando envío de resumen diario...");
-                enviarResumenAdministradores();
-            } catch (Exception e) {
-                
+            ZonedDateTime ahora =
+                    ZonedDateTime.now(
+                        ZoneId.of("America/Argentina/Buenos_Aires")
+                    );
+
+            ZonedDateTime proximaEjecucion =
+                    ahora.withHour(23)
+                         .withMinute(0)
+                         .withSecond(0)
+                         .withNano(0);
+
+            if (ahora.isAfter(proximaEjecucion)) {
+                proximaEjecucion = proximaEjecucion.plusDays(1);
             }
-        } ,delayInicial, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS); //, delayInicial, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
+
+            long delayInicial =
+                    Duration.between(ahora, proximaEjecucion).toSeconds();
+
+            scheduler.scheduleAtFixedRate(
+                () -> {
+                    try {
+                        System.out.println("⏳ Enviando resumen diario...");
+                        enviarResumenAdministradores();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                delayInicial,
+                TimeUnit.DAYS.toSeconds(1),
+                TimeUnit.SECONDS
+            );
+        }
     }
 
     
@@ -60,25 +91,13 @@ public class BackgroundJobListener implements ServletContextListener {
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
-        
-        sb.append("Registros Aprobados:\n\n");
-        
-        for (Registro registro : registrosAprobadosHoy) {
-            sb.append("- ").append(registro.getBestia().getNombre())
-              .append(": ").append(registro.getContenido().getIntroduccion())
-              .append("\n");
-        }
-        
-        String mensajeCompleto = sb.toString();
-
         LinkedList<Investigador> investigadores = logicUsuario.getCorreosInvestigadoresYRecibNot();
         
         // ya estamos en un hilo del scheduler
         for (Investigador investigador : investigadores) {
             try {
             	if(investigador.getRecibirNotificaciones() == true) {
-            		logicEmail.notificarRegistrosAprobadosHoy(investigador.getCorreo(), mensajeCompleto);
+            		logicEmail.notificarRegistrosAprobadosHoy(investigador.getCorreo(), registrosAprobadosHoy);
             	}
             } catch (Exception e) {
                 System.out.println("❌ Falló envío a: " + investigador.getCorreo());

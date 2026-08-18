@@ -5,6 +5,8 @@ import jakarta.mail.internet.*;
 import java.util.Properties;
 import helpers.EmailTemplates;
 import helpers.EnvHelper;
+import java.util.LinkedList;
+import entities.Registro;
 
 public class LogicEmail {
 	
@@ -61,10 +63,16 @@ public class LogicEmail {
         enviarEmail(emailUsuario, asunto, mensajeHtml);
     }
     
-    public void notificarRegistrosAprobadosHoy(String emailUsuario, String mensaje) {
-        String asunto = "📰 Introduccion de los registros aprobados el dia de hoy (por bestia) ";
-        
-        enviarEmail(emailUsuario, asunto, mensaje);
+    public void notificarRegistrosAprobadosHoy(
+            String emailUsuario,
+            LinkedList<Registro> registros) {
+
+        String asunto = "📋 Registros aprobados del día - Bestiario";
+
+        String mensajeHtml =
+                EmailTemplates.registrosAprobadosHoy(registros);
+
+        enviarEmail(emailUsuario, asunto, mensajeHtml);
     }
     
     public void notificarCambioContraseña(String emailUsuario, String link) {
