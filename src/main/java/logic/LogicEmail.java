@@ -3,8 +3,6 @@ package logic;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
-import java.util.LinkedList;
-import entities.Registro;
 import helpers.EmailTemplates;
 import helpers.EnvHelper;
 

@@ -71,8 +71,13 @@ public class SvRegister extends HttpServlet {
 					password,
 					fechaSinHora.atStartOfDay()
 				);
+				String recibirNotificaciones = request.getParameter("recibirNotificaciones");
+				if(recibirNotificaciones.equals("on")) {
+					recibirNotificaciones = "true";
+				}
+				System.out.println(recibirNotificaciones);
 				
-				userLector.setRecibirNotificaciones(Boolean.parseBoolean(request.getParameter("recibirNotiticaciones")));
+				userLector.setRecibirNotificaciones(Boolean.parseBoolean(recibirNotificaciones));
 				
 				try {
 					logicUsuario.save(userLector);
