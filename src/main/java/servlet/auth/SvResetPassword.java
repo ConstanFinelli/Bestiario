@@ -39,13 +39,13 @@ public class SvResetPassword extends HttpServlet {
 		String token = request.getParameter("token");
 		DataPasswordResetToken tokenDao = new DataPasswordResetToken();
 		PasswordResetToken t = null;
-		
+
 		try {
 			t = tokenDao.getOne(token);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error crítico al conseguir el token del usuario en el servlet SvResetPassword", e);
 		}
-
+			
 		if (t == null || t.isUsed() || t.getExpiration().isBefore(LocalDateTime.now())) {
 		    response.getWriter().println("Token inválido o expirado");
 		    return;

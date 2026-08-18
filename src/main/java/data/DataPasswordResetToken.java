@@ -45,12 +45,13 @@ public class DataPasswordResetToken {
 	public PasswordResetToken getOne(String token) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		PasswordResetToken t = new PasswordResetToken();
+		PasswordResetToken t = null;
 		try {
 			ps = DbConnector.getInstancia().getConn().prepareStatement("SELECT * FROM password_reset_token WHERE token = ?");
 			ps.setString(1, token);
 			rs = ps.executeQuery();
-			if(rs != null && rs.next()) {	
+			if(rs != null && rs.next()) {
+				t = new PasswordResetToken();
 	            t.setToken(rs.getString("token"));
 	            t.setIdUsuario(rs.getInt("idUsuario"));
 	            t.setExpiration(rs.getTimestamp("expiration").toLocalDateTime());
