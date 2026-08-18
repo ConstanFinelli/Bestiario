@@ -6,7 +6,6 @@ import java.util.LinkedList;
 
 import data.DataUsuario;
 import entities.Investigador;
-import entities.Lector;
 import entities.Usuario;
 
 

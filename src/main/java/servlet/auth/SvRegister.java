@@ -75,7 +75,6 @@ public class SvRegister extends HttpServlet {
 				if(recibirNotificaciones.equals("on")) {
 					recibirNotificaciones = "true";
 				}
-				System.out.println(recibirNotificaciones);
 				
 				userLector.setRecibirNotificaciones(Boolean.parseBoolean(recibirNotificaciones));
 				

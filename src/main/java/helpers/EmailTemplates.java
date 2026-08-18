@@ -158,7 +158,7 @@ public class EmailTemplates {
                                                 ">
 
                                                     <a
-                                                        href="#"
+                                                        href="http://localhost:8080/Bestiario/noticias/listar"
                                                         style="
                                                             display: inline-block;
                                                             padding: 12px 25px;

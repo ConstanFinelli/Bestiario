@@ -375,7 +375,7 @@ public class DataUsuario {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from usuario where recibirNotificaciones = true");
 			
 			rs = pstmt.executeQuery();
-			if(rs != null && rs.next()) {
+			while(rs != null && rs.next()) {
 				int id = rs.getInt("idUsuario");
 				String contraseña = rs.getString("contraseña");
 				String estado = rs.getString("estado");
