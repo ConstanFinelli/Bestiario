@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="helpers.HttpRoutes" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,11 +43,11 @@
 	        <input type="submit" class="logSubmit" value="Cambiar contraseña" />
 	    </aside>
 	
-	    <div class='errorBox'>
-	        <ul>
-	            <li class="errorMsg">${logMsg}</li>
-	        </ul>
-	    </div>
+	    <div class='errorBox' style="${empty logMsg ? 'display: none;' : ''}">
+		    <ul>
+		        <li class="errorMsg">${logMsg}</li>
+		    </ul>
+		</div>
 	
 	</form>
 	
