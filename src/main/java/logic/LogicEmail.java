@@ -5,7 +5,7 @@ import jakarta.mail.internet.*;
 import java.util.Properties;
 import java.util.LinkedList;
 import entities.Registro;
-
+import helpers.EmailTemplates;
 import helpers.EnvHelper;
 
 public class LogicEmail {
@@ -18,7 +18,7 @@ public class LogicEmail {
         this.password = EnvHelper.get("EMAIL_PASS");
     }
 	
-    public void enviarEmail(String destinatario, String asunto, String mensajeTexto) {
+    public void enviarEmail(String destinatario, String asunto, String mensajeHtml) {
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -43,13 +43,14 @@ public class LogicEmail {
                 InternetAddress.parse(destinatario)
             );
             message.setSubject(asunto);
-            message.setText(mensajeTexto);
+            message.setContent(mensajeHtml, "text/html; charset=UTF-8");
 
             Transport.send(message);
 
             System.out.println("✅ Email enviado a " + destinatario);
 
         } catch (MessagingException e) {
+        	e.printStackTrace();
             System.out.println("❌ Error enviando email");
         }
     }
@@ -57,9 +58,9 @@ public class LogicEmail {
      
     public void notificarNuevaNoticia(String emailUsuario, String tituloNoticia) {
         String asunto = "📰 Nueva noticia en Bestiario";
-        String mensaje = "Se ha publicado una nueva noticia:\n\n" + tituloNoticia;
+        String mensajeHtml = EmailTemplates.nuevaNoticia(tituloNoticia);
 
-        enviarEmail(emailUsuario, asunto, mensaje);
+        enviarEmail(emailUsuario, asunto, mensajeHtml);
     }
     
     public void notificarRegistrosAprobadosHoy(String emailUsuario, String mensaje) {
