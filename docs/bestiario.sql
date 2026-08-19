@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `bestiario` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `bestiario`;
 -- MySQL dump 10.13  Distrib 8.0.41, for Win64 (x86_64)
 --
 -- Host: localhost    Database: bestiario
@@ -31,7 +29,7 @@ CREATE TABLE `bestia` (
   `estado` varchar(45) DEFAULT '`pendiente`',
   PRIMARY KEY (`idBestia`),
   UNIQUE KEY `idbestia_UNIQUE` (`idBestia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,24 +141,6 @@ CREATE TABLE `comentario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `contenido_registro`
---
-
-DROP TABLE IF EXISTS `contenido_registro`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contenido_registro` (
-  `idContenido` int NOT NULL AUTO_INCREMENT,
-  `introduccion` text NOT NULL,
-  `historia` text NOT NULL,
-  `descripcion` text NOT NULL,
-  `resumen` text NOT NULL,
-  PRIMARY KEY (`idContenido`),
-  UNIQUE KEY `nro_registro_UNIQUE` (`idContenido`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `evidencia`
 --
 
@@ -216,6 +196,24 @@ CREATE TABLE `noticia` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `password_reset_token`
+--
+
+DROP TABLE IF EXISTS `password_reset_token`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_reset_token` (
+  `token` varchar(255) NOT NULL,
+  `idUsuario` int NOT NULL,
+  `expiration` datetime NOT NULL,
+  `used` tinyint NOT NULL,
+  PRIMARY KEY (`token`),
+  KEY `id_usuario_password_reset_token_idx` (`idUsuario`),
+  CONSTRAINT `id_usuario_password_reset_token` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `registro`
 --
 
@@ -231,13 +229,15 @@ CREATE TABLE `registro` (
   `estado` varchar(45) NOT NULL DEFAULT '"pendiente"',
   `idBestia` int NOT NULL,
   `main_picture` varchar(255) DEFAULT 'default_gn7qa2',
+  `introduccion` text NOT NULL,
+  `historia` text NOT NULL,
+  `descripcion` text NOT NULL,
+  `resumen` text NOT NULL,
   PRIMARY KEY (`nroRegistro`,`idBestia`),
-  UNIQUE KEY `idContenido_UNIQUE` (`idContenido`),
   KEY `idUsuario_idx` (`idUsuario`),
   KEY `idBestia_idx` (`idBestia`),
   CONSTRAINT `idBestia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `idContenido` FOREIGN KEY (`idContenido`) REFERENCES `contenido_registro` (`idContenido`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -278,7 +278,7 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `correo_UNIQUE` (`correo`),
   UNIQUE KEY `idUsuario_UNIQUE` (`idUsuario`),
   UNIQUE KEY `dni_UNIQUE` (`dni`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -290,34 +290,4 @@ CREATE TABLE `usuario` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-06 16:28:19
-
---
--- Table structure for table `password_reset_token`
---
-
-DROP TABLE IF EXISTS `password_reset_token`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `password_reset_token` (
-  `token` varchar(255) NOT NULL,
-  `idUsuario` int NOT NULL,
-  `expiration` datetime NOT NULL,
-  `used` tinyint NOT NULL,
-  PRIMARY KEY (`token`),
-  KEY `id_usuario_password_reset_token_idx` (`idUsuario`),
-  CONSTRAINT `id_usuario_password_reset_token` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2026-05-01  0:43:05
-
+-- Dump completed on 2026-08-19 15:54:52
