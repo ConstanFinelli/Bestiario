@@ -236,7 +236,8 @@ CREATE TABLE `registro` (
   KEY `idUsuario_idx` (`idUsuario`),
   KEY `idBestia_idx` (`idBestia`),
   CONSTRAINT `idBestia` FOREIGN KEY (`idBestia`) REFERENCES `bestia` (`idBestia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `idContenido` FOREIGN KEY (`idContenido`) REFERENCES `contenido_registro` (`idContenido`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

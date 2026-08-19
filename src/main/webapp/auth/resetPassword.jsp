@@ -11,6 +11,7 @@
 </head>
 
 <body class='logBody'>
+ <%@ include file="../components/error.jsp" %>
 <div class="logDiv">
 
 	<header class="logContainerHeader">

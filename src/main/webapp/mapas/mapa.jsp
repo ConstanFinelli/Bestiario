@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>
-
+	    <%@ include file="../components/error.jsp" %>
 <div class="contenedorMapa">
     <div id="map" class="mapa"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>

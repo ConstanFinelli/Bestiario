@@ -44,19 +44,19 @@
                 	<input type="hidden" name="bestia" value="<%= bestia.getIdBestia() %>">
 	                <article class="entrada">
 	                	<h2>Introducción</h2>
-	                	<textarea name="introduccion"><%= registro.getContenido().getIntroduccion() %></textarea>
+	                	<textarea name="introduccion"><%= registro.getIntroduccion() %></textarea>
 	                </article>
 	                <article class="entrada">
 		                <h2>Descripción</h2>
-		                <textarea name="descripcion"><%= registro.getContenido().getDescripcion() %></textarea>
+		                <textarea name="descripcion"><%= registro.getDescripcion() %></textarea>
 	                </article>
 	                <article class="entrada">
 		                <h2>Historia</h2>
-		                <textarea name="historia"><%= registro.getContenido().getHistoria() %></textarea>
+		                <textarea name="historia"><%= registro.getHistoria() %></textarea>
 	                </article>
 	                <article class="entrada">
 		                <h2>Resumen</h2>
-		                <textarea name="resumen"><%= registro.getContenido().getResumen() %></textarea>
+		                <textarea name="resumen"><%= registro.getResumen() %></textarea>
 	                </article>
                 
                 <% }else{ %>

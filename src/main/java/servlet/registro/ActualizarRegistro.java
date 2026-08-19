@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import logic.LogicBestia;
-import logic.LogicContenidoRegistro;
 import logic.LogicEvidencia;
 import logic.LogicRegistro;
 import logic.LogicTipoEvidencia;
@@ -24,7 +23,6 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import entities.Bestia;
-import entities.ContenidoRegistro;
 import entities.Evidencia;
 import entities.Investigador;
 import entities.Registro;
@@ -43,7 +41,6 @@ public class ActualizarRegistro extends HttpServlet {
 	private LogicBestia controladorBestia = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private LogicEvidencia controladorEvidencia = new LogicEvidencia();
-	private LogicContenidoRegistro controladorCr = new LogicContenidoRegistro();
 	private static final Logger logger = Logger.getLogger(ActualizarRegistro.class.getName());
 	
 	private static final long serialVersionUID = 1L;
@@ -140,7 +137,6 @@ public class ActualizarRegistro extends HttpServlet {
 		}
 		
 		
-		ContenidoRegistro contenido = new ContenidoRegistro(0, introduccion, historia,descripcion, resumen);
 		
 		try{
 			registroActual = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
@@ -150,11 +146,13 @@ public class ActualizarRegistro extends HttpServlet {
 			return;
 		}
 		if(registroActual != null) {
-			ContenidoRegistro crActual = registroActual.getContenido();	
-			if(contenido.getDescripcion().equals(crActual.getDescripcion()) && contenido.getHistoria().equals(crActual.getHistoria()) 
-					&& contenido.getIntroduccion().equals(crActual.getIntroduccion()) && contenido.getResumen().equals(crActual.getResumen()))
+			if(descripcion.equals(registroActual.getDescripcion()) && historia.equals(registroActual.getHistoria()) 
+					&& introduccion.equals(registroActual.getIntroduccion()) && resumen.equals(registroActual.getResumen()))
 			{ // verificar si no hubo modificaciones
-				contenido = null;
+				descripcion = null;
+				introduccion = null;
+				historia = null;
+				resumen = null;
 			}
 		}
 		try{
@@ -235,9 +233,9 @@ public class ActualizarRegistro extends HttpServlet {
 			}
 			
 		}
-		if(contenido != null) {
+		if(historia != null || introduccion != null || resumen != null || descripcion != null) {
 			try{
-				contenido = controladorCr.save(contenido);
+				registroActual.setContenido(introduccion, historia, resumen, descripcion);
 			}catch(Exception e) {
 				logger.log(Level.SEVERE, "Error al guardar contenido de registro en el servlet ActualizarRegistro", e);
 				request.setAttribute("errorGlobal", "No se ha podido guardar el contenido del registro. ");
@@ -253,7 +251,7 @@ public class ActualizarRegistro extends HttpServlet {
 			}else {
 				estadoRegistro = "pendiente";
 			}
-			Registro registro = new Registro(0, mainPic, contenido, fechaAprobacion, null, user, estadoRegistro , bestia );
+			Registro registro = new Registro(0, mainPic, introduccion, historia, descripcion, resumen, fechaAprobacion, null, user, estadoRegistro , bestia );
 
 			try{
 				controladorRegistro.save(registro);

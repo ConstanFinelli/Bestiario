@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="<%= HttpRoutes.LOGIN_CSS(request.getContextPath()) %>">
 </head>
 <body class='logBody'>
+ <%@ include file="../components/error.jsp" %>
 	<div class="logDiv">
 		<header class="logContainerHeader">
            <h1 class="logContainerHeaderText">Registrarse</h1>

@@ -5,17 +5,23 @@ import java.time.LocalDateTime;
 public class Registro {
 	private int nroRegistro;
 	private String mainPic;
-	private ContenidoRegistro contenido;
+	private String introduccion;
+	private String historia;
+	private String descripcion;
+	private String resumen;
 	private LocalDateTime fechaAprobacion;
 	private LocalDateTime fechaBaja;
 	private Investigador publicador;
 	private String estado;
 	private Bestia bestia;
 	
-	public Registro(int id, String mainP, ContenidoRegistro cR, LocalDateTime fechaA, LocalDateTime fechaB, Investigador pub, String status, Bestia b) {
+	public Registro(int id, String mainP, String i, String h, String d, String r, LocalDateTime fechaA, LocalDateTime fechaB, Investigador pub, String status, Bestia b) {
 		nroRegistro = id;
 		mainPic = mainP;
-		contenido = cR;
+		introduccion = i;
+		historia = i;
+		descripcion = i;
+		resumen = r;
 		fechaAprobacion = fechaA;
 		fechaBaja = fechaB;
 		setPublicador(pub);
@@ -34,12 +40,38 @@ public class Registro {
 	public void setNroRegistro(int nroRegistro) {
 		this.nroRegistro = nroRegistro;
 	}
-	public ContenidoRegistro getContenido() {
-		return contenido;
+	public String getIntroduccion() {
+		return introduccion;
 	}
-	public void setContenido(ContenidoRegistro contenido) {
-		this.contenido = contenido;
+
+	public void setIntroduccion(String introduccion) {
+		this.introduccion = introduccion;
 	}
+
+	public String getHistoria() {
+		return historia;
+	}
+
+	public void setHistoria(String historia) {
+		this.historia = historia;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getResumen() {
+		return resumen;
+	}
+
+	public void setResumen(String resumen) {
+		this.resumen = resumen;
+	}
+
 	public LocalDateTime getFechaAprobacion() {
 		return fechaAprobacion;
 	}
@@ -84,10 +116,17 @@ public class Registro {
 	public void setMainPic(String mainPic) {
 		this.mainPic = mainPic;
 	}
+	
+	public void setContenido(String i, String h, String d, String r) {
+		introduccion = i;
+		historia = h;
+		descripcion = d;
+		resumen = r;
+	}
 
 	@Override public String toString() {
 		return("Numero de Registro: " + nroRegistro + 
-				"<br>Detalles: " + contenido +
+				"<br>Detalles: " + introduccion + historia + descripcion + resumen + 
 				"<br>Fecha de aprobacion: " + fechaAprobacion +
 				"<br>Fecha de baja: " + fechaBaja +
 				"<br>Investigador que lo aprobo: " + publicador +

@@ -475,7 +475,7 @@ public class EmailTemplates {
 
                     </div>
                     """.formatted(
-                        registro.getContenido().getIntroduccion()
+                        registro.getIntroduccion()
                     ));
             }
         }

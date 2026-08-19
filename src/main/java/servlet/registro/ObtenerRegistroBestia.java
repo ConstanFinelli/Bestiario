@@ -62,7 +62,7 @@ public class ObtenerRegistroBestia extends HttpServlet {
 		if(id != null) {
 			if(nroRegistro != null) {
 				try{
-					registro = new Registro(Integer.parseInt(nroRegistro), null, null, null, null, null, null, bestia);
+					registro = new Registro(Integer.parseInt(nroRegistro), bestia);
 					registro = controladorRegistro.getOne(registro);
 				}catch(NumberFormatException e) {
 					logger.log(Level.WARNING, "Error al parsear nroRegistro en el servlet ObtenerRegistroBestia", e);

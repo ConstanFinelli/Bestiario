@@ -41,19 +41,19 @@
                 <% if(registro != null){ %>
                 <article class="entrada">
                 	<h2>Introducción</h2>
-                	<p><%= registro.getContenido().getIntroduccion() %></p>
+                	<p><%= registro.getIntroduccion() %></p>
                 </article>
                 <article class="entrada">
 	                <h2>Descripción</h2>
-	                <p><%= registro.getContenido().getDescripcion() %></p>
+	                <p><%= registro.getDescripcion() %></p>
                 </article>
                 <article class="entrada">
 	                <h2>Historia</h2>
-	                <p><%= registro.getContenido().getHistoria() %></p>
+	                <p><%= registro.getHistoria() %></p>
                 </article>
                 <article class="entrada">
 	                <h2>Resumen</h2>
-	                <p><%= registro.getContenido().getResumen() %></p>
+	                <p><%= registro.getResumen() %></p>
                 </article>
                 <% }else{ %>
                 	<% if(request.getParameter("fecha") == null){ %>
