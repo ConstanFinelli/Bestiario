@@ -234,13 +234,6 @@ public class ActualizarRegistro extends HttpServlet {
 			
 		}
 		if(historia != null || introduccion != null || resumen != null || descripcion != null) {
-			try{
-				registroActual.setContenido(introduccion, historia, resumen, descripcion);
-			}catch(Exception e) {
-				logger.log(Level.SEVERE, "Error al guardar contenido de registro en el servlet ActualizarRegistro", e);
-				request.setAttribute("errorGlobal", "No se ha podido guardar el contenido del registro. ");
-				return;
-			}
 			String estadoRegistro = null;
 			LocalDateTime fechaAprobacion = null;
 			Investigador user = null;

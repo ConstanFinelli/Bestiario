@@ -291,23 +291,23 @@ public class DataRegistro {
 			if("aprobado".equals(r.getEstado())){
 				setLastRegistroFechaBaja(r.getBestia());
 			}
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, main_picture, introduccion, historia, descripcion, resumen fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?,?)");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into Registro(nroRegistro, main_picture, introduccion, historia, descripcion, resumen, fechaAprobacion, fechaBaja, idUsuario, estado, idBestia) values(?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)");
 			pstmt.setInt(1, r.getNroRegistro());
 			pstmt.setString(2, r.getMainPic());
 			pstmt.setString(3, r.getIntroduccion());
 			pstmt.setString(4, r.getHistoria());
 			pstmt.setString(5, r.getDescripcion());
-			pstmt.setString(3, r.getResumen());
+			pstmt.setString(6, r.getResumen());
 			pstmt.setTimestamp(7, (r.getFechaAprobacion() == null) ? null:java.sql.Timestamp.valueOf(r.getFechaAprobacion()));
 			pstmt.setTimestamp(8, (r.getFechaBaja() == null) ? null:java.sql.Timestamp.valueOf(r.getFechaBaja()));
 			if(r.getPublicador() == null) {
-				pstmt.setNull(6, java.sql.Types.INTEGER);
+				pstmt.setNull(9, java.sql.Types.INTEGER);
 			}else {
-				pstmt.setInt(6, r.getPublicador().getIdUsuario());
+				pstmt.setInt(9, r.getPublicador().getIdUsuario());
 			}
 
-			pstmt.setString(7, r.getEstado());
-			pstmt.setInt(8, r.getBestia().getIdBestia());
+			pstmt.setString(10, r.getEstado());
+			pstmt.setInt(11, r.getBestia().getIdBestia());
 			pstmt.executeUpdate();
 		}catch(SQLException ex) {
 				System.out.println("Mensaje: " + ex.getMessage());
