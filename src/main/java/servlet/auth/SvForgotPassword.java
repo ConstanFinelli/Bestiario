@@ -36,9 +36,16 @@ public class SvForgotPassword extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher(HttpRoutes.LOGIN(request.getContextPath())).forward(request, response);
-	}
+    @Override
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.getRequestDispatcher(
+                HttpRoutes.FORGOT_PASSWORD_JSP("")
+        ).forward(request, response);
+    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

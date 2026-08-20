@@ -26,13 +26,12 @@
 	                    <label for="contrasena">🔐 Contraseña</label>
 	                </div>
 		            <div class='otherMsgs'>
-		                 	<button 
-						    type="submit"
-						    formaction="<%=HttpRoutes.FORGOT_PASSWORD(request.getContextPath())%>"
+	                 	<a
 						    class="linkButton otherMsg"
-						    onclick="if(document.getElementById('correo').value === '') { alert('Ingresa tu correo primero'); return false; }">
+						    href="<%= HttpRoutes.FORGOT_PASSWORD(request.getContextPath()) %>"
+						>
 						    ¿Has olvidado tu contraseña?
-						</button>
+						</a>
 			            <a class='otherMsg' href="<%= HttpRoutes.REGISTER(request.getContextPath()) %>">¿Aun no tienes una cuenta? Registrate	</a>
 		           	</div>
 	              	

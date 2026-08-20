@@ -12,6 +12,10 @@ public final class HttpRoutes {
 		return base + "/auth/login.jsp";
 	}
 	
+	public static String FORGOT_PASSWORD_JSP(String contextPath) {
+	    return contextPath + "/auth/forgotPassword.jsp";
+	}
+	
 	public static String LOGIN(String base) {
 		return base + "/auth/login";
 	}
