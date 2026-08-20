@@ -69,7 +69,6 @@ public class BackgroundJobListener implements ServletContextListener {
             scheduler.scheduleAtFixedRate(
                 () -> {
                     try {
-                        System.out.println("⏳ Enviando resumen diario...");
                         enviarResumenAdministradores();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -87,7 +86,6 @@ public class BackgroundJobListener implements ServletContextListener {
         LinkedList<Registro> registrosAprobadosHoy = logicRegistro.findRegistrosAprobadosHoy();
         
         if (registrosAprobadosHoy == null || registrosAprobadosHoy.isEmpty()) {
-            System.out.println("ℹ️ No hubo registros aprobados hoy. Saltando envío.");
             return;
         }
 
