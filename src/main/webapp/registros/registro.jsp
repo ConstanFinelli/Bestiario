@@ -98,7 +98,7 @@
                 <%} %>
             </section>
             <aside class="infoBestia">
-            	<img src="<%=UrlImagen%>" alt="Imagen de la bestia">
+            	<img src="<%=UrlImagen%>" alt="Imagen de la bestia" onerror="this.onerror=null; this.src='<%= CloudinaryHelper.getDefaultImage() %>';">
                 <div>
 	                <h3>Detalles de la bestia</h3>
 	                <ul>
