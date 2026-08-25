@@ -82,7 +82,8 @@
          
             <aside class="infoBestia">
 				<label>Ingresar imagen de la bestia (En caso de no haber ninguna se asignara la del registro anterior)</label>
-				<input type="file" name="mainPic" accept="image/*">
+				<input type="file" name="mainPic" accept="image/*" onchange="previsualizarImagen(event)">
+				<img id="previewMainPic" src="" alt="Vista previa de la imagen" style="display:none; max-width:100%; margin-top:10px; border-radius:8px;">
 					<div>
 						<h3>Detalles de la bestia</h3>
 						<ul>
@@ -175,6 +176,63 @@
 				        agregarNuevaEvidencia();
 				    });
 				
+				    function previsualizarImagen(event) {
+				        const input = event.target;
+				        const preview = document.getElementById('previewMainPic');
+
+				        if (input.files && input.files[0]) {
+				            const reader = new FileReader();
+				            reader.onload = function(e) {
+				                preview.src = e.target.result;
+				                preview.style.display = 'block';
+				            };
+				            reader.readAsDataURL(input.files[0]);
+				        } else {
+				            preview.src = '';
+				            preview.style.display = 'none';
+				        }
+				    }
+				
+				    function previsualizarArchivoEvidencia(event, contenedorPreview) {
+				        const input = event.target;
+				        contenedorPreview.innerHTML = '';
+
+				        if (!input.files || !input.files[0]) {
+				            return;
+				        }
+
+				        const file = input.files[0];
+				        const reader = new FileReader();
+
+				        reader.onload = function(e) {
+				            if (file.type.startsWith('image/')) {
+				                const img = document.createElement('img');
+				                img.src = e.target.result;
+				                img.classList.add('previewEvidencia');
+				                img.style.maxWidth = '100%';
+				                img.style.marginTop = '10px';
+				                img.style.borderRadius = '8px';
+				                contenedorPreview.appendChild(img);
+				            } else if (file.type.startsWith('video/')) {
+				                const video = document.createElement('video');
+				                video.src = e.target.result;
+				                video.controls = true;
+				                video.classList.add('previewEvidencia');
+				                video.style.maxWidth = '100%';
+				                video.style.marginTop = '10px';
+				                video.style.borderRadius = '8px';
+				                contenedorPreview.appendChild(video);
+				            } else {
+				                const p = document.createElement('p');
+				                p.textContent = 'Archivo seleccionado: ' + file.name;
+				                p.style.marginTop = '10px';
+				                contenedorPreview.appendChild(p);
+				            }
+				        };
+
+				        reader.readAsDataURL(file);
+				    }
+				
 				    function agregarNuevaEvidencia() {
 				        if(evidenciasActivas >= MAX_EVIDENCIAS){
 				            alert('¡No se pueden agregar más de ' + MAX_EVIDENCIAS + ' evidencias en simultáneo!');
@@ -246,6 +304,13 @@
 				        inputArchivo.name = 'archivo'; 
 				        inputArchivo.required = true;
 				
+				        const previewEvidencia = document.createElement('div');
+				        previewEvidencia.classList.add('previewEvidenciaContenedor');
+				
+				        inputArchivo.addEventListener('change', function(event) {
+				            previsualizarArchivoEvidencia(event, previewEvidencia);
+				        });
+				
 				        newArticle.appendChild(deleteButton);
 				        newArticle.appendChild(newH2);
 				        newArticle.appendChild(labelFecha);
@@ -254,6 +319,7 @@
 				        newArticle.appendChild(inputTipo);
 				        newArticle.appendChild(labelArchivo);
 				        newArticle.appendChild(inputArchivo);
+				        newArticle.appendChild(previewEvidencia);
 				
 				        contenedor.appendChild(newArticle);
 				
