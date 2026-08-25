@@ -420,6 +420,28 @@ public class EmailTemplates {
             """.formatted(link);
     }
     
+    private static String resumirIntroduccion(String texto, int maxCaracteres) {
+
+        if (texto == null) {
+            return "";
+        }
+
+        if (texto.length() <= maxCaracteres) {
+            return texto;
+        }
+
+        String resumen = texto.substring(0, maxCaracteres);
+
+        int ultimoEspacio = resumen.lastIndexOf(' ');
+
+        if (ultimoEspacio > 0) {
+            resumen = resumen.substring(0, ultimoEspacio);
+        }
+
+        return resumen.trim() + "...";
+    }
+    
+    
     public static String registrosAprobadosHoy(
         LinkedList<Registro> registros) {
 
@@ -475,7 +497,7 @@ public class EmailTemplates {
 
                     </div>
                     """.formatted(
-                        registro.getIntroduccion()
+                        resumirIntroduccion(registro.getIntroduccion(), 120)
                     ));
             }
         }
