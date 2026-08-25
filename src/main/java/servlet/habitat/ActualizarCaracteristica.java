@@ -10,8 +10,6 @@ import logic.LogicCaracteristicaHabitat;
 import logic.LogicHabitat;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +38,6 @@ public class ActualizarCaracteristica extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=carHabitat");
-		List<String> errores = new ArrayList<>();
 		String id = request.getParameter("id");
 		String descripcion = request.getParameter("descripcion");
 		String newDescripcion = request.getParameter("newDescripcion");

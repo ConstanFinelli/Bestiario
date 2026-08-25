@@ -10,7 +10,6 @@ import logic.LogicUsuario;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -41,7 +40,6 @@ public class ActualizarLector extends HttpServlet {
 		String email = request.getParameter("email");
 		String fecha = request.getParameter("fechaNacimiento");
 		String password = request.getParameter("password");
-		String feedbackMessage = "";
 		LocalDate fechaSinHora = null;
 		if(fecha != null) {
 			try{

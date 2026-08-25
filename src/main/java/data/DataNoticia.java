@@ -2,18 +2,14 @@ package data;
 
 import entities.Investigador;
 import entities.Noticia;
-import entities.Usuario;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DataNoticia {
 	
 	public DataUsuario userDAO = new DataUsuario();
-	private static final Logger logger = Logger.getLogger(DataNoticia.class.getName());
 	
 	public Noticia getOne(Noticia noticia) {
 		PreparedStatement pstmt = null;

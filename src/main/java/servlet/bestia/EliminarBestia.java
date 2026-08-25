@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
-import logic.LogicRegistro;
 
 import java.io.IOException;
 import java.util.logging.Level;
