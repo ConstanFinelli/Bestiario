@@ -31,10 +31,14 @@ public class CloudinaryHelper {
 	}
 	
 	public static String isImagenDefault(String publicId) {
-		if(publicId == null) {
-			publicId = EnvHelper.get("DEFAULT_ID");
+		if(publicId == null || publicId.trim().isEmpty()) {
+			publicId = EnvHelper.get("DEFAULT_PICTURE_ID");
 		}
 		return publicId;
+	}
+	
+	public static String getDefaultImage() {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(EnvHelper.get("DEFAULT_PICTURE_ID"));
 	}
 	
 	public static String getImagenRegistro(String publicId) {
