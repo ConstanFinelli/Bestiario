@@ -14,12 +14,9 @@ import logic.LogicRegistro;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import java.util.List;
 
 import entities.Bestia;
 import entities.Categoria;

@@ -6,14 +6,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logic.LogicCategoria;
 import logic.LogicUsuario;
 
 import java.io.IOException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import entities.Categoria;
 import entities.Usuario;
 import helpers.HttpRoutes;
 
@@ -36,7 +34,6 @@ public class EliminarLector extends HttpServlet {
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
-		String feedbackMessage = "";
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=usuarios");
 		Usuario us = null;
 		try{

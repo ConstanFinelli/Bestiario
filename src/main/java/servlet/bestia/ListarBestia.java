@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
 import logic.LogicRegistro;
-import servlet.noticia.CrearNoticia;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
