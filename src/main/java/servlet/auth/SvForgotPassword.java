@@ -36,9 +36,16 @@ public class SvForgotPassword extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher(HttpRoutes.LOGIN(request.getContextPath())).forward(request, response);
-	}
+    @Override
+    protected void doGet(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.getRequestDispatcher(
+                HttpRoutes.FORGOT_PASSWORD_JSP("")
+        ).forward(request, response);
+    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -87,7 +94,7 @@ String correo = request.getParameter("correo");
 		} else {
 			
 			request.getSession().setAttribute("logMsg", "El Correo ingresado no pertenece a nigún usuario");
-			response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
+			response.sendRedirect(HttpRoutes.FORGOT_PASSWORD_JSP(request.getContextPath()));
 		}
 		
 	}
