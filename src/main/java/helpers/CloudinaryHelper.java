@@ -37,6 +37,10 @@ public class CloudinaryHelper {
 		return publicId;
 	}
 	
+	public static String getDefaultImage() {
+		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(EnvHelper.get("DEFAULT_PICTURE_ID"));
+	}
+	
 	public static String getImagenRegistro(String publicId) {
 		publicId = isImagenDefault(publicId);
 		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);

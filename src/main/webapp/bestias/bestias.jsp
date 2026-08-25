@@ -10,6 +10,7 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="helpers.CloudinaryHelper" %>
 
 <%
 	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");	
@@ -94,7 +95,7 @@
 						<h1><%=bestia.getNombre()%></h1>
 						<% Registro ultRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 						%>
-						<img src="<%= imagenes.get(bestia)%>" alt="Imagen de: <%=bestia.getNombre()%>">
+						<img src="<%= imagenes.get(bestia)%>" alt="Imagen de: <%=bestia.getNombre()%>" onerror="this.onerror=null; this.src='<%= CloudinaryHelper.getDefaultImage() %>';">
 						<div class="overlay-buttons">
 							<a class="btnBestia"
 								href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Examinar</a>
