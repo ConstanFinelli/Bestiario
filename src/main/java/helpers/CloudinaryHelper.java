@@ -31,8 +31,8 @@ public class CloudinaryHelper {
 	}
 	
 	public static String isImagenDefault(String publicId) {
-		if(publicId == null) {
-			publicId = EnvHelper.get("DEFAULT_ID");
+		if(publicId == null || publicId.trim().isEmpty()) {
+			publicId = EnvHelper.get("DEFAULT_PICTURE_ID");
 		}
 		return publicId;
 	}
