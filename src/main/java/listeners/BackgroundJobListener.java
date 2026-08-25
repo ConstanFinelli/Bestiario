@@ -42,7 +42,7 @@ public class BackgroundJobListener implements ServletContextListener {
                     }
                 },
                 5,
-                30,
+                60,
                 TimeUnit.SECONDS
             );
 

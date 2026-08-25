@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import entities.Registro;
 
+
 public class EmailTemplates {
 
     public static String nuevaNoticia(String tituloNoticia) {
@@ -464,17 +465,26 @@ public class EmailTemplates {
 
             String nombreBestia = entry.getKey();
             List<Registro> registrosBestia = entry.getValue();
-
+            
+            int idBestia = registrosBestia.getFirst().getBestia().getIdBestia();
+            
+            String base_URL = EnvHelper.get("BASE_URL");
+            
+            String URL = HttpRoutes.OBTENER_REGISTRO_BESTIA(base_URL) // Lo ideal seria obtenerla de una .env
+            		+ "?id=" + idBestia; // E incluir el idBestia
+            
             contenido.append("""
-                <h3 style="
-                    margin: 25px 0 10px 0;
-                    color: #2C3E50;
-                    font-size: 20px;
-                    font-weight: 600;
-                ">
-                    %s
-                </h3>
-                """.formatted(nombreBestia));
+				<a href="%s" style="
+				    margin: 25px 0 10px 0;
+				    color: #2980B9;
+				    font-size: 20px;
+				    font-weight: 600;
+				    text-decoration: underline;
+				    display: inline-block;
+				">
+				    %s &#8599; <!-- Agrega una flecha hacia arriba/derecha (↗) -->
+				</a>
+                """.formatted(URL, nombreBestia));
 
             for (Registro registro : registrosBestia) {
 
