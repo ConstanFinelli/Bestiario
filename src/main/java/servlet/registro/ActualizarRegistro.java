@@ -164,7 +164,6 @@ public class ActualizarRegistro extends HttpServlet {
 		}
 
 		try {
-			// 1. Guardar Registro si hubo nueva imagen o cambio en los textos
 			if (hasNewMainPic || hasTextChanged) {
 				String mainPic;
 				if (hasNewMainPic) {
@@ -194,7 +193,6 @@ public class ActualizarRegistro extends HttpServlet {
 				controladorRegistro.save(nuevoRegistro);
 			}
 
-			// 2. Procesar evidencias
 			String[] fechas = request.getParameterValues("fechaObtencion");
 			String[] tipos = request.getParameterValues("tipo");
 			Collection<Part> parts = request.getParts();
@@ -227,14 +225,15 @@ public class ActualizarRegistro extends HttpServlet {
 			}
 
 		} catch(Exception e) {
-			logger.log(Level.SEVERE, "Error durante la actualización del registro / evidencias", e);
-			// Rollback de imágenes subidas a Cloudinary en esta petición para evitar huérfanas
-			for (String id : uploadedCloudinaryIds) {
-				try {
-					CloudinaryHelper.deleteImage(id);
-				} catch(Exception ignored) {}
-			}
-			request.setAttribute("errorGlobal", "Ocurrió un error al guardar los cambios: " + e.getMessage());
+			logger.log(Level.SEVERE, "Error durante la actualización del registro/evidencias en el servlet ActualizarRegistro", e);
+				for (String id : uploadedCloudinaryIds) {
+						try {
+						CloudinaryHelper.deleteImage(id);
+						}catch(Exception e) {
+							logger.log(Level.SEVERE, "Error al eliminar imagen ID("+id+") servlet ActualizarRegistro", e);
+						}
+				}
+			request.setAttribute("errorGlobal", "No se han podido guardar los cambios. ");
 			request.getRequestDispatcher(HttpRoutes.ACTUALIZACION_REGISTRO_JSP("")).forward(request, response);
 			return;
 		}
