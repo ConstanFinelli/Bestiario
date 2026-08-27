@@ -38,3 +38,6 @@ nbdist/
 
 # Sistema
 .DS_Store
+
+# Otros
+docs/guion_presentacion.md
