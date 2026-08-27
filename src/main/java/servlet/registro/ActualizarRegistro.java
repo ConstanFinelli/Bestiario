@@ -33,6 +33,7 @@ import entities.TipoEvidencia;
 import entities.Usuario;
 import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
+import helpers.EnvHelper;
 
 /**
  * Servlet implementation class ActualizarRegistro
