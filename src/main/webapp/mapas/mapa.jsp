@@ -95,9 +95,28 @@
     <% } %>
 
     <div class="btnMapa">
-        <a href="<%=HttpRoutes.HOME_JSP(request.getContextPath())%>">Volver</a>
+        <a href="javascript:void(0);" onclick="volverPaginaAnterior()">Volver</a>
     </div>
 </div>
+
+<script>
+    // Guardar la URL previa si venimos desde fuera del mapa
+    if (document.referrer && !document.referrer.includes('/mapa') && !document.referrer.includes('Mapa')) {
+        sessionStorage.setItem('mapaPrevUrl', document.referrer);
+    }
+
+    function volverPaginaAnterior() {
+        const prevUrl = sessionStorage.getItem('mapaPrevUrl');
+        if (prevUrl) {
+            sessionStorage.removeItem('mapaPrevUrl');
+            window.location.href = prevUrl;
+        } else if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '<%=HttpRoutes.HOME_JSP(request.getContextPath())%>';
+        }
+    }
+</script>
 
 </body>
 </html>
