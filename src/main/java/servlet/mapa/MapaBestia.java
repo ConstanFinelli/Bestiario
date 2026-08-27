@@ -70,6 +70,11 @@ public class MapaBestia extends HttpServlet {
 			logger.log(Level.WARNING, "Error al obtener el registro de la bestia en el servlet MapaBestia", e);
 			request.setAttribute("errorGlobal","No se ha podido obtener el registro de la bestia");
 		}
+		
+		if(bestia.getHabitats().isEmpty()) {
+			request.setAttribute("errorGlobal","La bestia no tiene habitats asociados");
+			rd.forward(request, response);
+		}
 
 		Map<Bestia, String> bestias = new HashMap<Bestia, String>();
 		bestias.put(bestia, registro != null? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID"));

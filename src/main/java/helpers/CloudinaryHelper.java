@@ -24,11 +24,6 @@ public class CloudinaryHelper {
 	public static String upload(Part archivo){		
 		try {
 			byte[] fileBytes = archivo.getInputStream().readAllBytes();
-			String contentType = archivo.getContentType();
-
-			// Pre-escalar y comprimir en memoria en Java si es imagen grande (> 1920x1080 o > 5MB)
-			fileBytes = ImageHelper.resizeAndCompressIfNeeded(fileBytes, contentType);
-
 			Transformation<?> uploadTransformation = new Transformation<>()
 				.width(1920)
 				.height(1080)
