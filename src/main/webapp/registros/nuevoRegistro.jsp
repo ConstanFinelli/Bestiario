@@ -392,6 +392,15 @@
 							cerrarModal();
 						}
 					}
+
+					document.querySelector('form').addEventListener('submit', function(e) {
+						const submitBtn = this.querySelector('button[type=submit]');
+						if (submitBtn) {
+							submitBtn.disabled = true;
+							submitBtn.textContent = 'Enviando registro...';
+							submitBtn.style.opacity = '0.7';
+						}
+					});
 				</script>
          </form>
         <% } %>
