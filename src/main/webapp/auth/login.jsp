@@ -19,11 +19,11 @@
 	            
 	            <section class="logInputs">
 	                <div class="logInput">
-	                    <input type="email" required placeholder=' ' id="correo" name="correo" value='test@a.com' />
+	                    <input type="email" required placeholder=' ' id="correo" name="correo" />
 	                    <label for='correo'>✉️ Correo electrónico</label>
 	                </div>
 	                <div class="logInput">
-	                    <input type="password" required placeholder=' ' id="contrasena" name='contrasena' value='123'/>
+	                    <input type="password" required placeholder=' ' id="contrasena" name='contrasena' />
 	                    <label for="contrasena">🔐 Contraseña</label>
 	                </div>
 		            <div class='otherMsgs'>
