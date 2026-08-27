@@ -128,6 +128,7 @@ public class ActualizarRegistro extends HttpServlet {
 			}catch(Exception e) {
 				logger.log(Level.SEVERE, "Error al subir imagen de bestia en el servlet ActualizarRegistro", e);
 				request.setAttribute("errorGlobal", "No se ha podido subir la imagen de la bestia. ");
+				doGet(request, response);
 				return;
 			}
 		}else {
@@ -136,6 +137,7 @@ public class ActualizarRegistro extends HttpServlet {
 			}catch(Exception e) {
 				logger.log(Level.SEVERE, "Error al obtener imagen en el servlet ActualizarRegistro", e);
 				request.setAttribute("errorGlobal", "No se ha podido obtener la imagen de la bestia. ");
+				doGet(request, response);
 				return;
 			}
 		}
