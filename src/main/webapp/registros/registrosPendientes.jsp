@@ -2,6 +2,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Bestia" %>
+<%@ page import="helpers.HttpRoutes" %>
 
 <!DOCTYPE html>
 <html>
@@ -19,8 +20,8 @@
     <h1>Registros pendientes</h1>
 
     <%
-        Bestia bestia = (Bestia) request.getAttribute("bestia");
-        LinkedList<Registro> registros = (LinkedList<Registro>) request.getAttribute("registrosPendientes");
+        Bestia bestia = (Bestia) request.getAttribute("foundBestia");
+        LinkedList<Registro> registros = (LinkedList<Registro>) request.getAttribute("foundRegistros");
     %>
 
     <% if (bestia != null) { %>
@@ -42,11 +43,11 @@
                 <tr>
                     <td><%= reg.getNroRegistro() %></td>
                     <td class="acciones">
-                        <a href="SvBestia?action=registro&id=<%= bestia.getIdBestia() %>&nroRegistro=<%=reg.getNroRegistro()%>">
+                        <a href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia() %>&nroRegistro=<%= reg.getNroRegistro() %>">
                         	<button class="btnExaminar">Examinar</button>
                         </a>
                     	
-                    	<form action="SvRegistro" method="post" style="display:flex;">
+                    	<form action="<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>" method="post" style="display:flex;">
         					<input type="hidden" name="action" value="aceptar">
 					        <input type="hidden" name="nroRegistro" value="<%= reg.getNroRegistro() %>">
 					        <input type="hidden" name="idInvestigador" value="<%= usuario.getIdUsuario() %>">
@@ -54,7 +55,7 @@
 					        <button class="btnAceptar" type="submit">Aceptar</button>
     					</form>
 
-					    <form action="SvRegistro" method="post" style="display:flex;">
+					    <form action="<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>" method="post" style="display:flex;">
 					        <input type="hidden" name="action" value="rechazar">
 					        <input type="hidden" name="nroRegistro" value="<%= reg.getNroRegistro() %>">
 					        <input type="hidden" name="idBestia" value="<%= reg.getBestia().getIdBestia() %>"/>

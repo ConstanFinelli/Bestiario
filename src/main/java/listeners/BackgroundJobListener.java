@@ -19,7 +19,7 @@ import logic.LogicUsuario;
 
 @WebListener
 public class BackgroundJobListener implements ServletContextListener {
-	private static final boolean MODO_PRUEBA = false;
+	private static final boolean MODO_PRUEBA = true;
 	
     private ScheduledExecutorService scheduler;
     private LogicRegistro logicRegistro = new LogicRegistro();
@@ -42,7 +42,7 @@ public class BackgroundJobListener implements ServletContextListener {
                     }
                 },
                 5,
-                60,
+                80,
                 TimeUnit.SECONDS
             );
 
