@@ -73,7 +73,6 @@ public class MapaBestia extends HttpServlet {
 		
 		if(bestia.getHabitats().isEmpty()) {
 			request.setAttribute("errorGlobal","La bestia no tiene habitats asociados");
-			rd.forward(request, response);
 		}
 
 		Map<Bestia, String> bestias = new HashMap<Bestia, String>();

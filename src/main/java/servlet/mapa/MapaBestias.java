@@ -87,6 +87,11 @@ public class MapaBestias extends HttpServlet {
 			bestiasImagenes.put(b, registro != null? registro.getMainPic(): EnvHelper.get("DEFAULT_PICTURE_ID"));
 		}
 		request.getSession().setAttribute("bestias", bestiasImagenes);
+
+		if(bestias.isEmpty()) {
+			request.setAttribute("errorGlobal","No hay bestias para mostrar");
+		}
+		
 		rd.forward(request, response);
 	}
 
