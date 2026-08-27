@@ -23,8 +23,17 @@ public class CloudinaryHelper {
 	
 	public static String upload(Part archivo){		
 		try {
-		byte[] fileBytes = archivo.getInputStream().readAllBytes();
-		return getInstancia().uploader().upload(fileBytes, ObjectUtils.asMap("resource_type", "auto")).get("public_id").toString();
+			byte[] fileBytes = archivo.getInputStream().readAllBytes();
+			Transformation<?> uploadTransformation = new Transformation<>()
+				.width(1920)
+				.height(1080)
+				.crop("limit")
+				.quality("auto");
+
+			return getInstancia().uploader().upload(fileBytes, ObjectUtils.asMap(
+				"resource_type", "auto",
+				"transformation", uploadTransformation
+			)).get("public_id").toString();
 		}catch(IOException e) {
 			throw new RuntimeException("Error al subir archivo", e); 
 		}
@@ -38,12 +47,12 @@ public class CloudinaryHelper {
 	}
 	
 	public static String getDefaultImage() {
-		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(EnvHelper.get("DEFAULT_PICTURE_ID"));
+		return getInstancia().url().transformation(new Transformation<>().width(300).height(300).crop("fill").quality("auto").fetchFormat("auto")).generate(EnvHelper.get("DEFAULT_PICTURE_ID"));
 	}
 	
 	public static String getImagenRegistro(String publicId) {
 		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
 	public static String getImagenMapa(String publicId) {
@@ -58,20 +67,20 @@ public class CloudinaryHelper {
 	
 	public static String getImagenListadoBestia(String publicId) {
 		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(400).height(400).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
 	public static String getImagenEditarBestia(String publicId) {
 		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(400).height(400).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
 	public static String getVideoEvidencia(String publicId) {
-		return getInstancia().url().resourceType("video").transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getInstancia().url().resourceType("video").transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
 	public static String getImagenEvidencia(String publicId) {
-		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
 	public static String getArchivoEvidencia(String publicId) {

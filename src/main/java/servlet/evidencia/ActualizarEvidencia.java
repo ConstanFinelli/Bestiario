@@ -25,7 +25,11 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class ActualizarEvidencia
  */
-@MultipartConfig
+@MultipartConfig(
+	fileSizeThreshold = 1024 * 1024 * 2,  // 2MB memoria antes de escribir temporal en disco
+	maxFileSize = 1024 * 1024 * 50,       // 50MB máximo por archivo individual
+	maxRequestSize = 1024 * 1024 * 100    // 100MB máximo por petición total
+)
 @WebServlet("/evidencias/actualizar")
 public class ActualizarEvidencia extends HttpServlet {
 	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();

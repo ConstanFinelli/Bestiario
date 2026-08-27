@@ -34,7 +34,11 @@ import helpers.HttpRoutes;
 /**
  * Servlet implementation class ActualizarRegistro
  */
-@MultipartConfig
+@MultipartConfig(
+	fileSizeThreshold = 1024 * 1024 * 2,  // 2MB memoria antes de escribir temporal en disco
+	maxFileSize = 1024 * 1024 * 50,       // 50MB máximo por archivo individual
+	maxRequestSize = 1024 * 1024 * 100    // 100MB máximo por petición total
+)
 @WebServlet("/registros/actualizarRegistro")
 public class ActualizarRegistro extends HttpServlet {
 	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
