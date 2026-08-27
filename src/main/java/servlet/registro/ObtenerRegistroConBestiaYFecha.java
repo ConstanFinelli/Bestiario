@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import entities.Bestia;
 import entities.Registro;
 import helpers.CloudinaryHelper;
+import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
 /**
@@ -83,7 +84,7 @@ public class ObtenerRegistroConBestiaYFecha extends HttpServlet {
 
 		String UrlImagen = null;
 		try{
-			UrlImagen = CloudinaryHelper.getImagenRegistro(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+			UrlImagen = CloudinaryHelper.getImagenRegistro(registro != null ? registro.getMainPic() : EnvHelper.get("DEFUALT_IMAGE_ID"));
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir imagen en el servlet ObtenerRegistroConBestiaYFecha", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido la imagen del registro. ");

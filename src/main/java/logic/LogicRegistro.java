@@ -22,6 +22,11 @@ public class LogicRegistro {
 		return registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID");
 	}
 	
+	public String getImagen(Registro r) {
+		Registro registro = rDao.getOne(r);
+		return registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID");
+	}
+	
 	public Registro getOne(Registro r) {
 		return rDao.getOne(r);
 	}

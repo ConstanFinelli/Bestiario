@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import entities.Bestia;
 import entities.Registro;
 import helpers.CloudinaryHelper;
+import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
 /**
@@ -85,7 +86,7 @@ public class ObtenerRegistroBestia extends HttpServlet {
 		}
 
 		try{	
-			imagen = (CloudinaryHelper.getImagenRegistro(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
+			imagen = (CloudinaryHelper.getImagenRegistro(registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir imagen en el servlet ObtenerRegistroBestia", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido la imagen del registro. ");
