@@ -163,7 +163,7 @@ public class ActualizarRegistro extends HttpServlet {
 					|| !Objects.equals(descripcion, registroActual.getDescripcion())
 					|| !Objects.equals(resumen, registroActual.getResumen());
 		}
-
+			Registro nuevoRegistro = null;
 		try {
 			if (hasNewMainPic || hasTextChanged) {
 				String mainPic;
@@ -190,8 +190,8 @@ public class ActualizarRegistro extends HttpServlet {
 					user = (Investigador) usuario;
 				}
 
-				Registro nuevoRegistro = new Registro(0, mainPic, introduccion, historia, descripcion, resumen, fechaAprobacion, null, user, estadoRegistro, bestia);
-				controladorRegistro.save(nuevoRegistro);
+				nuevoRegistro = new Registro(0, mainPic, introduccion, historia, descripcion, resumen, fechaAprobacion, null, user, estadoRegistro, bestia);
+				nuevoRegistro = controladorRegistro.save(nuevoRegistro);
 			}
 
 			String[] fechas = request.getParameterValues("fechaObtencion");
@@ -239,7 +239,7 @@ public class ActualizarRegistro extends HttpServlet {
 			return;
 		}
 
-		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + bestiaId);
+		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + bestiaId + "&nroRegistro=" + nuevoRegistro.getNroRegistro());
 	}
 	
 
