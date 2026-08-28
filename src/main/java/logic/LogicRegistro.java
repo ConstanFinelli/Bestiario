@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 import data.DataRegistro;
+import entities.Bestia;
 import entities.Registro;
 import helpers.CloudinaryHelper;
 import helpers.EnvHelper;
-import entities.Bestia;
 
 public class LogicRegistro {
 	public DataRegistro rDao = new DataRegistro();
@@ -19,11 +19,6 @@ public class LogicRegistro {
 	
 	public String getImagen(Bestia b, LocalDateTime fecha) {
 		Registro registro = rDao.getRegistroToShow(b, fecha);
-		return registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID");
-	}
-	
-	public String getImagen(Registro r) {
-		Registro registro = rDao.getOne(r);
 		return registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID");
 	}
 	
