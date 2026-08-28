@@ -180,7 +180,7 @@
             	<%}} %>
             	<div class="anotherRegistros">
             		<h3>Cargar registro en determinada fecha</h3>
-				    <form action="<%=HttpRoutes.OBTENER_REGISTRO_BESTIA_CON_FECHA(request.getContextPath())%>" method="get" class="registrosForm">
+				    <form action="<%=HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath())%>" method="get" class="registrosForm">
 				        <input type="hidden" name="id" value="<%= bestia != null ? bestia.getIdBestia() : "" %>">
 				        <input type="datetime-local" id="fecha" name="fecha" required>
 				        <button type="submit" class="btnRegistro">Cargar registro</button>
