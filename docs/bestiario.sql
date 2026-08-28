@@ -3,7 +3,9 @@
 -- Host: localhost    Database: bestiario
 -- ------------------------------------------------------
 -- Server version	8.4.5
-
+drop schema if exists bestiario;
+Create Schema bestiario;
+use bestiario;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -222,8 +224,8 @@ DROP TABLE IF EXISTS `registro`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `registro` (
   `nroRegistro` int NOT NULL,
-  `fechaAprobacion` date DEFAULT NULL,
-  `fechaBaja` date DEFAULT NULL,
+  `fechaAprobacion` datetime DEFAULT NULL,
+  `fechaBaja` datetime DEFAULT NULL,
   `idUsuario` int DEFAULT NULL,
   `estado` varchar(45) NOT NULL DEFAULT '"pendiente"',
   `idBestia` int NOT NULL,
