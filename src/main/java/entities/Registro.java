@@ -19,8 +19,8 @@ public class Registro {
 		nroRegistro = id;
 		mainPic = mainP;
 		introduccion = i;
-		historia = i;
-		descripcion = i;
+		historia = h;
+		descripcion = d;
 		resumen = r;
 		fechaAprobacion = fechaA;
 		fechaBaja = fechaB;

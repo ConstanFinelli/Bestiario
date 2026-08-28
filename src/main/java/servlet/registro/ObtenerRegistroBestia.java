@@ -1,5 +1,16 @@
 package servlet.registro;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import entities.Bestia;
+import entities.Registro;
+import helpers.CloudinaryHelper;
+import helpers.EnvHelper;
+import helpers.HttpRoutes;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,18 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
 import logic.LogicRegistro;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
-import entities.Bestia;
-import entities.Registro;
-import helpers.CloudinaryHelper;
-import helpers.EnvHelper;
-import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class ObtenerBestia
@@ -77,27 +76,22 @@ public class ObtenerRegistroBestia extends HttpServlet {
 					return;
 				}
 			}else {
-				if(fecha != null) {
-					try{
-						LocalDateTime fechaParseada = LocalDateTime.parse(fecha);
-						registro = controladorRegistro.getRegistroToShow(bestia, fechaParseada);
-					}catch(DateTimeParseException e) {
-						logger.log(Level.WARNING, "Error al parsear fecha en el servlet ObtenerRegistroBestia", e);
-						request.setAttribute("errorGlobal", "La fecha es inválida. ");
-						return;
-					}catch(Exception e) {
-						logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
-						request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");
-						return;
+				LocalDateTime fechaParseada;
+				try{
+					if(fecha == null) {
+						fechaParseada = LocalDateTime.now();
+					}else{
+						fechaParseada = LocalDateTime.parse(fecha);
 					}
-				}else{
-					try{
-						registro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
-					}catch(Exception e) {
-						logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
-						request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");
-						return;
-					}
+					registro = controladorRegistro.getRegistroToShow(bestia, fechaParseada);
+				}catch(DateTimeParseException e) {
+					logger.log(Level.WARNING, "Error al parsear fecha en el servlet ObtenerRegistroBestia", e);
+					request.setAttribute("errorGlobal", "La fecha es inválida. ");
+					return;
+				}catch(Exception e) {
+					logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
+					request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");
+					return;
 				}
 			}
 		}
