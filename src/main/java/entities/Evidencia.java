@@ -1,15 +1,15 @@
 package entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Evidencia {
 	private int nroEvidencia;
-	private LocalDateTime fechaObtencion;
+	private LocalDate fechaObtencion;
 	private String estado;
 	private String fileId;
 	private TipoEvidencia tipo;
 	
-	public Evidencia(int nroEvidencia, LocalDateTime fechaObtencion, String estado, String fileId, TipoEvidencia tip) {
+	public Evidencia(int nroEvidencia, LocalDate fechaObtencion, String estado, String fileId, TipoEvidencia tip) {
 		this.nroEvidencia = nroEvidencia;
 		this.fechaObtencion = fechaObtencion;
 		this.estado = estado;
@@ -28,10 +28,10 @@ public class Evidencia {
 	public void setNroEvidencia(int nroEvidencia) {
 		this.nroEvidencia = nroEvidencia;
 	}
-	public LocalDateTime getFechaObtencion() {
+	public LocalDate getFechaObtencion() {
 		return fechaObtencion;
 	}
-	public void setFechaObtencion(LocalDateTime fechaObtencion) {
+	public void setFechaObtencion(LocalDate fechaObtencion) {
 		this.fechaObtencion = fechaObtencion;
 	}
 	public String getEstado() {

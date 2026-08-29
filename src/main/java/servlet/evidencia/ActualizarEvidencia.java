@@ -1,17 +1,7 @@
 package servlet.evidencia;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import logic.LogicEvidencia;
-import logic.LogicTipoEvidencia;
-
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +11,15 @@ import entities.Evidencia;
 import entities.TipoEvidencia;
 import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import logic.LogicEvidencia;
+import logic.LogicTipoEvidencia;
 
 /**
  * Servlet implementation class ActualizarEvidencia
@@ -59,7 +58,7 @@ public class ActualizarEvidencia extends HttpServlet {
 		String nroEvidencia = request.getParameter("nroEvidencia");
 		String fileId = CloudinaryHelper.upload(archivo);
 		try {
-			evidencia = controladorEvidencia.update(new Evidencia(Integer.parseInt(nroEvidencia), LocalDateTime.parse(request.getParameter("fechaObtencion")), request.getParameter("estado"), fileId , tipo));
+			evidencia = controladorEvidencia.update(new Evidencia(Integer.parseInt(nroEvidencia), LocalDate.parse(request.getParameter("fechaObtencion")), request.getParameter("estado"), fileId , tipo));
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al actualizar la evidencia en el servlet ActualizarEvidencia", e);
 				errores.add("No se ha podido actualizar la evidencia a actualizar");

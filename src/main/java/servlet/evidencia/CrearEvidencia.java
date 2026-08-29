@@ -1,5 +1,14 @@
 package servlet.evidencia;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import entities.Evidencia;
+import entities.TipoEvidencia;
+import helpers.CloudinaryHelper;
+import helpers.HttpRoutes;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -10,16 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logic.LogicEvidencia;
 import logic.LogicTipoEvidencia;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import entities.Evidencia;
-import entities.TipoEvidencia;
-import helpers.CloudinaryHelper;
-import helpers.HttpRoutes;
 
 /**
  * Servlet implementation class CrearEvidencia
@@ -52,7 +51,7 @@ public class CrearEvidencia extends HttpServlet {
 		String estado = request.getParameter("estado");
 		String idTipoEvidencia = request.getParameter("idTipoEvidencia");
 		
-		LocalDateTime fechaO = null;
+		LocalDate fechaO = null;
 		TipoEvidencia tipo = null;
 		Evidencia evidencia = null;
 		try {
@@ -64,7 +63,7 @@ public class CrearEvidencia extends HttpServlet {
 			return;
 		}
 		try {
-			 fechaO = LocalDateTime.parse(request.getParameter("fechaObtencion"));
+			 fechaO = LocalDate.parse(request.getParameter("fechaObtencion"));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error parseando la fecha de obtencion en el servlet CrearEvidencia");
 			request.setAttribute("errorGlobal","Error leyendo la fecha de obtencion");

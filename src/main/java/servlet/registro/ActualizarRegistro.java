@@ -210,8 +210,7 @@ public class ActualizarRegistro extends HttpServlet {
 			if (fechas != null && !archivos.isEmpty()) {
 				LinkedList<Evidencia> evidencias = new LinkedList<>();
 				for (int i = 0; i < fechas.length && i < archivos.size() && i < tipos.length; i++) {
-					LocalDate fechaSinHora = LocalDate.parse(fechas[i]);
-					LocalDateTime fecha = fechaSinHora.atStartOfDay();
+					LocalDate fecha = LocalDate.parse(fechas[i]);
 					TipoEvidencia te = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(tipos[i])));
 					String estadoEvidencia = (usuario != null && "investigador".equals(usuario.getEstado())) ? "aprobado" : "pendiente";
 					Evidencia evidencia = new Evidencia(0, fecha, estadoEvidencia, archivos.get(i), te);
