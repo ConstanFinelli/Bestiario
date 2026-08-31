@@ -8,12 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import logic.LogicBestia;
+import logic.LogicTipoEvidencia;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Bestia;
+import entities.TipoEvidencia;
 import entities.Usuario;
 import helpers.HttpRoutes;
 
@@ -26,8 +29,9 @@ public class CrearBestia extends HttpServlet {
 	
 	// CONTROLADORES
 	private LogicBestia controlador = new LogicBestia();
+	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
 	private static final Logger logger = Logger.getLogger(CrearBestia.class.getName());
-
+	
     public CrearBestia() {
         super();
     }
@@ -39,6 +43,18 @@ public class CrearBestia extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String peligrosidad= request.getParameter("peligrosidad");
 		Usuario usuario = (Usuario) session.getAttribute("user");
+		
+		try {
+			LinkedList<TipoEvidencia> te = controladorTipoEvidencia.findAll();
+			request.setAttribute("tiposEvidencia", te);
+		}catch(Exception e) {
+			logger.log(Level.WARNING, "Error buscando los tipos de evidencia en la base de datos en el servlet CrearBestia");
+			request.setAttribute("errorGlobal", "Error buscando los tipos de evidencia");
+			request.getRequestDispatcher(HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP("")).forward(request, response);;
+		}
+		
+		
+		
 		try {
 			if (nombre != null && peligrosidad != null) {
 				String estado = "pendiente";
@@ -52,6 +68,7 @@ public class CrearBestia extends HttpServlet {
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al crear bestia en el servlet CrearBestia", e);
 			request.setAttribute("errorGlobal", "No se ha podido crear la bestia. ");
+			request.getRequestDispatcher(HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP("")).forward(request, response);;
 		}
 		rd.forward(request, response);
 	}
