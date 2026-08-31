@@ -83,7 +83,7 @@
             <aside class="infoBestia">
 				<label>Ingresar imagen de la bestia (En caso de no haber ninguna se asignara la del registro anterior)</label>
 				<input type="file" name="mainPic" accept="image/*" onchange="previsualizarImagen(event)">
-				<img id="previewMainPic" src="" alt="Vista previa de la imagen" style="display:none; max-width:100%; margin-top:10px; border-radius:8px;">
+				<img id="previewMainPic" src="<%=CloudinaryHelper.getImagenRegistro(registro != null? registro.getMainPic() : null)%>" alt="Vista previa de la imagen" style="display:block; max-width:100%; margin-top:10px; border-radius:8px;">
 					<div>
 						<h3>Detalles de la bestia</h3>
 						<ul>
@@ -209,7 +209,7 @@
 				                const img = document.createElement('img');
 				                img.src = e.target.result;
 				                img.classList.add('previewEvidencia');
-				                img.style.maxWidth = '100%';
+				                img.style.maxWidth = '300px';
 				                img.style.marginTop = '10px';
 				                img.style.borderRadius = '8px';
 				                contenedorPreview.appendChild(img);
@@ -218,7 +218,7 @@
 				                video.src = e.target.result;
 				                video.controls = true;
 				                video.classList.add('previewEvidencia');
-				                video.style.maxWidth = '100%';
+				                video.style.maxWidth = '300px';
 				                video.style.marginTop = '10px';
 				                video.style.borderRadius = '8px';
 				                contenedorPreview.appendChild(video);
