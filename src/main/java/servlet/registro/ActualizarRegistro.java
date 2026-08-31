@@ -17,6 +17,7 @@ import logic.LogicTipoEvidencia;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -139,6 +140,9 @@ public class ActualizarRegistro extends HttpServlet {
 			registroActual = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
 		} catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir registro actual en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "No se ha podido conseguir el registro actual de la bestia");
+			doGet(request, response);
+			return;
 		}
 
 		List<String> uploadedCloudinaryIds = new ArrayList<>();
@@ -147,7 +151,9 @@ public class ActualizarRegistro extends HttpServlet {
 			filePart = request.getPart("mainPic");
 		} catch(Exception e) {
 			logger.log(Level.WARNING, "Error al leer part mainPic", e);
-
+			request.setAttribute("errorGlobal", "La imagen no ha podido cargarse");
+			doGet(request, response);
+			return;
 		}
 
 		boolean hasNewMainPic = (filePart != null && filePart.getSize() > 0);
@@ -210,12 +216,25 @@ public class ActualizarRegistro extends HttpServlet {
 			if (fechas != null && !archivos.isEmpty()) {
 				LinkedList<Evidencia> evidencias = new LinkedList<>();
 				for (int i = 0; i < fechas.length && i < archivos.size() && i < tipos.length; i++) {
-					LocalDate fecha = LocalDate.parse(fechas[i]);
-					TipoEvidencia te = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(tipos[i])));
-					String estadoEvidencia = (usuario != null && "investigador".equals(usuario.getEstado())) ? "aprobado" : "pendiente";
-					Evidencia evidencia = new Evidencia(0, fecha, estadoEvidencia, archivos.get(i), te);
-					controladorEvidencia.save(evidencia);
-					evidencias.add(evidencia);
+					try {
+						LocalDate fecha = LocalDate.parse(fechas[i]);	
+						TipoEvidencia te = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(tipos[i])));
+						String estadoEvidencia = (usuario != null && "investigador".equals(usuario.getEstado())) ? "aprobado" : "pendiente";
+						Evidencia evidencia = new Evidencia(0, fecha, estadoEvidencia, archivos.get(i), te);
+						controladorEvidencia.save(evidencia);
+						evidencias.add(evidencia);
+					}catch(NumberFormatException e) {
+						logger.log(Level.SEVERE, "Error al recibir el numero de tipo de evidencia en el servlet ActualizarRegistro");
+						request.setAttribute("errorGloabal", "Tipo de Evidencia Invalido");
+						doGet(request, response);
+						return;
+					}catch(DateTimeParseException ex) {
+						logger.log(Level.SEVERE,"Error al parsear al fecha de obtencion de la evidencia en el servlet ActualizarRegistro");
+						request.setAttribute("errorGlobal", "Fecha Invalida");
+						doGet(request, response);
+						return;
+					}
+				
 				}
 
 				if (!evidencias.isEmpty()) {
@@ -238,7 +257,7 @@ public class ActualizarRegistro extends HttpServlet {
 			return;
 		}
 
-		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + bestiaId + "&nroRegistro=" + nuevoRegistro.getNroRegistro());
+		response.sendRedirect(HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + bestiaId + (nuevoRegistro != null? ("&nroRegistro=" + nuevoRegistro.getNroRegistro()) : ""));
 	}
 	
 
