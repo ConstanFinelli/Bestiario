@@ -6,14 +6,13 @@
 <%@ page import="entities.Registro" %>
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
-<%@ page import="entities.TipoEvidencia, helpers.HttpRoutes, helpers.CloudinaryHelper" %>
+<%@ page import="helpers.HttpRoutes, helpers.CloudinaryHelper" %>
 <!DOCTYPE html>
 <html>
     <head>
     	<% 
         	Bestia bestia = (Bestia) request.getAttribute("foundBestia");
     		Registro registro = (Registro) request.getAttribute("foundRegistro");
-    		LinkedList<TipoEvidencia> tes = (LinkedList<TipoEvidencia>) request.getAttribute("tiposEvidencia");
         %>  
       
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Actualización de bestia</title>
@@ -154,179 +153,15 @@
                 <%} %>
                 </ul>
                 <%} %>
-                <button type="button" id="agregar" class="btnRegistro">Agregar evidencia</button>
-                <section class="contenedorEvidencias" id="contenedorEvidencias">
+                <button type="submit" class="btnRegistro">Enviar registro</button>
 				</section>
-				<button type="submit" class="btnRegistro">Enviar registro</button>
-				</section>
+				
 				<div id="modal" class="modal-container">
 					<div class="modal-content">
 						<div id="modal-body"></div>
 					</div>
 				</div>	
 				 <script>
-				    let idGlobal = 0; 
-				    let evidenciasActivas = 0;
-				    const MAX_EVIDENCIAS = 6;
-				
-				    const btnAgregar = document.getElementById('agregar');
-				    const contenedor = document.getElementById('contenedorEvidencias');
-				
-				    btnAgregar.addEventListener('click', function() {
-				        agregarNuevaEvidencia();
-				    });
-				
-				    function previsualizarImagen(event) {
-				        const input = event.target;
-				        const preview = document.getElementById('previewMainPic');
-
-				        if (input.files && input.files[0]) {
-				            const reader = new FileReader();
-				            reader.onload = function(e) {
-				                preview.src = e.target.result;
-				                preview.style.display = 'block';
-				            };
-				            reader.readAsDataURL(input.files[0]);
-				        } else {
-				            preview.src = '';
-				            preview.style.display = 'none';
-				        }
-				    }
-				
-				    function previsualizarArchivoEvidencia(event, contenedorPreview) {
-				        const input = event.target;
-				        contenedorPreview.innerHTML = '';
-
-				        if (!input.files || !input.files[0]) {
-				            return;
-				        }
-
-				        const file = input.files[0];
-				        const reader = new FileReader();
-
-				        reader.onload = function(e) {
-				            if (file.type.startsWith('image/')) {
-				                const img = document.createElement('img');
-				                img.src = e.target.result;
-				                img.classList.add('previewEvidencia');
-				                img.style.maxWidth = '300px';
-				                img.style.marginTop = '10px';
-				                img.style.borderRadius = '8px';
-				                contenedorPreview.appendChild(img);
-				            } else if (file.type.startsWith('video/')) {
-				                const video = document.createElement('video');
-				                video.src = e.target.result;
-				                video.controls = true;
-				                video.classList.add('previewEvidencia');
-				                video.style.maxWidth = '300px';
-				                video.style.marginTop = '10px';
-				                video.style.borderRadius = '8px';
-				                contenedorPreview.appendChild(video);
-				            } else {
-				                const p = document.createElement('p');
-				                p.textContent = 'Archivo seleccionado: ' + file.name;
-				                p.style.marginTop = '10px';
-				                contenedorPreview.appendChild(p);
-				            }
-				        };
-
-				        reader.readAsDataURL(file);
-				    }
-				
-				    function agregarNuevaEvidencia() {
-				        if(evidenciasActivas >= MAX_EVIDENCIAS){
-				            alert('¡No se pueden agregar más de ' + MAX_EVIDENCIAS + ' evidencias en simultáneo!');
-				            return;
-				        }
-				        
-				        const formId = 'form-' + idGlobal;
-				       
-				        const newArticle = document.createElement('article');
-				        newArticle.classList.add('evidenciaForm'); 
-				        newArticle.id = formId;
-				        
-				        const deleteButton = document.createElement('span');
-				        deleteButton.textContent = 'x';
-				        deleteButton.classList.add('deleteButton'); 
-				        
-			
-				        deleteButton.addEventListener('click', function () {
-				            newArticle.remove();
-				            evidenciasActivas--; 
-				        });
-				
-				        const newH2 = document.createElement('h2');
-				        newH2.textContent = 'Nueva evidencia'; 
-				
-				        const fechaId = 'fechaObtencion-' + idGlobal;
-				        const labelFecha = document.createElement('label');
-				        labelFecha.setAttribute('for', fechaId); 
-				        labelFecha.textContent = 'Fecha de obtención';
-				        
-				        const inputFecha = document.createElement('input');
-				        inputFecha.type = 'date';
-				        inputFecha.id = fechaId;
-				        inputFecha.name = 'fechaObtencion'; 
-				        inputFecha.required = true;
-				
-				        const tipoId = 'tipo-' + idGlobal;
-				        const labelTipo = document.createElement('label');
-				        labelTipo.setAttribute('for', tipoId);
-				        labelTipo.textContent = 'Tipo';
-				
-				        const inputTipo = document.createElement('select');
-				        inputTipo.id = tipoId;
-				        inputTipo.name = 'tipo';
-				        inputTipo.required = true;
-				
-				        <% if(tes != null){%>
-				        const tiposDeEvidencia = [
-				            <% for(TipoEvidencia te : tes) { %>
-				                { id: <%= te.getId() %>, descripcion: '<%= te.getDescripcion() %>' },
-				            <% } %>
-				        ];
-				        for (const te of tiposDeEvidencia) {
-				            const option = document.createElement('option');
-				            option.value = te.id;
-				            option.textContent = te.descripcion; 
-				            inputTipo.appendChild(option);
-				        }
-				        <%}%>
-				
-				        const archivoId = 'archivo-' + idGlobal;
-				        const labelArchivo = document.createElement('label');
-				        labelArchivo.setAttribute('for', archivoId);
-				        labelArchivo.textContent = 'Archivo';
-				
-				        const inputArchivo = document.createElement('input');
-				        inputArchivo.type = 'file';
-				        inputArchivo.id = archivoId;
-				        inputArchivo.name = 'archivo'; 
-				        inputArchivo.required = true;
-				
-				        const previewEvidencia = document.createElement('div');
-				        previewEvidencia.classList.add('previewEvidenciaContenedor');
-				
-				        inputArchivo.addEventListener('change', function(event) {
-				            previsualizarArchivoEvidencia(event, previewEvidencia);
-				        });
-				
-				        newArticle.appendChild(deleteButton);
-				        newArticle.appendChild(newH2);
-				        newArticle.appendChild(labelFecha);
-				        newArticle.appendChild(inputFecha);
-				        newArticle.appendChild(labelTipo);
-				        newArticle.appendChild(inputTipo);
-				        newArticle.appendChild(labelArchivo);
-				        newArticle.appendChild(inputArchivo);
-				        newArticle.appendChild(previewEvidencia);
-				
-				        contenedor.appendChild(newArticle);
-				
-				        idGlobal++;
-				        evidenciasActivas++;
-				    }
-				    
 				    function abrirModal(link) {
 						if (!link) {
 					        alert("Esta evidencia no tiene un archivo multimedia asociado.");

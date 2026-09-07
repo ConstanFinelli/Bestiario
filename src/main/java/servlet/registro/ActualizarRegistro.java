@@ -70,13 +70,11 @@ public class ActualizarRegistro extends HttpServlet {
 		Registro ultimoRegistro = null;
 		try{
 			bestia = new Bestia(Integer.parseInt(idBestia));
+			bestia = controladorBestia.getOne(bestia);
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "El id de la bestia es inválido.");
 			return;
-		}
-		try{
-			bestia = controladorBestia.getOne(bestia);
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido la bestia. ");
@@ -200,51 +198,8 @@ public class ActualizarRegistro extends HttpServlet {
 				nuevoRegistro = controladorRegistro.save(nuevoRegistro);
 			}
 
-			String[] fechas = request.getParameterValues("fechaObtencion");
-			String[] tipos = request.getParameterValues("tipo");
-			Collection<Part> parts = request.getParts();
-			LinkedList<String> archivos = new LinkedList<>();
-
-			for (Part p : parts) {
-				if ("archivo".equals(p.getName()) && p.getSize() > 0) {
-					String id = CloudinaryHelper.upload(p);
-					archivos.add(id);
-					uploadedCloudinaryIds.add(id);
-				}
-			}
-
-			if (fechas != null && !archivos.isEmpty()) {
-				LinkedList<Evidencia> evidencias = new LinkedList<>();
-				for (int i = 0; i < fechas.length && i < archivos.size() && i < tipos.length; i++) {
-					try {
-						LocalDate fecha = LocalDate.parse(fechas[i]);	
-						TipoEvidencia te = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(tipos[i])));
-						String estadoEvidencia = (usuario != null && "investigador".equals(usuario.getEstado())) ? "aprobado" : "pendiente";
-						Evidencia evidencia = new Evidencia(0, fecha, estadoEvidencia, archivos.get(i), te);
-						controladorEvidencia.save(evidencia);
-						evidencias.add(evidencia);
-					}catch(NumberFormatException e) {
-						logger.log(Level.SEVERE, "Error al recibir el numero de tipo de evidencia en el servlet ActualizarRegistro");
-						request.setAttribute("errorGloabal", "Tipo de Evidencia Invalido");
-						doGet(request, response);
-						return;
-					}catch(DateTimeParseException ex) {
-						logger.log(Level.SEVERE,"Error al parsear al fecha de obtencion de la evidencia en el servlet ActualizarRegistro");
-						request.setAttribute("errorGlobal", "Fecha Invalida");
-						doGet(request, response);
-						return;
-					}
-				
-				}
-
-				if (!evidencias.isEmpty()) {
-					bestia.setEvidencias(evidencias);
-					controladorBestia.saveEvidencias(bestia);
-				}
-			}
-
 		} catch(Exception e) {
-			logger.log(Level.SEVERE, "Error durante la actualización del registro/evidencias en el servlet ActualizarRegistro", e);
+			logger.log(Level.SEVERE, "Error durante la actualización del registro en el servlet ActualizarRegistro", e);
 				for (String id : uploadedCloudinaryIds) {
 						try {
 							CloudinaryHelper.deleteImage(id);
