@@ -29,8 +29,13 @@ page import="entities.Usuario, helpers.HttpRoutes"
 			        <a href=<%=HttpRoutes.LOGOUT_JSP(request.getContextPath()) %>  class="logInOut">Cerrar sesión</a>
 			<%
 			    } else {
+				String queryString = request.getQueryString();
+				String urlActual = request.getRequestURI() + (queryString != null && !queryString.isEmpty() ? "?" + queryString : "");
 			%>
-					<a href=<%=HttpRoutes.LOGIN_JSP(request.getContextPath()) %> class="logInOut">Iniciar sesión</a>
+					<form action="<%= HttpRoutes.LOGIN_JSP(request.getContextPath())%>">
+					<input type="hidden" name="urlAnterior" value="<%=urlActual%>">
+					<button	type="submit" class="logInOut">Iniciar Sesion</button>
+					</form>
 			<%
 			    }
 			%>

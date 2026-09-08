@@ -27,7 +27,7 @@ nav{
     text-decoration-thickness: 2px;
 }
 
-nav a:last-child{
+nav a:last-child, nav form:last-child {
     margin-left: auto;
 }
 
@@ -42,6 +42,7 @@ nav a:last-child{
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
+    font-family: inherit;
 }
 
 .logInOut:hover {

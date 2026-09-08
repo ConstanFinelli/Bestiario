@@ -9,14 +9,19 @@
 </head>
 <body class='logBody'>
     <%@ include file="../components/error.jsp" %>
+    <% 
+        String urlAnterior = request.getParameter("urlAnterior"); 
+        if (urlAnterior == null || urlAnterior.trim().isEmpty() || "null".equalsIgnoreCase(urlAnterior) || urlAnterior.contains("/auth/login") || urlAnterior.contains("/auth/logout")) {
+            urlAnterior = HttpRoutes.HOME_JSP(request.getContextPath());
+        }
+    %>
 		<div class="logDiv">
 			<header class="logContainerHeader">
 	          	<h1 class="logContainerHeaderText">Ingresar</h1>
 	       </header>
 	       <form class="logForm" action="<%=HttpRoutes.LOGIN(request.getContextPath())%>" method="POST">
+	            <input type="hidden" name="urlAnterior" value="<%= urlAnterior %>">
 	            <input type="submit" hidden="true" />
-	            
-	            
 	            <section class="logInputs">
 	                <div class="logInput">
 	                    <input type="email" required placeholder='' id="correo" name="correo" value= 'test@a.com'/>
@@ -38,7 +43,7 @@
 	              	
 	            </section>
 	            <aside class="logSubmitContainer">
-	            	<a href="<%= HttpRoutes.HOME_JSP(request.getContextPath())%>" class="backButton">
+	            	<a href="<%= urlAnterior%>" class="backButton">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 640"><path d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z"/></svg>
 					Volver
 					</a>

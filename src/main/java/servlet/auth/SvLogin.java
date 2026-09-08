@@ -1,5 +1,11 @@
 package servlet.auth;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import entities.Usuario;
+import helpers.HttpRoutes;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,13 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import logic.LogicUsuario;
-
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import entities.Usuario;
-import helpers.HttpRoutes;
 
 @WebServlet("/auth/login")
 public class SvLogin extends HttpServlet {
@@ -36,6 +35,7 @@ public class SvLogin extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LOGIN_JSP(""));
 		String correo = request.getParameter("correo");
 		String contrasena = request.getParameter("contrasena");
+		String urlAnterior = request.getParameter("urlAnterior");
 		String logMsg = "";
 		Usuario usuario = null;
 		
@@ -51,7 +51,14 @@ public class SvLogin extends HttpServlet {
 			if(contrasena.equals(LogicUsuario.dehashPassword(usuario.getContraseña()))) {
 				HttpSession session = request.getSession();
 	            session.setAttribute("user", usuario);
-	            response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+	            if(urlAnterior != null && !urlAnterior.trim().isEmpty() 
+	            		&& !"null".equalsIgnoreCase(urlAnterior)
+	            		&& !urlAnterior.contains("/auth/login") 
+	            		&& !urlAnterior.contains("/auth/logout")) {
+	            	response.sendRedirect(urlAnterior);
+	            } else {
+	            	response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+	            }
 	            return;
 			}else {
 				logMsg = "La contraseña ingresada es incorrecta.";
