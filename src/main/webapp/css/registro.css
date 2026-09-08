@@ -177,7 +177,7 @@ ul{
 }
 
 
-.comentarios form{
+.comentariosForm{
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -250,7 +250,7 @@ textarea{
 .evidenciaForm{
 	display:flex;
 	flex-direction: column;
-	gap: 7px;
+	gap: 20px;
 	background: rgba(121, 121, 85, 0.31);
 	border-radius: 12px;
 	padding: 1vh 2vw;

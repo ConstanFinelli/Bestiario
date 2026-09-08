@@ -3,11 +3,13 @@ package servlet.registro;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Registro;
+import entities.TipoEvidencia;
 import helpers.CloudinaryHelper;
 import helpers.EnvHelper;
 import helpers.HttpRoutes;
@@ -19,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
 import logic.LogicRegistro;
+import logic.LogicTipoEvidencia;
 
 /**
  * Servlet implementation class ObtenerBestia
@@ -27,6 +30,7 @@ import logic.LogicRegistro;
 public class ObtenerRegistroBestia extends HttpServlet {
 	private LogicBestia controlador = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
+	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
 	private static final Logger logger = Logger.getLogger(ObtenerRegistroBestia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
@@ -103,9 +107,21 @@ public class ObtenerRegistroBestia extends HttpServlet {
 			request.setAttribute("errorGlobal", "No se ha conseguido la imagen del registro. ");
 			return;
 		}
+		
+		LinkedList<TipoEvidencia> tes = null;
+		
+		try{
+			tes = controladorTipoEvidencia.findAll();
+		}catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al conseguir tipos de evidencia en el servlet ObtenerRegistroBestia", e);
+			request.setAttribute("errorGlobal", "No se han conseguido los tipos de evidencia. ");
+			return;
+		}
+		
 		request.setAttribute("UrlImagen", imagen);
 		request.setAttribute("foundBestia", bestia);
 		request.setAttribute("foundRegistro", registro);
+		request.setAttribute("tiposEvidencia", tes);
 		rd.forward(request, response);
 	}
 	

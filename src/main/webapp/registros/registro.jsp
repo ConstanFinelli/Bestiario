@@ -7,6 +7,7 @@
 <%@ page import="entities.Evidencia" %>
 <%@ page import="entities.Categoria" %>
 <%@ page import="entities.Comentario" %>
+<%@ page import="entities.TipoEvidencia" %>
 <%@ page import="helpers.HttpRoutes, helpers.CloudinaryHelper, helpers.EnvHelper" %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +16,7 @@
         	Bestia bestia = (Bestia) request.getAttribute("foundBestia");
     		Registro registro = (Registro) request.getAttribute("foundRegistro");  
     		String UrlImagen = (String) request.getAttribute("UrlImagen");
+    		LinkedList<TipoEvidencia> tes = (LinkedList<TipoEvidencia>) request.getAttribute("tiposEvidencia");
     		%>  
         <title><%= bestia != null ? bestia.getNombre() : "" %> - Registro de bestia</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,7 +77,7 @@
                 	%>
                 	<li class="evidenciasItem">
                 		<a class="evidenciasLink" href="javascript:void(0)" 
-                		onclick="abrirModal('<%= switch(evidencia.getTipo().getResourceType()){
+                		onclick="abrirModalVer('<%= switch(evidencia.getTipo().getResourceType()){
                 		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
                 		case "image" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
                 		default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
@@ -96,6 +98,7 @@
                 <%} %>
                 </ul>
                 <%} %>
+                <% if(usuario != null){%><a class="btnAgregar" onclick="abrirModalUpload()">Proponer nueva evidencia</a><%} %>	
             </section>
             <aside class="infoBestia">
             	<img src="<%=UrlImagen%>" alt="Imagen de la bestia" onerror="this.onerror=null; this.src='<%= CloudinaryHelper.getDefaultImage() %>';">
@@ -160,7 +163,7 @@
         <section id="comentarios" class="comentarios mainContent">
         	<% if(registro != null){ %>
             	<% if(usuario != null){ %>
-            	<form action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>?id=<%= bestia.getIdBestia() %>" method="post">
+            	<form class="comentariosForm" action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>?id=<%= bestia.getIdBestia() %>" method="post">
 	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" maxlength="200" required>
 	            	<input type="hidden" name="nroRegistro" value=<%= registro.getNroRegistro() %>>
 	            	<input type="hidden" name="idUsuario" value="<%=usuario.getIdUsuario()%>">
@@ -187,7 +190,7 @@
 				    </form>
 				</div>
 				<%} %>
-                <% if(usuario != null){%><a class="btnAgregar" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>	
+                <% if(usuario != null && bestia != null){%><a class="btnAgregar" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>	
                 <div id="modal" class="modal-container">
 					<div class="modal-content">
 						<div id="modal-body"></div>
@@ -197,12 +200,12 @@
         <%@ include file="../components/footer.jsp" %>
         <script>
 		// javascript para modal
-		function abrirModal(link) {
+		function abrirModalVer(link) {
 			if (!link) {
 		        alert("Esta evidencia no tiene un archivo multimedia asociado.");
 		        return;
 		    }
-			
+
 			const modalBody = document.getElementById('modal-body');
 			modalBody.innerHTML = "";
 			const esVideo = link.toLowerCase().match(/\.(mp4|webm|ogg)$/) || link.includes("video/upload");
@@ -256,10 +259,145 @@
 			document.getElementById('modal').classList.remove('is-visible');
 		}
 
+		function previsualizarArchivoEvidencia(event, contenedorPreview) {
+    const input = event.target;
+    contenedorPreview.innerHTML = '';
+
+    if (!input.files || !input.files[0]) {
+        return;
+    }
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.classList.add('previewEvidencia');
+            img.style.maxWidth = '300px';
+            img.style.marginTop = '10px';
+            img.style.borderRadius = '8px';
+            contenedorPreview.appendChild(img);
+        } else if (file.type.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.src = e.target.result;
+            video.controls = true;
+            video.classList.add('previewEvidencia');
+            video.style.maxWidth = '300px';
+            video.style.marginTop = '10px';
+            video.style.borderRadius = '8px';
+            contenedorPreview.appendChild(video);
+        } else {
+            const p = document.createElement('p');
+            p.textContent = 'Archivo seleccionado: ' + file.name;
+            p.style.marginTop = '10px';
+            contenedorPreview.appendChild(p);
+        }
+    };
+
+    reader.readAsDataURL(file);
+}
+	function abrirModalUpload() {
+		const modalBody = document.getElementById('modal-body');
+		const modal = document.getElementById('modal');
+		const modalContent = document.getElementsByClassName('modal-content')[0];
+		modalContent.style.width = '25%';
+		
+		modalBody.innerHTML = "";
+
+		const form = document.createElement('form');
+		form.action = "<%=HttpRoutes.CREAR_EVIDENCIA(request.getContextPath())%>";
+		form.method = "post";
+		form.enctype = "multipart/form-data";
+		form.classList.add('evidenciaForm'); 
+
+		
+		const inputIdBestia = document.createElement('input');
+		inputIdBestia.type = 'hidden';
+		inputIdBestia.name = 'idBestia';
+		inputIdBestia.value = '<%= (bestia != null) ? bestia.getIdBestia() : "null" %>';
+
+		const newH2 = document.createElement('h2');
+		newH2.textContent = 'Subir evidencia'; 
+
+		const labelFecha = document.createElement('label');
+		labelFecha.setAttribute('for', 'fechaObtencion'); 
+		labelFecha.textContent = 'Fecha de obtención';
+		
+		const inputFecha = document.createElement('input');
+		inputFecha.type = 'date';
+		inputFecha.id = 'fechaObtencion';
+		inputFecha.name = 'fechaObtencion'; 
+		inputFecha.required = true;
+
+		const labelTipo = document.createElement('label');
+		labelTipo.setAttribute('for', 'tipo');
+		labelTipo.textContent = 'Tipo';
+
+		const inputTipo = document.createElement('select');
+		inputTipo.id = 'tipo';
+		inputTipo.name = 'tipo';
+		inputTipo.required = true;
+
+		<% if(tes != null){%>
+		const tiposDeEvidencia = [
+			<% for(TipoEvidencia te : tes) { %>
+				{ id: <%= te.getId() %>, descripcion: '<%= te.getDescripcion() %>' },
+			<% } %>
+		];
+		for (const te of tiposDeEvidencia) {
+			const option = document.createElement('option');
+			option.value = te.id;
+			option.textContent = te.descripcion; 
+			inputTipo.appendChild(option);
+		}
+		<%}%>
+
+		const labelArchivo = document.createElement('label');
+		labelArchivo.setAttribute('for', 'archivo');
+		labelArchivo.textContent = 'Archivo';
+
+		const inputArchivo = document.createElement('input');
+		inputArchivo.type = 'file';
+		inputArchivo.id = 'archivo';
+		inputArchivo.name = 'archivo'; 
+		inputArchivo.required = true;
+
+		const previewEvidencia = document.createElement('div');
+		previewEvidencia.classList.add('previewEvidenciaContenedor');
+
+		inputArchivo.addEventListener('change', function(event) {
+			previsualizarArchivoEvidencia(event, previewEvidencia);
+		});
+
+		const btnSubmit = document.createElement('button');
+		btnSubmit.type = 'submit';
+		btnSubmit.textContent = 'Guardar Evidencia';
+		btnSubmit.classList.add('btnRegistro'); 
+
+		form.appendChild(inputIdBestia);
+		form.appendChild(newH2);
+		form.appendChild(labelFecha);
+		form.appendChild(inputFecha);
+		form.appendChild(labelTipo);
+		form.appendChild(inputTipo);
+		form.appendChild(labelArchivo);
+		form.appendChild(inputArchivo);
+		form.appendChild(previewEvidencia);
+		form.appendChild(btnSubmit);
+
+		modalBody.appendChild(form);
+
+		document.getElementById('modal').classList.add('is-visible');
+	}
+
+
 		window.onclick = function(event) {
 			let modal = document.getElementById('modal');
 			if (event.target == modal) {
 				cerrarModal();
+
 			}
 		}
 	</script>
