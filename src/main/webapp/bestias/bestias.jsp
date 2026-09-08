@@ -120,7 +120,7 @@
 							if (verTodo == true) {
 							%>
 							<button type="button" class="btnEliminar"
-								onClick="abrirModal('<%=bestia.getIdBestia()%>', '<%=bestia.getNombre()%>')">Eliminar</button>
+								onClick="abrirModalForm('ELIMINAR BESTIA', '¿Estas seguro que deseas eliminar a la bestia <%=bestia.getNombre()%>?', '<%= HttpRoutes.ELIMINAR_BESTIA(request.getContextPath()) %>', 'id', '<%=bestia.getIdBestia()%>')">Eliminar</button>
 									<%
 						}
 						%>
@@ -154,40 +154,7 @@
         %>
 </section>
 <%@ include file="../components/footer.jsp" %>
-	<div id="modal" class="modal-container">
-		<div class="modal-content">
-			<h2 id="modal-titulo"></h2>
-			<div id="modal-cuerpo"></div>
-			<div class="modalButtons">
-				<form action="<%= HttpRoutes.ELIMINAR_BESTIA(request.getContextPath()) %>" method="post" style="display:inline;">
-					<input type="hidden" name="id" id="idAEliminar">
-					<button type="button" class="closeButton" onclick="cerrarModal()">Volver</button>
-					<button type="submit" class="deleteButton" onclick="cerrarModal()">Eliminar</button>
-				</form>
-			</div>
-		</div>
-	</div>
-	<script>
-		// javascript para modal
-		function abrirModal(id, nombre) {
-			document.getElementById('modal-titulo').innerText = "ELIMINAR BESTIA";
-			document.getElementById('modal-cuerpo').innerHTML = '¿Estas seguro que deseas eliminar a la bestia '
-					+ nombre + '?';
-			document.getElementById('idAEliminar').value = id;
-			document.getElementById('modal').classList.add('is-visible');
-		}
-
-		function cerrarModal() {
-			document.getElementById('modal').classList.remove('is-visible');
-		}
-
-		window.onclick = function(event) {
-			let modal = document.getElementById('modal');
-			if (event.target == modal) {
-				cerrarModal();
-			}
-		}
-	</script>
+<%@ include file="../components/modalConfirmacion.jsp" %>
 	<script>
 		var swiper = new Swiper(".mySwiper", {
 			effect : "coverflow",
