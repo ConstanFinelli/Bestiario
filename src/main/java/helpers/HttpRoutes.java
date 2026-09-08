@@ -180,6 +180,9 @@ public final class HttpRoutes {
 		return base + "/noticias/crear";
 	}
 	
+	public static String ELIMINAR_NOTICIA(String base) {
+		return base + "/noticias/eliminar";
+	}
 	public static String NOTICIAS_JSP(String base) {
 		return base + "/noticias/noticias.jsp";
 	}

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="entities.Noticia" %>
 <%@ page import="java.util.LinkedList" %>
+<%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <% 
 	LinkedList<Noticia> noticias = (LinkedList<Noticia>) request.getAttribute("noticias");
@@ -21,7 +22,7 @@
         <%@ include file="../components/navbar.jsp" %>
         <section class="mainContent">
 			<h2>NOTICIAS</h2>
-			<% if(noticias.isEmpty()){ %>
+			<% if((noticias != null && noticias.isEmpty()) || noticias == null){ %>
 				<div class="notFound">
 					No hay noticias cargadas por el momento.
 				</div>
@@ -49,6 +50,13 @@
 									<p class="newContent">
 										<%= noticia.getContenido() %>
 									</p>
+									<% if (usuario != null && "investigador".equals(usuario.getEstado())) { %>
+										<a href="javascript:void(0)" 
+										   data-id="<%= noticia.getId()%>" 
+										   data-titulo="<%= noticia.getTitulo()%>" 
+										   onclick="abrirModalLink('ELIMINAR NOTICIA', '¿Estas seguro que deseas eliminar la noticia ' + this.getAttribute('data-titulo') + '?', '<%= HttpRoutes.ELIMINAR_NOTICIA(request.getContextPath()) %>?idNoticia=' + this.getAttribute('data-id'))" 
+										   class="btnEliminarNoticia">Eliminar</a>
+									<% } %>
 								</div>
 							</article>
 					<%} %>
@@ -56,5 +64,6 @@
 				</div>
 		</section>
         <%@ include file="../components/footer.jsp" %>
+        <%@ include file="../components/modalConfirmacion.jsp" %>
     </body>
 </html>
