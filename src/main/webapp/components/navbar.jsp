@@ -1,6 +1,6 @@
-<%@ 
-page import="entities.Usuario, helpers.HttpRoutes"
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="entities.Usuario, helpers.HttpRoutes" %>
 <%@ include file="error.jsp" %>
 <head>
  <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,11 +26,14 @@ page import="entities.Usuario, helpers.HttpRoutes"
 			<% } else if(usuario.getEstado().equals("solicitante")){%>
 						<span class="navLink"> Ya ha enviado una solicitud</span>
 			<% }%>
-			        <a href=<%=HttpRoutes.LOGOUT_JSP(request.getContextPath()) %>  class="logInOut">Cerrar sesión</a>
+			        <a href=<%=HttpRoutes.LOGOUT_JSP(request.getContextPath()) %>  class="logInOut">Cerrar sesiÃ³n</a>
 			<%
 			    } else {
-				String queryString = request.getQueryString();
-				String urlActual = request.getRequestURI() + (queryString != null && !queryString.isEmpty() ? "?" + queryString : "");
+				String forwardURI = (String) request.getAttribute("jakarta.servlet.forward.request_uri");
+				String forwardQuery = (String) request.getAttribute("jakarta.servlet.forward.query_string");
+				String uri = (forwardURI != null) ? forwardURI : request.getRequestURI();
+				String query = (forwardURI != null) ? forwardQuery : request.getQueryString();
+				String urlActual = uri + (query != null && !query.isEmpty() ? "?" + query : "");
 			%>
 					<form action="<%= HttpRoutes.LOGIN_JSP(request.getContextPath())%>">
 					<input type="hidden" name="urlAnterior" value="<%=urlActual%>">

@@ -6,6 +6,11 @@
 <!DOCTYPE html>
 <% 
 	LinkedList<Noticia> noticias = (LinkedList<Noticia>) request.getAttribute("noticias");
+	if (noticias == null) {
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_NOTICIAS(""));
+		rd.forward(request, response);
+		return;
+	}
 %>
 <html>
     <head>
@@ -22,7 +27,7 @@
         <%@ include file="../components/navbar.jsp" %>
         <section class="mainContent">
 			<h2>NOTICIAS</h2>
-			<% if((noticias != null && noticias.isEmpty()) || noticias == null){ %>
+			<% if (noticias.isEmpty()) { %>
 				<div class="notFound">
 					No hay noticias cargadas por el momento.
 				</div>
