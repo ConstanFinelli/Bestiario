@@ -323,21 +323,63 @@ textarea{
 	cursor: pointer;
 }
 
-.evDelete{
+.evDelete, .evAprobar{
 	display: flex;
 	justify-content: right;
 	font-size: 1rem;
 	color: white;
-	background-color: rgb(219, 53, 53);
 	padding: 0px 10px;
 	border-radius: 5px;
 	border: none;
 	text-transform: uppercase;
+	cursor: pointer;
 }
 
-.evDelete:hover{
+.evDelete{
+	background-color: rgb(219, 53, 53);
+}
+
+.evAprobar{
+	background-color: rgb(40, 167, 69);
+}
+
+.evDelete:hover, .evAprobar:hover{
 	cursor: pointer;
 	filter: brightness(0.9);
+}
+
+.evAcciones{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.evidenciaInfo{
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.badgeEstado{
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 2px 8px;
+	border-radius: 6px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.badgePendiente{
+	background-color: #fef08a;
+	color: #854d0e;
+	border: 1px solid #facc15;
+}
+
+.badgeAprobado{
+	background-color: #bbf7d0;
+	color: #166534;
+	border: 1px solid #86efac;
 }
 
 .modal-container {

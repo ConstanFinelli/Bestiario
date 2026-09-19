@@ -64,40 +64,64 @@
                 		<div class="notFound">No hay un registro encontrado para esta bestia en la fecha seleccionada.</div>
                 	<%} %>
                 <% } %>
-                <% if(!evidencias.isEmpty()){ %>
+                <% 
+                boolean esInvestigador = (usuario != null && "investigador".equals(usuario.getEstado()));
+                boolean hayEvidenciasVisibles = false;
+                if(evidencias != null && !evidencias.isEmpty()){
+                    for(Evidencia ev : evidencias){
+                        if(esInvestigador || "aprobado".equalsIgnoreCase(ev.getEstado())){
+                            hayEvidenciasVisibles = true;
+                            break;
+                        }
+                    }
+                }
+                if(hayEvidenciasVisibles){ %>
                 <h2>Evidencias</h2>
                 <ul class="evidencias">
                 <% 
-                for(Evidencia evidencia : evidencias){ %>
-                	<%
-                	String teDesc = evidencia.getTipo().getDescripcion();
-                	String fechaOb = evidencia.getFechaObtencion().toString();
-                	String evText = " Obtenido el " + fechaOb;
-                	
-                	%>
+                for(Evidencia evidencia : evidencias){ 
+                    boolean esAprobada = "aprobado".equalsIgnoreCase(evidencia.getEstado());
+                    if(!esInvestigador && !esAprobada){
+                        continue;
+                    }
+                    String teDesc = evidencia.getTipo().getDescripcion();
+                    String fechaOb = evidencia.getFechaObtencion().toString();
+                    String evText = " Obtenido el " + fechaOb;
+                %>
                 	<li class="evidenciasItem">
-                		<a class="evidenciasLink" href="javascript:void(0)" 
-                		onclick="abrirModalVer('<%= switch(evidencia.getTipo().getResourceType()){
-                		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
-                		case "image" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
-                		default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
-                		
-                		}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
-                		<%if(usuario != null){
-                			if(usuario.getEstado().equals("investigador")){
-                			%>
-                			<form action="<%= HttpRoutes.ELIMINAR_EVIDENCIA(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Deasea eliminar la evidencia?');">
-			                    <input type="hidden" name="nroEvidencia" value="<%= evidencia.getNroEvidencia() %>">
-			                    <input type="hidden" name="idTipoEvidencia" value="<%= evidencia.getTipo().getId() %>">
-			                    <input type="hidden" name="idBestia" value="<%= bestia.getIdBestia() %>">
-			                    <button type="submit" class="evDelete">Eliminar</button>
-			                </form>
-                		<%	} 
-                		}%>
+                		<div class="evidenciaInfo">
+                			<a class="evidenciasLink" href="javascript:void(0)" 
+                			onclick="abrirModalVer('<%= switch(evidencia.getTipo().getResourceType()){
+                			case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
+                			case "image" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
+                			default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
+                			}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
+                			<% if(esInvestigador && !esAprobada){ %>
+                				<span class="badgeEstado badgePendiente">Pendiente</span>
+                			<% } %>
+                		</div>
+                		<% if(esInvestigador){ %>
+                			<div class="evAcciones">
+                				<% if(!esAprobada){ %>
+                					<form action="<%= HttpRoutes.APROBAR_EVIDENCIA(request.getContextPath()) %>" method="POST">
+                						<input type="hidden" name="nroEvidencia" value="<%= evidencia.getNroEvidencia() %>">
+                						<input type="hidden" name="idTipoEvidencia" value="<%= evidencia.getTipo().getId() %>">
+                						<input type="hidden" name="idBestia" value="<%= bestia.getIdBestia() %>">
+                						<button type="submit" class="evAprobar">Aprobar</button>
+                					</form>
+                				<% } %>
+                				<form action="<%= HttpRoutes.ELIMINAR_EVIDENCIA(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Deasea eliminar la evidencia?');">
+                					<input type="hidden" name="nroEvidencia" value="<%= evidencia.getNroEvidencia() %>">
+                					<input type="hidden" name="idTipoEvidencia" value="<%= evidencia.getTipo().getId() %>">
+                					<input type="hidden" name="idBestia" value="<%= bestia.getIdBestia() %>">
+                					<button type="submit" class="evDelete">Eliminar</button>
+                				</form>
+                			</div>
+                		<% } %>
                 	</li>
-                <%} %>
+                <% } %>
                 </ul>
-                <%} %>
+                <% } %>
                 <% if(usuario != null){%><a class="btnAgregar" onclick="abrirModalUpload()">Proponer nueva evidencia</a><%} %>	
             </section>
             <aside class="infoBestia">

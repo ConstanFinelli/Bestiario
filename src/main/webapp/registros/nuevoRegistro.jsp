@@ -131,28 +131,46 @@
         </section>
         </div>
         		<section class="mainContent evidenciasContent">
-                <% if(!evidencias.isEmpty()){ %>
+                <% 
+                boolean esInvestigador = (usuario != null && "investigador".equals(usuario.getEstado()));
+                boolean hayEvidenciasVisibles = false;
+                if(evidencias != null && !evidencias.isEmpty()){
+                    for(Evidencia ev : evidencias){
+                        if(esInvestigador || "aprobado".equalsIgnoreCase(ev.getEstado())){
+                            hayEvidenciasVisibles = true;
+                            break;
+                        }
+                    }
+                }
+                if(hayEvidenciasVisibles){ %>
                 <h2>Evidencias</h2>
                 <ul class="evidencias">
                 <% 
-                for(Evidencia evidencia : evidencias){ %>
-                	<%
-                	String teDesc = evidencia.getTipo().getDescripcion();
-                	String fechaOb = evidencia.getFechaObtencion().toString();
-                	String evText = " Obtenido el " + fechaOb;
-                	
-                	%>
+                for(Evidencia evidencia : evidencias){ 
+                    boolean esAprobada = "aprobado".equalsIgnoreCase(evidencia.getEstado());
+                    if(!esInvestigador && !esAprobada){
+                        continue;
+                    }
+                    String teDesc = evidencia.getTipo().getDescripcion();
+                    String fechaOb = evidencia.getFechaObtencion().toString();
+                    String evText = " Obtenido el " + fechaOb;
+                %>
                 	<li class="evidenciasItem">
-                		<a class="evidenciasLink" href="javascript:void(0)" 
-                		onclick="abrirModal('<%= switch(evidencia.getTipo().getDescripcion().trim().toLowerCase()){
-                		case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
-                		case "imagen" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
-                		default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
-                		}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
+                		<div class="evidenciaInfo">
+                			<a class="evidenciasLink" href="javascript:void(0)" 
+                			onclick="abrirModal('<%= switch(evidencia.getTipo().getResourceType()){
+                			case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
+                			case "image" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
+                			default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
+                			}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
+                			<% if(esInvestigador && !esAprobada){ %>
+                				<span class="badgeEstado badgePendiente">Pendiente</span>
+                			<% } %>
+                		</div>
                 	</li>
-                <%} %>
+                <% } %>
                 </ul>
-                <%} %>
+                <% } %>
                 <button type="submit" class="btnRegistro">Enviar registro</button>
 				</section>
 				

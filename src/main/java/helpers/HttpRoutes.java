@@ -249,6 +249,10 @@ public final class HttpRoutes {
 		return base + "/evidencias/eliminar";
 	}
 	
+	public static String APROBAR_EVIDENCIA(String base) {
+		return base + "/evidencias/aprobar";
+	}
+	
 	public static String OBTENER_TIPO_EVIDENCIA(String base) {
 		return base + "/evidencias/obtenerTipoEvidencia";
 	}

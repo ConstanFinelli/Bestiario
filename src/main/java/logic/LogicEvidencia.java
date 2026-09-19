@@ -2,10 +2,10 @@ package logic;
 
 import java.util.LinkedList;
 
+import data.DataEvidencia;
 import entities.Evidencia;
 import entities.TipoEvidencia;
 import helpers.CloudinaryHelper;
-import data.DataEvidencia;
 
 public class LogicEvidencia {
 	private DataEvidencia eDAO = new DataEvidencia();
@@ -36,5 +36,9 @@ public class LogicEvidencia {
 	
 	public LinkedList<Evidencia> findAllType(TipoEvidencia te){
 		return eDAO.findAllType(te);
+	}
+	
+	public boolean updateEstado(int nroEvidencia, int idTipoEvidencia, String nuevoEstado) {
+		return eDAO.updateEstado(nroEvidencia, idTipoEvidencia, nuevoEstado);
 	}
 }

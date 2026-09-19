@@ -299,5 +299,34 @@ public class DataEvidencia {
 		}
 		return evidencias;
 	}
+	
+	public boolean updateEstado(int nroEvidencia, int idTipoEvidencia, String nuevoEstado) {
+		PreparedStatement pstmt = null;
+		boolean actualizado = false;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update evidencia set estado = ? where idTipoEvidencia = ? and nroEvidencia = ?");
+			pstmt.setString(1, nuevoEstado);
+			pstmt.setInt(2, idTipoEvidencia);
+			pstmt.setInt(3, nroEvidencia);
+			int rows = pstmt.executeUpdate();
+			actualizado = (rows > 0);
+		} catch(SQLException ex) {
+			System.out.println("Mensaje: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			} catch(SQLException ex) {
+				System.out.println("Mensaje: " + ex.getMessage());
+				System.out.println("SQLState: " + ex.getSQLState());
+				System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			}
+		}
+		return actualizado;
+	}
 }
 
