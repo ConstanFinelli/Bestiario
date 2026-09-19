@@ -41,9 +41,6 @@ public final class HttpRoutes {
 	}
 
 	// Bestias
-	public static String BESTIA_FORMS_JSP(String base) {
-		return base + "/bestias/bestiaForms.jsp";
-	}
 
 	public static String BESTIA_LIST_JSP(String base) {
 		return base + "/bestias/bestias.jsp";
@@ -119,9 +116,6 @@ public final class HttpRoutes {
 	}
 
 	// Habitats
-	public static String CARAC_HABITAT_FORM_JSP(String base) {
-		return base + "/habitats/carHabitatForms.jsp";
-	}
 
 	public static String HABITAT_FORM_JSP(String base) {
 		return base + "/habitats/habitatForms.jsp";
@@ -168,9 +162,6 @@ public final class HttpRoutes {
 	}
 
 	// Noticias
-	public static String NOTICIA_FORM_JSP(String base) {
-		return base + "/noticias/noticiaForms.jsp";
-	}
 	
 	public static String LISTAR_NOTICIAS(String base) {
 		return base + "/noticias/listar";
@@ -356,10 +347,6 @@ public final class HttpRoutes {
 	
 	public static String BESTIAS_CSS(String base) {
 		return base + "/css/bestias.css";
-	}
-
-	public static String HABITATS_CSS(String base) {
-		return base + "/css/habitats.css";
 	}
 	
 	public static String LOGIN_CSS(String base) {
