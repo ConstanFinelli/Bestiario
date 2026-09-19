@@ -6,7 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
-import entities.*;
+import entities.Bestia;
+import entities.Categoria;
+import entities.Evidencia;
+import entities.Habitat;
+import entities.Registro;
 
 //INCOMPLETO: DEBATIR EN GRUPO COMO PROSEGUIR Y ORGANIZAR EL TEMA DE CATEGORIAS, HABITATS Y REGISTROS EN EL SAVE
 public class DataBestia {
@@ -61,7 +65,7 @@ public class DataBestia {
 		LinkedList<Bestia> bestias = new LinkedList<>();
 		try {
 			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("Select * from bestia");
+			rs = stmt.executeQuery("Select * from bestia order by nombre asc");
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("idBestia");
@@ -96,19 +100,18 @@ public class DataBestia {
 	}
 	
 	public LinkedList<Bestia> findByCategoria (String categoria){
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Bestia bestia = null;
 		
 		LinkedList<Bestia> bestias = new LinkedList<>();
 		try {
-			stmt = DbConnector.getInstancia().getConn().createStatement();
-			rs = stmt.executeQuery("Select b.* from bestia b "
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select b.* from bestia b "
 					+ "inner join bestia_categoria bc on bc.idBestia = b.idBestia"
 					+ " inner join categoria c on c.idCategoria = bc.idCategoria "
-					+ "where c.nombre = '" + categoria + "'");
-			
-			System.out.println(rs.toString());
+					+ "where c.nombre = ? order by b.nombre asc");
+			pstmt.setString(1, categoria);
+			rs = pstmt.executeQuery();
 			if(rs != null) {
 				while(rs.next()) {
 					int id = rs.getInt("idBestia");
@@ -129,8 +132,8 @@ public class DataBestia {
 				if(rs != null) {
 					rs.close();
 				}
-				if(stmt != null) {
-					stmt.close();
+				if(pstmt != null) {
+					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
 			}catch(SQLException ex) {

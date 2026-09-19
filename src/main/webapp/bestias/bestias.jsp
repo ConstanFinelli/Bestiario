@@ -81,14 +81,15 @@
 					verTodo = true;
 				}
 			}
+			LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
 			Map<Bestia, String> imagenes = (Map<Bestia, String>) request.getAttribute("imagenes");
 			LogicRegistro controladorRegistro = new LogicRegistro();
-			if (imagenes != null) {
+			if (bestias != null && !bestias.isEmpty() && imagenes != null) {
 			%>
 			<div class="swiper mySwiper">
 				<div class="swiper-wrapper">
 					<%
-					for (Bestia bestia: imagenes.keySet()) {
+					for (Bestia bestia: bestias) {
 						if (bestia.getEstado().equals("aprobado") || verTodo == true) {
 					%>
 					<article class="bestia swiper-slide">

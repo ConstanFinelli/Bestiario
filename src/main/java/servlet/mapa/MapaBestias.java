@@ -1,17 +1,8 @@
 package servlet.mapa;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import logic.LogicBestia;
-import logic.LogicRegistro;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -21,6 +12,14 @@ import entities.Bestia;
 import entities.Registro;
 import helpers.EnvHelper;
 import helpers.HttpRoutes;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import logic.LogicBestia;
+import logic.LogicRegistro;
 
 /**
  * Servlet implementation class MapaBestias
@@ -69,13 +68,18 @@ public class MapaBestias extends HttpServlet {
 
 		try{
 			bestias = controladorBestia.findAll();
+			bestias.sort((b1, b2) -> {
+				if (b1.getNombre() == null) return -1;
+				if (b2.getNombre() == null) return 1;
+				return b1.getNombre().compareToIgnoreCase(b2.getNombre());
+			});
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener la lista de bestias en el servlet MapaBestias", e);
 			request.setAttribute("errorGlobal","No se ha podido obtener la lista de bestias");
 			rd.forward(request, response);
 			return;
 		}
-		Map<Bestia, String> bestiasImagenes = new HashMap<>();
+		Map<Bestia, String> bestiasImagenes = new LinkedHashMap<>();
 		Registro registro = null;
 		for(Bestia b: bestias) {
 			try {

@@ -12,6 +12,7 @@ import logic.LogicRegistro;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
@@ -40,7 +41,7 @@ public class ListarBestia extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
 		String filter = request.getParameter("filter");
 		LinkedList<Bestia> bestias = new LinkedList<>();
-		Map<Bestia, String> imagenes = new HashMap<Bestia, String>();
+		Map<Bestia, String> imagenes = new LinkedHashMap<Bestia, String>();
 		
 		try {
 			if(filter != null && !filter.isEmpty()) {
@@ -49,6 +50,11 @@ public class ListarBestia extends HttpServlet {
 				bestias = controladorBestia.findAll();
 			}
 			if (!bestias.isEmpty()) {
+				bestias.sort((b1, b2) -> {
+					if (b1.getNombre() == null) return -1;
+					if (b2.getNombre() == null) return 1;
+					return b1.getNombre().compareToIgnoreCase(b2.getNombre());
+				});
 				for(Bestia bestia: bestias) {
 					imagenes.put(bestia, CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now())));
 				}
