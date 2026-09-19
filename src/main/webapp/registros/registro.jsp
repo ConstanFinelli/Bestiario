@@ -299,7 +299,6 @@
             const img = document.createElement('img');
             img.src = e.target.result;
             img.classList.add('previewEvidencia');
-            img.style.maxWidth = '300px';
             img.style.marginTop = '10px';
             img.style.borderRadius = '8px';
             contenedorPreview.appendChild(img);
@@ -308,7 +307,6 @@
             video.src = e.target.result;
             video.controls = true;
             video.classList.add('previewEvidencia');
-            video.style.maxWidth = '300px';
             video.style.marginTop = '10px';
             video.style.borderRadius = '8px';
             contenedorPreview.appendChild(video);
@@ -322,99 +320,116 @@
 
     reader.readAsDataURL(file);
 }
-	function abrirModalUpload() {
-		const modalBody = document.getElementById('modal-body');
-		const modal = document.getElementById('modal');
-		const modalContent = document.getElementsByClassName('modal-content')[0];
-		modalContent.style.width = '25%';
-		
-		modalBody.innerHTML = "";
+		function abrirModalUpload() {
+		    const modalBody = document.getElementById('modal-body');
+		    const modalContent = document.getElementsByClassName('modal-content')[0];
 
-		const form = document.createElement('form');
-		form.action = "<%=HttpRoutes.CREAR_EVIDENCIA(request.getContextPath())%>";
-		form.method = "post";
-		form.enctype = "multipart/form-data";
-		form.classList.add('evidenciaForm'); 
+		    modalBody.innerHTML = "";
 
-		
-		const inputIdBestia = document.createElement('input');
-		inputIdBestia.type = 'hidden';
-		inputIdBestia.name = 'idBestia';
-		inputIdBestia.value = '<%= (bestia != null) ? bestia.getIdBestia() : "null" %>';
+		    modalContent.style.width = 'min(500px, 90vw)';
+		    modalContent.style.display = 'flex';
+		    modalContent.style.flexDirection = 'column';
+		    modalContent.style.maxHeight = '90vh';
 
-		const newH2 = document.createElement('h2');
-		newH2.textContent = 'Subir evidencia'; 
+		    const form = document.createElement('form');
+		    form.id = 'formEvidencia';
+		    form.action = "<%=HttpRoutes.CREAR_EVIDENCIA(request.getContextPath())%>";
+		    form.method = "post";
+		    form.enctype = "multipart/form-data";
+		    form.classList.add('evidenciaForm');
+		    form.style.overflowY = 'auto';
+		    form.style.flex = '1 1 auto';
 
-		const labelFecha = document.createElement('label');
-		labelFecha.setAttribute('for', 'fechaObtencion'); 
-		labelFecha.textContent = 'Fecha de obtención';
-		
-		const inputFecha = document.createElement('input');
-		inputFecha.type = 'date';
-		inputFecha.id = 'fechaObtencion';
-		inputFecha.name = 'fechaObtencion'; 
-		inputFecha.required = true;
+		    const inputIdBestia = document.createElement('input');
+		    inputIdBestia.type = 'hidden';
+		    inputIdBestia.name = 'idBestia';
+		    inputIdBestia.value = '<%= (bestia != null) ? bestia.getIdBestia() : "null" %>';
 
-		const labelTipo = document.createElement('label');
-		labelTipo.setAttribute('for', 'tipo');
-		labelTipo.textContent = 'Tipo';
+		    const newH2 = document.createElement('h2');
+		    newH2.textContent = 'Subir evidencia';
 
-		const inputTipo = document.createElement('select');
-		inputTipo.id = 'tipo';
-		inputTipo.name = 'tipo';
-		inputTipo.required = true;
+		    const labelFecha = document.createElement('label');
+		    labelFecha.setAttribute('for', 'fechaObtencion');
+		    labelFecha.textContent = 'Fecha de obtención';
 
-		<% if(tes != null){%>
-		const tiposDeEvidencia = [
-			<% for(TipoEvidencia te : tes) { %>
-				{ id: <%= te.getId() %>, descripcion: '<%= te.getDescripcion() %>' },
-			<% } %>
-		];
-		for (const te of tiposDeEvidencia) {
-			const option = document.createElement('option');
-			option.value = te.id;
-			option.textContent = te.descripcion; 
-			inputTipo.appendChild(option);
+		    const inputFecha = document.createElement('input');
+		    inputFecha.type = 'date';
+		    inputFecha.id = 'fechaObtencion';
+		    inputFecha.name = 'fechaObtencion';
+		    inputFecha.required = true;
+
+		    const labelTipo = document.createElement('label');
+		    labelTipo.setAttribute('for', 'tipo');
+		    labelTipo.textContent = 'Tipo';
+
+		    const inputTipo = document.createElement('select');
+		    inputTipo.id = 'tipo';
+		    inputTipo.name = 'tipo';
+		    inputTipo.required = true;
+
+		    <% if(tes != null){%>
+		    const tiposDeEvidencia = [
+		        <% for(TipoEvidencia te : tes) { %>
+		            { id: <%= te.getId() %>, descripcion: '<%= te.getDescripcion() %>' },
+		        <% } %>
+		    ];
+		    for (const te of tiposDeEvidencia) {
+		        const option = document.createElement('option');
+		        option.value = te.id;
+		        option.textContent = te.descripcion;
+		        inputTipo.appendChild(option);
+		    }
+		    <%}%>
+
+		    const labelArchivo = document.createElement('label');
+		    labelArchivo.setAttribute('for', 'archivo');
+		    labelArchivo.textContent = 'Archivo';
+
+		    const inputArchivo = document.createElement('input');
+		    inputArchivo.type = 'file';
+		    inputArchivo.id = 'archivo';
+		    inputArchivo.name = 'archivo';
+		    inputArchivo.required = true;
+
+		    const previewEvidencia = document.createElement('div');
+		    previewEvidencia.classList.add('previewEvidenciaContenedor');
+
+		    inputArchivo.addEventListener('change', function(event) {
+		        previsualizarArchivoEvidencia(event, previewEvidencia);
+		    });
+
+		    const footer = document.createElement('section');
+		    footer.classList.add('modal-footer');
+		    footer.style.flex = '0 0 auto';
+		    footer.style.paddingTop = '12px';
+		    footer.style.borderTop = '1px solid #ddd';
+		    footer.style.display = 'flex';
+		    footer.style.justifyContent = 'center';
+		    footer.style.gap = '8px';
+
+		    const btnSubmit = document.createElement('button');
+		    btnSubmit.type = 'submit';
+		    btnSubmit.textContent = 'Guardar Evidencia';
+		    btnSubmit.classList.add('btnRegistro');
+		    btnSubmit.setAttribute('form', 'formEvidencia');
+		    
+		    footer.appendChild(btnSubmit);
+
+		    form.appendChild(inputIdBestia);
+		    form.appendChild(newH2);
+		    form.appendChild(labelFecha);
+		    form.appendChild(inputFecha);
+		    form.appendChild(labelTipo);
+		    form.appendChild(inputTipo);
+		    form.appendChild(labelArchivo);
+		    form.appendChild(inputArchivo);
+		    form.appendChild(previewEvidencia);
+
+		    modalBody.appendChild(form);
+		    modalBody.appendChild(footer);
+
+		    document.getElementById('modal').classList.add('is-visible');
 		}
-		<%}%>
-
-		const labelArchivo = document.createElement('label');
-		labelArchivo.setAttribute('for', 'archivo');
-		labelArchivo.textContent = 'Archivo';
-
-		const inputArchivo = document.createElement('input');
-		inputArchivo.type = 'file';
-		inputArchivo.id = 'archivo';
-		inputArchivo.name = 'archivo'; 
-		inputArchivo.required = true;
-
-		const previewEvidencia = document.createElement('div');
-		previewEvidencia.classList.add('previewEvidenciaContenedor');
-
-		inputArchivo.addEventListener('change', function(event) {
-			previsualizarArchivoEvidencia(event, previewEvidencia);
-		});
-
-		const btnSubmit = document.createElement('button');
-		btnSubmit.type = 'submit';
-		btnSubmit.textContent = 'Guardar Evidencia';
-		btnSubmit.classList.add('btnRegistro'); 
-
-		form.appendChild(inputIdBestia);
-		form.appendChild(newH2);
-		form.appendChild(labelFecha);
-		form.appendChild(inputFecha);
-		form.appendChild(labelTipo);
-		form.appendChild(inputTipo);
-		form.appendChild(labelArchivo);
-		form.appendChild(inputArchivo);
-		form.appendChild(previewEvidencia);
-		form.appendChild(btnSubmit);
-
-		modalBody.appendChild(form);
-
-		document.getElementById('modal').classList.add('is-visible');
-	}
 
 
 		window.onclick = function(event) {
