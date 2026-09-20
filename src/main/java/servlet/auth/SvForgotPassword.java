@@ -77,7 +77,7 @@ String correo = request.getParameter("correo");
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error crítico al agregar el token del usuario en el servlet SvForgotPassword", e);
 			}
-			String link = "http://localhost:8080/Bestiario/reset-password?token=" + token;
+			String link = "http://localhost:8080" + HttpRoutes.RESET_PASSWORD(request.getContextPath()) + "?token=" + token;
 			
 			LogicEmail logicEmail = new LogicEmail();
 			

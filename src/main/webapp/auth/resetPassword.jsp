@@ -18,7 +18,7 @@
         <h1 class="logContainerHeaderText">Nueva contraseña</h1>
     </header>
     
-	<form class="logForm" action="<%=request.getContextPath()%>/reset-password" method="POST">
+	<form class="logForm" action="<%= HttpRoutes.RESET_PASSWORD(request.getContextPath()) %>" method="POST">
 	
 	    <section class="logInputs">
 	

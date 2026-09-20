@@ -40,6 +40,10 @@ public final class HttpRoutes {
 		return base + "/auth/resetPassword.jsp";
 	}
 
+	public static String RESET_PASSWORD(String base) {
+		return base + "/auth/resetPassword";
+	}
+
 	// Bestias
 
 	public static String BESTIA_LIST_JSP(String base) {
@@ -117,14 +121,6 @@ public final class HttpRoutes {
 
 	// Habitats
 
-	public static String HABITAT_FORM_JSP(String base) {
-		return base + "/habitats/habitatForms.jsp";
-	}
-
-	public static String HABITATS_JSP(String base) {
-		return base + "/habitats/habitats.jsp";
-	}
-	
 	public static String CREAR_HABITAT(String base) {
 		return base + "/habitats/crear";
 	}
@@ -139,10 +135,6 @@ public final class HttpRoutes {
 	
 	public static String ELIMINAR_HABITAT(String base) {
 		return base + "/habitats/eliminar";
-	}
-	
-	public static String OBTENER_HABITAT(String base) {
-		return base + "/habitats/obtener";
 	}
 	
 	public static String LISTAR_CARACTERISTICAHABITAT(String base) {
@@ -183,13 +175,6 @@ public final class HttpRoutes {
 	}
 
 	// Categorias
-	public static String CATEGORIA_FORM_JSP(String base) {
-		return base + "/categorias/categoriaForms.jsp";
-	}
-	
-	public static String OBTENER_CATEGORIA(String base) {
-		return base + "/categorias/obtener";
-	}
 	
 	public static String LISTAR_CATEGORIAS(String base) {
 		return base + "/categorias/listar";
@@ -208,32 +193,9 @@ public final class HttpRoutes {
 	}
 
 	// Evidencias
-	public static String EVIDENCIA_FORM_JSP(String base) {
-		return base + "/evidencias/evidenciaForms.jsp";
-	}
-
-	public static String TIPO_EVIDENCIA_FORM_JSP(String base) {
-		return base + "/evidencias/tipoEvidenciaForms.jsp";
-	}
-	
-	public static String OBTENER_EVIDENCIA(String base) {
-		return base + "/evidencias/obtener";
-	}
-	
-	public static String LISTAR_EVIDENCIAS(String base) {
-		return base + "/evidencias/listar";
-	}
-	
-	public static String LISTAR_EVIDENCIAS_TIPO(String base) {
-		return base + "/evidencias/listarPorTipo";
-	}
 	
 	public static String CREAR_EVIDENCIA(String base) {
 		return base + "/evidencias/crear";
-	}
-	
-	public static String ACTUALIZAR_EVIDENCIA(String base) {
-		return base + "/evidencias/actualizar";
 	}
 	
 	public static String ELIMINAR_EVIDENCIA(String base) {
@@ -242,10 +204,6 @@ public final class HttpRoutes {
 	
 	public static String APROBAR_EVIDENCIA(String base) {
 		return base + "/evidencias/aprobar";
-	}
-	
-	public static String OBTENER_TIPO_EVIDENCIA(String base) {
-		return base + "/evidencias/obtenerTipoEvidencia";
 	}
 	
 	public static String LISTAR_TIPOS_EVIDENCIA(String base) {

@@ -38,7 +38,6 @@ public class ListarHabitat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = null;
-		String flag = request.getParameter("flag");
 		LinkedList<Habitat> hts = new LinkedList<>();
 		try{
 			hts = controlador.findAll();
@@ -49,11 +48,7 @@ public class ListarHabitat extends HttpServlet {
 		}
 		request.setAttribute("habitats", hts);
 		
-		if(flag == null) {
-			rd = request.getRequestDispatcher(HttpRoutes.HABITATS_JSP(""));
-		}else {
-			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
-		}
+		rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
 		rd.forward(request, response);
 	}
 

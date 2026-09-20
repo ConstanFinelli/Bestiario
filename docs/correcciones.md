@@ -30,26 +30,39 @@ Se realizó una auditoría estática y dinámica exhaustiva sobre todo el códig
 ### Registro de Últimos Cambios Aplicados
 > [!NOTE]
 > **Últimas correcciones realizadas en el repositorio:**
-> 1. **`HttpRoutes.java`:** Se eliminaron 4 métodos no utilizados:
->    - `BESTIA_FORMS_JSP(base)`
->    - `CARAC_HABITAT_FORM_JSP(base)`
->    - `NOTICIA_FORM_JSP(base)`
->    - `HABITATS_CSS(base)`
-> 2. **Archivos Estáticos:** Se eliminó físicamente el archivo huérfano [`src/main/webapp/css/habitats.css`](file:///c:/Facu/Java/Bestiario/src/main/webapp/css/habitats.css).
+> 1. **`ListarHabitat.java`:** Se eliminó la bifurcación condicional al JSP inexistente `/habitats/habitats.jsp`, despachando uniformemente a `HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats"` para prevenir error 404 en runtime.
+> 2. **Ruta de Recuperación de Contraseña (`/auth/resetPassword`):**
+>    - Se agregó el helper `RESET_PASSWORD(base)` en `HttpRoutes.java`.
+>    - Se actualizó `src/main/webapp/auth/resetPassword.jsp` utilizando `HttpRoutes.RESET_PASSWORD(request.getContextPath())`.
+>    - Se actualizó la anotación en `SvResetPassword.java` a `@WebServlet("/auth/resetPassword")`.
+>    - Se unificó el enlace de correo en `SvForgotPassword.java` usando `HttpRoutes.RESET_PASSWORD(...)`.
+> 3. **`HttpRoutes.java`:** Se eliminaron 16 métodos no utilizados o rotos en total:
+>    - 4 resueltos previamente (`BESTIA_FORMS_JSP`, `CARAC_HABITAT_FORM_JSP`, `NOTICIA_FORM_JSP`, `HABITATS_CSS`).
+>    - 5 métodos a JSPs inexistentes (`HABITAT_FORM_JSP`, `HABITATS_JSP`, `CATEGORIA_FORM_JSP`, `EVIDENCIA_FORM_JSP`, `TIPO_EVIDENCIA_FORM_JSP`).
+>    - 7 métodos a servlets huérfanos (`OBTENER_HABITAT`, `OBTENER_CATEGORIA`, `OBTENER_EVIDENCIA`, `LISTAR_EVIDENCIAS`, `LISTAR_EVIDENCIAS_TIPO`, `ACTUALIZAR_EVIDENCIA`, `OBTENER_TIPO_EVIDENCIA`).
+> 4. **Eliminación de Servlets Huérfanos:** Se eliminaron físicamente los 7 servlets muertos:
+>    - `servlet.categoria.ObtenerCategoria`
+>    - `servlet.habitat.ObtenerHabitat`
+>    - `servlet.evidencia.ListarEvidencias`
+>    - `servlet.evidencia.ListarEvidenciasTipo`
+>    - `servlet.evidencia.ObtenerEvidencia`
+>    - `servlet.evidencia.ObtenerTipoEvidencia`
+>    - `servlet.evidencia.ActualizarEvidencia`
+> 5. **Archivos Estáticos:** Se eliminó físicamente el archivo huérfano `src/main/webapp/css/habitats.css`.
 
 ### Métricas Actualizadas de Hallazgos
-- **Rutas no utilizadas en `HttpRoutes.java`:** 11 identificadas inicialmente ➔ **4 resueltas**, **7 pendientes** (asociadas a servlets huérfanos).
-- **Rutas JSP a archivos inexistentes:** 8 identificadas inicialmente ➔ **3 eliminadas de `HttpRoutes`**, **5 pendientes** de remover de `HttpRoutes` y servlets.
-- **Archivo CSS huérfano:** [`habitats.css`](file:///c:/Facu/Java/Bestiario/src/main/webapp/css/habitats.css) ➔ **Resuelto** (eliminado de disco y de `HttpRoutes`).
-- **7 servlets huérfanos** que no son invocados por ningún componente de la aplicación y despachan a vistas inexistentes (pendientes).
-- **1 ruta HTTP crítica faltante en `HttpRoutes`** (hardcodeada en `resetPassword.jsp`).
-- **3 métodos DAO muertos** y **2 métodos públicos que deberían ser privados**.
-- **1 consulta N+1 innecesaria** en cada obtención de Bestia (`completarBestia`).
-- **502 líneas de `System.out.println` / `e.printStackTrace()`** en 13 clases de producción (capas `data`, `logic` y `listeners`).
-- **22 clases de backend sin Logger configurado**.
-- **3 errores en definición de Logger** (apuntando a clases equivocadas o con modificadores incorrectos).
-- **8 capturas de excepción donde se pierde el objeto `Throwable`** al invocar `logger.log(...)`.
-- **4 mensajes de log con texto copiado y pegado erróneo** (hacen referencia a servlets o entidades equivocadas).
+- **Rutas no utilizadas en `HttpRoutes.java`:** 11 identificadas inicialmente ➔ **11 resueltas (0 pendientes)**.
+- **Rutas JSP a archivos inexistentes:** 8 identificadas inicialmente ➔ **8 resueltas (0 pendientes)**.
+- **Archivo CSS huérfano:** `habitats.css` ➔ **Resuelto** (eliminado de disco y de `HttpRoutes`).
+- **7 servlets huérfanos:** ➔ **Resuelto** (eliminados físicamente del proyecto).
+- **1 ruta HTTP crítica faltante en `HttpRoutes`:** ➔ **Resuelto** (`RESET_PASSWORD` agregada y centralizada).
+- **3 métodos DAO muertos** y **2 métodos públicos que deberían ser privados** (pendientes).
+- **1 consulta N+1 innecesaria** en cada obtención de Bestia (`completarBestia`) (pendiente).
+- **502 líneas de `System.out.println` / `e.printStackTrace()`** en 13 clases de producción (capas `data`, `logic` y `listeners`) (pendientes).
+- **22 clases de backend sin Logger configurado** (pendientes).
+- **3 errores en definición de Logger** (apuntando a clases equivocadas o con modificadores incorrectos) (pendientes).
+- **8 capturas de excepción donde se pierde el objeto `Throwable`** al invocar `logger.log(...)` (pendientes).
+- **4 mensajes de log con texto copiado y pegado erróneo** (hacen referencia a servlets o entidades equivocadas) (pendientes).
 
 ---
 
@@ -63,13 +76,13 @@ Se realizó una auditoría estática y dinámica exhaustiva sobre todo el códig
 | `CARAC_HABITAT_FORM_JSP(base)` | `/habitats/carHabitatForms.jsp` | Vista inexistente. La gestión se hace en `adminCarHabitats.jsp`. | **RESUELTO** (Eliminado) |
 | `NOTICIA_FORM_JSP(base)` | `/noticias/noticiaForms.jsp` | Vista inexistente. La redacción se realiza en `redactarNoticia.jsp`. | **RESUELTO** (Eliminado) |
 | `HABITATS_CSS(base)` | `/css/habitats.css` | Archivo CSS residual eliminado; la vista usa `adminDashboard.css`. | **RESUELTO** (Eliminado) |
-| `OBTENER_HABITAT(base)` | `/habitats/obtener` | Inconsistencia: el servlet `ObtenerHabitat` está anotado como `/habitat/obtener` (en singular). Ninguno de los dos se llama. | **PENDIENTE** |
-| `OBTENER_CATEGORIA(base)` | `/categorias/obtener` | Servlet huérfano. La edición se realiza directamente en `adminCategorias.jsp`. | **PENDIENTE** |
-| `OBTENER_EVIDENCIA(base)` | `/evidencias/obtener` | Servlet huérfano. | **PENDIENTE** |
-| `LISTAR_EVIDENCIAS(base)` | `/evidencias/listar` | Servlet huérfano. | **PENDIENTE** |
-| `LISTAR_EVIDENCIAS_TIPO(base)` | `/evidencias/listarPorTipo` | Servlet huérfano. | **PENDIENTE** |
-| `ACTUALIZAR_EVIDENCIA(base)` | `/evidencias/actualizar` | Servlet huérfano sin enlace en interfaz. | **PENDIENTE** |
-| `OBTENER_TIPO_EVIDENCIA(base)` | `/evidencias/obtenerTipoEvidencia` | Servlet huérfano. La gestión se hace en `adminTipoEvidencia.jsp`. | **PENDIENTE** |
+| `OBTENER_HABITAT(base)` | `/habitats/obtener` | Inconsistencia de nombre y servlet huérfano. | **RESUELTO** (Eliminado de `HttpRoutes` y servlet borrado) |
+| `OBTENER_CATEGORIA(base)` | `/categorias/obtener` | Servlet huérfano. La edición se realiza directamente en `adminCategorias.jsp`. | **RESUELTO** (Eliminado de `HttpRoutes` y servlet borrado) |
+| `OBTENER_EVIDENCIA(base)` | `/evidencias/obtener` | Servlet huérfano. | **RESUELTO** (Eliminado de `HttpRoutes` y servlet borrado) |
+| `LISTAR_EVIDENCIAS(base)` | `/evidencias/listar` | Servlet huérfano. | **RESUELTO** (Eliminado de `HttpRoutes` y servlet borrado) |
+| `LISTAR_EVIDENCIAS_TIPO(base)` | `/evidencias/listarPorTipo` | Servlet huérfano. | **RESUELTO** (Eliminado de `HttpRoutes` y servlet borrado) |
+| `ACTUALIZAR_EVIDENCIA(base)` | `/evidencias/actualizar` | Servlet huérfano sin enlace en interfaz. | **RESUELTO** (Eliminado de `HttpRoutes` y servlet borrado) |
+| `OBTENER_TIPO_EVIDENCIA(base)` | `/evidencias/obtenerTipoEvidencia` | Servlet huérfano. La gestión se hace en `adminTipoEvidencia.jsp`. | **RESUELTO** (Eliminado de `HttpRoutes` y servlet borrado) |
 
 ---
 
@@ -79,68 +92,55 @@ Si algún flujo de ejecución despacha o redirige a estas rutas, el servidor ret
 1. `/bestias/bestiaForms.jsp` ➔ **RESUELTO** (Método `BESTIA_FORMS_JSP` eliminado de `HttpRoutes`).
 2. `/habitats/carHabitatForms.jsp` ➔ **RESUELTO** (Método `CARAC_HABITAT_FORM_JSP` eliminado de `HttpRoutes`).
 3. `/noticias/noticiaForms.jsp` ➔ **RESUELTO** (Método `NOTICIA_FORM_JSP` eliminado de `HttpRoutes`).
-4. `/habitats/habitatForms.jsp` (referenciado en `HttpRoutes.HABITAT_FORM_JSP` y despachado por `ObtenerHabitat.java`) ➔ **PENDIENTE**.
-5. `/habitats/habitats.jsp` (referenciado en `HttpRoutes.HABITATS_JSP` y despachado en `ListarHabitat.java` cuando `flag == null`) ➔ **PENDIENTE (Crítico)**.  
-   > ⚠️ **Peligro Crítico:** En `ListarHabitat.java` (línea 53), si la petición no incluye el parámetro `flag`, el servlet ejecuta:
-   > ```java
-   > rd = request.getRequestDispatcher(HttpRoutes.HABITATS_JSP(""));
-   > ```
-   > provocando un error 404 inmediato.
-6. `/categorias/categoriaForms.jsp` (referenciado en `HttpRoutes.CATEGORIA_FORM_JSP` y despachado por `ObtenerCategoria.java`) ➔ **PENDIENTE**.
-7. `/evidencias/evidenciaForms.jsp` (referenciado en `HttpRoutes.EVIDENCIA_FORM_JSP` y despachado por 4 servlets de evidencias) ➔ **PENDIENTE**.
-8. `/evidencias/tipoEvidenciaForms.jsp` (referenciado en `HttpRoutes.TIPO_EVIDENCIA_FORM_JSP` y despachado por `ObtenerTipoEvidencia.java`) ➔ **PENDIENTE**.
+4. `/habitats/habitatForms.jsp` ➔ **RESUELTO** (Método `HABITAT_FORM_JSP` eliminado de `HttpRoutes` y servlet `ObtenerHabitat.java` eliminado).
+5. `/habitats/habitats.jsp` ➔ **RESUELTO** (`ListarHabitat.java` corregido para despachar a `adminDashboard.jsp?crud=habitats` y método `HABITATS_JSP` eliminado de `HttpRoutes`).
+6. `/categorias/categoriaForms.jsp` ➔ **RESUELTO** (Método `CATEGORIA_FORM_JSP` eliminado de `HttpRoutes` y servlet `ObtenerCategoria.java` eliminado).
+7. `/evidencias/evidenciaForms.jsp` ➔ **RESUELTO** (Método `EVIDENCIA_FORM_JSP` eliminado de `HttpRoutes` y 4 servlets de evidencias eliminados).
+8. `/evidencias/tipoEvidenciaForms.jsp` ➔ **RESUELTO** (Método `TIPO_EVIDENCIA_FORM_JSP` eliminado de `HttpRoutes` y servlet `ObtenerTipoEvidencia.java` eliminado).
 
 ---
 
 ### 1.3. Rutas Faltantes en `HttpRoutes.java` (Hardcodeadas)
-- En `src/main/webapp/auth/resetPassword.jsp` (línea 21):
-  ```jsp
-  <form class="logForm" action="<%=request.getContextPath()%>/reset-password" method="POST">
-  ```
-  La URL `/reset-password` está hardcodeada directamente en el JSP porque no existe el método helper correspondiente en `HttpRoutes.java`.
+- En `src/main/webapp/auth/resetPassword.jsp` (línea 21): ➔ **RESUELTO**
+  Se incorporó `HttpRoutes.RESET_PASSWORD(base)` retornando `base + "/auth/resetPassword"`. Se actualizaron:
+  - Formulario de `resetPassword.jsp` utilizando `HttpRoutes.RESET_PASSWORD(request.getContextPath())`.
+  - Servlet `SvResetPassword.java` con anotación `@WebServlet("/auth/resetPassword")`.
+  - Servlet `SvForgotPassword.java` construyendo el enlace con `HttpRoutes.RESET_PASSWORD(...)`.
 
 ---
 
-### 1.4. Solución Propuesta para Enrutamiento
-1. **Eliminar los 7 métodos huérfanos restantes** de `HttpRoutes.java` vinculados a los servlets que no se usan (`OBTENER_HABITAT`, `OBTENER_CATEGORIA`, etc.).
-2. **Corregir `ListarHabitat.java`**:
-   Eliminar la bifurcación condicional a la vista inexistente `/habitats/habitats.jsp`. Todo redireccionamiento o forward de hábitats debe apuntar a:
+### 1.4. Solución Aplicada para Enrutamiento
+1. **Eliminados los 7 métodos huérfanos** de `HttpRoutes.java` vinculados a los servlets que no se usan (`OBTENER_HABITAT`, `OBTENER_CATEGORIA`, etc.).
+2. **Corregido `ListarHabitat.java`**:
+   Se eliminó la bifurcación condicional a la vista inexistente `/habitats/habitats.jsp`. Todo reenvío despacha uniformemente a:
    ```java
    rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
    ```
-3. **Agregar la ruta faltante en `HttpRoutes.java`**:
+3. **Agregada la ruta centralizada en `HttpRoutes.java`**:
    ```java
    public static String RESET_PASSWORD(String base) {
-       return base + "/reset-password";
+       return base + "/auth/resetPassword";
    }
    ```
-   Y actualizar `resetPassword.jsp`:
-   ```jsp
-   <form class="logForm" action="<%= HttpRoutes.RESET_PASSWORD(request.getContextPath()) %>" method="POST">
-   ```
-4. **Eliminar los métodos de JSPs inexistentes restantes** en `HttpRoutes.java` (`HABITAT_FORM_JSP`, `HABITATS_JSP`, `CATEGORIA_FORM_JSP`, `EVIDENCIA_FORM_JSP`, `TIPO_EVIDENCIA_FORM_JSP`).
+4. **Eliminados los 5 métodos de JSPs inexistentes restantes** en `HttpRoutes.java` (`HABITAT_FORM_JSP`, `HABITATS_JSP`, `CATEGORIA_FORM_JSP`, `EVIDENCIA_FORM_JSP`, `TIPO_EVIDENCIA_FORM_JSP`).
 
 ---
 
-## 2. Servlets Huérfanos o Nunca Invocados
+## 2. Servlets Huérfanos o Nunca Invocados (RESUELTO - Eliminados)
 
-Se detectaron 7 servlets mapeados con `@WebServlet` que no tienen ningún llamado desde la interfaz web, ni desde JavaScript (`fetch`/`AJAX`), ni redirecciones de otros servlets. Además, todos ellos intentan despachar a archivos JSP que no existen en el proyecto:
+Se detectaron 7 servlets mapeados con `@WebServlet` que no tenían ningún llamado desde la interfaz web, ni desde JavaScript (`fetch`/`AJAX`), ni redirecciones de otros servlets. Además, todos ellos intentaban despachar a archivos JSP que no existen en el proyecto. **Los 7 servlets fueron removidos físicamente del repositorio**:
 
-### Detalle de Servlets Huérfanos
+### Detalle de Servlets Huérfanos Eliminados
 
-| Servlet | URL Mapeada | Despacha a (Inexistente) | Causa de la Condición Huérfana |
+| Servlet | URL Mapeada | Despachaba a (Inexistente) | Causa de la Condición Huérfana / Estado |
 |---|---|---|---|
-| `ObtenerCategoria.java` | `/categorias/obtener` | `CATEGORIA_FORM_JSP` | La gestión y edición de categorías se realiza de forma interactiva en la misma página `adminCategorias.jsp`. |
-| `ObtenerHabitat.java` | `/habitat/obtener` *(singular)* | `HABITAT_FORM_JSP` | La consulta y edición de hábitats se realiza en `adminHabitats.jsp`. La URL además difiere del prefijo plural `/habitats/`. |
-| `ListarEvidencias.java` | `/evidencias/listar` | `EVIDENCIA_FORM_JSP` | Las evidencias se visualizan contextualizadas dentro de cada registro en `registro.jsp` o en el panel de bestias. |
-| `ListarEvidenciasTipo.java` | `/evidencias/listarPorTipo` | `EVIDENCIA_FORM_JSP` | No existe ningún filtro de evidencias por tipo expuesto en la UI. |
-| `ObtenerEvidencia.java` | `/evidencias/obtener` | `EVIDENCIA_FORM_JSP` | Las evidencias se cargan asociadas a las bestias/registros mediante `LogicEvidencia` y `LogicBestia`. |
-| `ObtenerTipoEvidencia.java` | `/evidencias/obtenerTipoEvidencia` | `TIPO_EVIDENCIA_FORM_JSP` | La administración de tipos de evidencia se realiza mediante modal/formulario en `adminTipoEvidencia.jsp`. |
-| `ActualizarEvidencia.java` | `/evidencias/actualizar` | `EVIDENCIA_FORM_JSP` | No existe interfaz de edición de evidencias existentes (sólo creación, aprobación y eliminación). Además, ejecutaba `CloudinaryHelper.upload(archivo)` de manera incondicional. |
-
-### Solución Propuesta para Servlets Huérfanos
-- **Eliminar los 7 servlets y sus rutas correspondientes**: No forman parte del flujo de usuario ni del panel de administración. Mantenerlos en el proyecto agrega superficie de ataque (servlets públicos con parámetros parseados sin autenticación estricta), deuda técnica y riesgo de errores 404/500 si algún actor malicioso o scraper los invoca.
-- Si en el futuro se requiriera consultar una categoría, evidencia o hábitat individual vía API (por ejemplo para modales asíncronos), se deberá diseñar un servlet que devuelva JSON (`application/json`) con `HttpServletResponse` y ObjectMapper, no despachando a JSPs inexistentes.
+| `ObtenerCategoria.java` | `/categorias/obtener` | `CATEGORIA_FORM_JSP` | La gestión y edición de categorías se realiza de forma interactiva en la misma página `adminCategorias.jsp`. ➔ **ELIMINADO** |
+| `ObtenerHabitat.java` | `/habitat/obtener` *(singular)* | `HABITAT_FORM_JSP` | La consulta y edición de hábitats se realiza en `adminHabitats.jsp`. ➔ **ELIMINADO** |
+| `ListarEvidencias.java` | `/evidencias/listar` | `EVIDENCIA_FORM_JSP` | Las evidencias se visualizan contextualizadas dentro de cada registro en `registro.jsp` o en el panel de bestias. ➔ **ELIMINADO** |
+| `ListarEvidenciasTipo.java` | `/evidencias/listarPorTipo` | `EVIDENCIA_FORM_JSP` | No existe ningún filtro de evidencias por tipo expuesto en la UI. ➔ **ELIMINADO** |
+| `ObtenerEvidencia.java` | `/evidencias/obtener` | `EVIDENCIA_FORM_JSP` | Las evidencias se cargan asociadas a las bestias/registros mediante `LogicEvidencia` y `LogicBestia`. ➔ **ELIMINADO** |
+| `ObtenerTipoEvidencia.java` | `/evidencias/obtenerTipoEvidencia` | `TIPO_EVIDENCIA_FORM_JSP` | La administración de tipos de evidencia se realiza mediante modal/formulario en `adminTipoEvidencia.jsp`. ➔ **ELIMINADO** |
+| `ActualizarEvidencia.java` | `/evidencias/actualizar` | `EVIDENCIA_FORM_JSP` | No existe interfaz de edición de evidencias existentes (sólo creación, aprobación y eliminación). ➔ **ELIMINADO** |
 
 ---
 
@@ -409,8 +409,8 @@ public class DataBestia {
 Para ejecutar estas correcciones de manera segura y sin generar regresiones en la aplicación, se dividen las tareas en 4 fases ordenadas por criticidad:
 
 ### Fase 1: Correcciones Críticas de Seguridad y Runtime (Inmediata)
-- [ ] **Corregir `ListarHabitat.java`**: Eliminar el forward a `/habitats/habitats.jsp` (evita HTTP 404).
-- [ ] **Agregar `HttpRoutes.RESET_PASSWORD(base)`** y actualizar `resetPassword.jsp` (elimina ruta hardcodeada).
+- [x] **Corregir `ListarHabitat.java`**: Eliminar el forward a `/habitats/habitats.jsp` (evita HTTP 404).
+- [x] **Agregar `HttpRoutes.RESET_PASSWORD(base)`** y actualizar `resetPassword.jsp` (elimina ruta hardcodeada).
 - [ ] **Corregir las clases referenciadas en Loggers**:
   - `LogicNoticia.java`: Usar `LogicNoticia.class`.
   - `servlet.habitat.EliminarCaracteristica.java`: Normalizar a `private static final Logger`.
@@ -419,8 +419,8 @@ Para ejecutar estas correcciones de manera segura y sin generar regresiones en l
 ### Fase 2: Depuración de Código Huérfano y Rutas Inexistentes
 - [x] **Eliminar rutas de formularios JSP inexistentes ya identificadas**: `BESTIA_FORMS_JSP`, `CARAC_HABITAT_FORM_JSP`, `NOTICIA_FORM_JSP` de `HttpRoutes.java`.
 - [x] **Eliminar archivo de estilos residual y su helper**: Borrado `src/main/webapp/css/habitats.css` y eliminado `HABITATS_CSS(base)` de `HttpRoutes.java`.
-- [ ] **Remover servlets huérfanos**: `ObtenerCategoria`, `ObtenerHabitat`, `ListarEvidencias`, `ListarEvidenciasTipo`, `ObtenerEvidencia`, `ObtenerTipoEvidencia`, `ActualizarEvidencia`.
-- [ ] **Eliminar los 7 métodos restantes no utilizados** en `HttpRoutes.java` y referencias a JSPs inexistentes restantes (`HABITAT_FORM_JSP`, `HABITATS_JSP`, `CATEGORIA_FORM_JSP`, `EVIDENCIA_FORM_JSP`, `TIPO_EVIDENCIA_FORM_JSP`).
+- [x] **Remover servlets huérfanos**: `ObtenerCategoria`, `ObtenerHabitat`, `ListarEvidencias`, `ListarEvidenciasTipo`, `ObtenerEvidencia`, `ObtenerTipoEvidencia`, `ActualizarEvidencia`.
+- [x] **Eliminar los 7 métodos restantes no utilizados** en `HttpRoutes.java` y referencias a JSPs inexistentes restantes (`HABITAT_FORM_JSP`, `HABITATS_JSP`, `CATEGORIA_FORM_JSP`, `EVIDENCIA_FORM_JSP`, `TIPO_EVIDENCIA_FORM_JSP`).
 
 ### Fase 3: Estandarización del Sistema de Logging
 - [ ] **Incorporar `Logger` en todas las clases DAO (`Data*.java`)**, reemplazando las 495+ líneas de `System.out.println` por llamadas a `logger.log(Level.SEVERE, ..., ex)` incluyendo `SQLState` y código de proveedor.
