@@ -81,6 +81,11 @@ public class ObtenerRegistroBestia extends HttpServlet {
 					request.setAttribute("errorGlobal", "El número de registro es inválido. ");
 					rd.forward(request, response);
 					return;
+				}catch(DataNotFoundException e) {
+					logger.log(Level.WARNING, "Registro no encontrado en el servlet ObtenerRegistroBestia", e);
+					request.setAttribute("errorGlobal", "El registro solicitado no existe. ");
+					rd.forward(request, response);
+					return;
 				}catch(Exception e) {
 					logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
 					request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");

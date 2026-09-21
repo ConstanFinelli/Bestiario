@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import entities.Investigador;
 import entities.Lector;
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -55,20 +56,22 @@ public class CrearSolicitud extends HttpServlet {
 		Usuario actualizacion = null;
 		try{
 			actualizacion = controladorUsuario.update(solicitud);
+		} catch (DataNotFoundException e) {
+			logger.log(Level.WARNING, "Usuario no encontrado al crear solicitud en el servlet CrearSolicitud", e);
+			request.setAttribute("errorGlobal", "El usuario no existe. ");
+			request.getRequestDispatcher(HttpRoutes.PRESENTAR_CANDIDATURA_JSP("")).forward(request, response);
+			return;
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error al crear solicitud de investigador en el servlet CrearSolicitud", e);
 			request.setAttribute("errorGlobal", "No se ha podido crear la solicitud. ");
+			request.getRequestDispatcher(HttpRoutes.PRESENTAR_CANDIDATURA_JSP("")).forward(request, response);
 			return;
 		}
 		
-
 		if(actualizacion != null) {
-
-		if(controladorUsuario.update(solicitud) != null) {
 			user.setEstado("solicitante");
 			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
 		}
-	}
 }
 
 }

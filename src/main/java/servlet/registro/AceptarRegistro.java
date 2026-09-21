@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import entities.Bestia;
 import entities.Investigador;
 import entities.Registro;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -64,6 +65,9 @@ public class AceptarRegistro extends HttpServlet {
 				logger.log(Level.WARNING, "Error al parsear idInvestigador en el servlet AceptarRegistro", e);
 				request.setAttribute("errorGlobal", "El id del investigador es inválido.");
 				return;
+			}catch(DataNotFoundException e) {
+				logger.log(Level.WARNING, "Registro no encontrado al aceptar en el servlet AceptarRegistro", e);
+				request.setAttribute("errorGlobal", "El registro no existe.");
 			}catch(Exception e) {
 				logger.log(Level.SEVERE, "Error al aceptar registro en el servlet AceptarRegistro", e);
 				request.setAttribute("errorGlobal", "No se ha podido aceptar el registro. ");
@@ -71,6 +75,9 @@ public class AceptarRegistro extends HttpServlet {
 		} else if (action.equals("rechazar")) {
 			try{
 				controlador.delete(registro);
+			}catch(DataNotFoundException e) {
+				logger.log(Level.WARNING, "Registro no encontrado al rechazar en el servlet AceptarRegistro", e);
+				request.setAttribute("errorGlobal", "El registro ya no existe.");
 			}catch(Exception e) {
 				logger.log(Level.SEVERE, "Error al rechazar registro en el servlet AceptarRegistro", e);
 				request.setAttribute("errorGlobal", "No se ha podido rechazar el registro. ");

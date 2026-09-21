@@ -13,6 +13,7 @@ import java.util.logging.Level;
 
 import entities.Investigador;
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -43,15 +44,25 @@ public class AprobarSolicitud extends HttpServlet {
 		} catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear idUsuario en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "La id del usuario es inválida. ");
+			response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
+			return;
+		} catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Usuario no encontrado en el servlet AprobarSolicitud", e);
+			request.setAttribute("errorGlobal", "El usuario no fue encontrado. ");
+			response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
 			return;
 		} catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido el usuario. ");
+			response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
 			return;
 		}
 
 		try{
 			controladorUsuario.update((Investigador) user);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Usuario no encontrado al actualizar en el servlet AprobarSolicitud", e);
+			request.setAttribute("errorGlobal", "El usuario no existe. ");
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al aprobar solicitud en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "No se ha podido aprobar la solicitud. ");

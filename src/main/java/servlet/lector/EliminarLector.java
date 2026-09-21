@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -46,6 +47,11 @@ public class EliminarLector extends HttpServlet {
 		}
 		try{
 			us = (Usuario) controlador.getOne(us);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Usuario no encontrado en el servlet EliminarLector", e);
+			request.setAttribute("errorGlobal", "El usuario a eliminar no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet EliminarLector", e);
 			request.setAttribute("errorGlobal", "No se ha podido conseguir el usuario. ");
@@ -54,6 +60,9 @@ public class EliminarLector extends HttpServlet {
 		}
 		try{
 			us = (Usuario) controlador.delete(us);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Usuario no encontrado al eliminar en el servlet EliminarLector", e);
+			request.setAttribute("errorGlobal", "El usuario a eliminar ya no existe.");
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al eliminar usuario en el servlet EliminarLector", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar el usuario. ");

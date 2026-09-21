@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Registro;
+import exceptions.DataNotFoundException;
 import helpers.EnvHelper;
 import helpers.HttpRoutes;
 
@@ -53,6 +54,11 @@ public class MapaBestia extends HttpServlet {
 		}catch(NumberFormatException nfe) {
 			logger.log(Level.WARNING, "Error al parsear el id de la bestia en el servlet MapaBestia", nfe);
 			request.setAttribute("errorGlobal","Id de bestia invalido");
+			rd.forward(request, response);
+			return;
+		}catch(DataNotFoundException dnfe) {
+			logger.log(Level.WARNING, "Bestia no encontrada en el servlet MapaBestia", dnfe);
+			request.setAttribute("errorGlobal","La bestia solicitada no existe");
 			rd.forward(request, response);
 			return;
 		}catch(Exception e) {

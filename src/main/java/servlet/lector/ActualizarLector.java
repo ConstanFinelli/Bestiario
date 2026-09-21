@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import entities.Lector;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -66,13 +67,31 @@ public class ActualizarLector extends HttpServlet {
 		try{
 			lector = (Lector) controlador.getOne(lector);
 		}
+		catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Lector no encontrado en el servlet ActualizarLector", e);
+			request.setAttribute("errorGlobal", "El usuario no existe.");
+			rd.forward(request, response);
+			return;
+		}
 		catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir lector en el servlet ActualizarLector", e);
 			request.setAttribute("errorGlobal", "No se ha podido conseguir el lector. ");
 			rd.forward(request, response);
 			return;
 		}
-		lector = (Lector) controlador.update(lector);
+		try {
+			lector = (Lector) controlador.update(lector);
+		} catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Lector no encontrado al actualizar en el servlet ActualizarLector", e);
+			request.setAttribute("errorGlobal", "El usuario a actualizar no existe.");
+			rd.forward(request, response);
+			return;
+		} catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al actualizar lector en el servlet ActualizarLector", e);
+			request.setAttribute("errorGlobal", "No se ha podido actualizar el usuario.");
+			rd.forward(request, response);
+			return;
+		}
 		if(request.getAttribute("errorGlobal") == null) {
 			request.setAttribute("feedbackMessage","¡Usuario actualizado con éxito!");
 		}

@@ -32,6 +32,7 @@ import entities.Investigador;
 import entities.Registro;
 import entities.TipoEvidencia;
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
 import helpers.EnvHelper;
@@ -74,10 +75,17 @@ public class ActualizarRegistro extends HttpServlet {
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "El id de la bestia es inválido.");
+			rd.forward(request, response);
+			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Bestia no encontrada en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "La bestia especificada no existe.");
+			rd.forward(request, response);
 			return;
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido la bestia. ");
+			rd.forward(request, response);
 			return;
 		}
 		try{
@@ -111,14 +119,14 @@ public class ActualizarRegistro extends HttpServlet {
 		try {
 			bestia = new Bestia(Integer.parseInt(bestiaId));
 			bestia = controladorBestia.getOne(bestia);
-			if(bestia == null) {
-				request.setAttribute("errorGlobal", "La bestia especificada no fue encontrada.");
-				request.getRequestDispatcher(HttpRoutes.HOME_JSP("")).forward(request, response);
-				return;
-			}
 		} catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet ActualizarRegistro", e);
 			request.setAttribute("errorGlobal", "El id de la bestia es inválido.");
+			request.getRequestDispatcher(HttpRoutes.HOME_JSP("")).forward(request, response);
+			return;
+		} catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Bestia no encontrada en el servlet ActualizarRegistro", e);
+			request.setAttribute("errorGlobal", "La bestia especificada no fue encontrada.");
 			request.getRequestDispatcher(HttpRoutes.HOME_JSP("")).forward(request, response);
 			return;
 		} catch(Exception e) {
