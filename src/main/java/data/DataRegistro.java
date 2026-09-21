@@ -118,6 +118,9 @@ public class DataRegistro {
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
+		if(registroEncontrado == null) {
+			throw new DataNotFoundException("No se encontró el registro nro " + r.getNroRegistro());
+		}
 		return registroEncontrado;
 	}
 	
@@ -363,6 +366,9 @@ public class DataRegistro {
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
+		if(r == null) {
+			throw new DataNotFoundException("No se encontró el registro a actualizar.");
+		}
 		return r;
 	}
 	
@@ -423,7 +429,7 @@ public class DataRegistro {
 		}
 	}
 	
-	public Registro updateEstado(Registro r) {
+	public Registro updateEstado(Registro r) throws DataNotFoundException {
 		PreparedStatement pstmt = null;
 		try {
 			setLastRegistroFechaBaja(r.getBestia());
@@ -452,6 +458,9 @@ public class DataRegistro {
 					"Error SQL al cerrar recursos en updateEstado de registro [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(r == null) {
+			throw new DataNotFoundException("Registro no encontrado para actualizar estado");
 		}
 		return r;
 	}

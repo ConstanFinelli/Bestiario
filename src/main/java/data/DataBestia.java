@@ -219,6 +219,9 @@ public class DataBestia {
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
+		if(b == null) {
+			throw new DataNotFoundException("No se encontró la bestia a actualizar.");
+		}
 		return b;
 	}
 	
@@ -504,12 +507,13 @@ public class DataBestia {
 		}
 	}
 	
-	public void approve(Bestia b) {
+	public void approve(Bestia b) throws DataNotFoundException {
 		PreparedStatement pstmt = null;
+		int rows = 0;
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update bestia set estado = 'aprobado' where idBestia = ?");
 			pstmt.setInt(1, b.getIdBestia());
-			pstmt.executeUpdate();
+			rows = pstmt.executeUpdate();
 		} catch(SQLException ex) {
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al aprobar bestia %d [SQLState: %s, ErrorCode: %d]: %s",
@@ -525,6 +529,9 @@ public class DataBestia {
 					"Error SQL al cerrar recursos en approve de bestia [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(rows == 0) {
+			throw new DataNotFoundException("No se encontró la bestia a aprobar.");
 		}
 	}
 }

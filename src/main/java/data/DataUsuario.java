@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import entities.Usuario;
 import entities.Investigador;
 import entities.Lector;
+import exceptions.DataNotFoundException;
 
 public class DataUsuario {
 	private static final Logger logger = Logger.getLogger(DataUsuario.class.getName());
@@ -57,6 +58,9 @@ public class DataUsuario {
 					"Error SQL al cerrar recursos en getOne de usuario [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(usuarioEncontrado == null) {
+			throw new DataNotFoundException("No se encontró el usuario con id " + usB.getIdUsuario());
 		}
 		return usuarioEncontrado;
 	}
@@ -212,6 +216,9 @@ public class DataUsuario {
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
+		if(us == null) {
+			throw new DataNotFoundException("No se encontró el usuario a actualizar.");
+		}
 		return us;
 	}
 	
@@ -239,6 +246,9 @@ public class DataUsuario {
 					"Error SQL al cerrar recursos en delete de usuario [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(usBorrado == null) {
+			throw new DataNotFoundException("No se encontró el usuario a eliminar.");
 		}
 		return usBorrado;
 	}
@@ -286,6 +296,9 @@ public class DataUsuario {
 					"Error SQL al cerrar recursos en getByEmail de usuario [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(us == null) {
+			throw new DataNotFoundException("No se encontró un usuario con el correo " + correo);
 		}
 		return us;
 	}

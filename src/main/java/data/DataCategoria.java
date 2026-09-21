@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Categoria;
+import exceptions.DataNotFoundException;
 
 public class DataCategoria {
 
@@ -44,6 +45,9 @@ public class DataCategoria {
 					"Error SQL al cerrar recursos en getOne de categoria [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(categoriaEncontrada == null) {
+			throw new DataNotFoundException("No se encontró la categoría con id " + catB.getIdCategoria());
 		}
 		return categoriaEncontrada;
 	}
@@ -146,6 +150,9 @@ public class DataCategoria {
 					"Error SQL al cerrar recursos en update de categoria [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(cat == null) {
+			throw new DataNotFoundException("No se encontró la categoría a actualizar.");
 		}
 		return cat;
 	}

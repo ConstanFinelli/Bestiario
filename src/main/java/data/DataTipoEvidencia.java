@@ -1,6 +1,7 @@
 package data;
 
 import entities.TipoEvidencia;
+import exceptions.DataNotFoundException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -42,6 +43,9 @@ public class DataTipoEvidencia {
 					"Error SQL al cerrar recursos en getOne de tipo de evidencia [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(tipoEncontrado == null) {
+			throw new DataNotFoundException("No se encontró el tipo de evidencia con id " + tipoE.getId());
 		}
 		return tipoEncontrado;
 	}
@@ -145,6 +149,9 @@ public class DataTipoEvidencia {
 					"Error SQL al cerrar recursos en update de tipo de evidencia [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(datos == null) {
+			throw new DataNotFoundException("No se encontró el tipo de evidencia a actualizar.");
 		}
 		return datos;
 	}

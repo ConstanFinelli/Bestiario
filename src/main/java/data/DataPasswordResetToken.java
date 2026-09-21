@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.PasswordResetToken;
+import exceptions.DataNotFoundException;
 
 public class DataPasswordResetToken {
 
@@ -77,6 +78,9 @@ public class DataPasswordResetToken {
 					"Error SQL al cerrar recursos en getOne de token [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(t == null) {
+			throw new DataNotFoundException("No se encontró el token de restablecimiento.");
 		}
 		return t;
 	} 

@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.*;
+import exceptions.DataNotFoundException;
 
 public class DataComentario {
 	private static final Logger logger = Logger.getLogger(DataComentario.class.getName());
@@ -45,6 +46,9 @@ public class DataComentario {
 					"Error SQL al cerrar recursos en getOne de comentario [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(comentarioEncontrado == null) {
+			throw new DataNotFoundException("No se encontró el comentario solicitado.");
 		}
 		return comentarioEncontrado;
 	} 
@@ -151,6 +155,9 @@ public class DataComentario {
 					"Error SQL al cerrar recursos en update de comentario [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(c == null) {
+			throw new DataNotFoundException("No se encontró el comentario para actualizar.");
 		}
 		return c;
 	}

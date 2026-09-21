@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import entities.Bestia;
 import entities.Evidencia;
 import entities.TipoEvidencia;
+import exceptions.DataNotFoundException;
 
 public class DataEvidencia {
 	private static final Logger logger = Logger.getLogger(DataEvidencia.class.getName());
@@ -53,6 +54,9 @@ public class DataEvidencia {
 					"Error SQL al cerrar recursos en getOne de evidencia [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(evidenciaEncontrada == null) {
+			throw new DataNotFoundException("No se encontró la evidencia solicitada.");
 		}
 		return evidenciaEncontrada;
 	}
@@ -156,6 +160,9 @@ public class DataEvidencia {
 					"Error SQL al cerrar recursos en update de evidencia [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(e == null) {
+			throw new DataNotFoundException("No se encontró la evidencia a actualizar.");
 		}
 		return e;
 	}
@@ -299,7 +306,7 @@ public class DataEvidencia {
 		return evidencias;
 	}
 	
-	public boolean updateEstado(int nroEvidencia, int idTipoEvidencia, String nuevoEstado) {
+	public boolean updateEstado(int nroEvidencia, int idTipoEvidencia, String nuevoEstado) throws DataNotFoundException {
 		PreparedStatement pstmt = null;
 		boolean actualizado = false;
 		try {
@@ -324,6 +331,9 @@ public class DataEvidencia {
 					"Error SQL al cerrar recursos en updateEstado de evidencia [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(!actualizado) {
+			throw new DataNotFoundException("No se encontró la evidencia para actualizar su estado.");
 		}
 		return actualizado;
 	}

@@ -2,6 +2,7 @@ package data;
 
 import entities.Bestia;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -55,6 +56,9 @@ public class DataHabitat {
 					"Error SQL al cerrar recursos en getOne de habitat [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(htEncontrada == null) {
+			throw new DataNotFoundException("No se encontró el hábitat con id " + ht.getId());
 		}
 		return htEncontrada;
 	}
@@ -182,6 +186,9 @@ public class DataHabitat {
 					"Error SQL al cerrar recursos en update de habitat [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(ht == null) {
+			throw new DataNotFoundException("No se encontró el hábitat a actualizar.");
 		}
 		return ht;
 	}

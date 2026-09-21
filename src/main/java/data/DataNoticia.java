@@ -2,6 +2,7 @@ package data;
 
 import entities.Investigador;
 import entities.Noticia;
+import exceptions.DataNotFoundException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -48,6 +49,9 @@ public class DataNoticia {
 					"Error SQL al cerrar recursos en getOne de noticia [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(noticiaFound == null) {
+			throw new DataNotFoundException("No se encontró la noticia solicitada.");
 		}
 		return noticiaFound;
 	}
@@ -201,6 +205,9 @@ public class DataNoticia {
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}		
+		if(noticiaNueva == null) {
+			throw new DataNotFoundException("No se encontró la noticia para actualizar.");
+		}
 		return noticiaNueva;
 	}
 

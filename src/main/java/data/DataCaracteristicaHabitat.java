@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 
 public class DataCaracteristicaHabitat {
 
@@ -105,6 +106,9 @@ public class DataCaracteristicaHabitat {
 					"Error SQL al cerrar recursos en update de caracteristica [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(ch == null) {
+			throw new DataNotFoundException("No se encontró la característica del hábitat para actualizar.");
 		}
 		return ch;
 	}
