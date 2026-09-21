@@ -49,6 +49,8 @@ public class ObtenerRegistroBestia extends HttpServlet {
 		String fecha = request.getParameter("fecha");
 		Bestia bestia = null;
 		String imagen = null;
+		String nroRegistro = request.getParameter("nroRegistro");
+		Registro registro = null;
 		if(id != null) { 
 			try{
 				bestia = new Bestia(Integer.parseInt(id));
@@ -56,16 +58,14 @@ public class ObtenerRegistroBestia extends HttpServlet {
 			}catch(NumberFormatException e) {
 				logger.log(Level.WARNING, "Error al parsear id en el servlet ObtenerRegistroBestia", e);
 				request.setAttribute("errorGlobal", "La id de la bestia es inválida. ");
+				rd.forward(request, response);
 				return;
 			}catch(Exception e) {
 				logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet ObtenerRegistroBestia", e);
 				request.setAttribute("errorGlobal", "No se ha conseguido la bestia. ");
+				rd.forward(request, response);
 				return;
 			}
-		}
-		String nroRegistro = request.getParameter("nroRegistro");
-		Registro registro = null;
-		if(id != null) {
 			if(nroRegistro != null) {
 				try{
 					registro = new Registro(Integer.parseInt(nroRegistro), bestia);
@@ -73,10 +73,12 @@ public class ObtenerRegistroBestia extends HttpServlet {
 				}catch(NumberFormatException e) {
 					logger.log(Level.WARNING, "Error al parsear nroRegistro en el servlet ObtenerRegistroBestia", e);
 					request.setAttribute("errorGlobal", "El número de registro es inválido. ");
+					rd.forward(request, response);
 					return;
 				}catch(Exception e) {
 					logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
 					request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");
+					rd.forward(request, response);
 					return;
 				}
 			}else {
@@ -91,38 +93,43 @@ public class ObtenerRegistroBestia extends HttpServlet {
 				}catch(DateTimeParseException e) {
 					logger.log(Level.WARNING, "Error al parsear fecha en el servlet ObtenerRegistroBestia", e);
 					request.setAttribute("errorGlobal", "La fecha es inválida. ");
+					rd.forward(request, response);
 					return;
 				}catch(Exception e) {
 					logger.log(Level.SEVERE, "Error al conseguir registro en el servlet ObtenerRegistroBestia", e);
 					request.setAttribute("errorGlobal", "No se ha conseguido el registro. ");
+					rd.forward(request, response);
 					return;
 				}
 			}
 		}
+		
 
-		try{	
-			imagen = (CloudinaryHelper.getImagenRegistro(registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
-		}catch(Exception e) {
-			logger.log(Level.SEVERE, "Error al conseguir imagen en el servlet ObtenerRegistroBestia", e);
-			request.setAttribute("errorGlobal", "No se ha conseguido la imagen del registro. ");
-			return;
-		}
-		
-		LinkedList<TipoEvidencia> tes = null;
-		
-		try{
-			tes = controladorTipoEvidencia.findAll();
-		}catch(Exception e) {
-			logger.log(Level.SEVERE, "Error al conseguir tipos de evidencia en el servlet ObtenerRegistroBestia", e);
-			request.setAttribute("errorGlobal", "No se han conseguido los tipos de evidencia. ");
-			return;
-		}
-		
-		request.setAttribute("UrlImagen", imagen);
-		request.setAttribute("foundBestia", bestia);
-		request.setAttribute("foundRegistro", registro);
-		request.setAttribute("tiposEvidencia", tes);
-		rd.forward(request, response);
+			try{	
+				imagen = (CloudinaryHelper.getImagenRegistro(registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID")));
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al conseguir imagen en el servlet ObtenerRegistroBestia", e);
+				request.setAttribute("errorGlobal", "No se ha conseguido la imagen del registro. ");
+				rd.forward(request, response);
+				return;
+			}
+			
+			LinkedList<TipoEvidencia> tes = null;
+			
+			try{
+				tes = controladorTipoEvidencia.findAll();
+			}catch(Exception e) {
+				logger.log(Level.SEVERE, "Error al conseguir tipos de evidencia en el servlet ObtenerRegistroBestia", e);
+				request.setAttribute("errorGlobal", "No se han conseguido los tipos de evidencia. ");
+				rd.forward(request, response);
+				return;
+			}
+			
+			request.setAttribute("UrlImagen", imagen);
+			request.setAttribute("foundBestia", bestia);
+			request.setAttribute("foundRegistro", registro);
+			request.setAttribute("tiposEvidencia", tes);
+			rd.forward(request, response);	
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
