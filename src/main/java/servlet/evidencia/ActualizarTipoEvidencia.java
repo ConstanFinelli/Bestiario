@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.TipoEvidencia;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -46,6 +47,9 @@ public class ActualizarTipoEvidencia extends HttpServlet {
 		
 		try {
 			tipo = controlador.update(tipo);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Tipo de evidencia no encontrado en el servlet ActualizarTipoEvidencia", e);
+			request.setAttribute("errorGlobal", "El tipo de evidencia que se intentó actualizar no existe.");
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir tipo de evidencia en el servlet ActualizarTipoEvidencia", e);
 			request.setAttribute("errorGlobal","No se ha podido conseguir el tipo de evidencia a actualizar");

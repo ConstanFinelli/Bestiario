@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.TipoEvidencia;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -48,6 +49,11 @@ public class EliminarTipoEvidencia extends HttpServlet {
 		
 		try {
 			tipo = controlador.delete(tipo);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Tipo de evidencia no encontrado en el servlet EliminarTipoEvidencia", e);
+			request.setAttribute("errorGlobal", "El tipo de evidencia que se intentó eliminar no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error eliminando el tipo de evidencia en el servlet EliminarTipoEvidencia", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar el Tipo de evidencia");

@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -45,6 +46,8 @@ public class AprobarEvidencia extends HttpServlet {
 			controladorEvidencia.updateEstado(nroEvidencia, idTipo, "aprobado");
 		} catch (NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear parámetros en AprobarEvidencia", e);
+		} catch (DataNotFoundException e) {
+			logger.log(Level.WARNING, "Evidencia no encontrada en AprobarEvidencia", e);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error al aprobar la evidencia en AprobarEvidencia", e);
 		}

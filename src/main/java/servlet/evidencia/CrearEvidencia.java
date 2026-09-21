@@ -11,6 +11,7 @@ import entities.Bestia;
 import entities.Evidencia;
 import entities.TipoEvidencia;
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
 import jakarta.servlet.RequestDispatcher;
@@ -64,12 +65,19 @@ public class CrearEvidencia extends HttpServlet {
 			bestia = new Bestia(Integer.parseInt(idBestia));
 			bestia = controladorBestia.getOne(bestia);
 		}catch(NumberFormatException e) {
-			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet ActualizarRegistro", e);
+			logger.log(Level.WARNING, "Error al parsear idBestia en el servlet CrearEvidencia", e);
 			request.setAttribute("errorGlobal", "El id de la bestia es inválido.");
+			rd.forward(request, response);
+			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Bestia no encontrada en el servlet CrearEvidencia", e);
+			request.setAttribute("errorGlobal", "La bestia no existe.");
+			rd.forward(request, response);
 			return;
 		}catch(Exception e) {
-			logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet ActualizarRegistro", e);
+			logger.log(Level.SEVERE, "Error al conseguir bestia en el servlet CrearEvidencia", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido la bestia. ");
+			rd.forward(request, response);
 			return;
 		}
 		
@@ -78,6 +86,16 @@ public class CrearEvidencia extends HttpServlet {
 		Evidencia evidencia = null;
 		try {
 			te = controladorTipoEvidencia.getOne(new TipoEvidencia(Integer.parseInt(idTipoEvidencia)));
+		}catch(NumberFormatException e) {
+			logger.log(Level.WARNING, "Error parseando el id del tipo de evidencia en el servlet CrearEvidencia", e);
+			request.setAttribute("errorGlobal", "Id de tipo de evidencia inválido");
+			rd.forward(request, response);
+			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Tipo de evidencia no encontrado en el servlet CrearEvidencia", e);
+			request.setAttribute("errorGlobal", "El tipo de evidencia seleccionado no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error obteniendo el tipo de evidencia en el servlet CrearEvidencia", e);
 			request.setAttribute("errorGlobal","Error obteniendo el tipo de evidencia");

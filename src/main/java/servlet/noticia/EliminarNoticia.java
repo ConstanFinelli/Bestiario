@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Noticia;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,6 +44,9 @@ public class EliminarNoticia extends HttpServlet {
 		}catch(NumberFormatException nfe) {
 			logger.log(Level.WARNING, "Error parseando el id ingresado en el servlet EliminarNoticia", nfe);
 			request.setAttribute("errorGlobal", "La id ingresada no es valida");
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Noticia no encontrada en el servlet EliminarNoticia", e);
+			request.setAttribute("errorGlobal", "La noticia a eliminar no existe");
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al eliminar la noticia en el servlet EliminarNoticia", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar la noticia");

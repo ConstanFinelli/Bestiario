@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import entities.Bestia;
 import entities.Comentario;
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -52,6 +53,16 @@ public class AgregarComentario extends HttpServlet {
 			Bestia bestia = null;
 			try {
 				publicador = controladorUsuario.getOne(new Usuario(Integer.parseInt(idUsuario)));
+			}catch(NumberFormatException e) {
+				logger.log(Level.WARNING, "Id de usuario inválido en el servlet AgregarComentario", e);
+				request.setAttribute("errorGlobal", "Id de usuario inválido");
+				request.getRequestDispatcher(ruta).forward(request, response);
+				return;
+			}catch(DataNotFoundException e) {
+				logger.log(Level.WARNING, "Publicador no encontrado en el servlet AgregarComentario", e);
+				request.setAttribute("errorGlobal", "El usuario publicador no existe");
+				request.getRequestDispatcher(ruta).forward(request, response);
+				return;
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al conseguir publicador del comentario a agregar en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal","No se ha podido conseguir el publicador del comentario a agregar");
@@ -60,6 +71,16 @@ public class AgregarComentario extends HttpServlet {
 			}
 			try {
 				bestia = controladorBestia.getOne(new Bestia(Integer.parseInt(idBestia),null,null, null));
+			}catch(NumberFormatException e) {
+				logger.log(Level.WARNING, "Id de bestia inválido en el servlet AgregarComentario", e);
+				request.setAttribute("errorGlobal", "Id de bestia inválido");
+				request.getRequestDispatcher(ruta).forward(request, response);
+				return;
+			}catch(DataNotFoundException e) {
+				logger.log(Level.WARNING, "Bestia no encontrada en el servlet AgregarComentario", e);
+				request.setAttribute("errorGlobal", "La bestia asociada al comentario no existe");
+				request.getRequestDispatcher(ruta).forward(request, response);
+				return;
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al conseguir la bestia asociada al comentario a agregar en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal","No se ha podido conseguir la bestia asociada al comentario a agregar");
