@@ -6,12 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Evidencia;
 import entities.TipoEvidencia;
 
 public class DataEvidencia {
+	private static final Logger logger = Logger.getLogger(DataEvidencia.class.getName());
 	public DataTipoEvidencia teDao = new DataTipoEvidencia();
 	
 	public Evidencia getOne(Evidencia e) {
@@ -32,10 +35,10 @@ public class DataEvidencia {
 				TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo));
 				evidenciaEncontrada = new Evidencia(id, fechaO, estado, fileId, tipo);
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al obtener evidencia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -45,10 +48,10 @@ public class DataEvidencia {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en getOne de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return evidenciaEncontrada;
@@ -57,7 +60,6 @@ public class DataEvidencia {
 	public LinkedList<Evidencia> findAll(){
 		Statement stmt = null;
 		ResultSet rs = null;
-		Evidencia evidencia = null;
 		LinkedList<Evidencia> evidencias = new LinkedList<>();
 		try {
 			stmt = DbConnector.getInstancia().getConn().createStatement();
@@ -70,14 +72,14 @@ public class DataEvidencia {
 					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
 					TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo));
-					evidencia = new Evidencia(id, fechaO, estado, fileId, tipo);
+					Evidencia evidencia = new Evidencia(id, fechaO, estado, fileId, tipo);
 					evidencias.add(evidencia);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar evidencias [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -87,10 +89,10 @@ public class DataEvidencia {
 					stmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAll de evidencias [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return evidencias;
@@ -99,7 +101,6 @@ public class DataEvidencia {
 	public Evidencia save(Evidencia e) {
 		asignarNroEvidencia(e);
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into evidencia(nroEvidencia, fechaObtencion, estado, fileId, idTipoEvidencia) values(?, ?, ?, ? ,?)");
 			pstmt.setInt(1, e.getNroEvidencia()); 
@@ -108,27 +109,24 @@ public class DataEvidencia {
 			pstmt.setString(4, e.getFileId());
 			pstmt.setInt(5, e.getTipo().getId());
 			pstmt.executeUpdate();
-		}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			} finally {
-				try {
-					if(rs != null) {
-						rs.close();
-					}
-					if(pstmt != null) {
-						pstmt.close();
-					}
-					DbConnector.getInstancia().releaseConn();
-				}catch(SQLException ex) {
-					System.out.println("Mensaje: " + ex.getMessage());
-		            System.out.println("SQLState: " + ex.getSQLState());
-		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al guardar evidencia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
 				}
+				DbConnector.getInstancia().releaseConn();
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en save de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
-		return e;
 		}
+		return e;
+	}
 	
 	public Evidencia update(Evidencia e) {
 		PreparedStatement pstmt = null;
@@ -143,20 +141,20 @@ public class DataEvidencia {
 			if(error == 0) {
 				e = null;
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al actualizar evidencia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en update de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return e;
@@ -169,57 +167,59 @@ public class DataEvidencia {
 			pstmt.setInt(1, e.getTipo().getId());
 			pstmt.setInt(2, e.getNroEvidencia());
 			pstmt.executeUpdate();
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al eliminar evidencia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en delete de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return e;
 	}
 	
 	public void asignarNroEvidencia(Evidencia e) {
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try {
-				pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select max(nroEvidencia) as maxnumber from evidencia where idTipoEvidencia = ?");
-				pstmt.setInt(1, e.getTipo().getId());
-				rs = pstmt.executeQuery();
-				if(rs.next()) {
-					e.setNroEvidencia(rs.getInt("maxnumber") + 1);
-				}
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			}finally {
-				try {
-					if(pstmt != null) {
-						pstmt.close();
-					}
-					DbConnector.getInstancia().releaseConn();
-				}catch(SQLException ex) {
-					System.out.println("Mensaje: " + ex.getMessage());
-		            System.out.println("SQLState: " + ex.getSQLState());
-		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-				}
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select max(nroEvidencia) as maxnumber from evidencia where idTipoEvidencia = ?");
+			pstmt.setInt(1, e.getTipo().getId());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				e.setNroEvidencia(rs.getInt("maxnumber") + 1);
 			}
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al asignar nro de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en asignarNroEvidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+			}
+		}
 	}
 	
 	public LinkedList<Evidencia> findAllType(TipoEvidencia te){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Evidencia evidencia = null;
 		LinkedList<Evidencia> evidencias = new LinkedList<>();
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from evidencia where idTipoEvidencia = ?");
@@ -231,14 +231,14 @@ public class DataEvidencia {
 					LocalDate fechaO = rs.getDate("fechaObtencion").toLocalDate();
 					String estado = rs.getString("estado");
 					String fileId = rs.getString("fileId");
-					evidencia = new Evidencia(id, fechaO, estado, fileId, te);
+					Evidencia evidencia = new Evidencia(id, fechaO, estado, fileId, te);
 					evidencias.add(evidencia);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar evidencias por tipo [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -248,10 +248,10 @@ public class DataEvidencia {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAllType de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return evidencias;
@@ -260,7 +260,6 @@ public class DataEvidencia {
 	public LinkedList<Evidencia> findAllByBestia(Bestia b){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Evidencia evidencia = null;
 		LinkedList<Evidencia> evidencias = new LinkedList<>();
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from evidencia ev inner join bestia_evidencia bv on ev.nroEvidencia = bv.nroEvidencia inner join bestia b on bv.idBestia = b.idBestia where b.idBestia = ?");
@@ -274,14 +273,14 @@ public class DataEvidencia {
 					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
 					TipoEvidencia te = teDao.getOne(new TipoEvidencia(idTipo));
-					evidencia = new Evidencia(nroEvidencia,fechaO, estado, fileId, te);
+					Evidencia evidencia = new Evidencia(nroEvidencia,fechaO, estado, fileId, te);
 					evidencias.add(evidencia);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar evidencias por bestia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -291,10 +290,10 @@ public class DataEvidencia {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAllByBestia de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return evidencias;
@@ -311,9 +310,9 @@ public class DataEvidencia {
 			int rows = pstmt.executeUpdate();
 			actualizado = (rows > 0);
 		} catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al actualizar estado de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(pstmt != null) {
@@ -321,12 +320,11 @@ public class DataEvidencia {
 				}
 				DbConnector.getInstancia().releaseConn();
 			} catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-				System.out.println("SQLState: " + ex.getSQLState());
-				System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en updateEstado de evidencia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return actualizado;
 	}
 }
-

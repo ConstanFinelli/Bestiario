@@ -2,11 +2,16 @@ package data;
 
 import java.sql.*;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
 
 public class DataCaracteristicaHabitat {
+
+	private static final Logger logger = Logger.getLogger(DataCaracteristicaHabitat.class.getName());
+
 	public LinkedList<CaracteristicaHabitat> findAllById(Habitat ht){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -23,19 +28,19 @@ public class DataCaracteristicaHabitat {
 					caracteristicas.add(car);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar caracteristicas de habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(rs != null) {rs.close();}
 				if(pstmt != null) {pstmt.close();}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAllById de caracteristica [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return caracteristicas;
@@ -56,19 +61,19 @@ public class DataCaracteristicaHabitat {
 				chS = ch;
 				chS.setIdHabitat(idHab);
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al guardar caracteristica de habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {pstmt.close();}
 				if(rs != null) {rs.close();}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en save de caracteristica [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return chS;
@@ -85,20 +90,20 @@ public class DataCaracteristicaHabitat {
 			if(error == 0) {
 				ch = null;
 			}
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex){
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al actualizar caracteristica de habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en update de caracteristica [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return ch;
@@ -111,20 +116,20 @@ public class DataCaracteristicaHabitat {
 			pstmt.setInt(1, ch.getIdHabitat());
 			pstmt.setString(2, ch.getDescripcion());
 			pstmt.executeUpdate();
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex){
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al eliminar caracteristica de habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en delete de caracteristica [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return ch;

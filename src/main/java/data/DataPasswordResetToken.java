@@ -4,10 +4,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.PasswordResetToken;
 
 public class DataPasswordResetToken {
+
+	private static final Logger logger = Logger.getLogger(DataPasswordResetToken.class.getName());
 	
 	public void save(PasswordResetToken token) {
 		PreparedStatement ps = null;
@@ -19,27 +23,25 @@ public class DataPasswordResetToken {
 	        ps.setTimestamp(3, Timestamp.valueOf(token.getExpiration()));
 	        ps.setBoolean(4, token.isUsed());
 			ps.executeUpdate();
-			
-			
-		}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			} finally {
-				try {
-					if(rs != null) {
-						rs.close();
-					}
-					if(ps != null) {
-						ps.close();
-					}
-					DbConnector.getInstancia().releaseConn();
-				}catch(SQLException ex) {
-					System.out.println("Mensaje: " + ex.getMessage());
-		            System.out.println("SQLState: " + ex.getSQLState());
-		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al guardar token de reseteo de contraseña [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
 				}
+				if(ps != null) {
+					ps.close();
+				}
+				DbConnector.getInstancia().releaseConn();
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en save de token [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
 	}
 	
 	public PasswordResetToken getOne(String token) {
@@ -57,10 +59,10 @@ public class DataPasswordResetToken {
 	            t.setExpiration(rs.getTimestamp("expiration").toLocalDateTime());
 	            t.setUsed(rs.getBoolean("used"));
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al obtener token de reseteo de contraseña [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -70,10 +72,10 @@ public class DataPasswordResetToken {
 					ps.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en getOne de token [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return t;
@@ -84,23 +86,21 @@ public class DataPasswordResetToken {
 		try {
 			ps = DbConnector.getInstancia().getConn().prepareStatement("UPDATE password_reset_token SET used = true WHERE token = ?");
 			ps.setString(1, token);
-			
 			ps.executeUpdate();
-			
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al marcar token como usado [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(ps != null) {
 					ps.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en markAsUsed de token [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
     }
@@ -110,26 +110,23 @@ public class DataPasswordResetToken {
 		try {
 			ps = DbConnector.getInstancia().getConn().prepareStatement("DELETE FROM password_reset_token WHERE idUsuario = ?");
 			ps.setInt(1, idUser);
-			
 			ps.executeUpdate();
-			
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al eliminar token por usuario [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(ps != null) {
 					ps.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en deleteByUser de token [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 	}
-	
 	
 }

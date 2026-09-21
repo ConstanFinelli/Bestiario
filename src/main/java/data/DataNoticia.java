@@ -6,9 +6,11 @@ import entities.Noticia;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataNoticia {
-	
+	private static final Logger logger = Logger.getLogger(DataNoticia.class.getName());
 	public DataUsuario userDAO = new DataUsuario();
 	
 	public Noticia getOne(Noticia noticia) {
@@ -29,9 +31,9 @@ public class DataNoticia {
 				noticiaFound = new Noticia(id, titulo, contenido, fechaPublicacion, publicador);
 			}
 		} catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al obtener noticia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -41,12 +43,12 @@ public class DataNoticia {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en getOne de noticia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
-		};
+		}
 		return noticiaFound;
 	}
 	
@@ -70,11 +72,11 @@ public class DataNoticia {
 					noticias.add(noticiaFound);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar noticias [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -83,10 +85,10 @@ public class DataNoticia {
 					stmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAll de noticia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return noticias;
@@ -112,11 +114,11 @@ public class DataNoticia {
 					noticias.add(noticiaFound);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al obtener ultimas noticias [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -125,10 +127,10 @@ public class DataNoticia {
 					stmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en getUltimasNoticias [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return noticias;
@@ -146,16 +148,15 @@ public class DataNoticia {
 			pstmt.executeUpdate();
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
-				
 				int id = rs.getInt(1);
 				noticia.setId(id);
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al guardar noticia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
             noticia = null; //previsorio para caso que no encuentre un inv con idUsuario 
-		}finally {
+		} finally {
 			try {
 				if(rs != null) {
 					rs.close();
@@ -164,11 +165,10 @@ public class DataNoticia {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-	            
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en save de noticia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return noticia;
@@ -184,10 +184,10 @@ public class DataNoticia {
 			pstmt.setInt(4, noticiaNueva.getPublicador().getIdUsuario());
 			pstmt.setInt(5, noticiaNueva.getId());
 			pstmt.executeUpdate();
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex){
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al actualizar noticia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
             noticiaNueva = null; //previsorio para caso que no encuentre un inv con idUsuario 
 		} finally {
 			try {
@@ -195,10 +195,10 @@ public class DataNoticia {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en update de noticia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}		
 		return noticiaNueva;
@@ -210,20 +210,20 @@ public class DataNoticia {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from noticia where idNoticia = ?");
 			pstmt.setInt(1, deletedNoticia.getId());
 			pstmt.executeUpdate();
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex){
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al eliminar noticia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en delete de noticia [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 	}

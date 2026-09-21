@@ -3,12 +3,15 @@ package logic;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import helpers.EmailTemplates;
 import helpers.EnvHelper;
 import java.util.LinkedList;
 import entities.Registro;
 
 public class LogicEmail {
+	private static final Logger logger = Logger.getLogger(LogicEmail.class.getName());
 	
 	private final String username;
     private final String password;
@@ -47,11 +50,10 @@ public class LogicEmail {
 
             Transport.send(message);
 
-            System.out.println("✅ Email enviado a " + destinatario);
+            logger.log(Level.INFO, "Email enviado satisfactoriamente a: {0}", destinatario);
 
         } catch (MessagingException e) {
-        	e.printStackTrace();
-            System.out.println("❌ Error enviando email");
+            logger.log(Level.SEVERE, "Error al enviar email a: " + destinatario, e);
         }
     }
 

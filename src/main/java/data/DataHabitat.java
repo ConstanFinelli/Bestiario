@@ -5,8 +5,12 @@ import entities.Habitat;
 
 import java.sql.*;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataHabitat {
+	private static final Logger logger = Logger.getLogger(DataHabitat.class.getName());
+
 	public Habitat getOne(Habitat ht) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -35,19 +39,21 @@ public class DataHabitat {
 				}
 				htEncontrada = new Habitat(id, nombre, caracteristicas, localizacion, latitud, longitud);
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al obtener habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(rs != null) {rs.close();}
 				if(pstmt != null) {pstmt.close();}
+				if(rsC != null) {rsC.close();}
+				if(pstmtC != null) {pstmtC.close();}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en getOne de habitat [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return htEncontrada;
@@ -81,30 +87,33 @@ public class DataHabitat {
 								caracteristicas.add(rsC.getString("descripcion"));
 							}
 						}
-					}
-					catch(SQLException ex){
-						System.out.println("Mensaje: " + ex.getMessage());
-			            System.out.println("SQLState: " + ex.getSQLState());
-			            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+					} catch(SQLException ex){
+						logger.log(Level.SEVERE, String.format(
+							"Error SQL al consultar caracteristicas de habitat %d [SQLState: %s, ErrorCode: %d]: %s",
+							id, ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+					} finally {
+						if(rsC != null) { try { rsC.close(); } catch(SQLException ignored) {} }
+						if(pstmtC != null) { try { pstmtC.close(); } catch(SQLException ignored) {} }
 					}
 					htEncontrada = new Habitat(id, nombre, caracteristicas, localizacion,  latitud, longitud);
 					htsEncontradas.add(htEncontrada);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar habitats [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(rs != null) {rs.close();}
 				if(stmt != null) {stmt.close();}
 				if(rsC != null) {rsC.close();}
+				if(pstmtC != null) {pstmtC.close();}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAll de habitats [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return htsEncontradas;
@@ -127,19 +136,19 @@ public class DataHabitat {
 				htGuardada.setCaracteristicas(null);
 				htGuardada.setId(rs.getInt(1));
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al guardar habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {pstmt.close();}
 				if(rs != null) {rs.close();}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en save de habitat [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return htGuardada;
@@ -158,20 +167,20 @@ public class DataHabitat {
 			if(error == 0) {
 				ht = null;
 			}
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex){
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al actualizar habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en update de habitat [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return ht;
@@ -183,20 +192,20 @@ public class DataHabitat {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("DELETE FROM habitat WHERE idHabitat = ?");
 			pstmt.setInt(1, ht.getId());
 			pstmt.executeUpdate();
-		}catch(SQLException ex){
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex){
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al eliminar habitat [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en delete de habitat [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return ht;
@@ -217,10 +226,10 @@ public class DataHabitat {
 					habitatsBestia.add(habitat);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar habitats por bestia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -230,12 +239,12 @@ public class DataHabitat {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-				}
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAllByBestia de habitat [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
 		return habitatsBestia;
 	}
 }

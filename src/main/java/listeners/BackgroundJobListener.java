@@ -14,11 +14,14 @@ import logic.LogicRegistro; // O la lógica de tus bestias
 import entities.Registro;
 
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import entities.Investigador;
 import logic.LogicUsuario;
 
 @WebListener
 public class BackgroundJobListener implements ServletContextListener {
+	private static final Logger logger = Logger.getLogger(BackgroundJobListener.class.getName());
 	private static final boolean MODO_PRUEBA = false;
 	
     private ScheduledExecutorService scheduler;
@@ -35,10 +38,10 @@ public class BackgroundJobListener implements ServletContextListener {
             scheduler.scheduleAtFixedRate(
                 () -> {
                     try {
-                        System.out.println("⏳ [PRUEBA] Enviando resumen...");
+                        logger.log(Level.INFO, "Iniciando envío programado de resumen diario (modo prueba).");
                         enviarResumenAdministradores();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.log(Level.SEVERE, "Error en ejecución programada de prueba del resumen diario", e);
                     }
                 },
                 5,
@@ -71,7 +74,7 @@ public class BackgroundJobListener implements ServletContextListener {
                     try {
                         enviarResumenAdministradores();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.log(Level.SEVERE, "Error en ejecución programada del resumen diario", e);
                     }
                 },
                 delayInicial,
@@ -98,7 +101,7 @@ public class BackgroundJobListener implements ServletContextListener {
             		logicEmail.notificarRegistrosAprobadosHoy(investigador.getCorreo(), registrosAprobadosHoy);
             	}
             } catch (Exception e) {
-                System.out.println("❌ Falló envío a: " + investigador.getCorreo());
+                logger.log(Level.WARNING, "Falló envío de resumen a: " + investigador.getCorreo(), e);
             }
         }
     }

@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import entities.Registro;
 import entities.Bestia;
@@ -12,6 +14,7 @@ import entities.Usuario;
 import entities.Investigador;
 
 public class DataRegistro {
+	private static final Logger logger = Logger.getLogger(DataRegistro.class.getName());
 	public DataUsuario userDAO = new DataUsuario();
 	
 	public Registro getRegistroToShow(Bestia b, LocalDateTime fecha) {
@@ -38,17 +41,17 @@ public class DataRegistro {
 					fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 				}
 				if(rs.getTimestamp("fechaBaja") != null) {
-				fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
+					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 				}
 				Investigador pub = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
 				String estado = rs.getString("estado");
 				Bestia bestia = b;
 				registroEncontrado = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al obtener registro visible [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -58,10 +61,10 @@ public class DataRegistro {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en getRegistroToShow [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return registroEncontrado;
@@ -95,10 +98,10 @@ public class DataRegistro {
 				Bestia bestia = r.getBestia();
 				registroEncontrado = new Registro(r.getNroRegistro(), mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al obtener registro [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -108,10 +111,10 @@ public class DataRegistro {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en getOne de registro [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return registroEncontrado;
@@ -120,7 +123,6 @@ public class DataRegistro {
 	public LinkedList<Registro> findRegistrosPendientes(Bestia b){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Registro registro = null;
 		LinkedList<Registro> registros = new LinkedList<>();
 		
 		try {
@@ -142,19 +144,19 @@ public class DataRegistro {
 						fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 					}
 					if(rs.getTimestamp("fechaBaja") != null) {
-					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
+						fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
-					registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
+					Registro registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
 					registros.add(registro);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al buscar registros pendientes [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -164,19 +166,18 @@ public class DataRegistro {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findRegistrosPendientes [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return registros;
 	}
 	
-	public LinkedList<Registro> findRegistrosAprobadosHoy(){
+	public LinkedList<Registro> findRegistrosAprobadosHoy() throws Exception{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Registro registro = null;
 		LinkedList<Registro> registros = new LinkedList<>();
 		DataBestia bestiaDao = new DataBestia();
 		
@@ -197,20 +198,20 @@ public class DataRegistro {
 						fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 					}
 					if(rs.getTimestamp("fechaBaja") != null) {
-					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
+						fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
 					Bestia bestia = (Bestia) bestiaDao.getOne(new Bestia(rs.getInt("idBestia")));
 					
 					String estado = rs.getString("estado");
-					registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen,  fechaA, fechaB, pub, estado, bestia);
+					Registro registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen,  fechaA, fechaB, pub, estado, bestia);
 					registros.add(registro);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al buscar registros aprobados hoy [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -220,10 +221,10 @@ public class DataRegistro {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findRegistrosAprobadosHoy [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return registros;
@@ -232,7 +233,6 @@ public class DataRegistro {
 	public LinkedList<Registro> findAllByBestia(Bestia b){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Registro registro = null;
 		LinkedList<Registro> registros = new LinkedList<>();
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from Registro where idBestia = ?");
@@ -252,19 +252,19 @@ public class DataRegistro {
 						fechaA= rs.getTimestamp("fechaAprobacion").toLocalDateTime();
 					}
 					if(rs.getTimestamp("fechaBaja") != null) {
-					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
+						fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
 					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
-					registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
+					Registro registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
 					registros.add(registro);
 				}
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al listar registros por bestia [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
 				if(rs != null) {
@@ -274,10 +274,10 @@ public class DataRegistro {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en findAllByBestia de registro [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return registros;
@@ -286,7 +286,6 @@ public class DataRegistro {
 	public Registro save(Registro r) {
 		asignarNroRegistro(r);
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		try {
 			if("aprobado".equals(r.getEstado())){
 				setLastRegistroFechaBaja(r.getBestia());
@@ -309,27 +308,24 @@ public class DataRegistro {
 			pstmt.setString(10, r.getEstado());
 			pstmt.setInt(11, r.getBestia().getIdBestia());
 			pstmt.executeUpdate();
-		}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-			} finally {
-				try {
-					if(rs != null) {
-						rs.close();
-					}
-					if(pstmt != null) {
-						pstmt.close();
-					}
-					DbConnector.getInstancia().releaseConn();
-				}catch(SQLException ex) {
-					System.out.println("Mensaje: " + ex.getMessage());
-		            System.out.println("SQLState: " + ex.getSQLState());
-		            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al guardar registro [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
 				}
+				DbConnector.getInstancia().releaseConn();
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en save de registro [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
-		return r;
 		}
+		return r;
+	}
 	
 	public Registro update(Registro r) {
 		PreparedStatement pstmt = null;
@@ -350,20 +346,20 @@ public class DataRegistro {
 			if(error == 0) {
 				r = null;
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al actualizar registro [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en update de registro [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return r;
@@ -376,20 +372,20 @@ public class DataRegistro {
 			pstmt.setInt(1, r.getBestia().getIdBestia());
 			pstmt.setInt(2, r.getNroRegistro());
 			pstmt.executeUpdate();
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al eliminar registro [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en delete de registro [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return r;
@@ -405,20 +401,23 @@ public class DataRegistro {
 			if(rs.next()) {
 				r.setNroRegistro(rs.getInt("maxnumber") + 1);
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al asignar nro de registro [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
+				if(rs != null) {
+					rs.close();
+				}
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en asignarNroRegistro [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 	}
@@ -437,20 +436,20 @@ public class DataRegistro {
 			if(error == 0) {
 				r = null;
 			}
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al actualizar estado de registro [SQLState: %s, ErrorCode: %d]: %s",
+				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en updateEstado de registro [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 		return r;
@@ -463,24 +462,21 @@ public class DataRegistro {
 			pstmt.setTimestamp(1, java.sql.Timestamp.valueOf(LocalDateTime.now()));
 			pstmt.setInt(2, b.getIdBestia());
 		    pstmt.executeUpdate();
-		}catch(SQLException ex) {
-			System.out.println("Mensaje: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-		}finally {
+		} catch(SQLException ex) {
+			logger.log(Level.SEVERE, String.format(
+				"Error SQL al dar de baja el ultimo registro aprobado de bestia %d [SQLState: %s, ErrorCode: %d]: %s",
+				b.getIdBestia(), ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
+		} finally {
 			try {
 				if(pstmt != null) {
 					pstmt.close();
 				}
 				DbConnector.getInstancia().releaseConn();
-			}catch(SQLException ex) {
-				System.out.println("Mensaje: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
+			} catch(SQLException ex) {
+				logger.log(Level.SEVERE, String.format(
+					"Error SQL al cerrar recursos en setLastRegistroFechaBaja [SQLState: %s, ErrorCode: %d]: %s",
+					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
-		
 	}
-
-	
 }
