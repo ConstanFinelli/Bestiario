@@ -75,7 +75,7 @@ public class LogicBestia {
 			return besAnterior;
 }
 	
-	public void approve(Bestia b) {
+	public void approve(Bestia b) throws DataNotFoundException {
 		bDao.approve(b);
 	}
 	

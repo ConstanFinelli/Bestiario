@@ -5,11 +5,12 @@ import java.util.LinkedList;
 import entities.Bestia;
 import data.DataComentario;
 import entities.Comentario;
+import exceptions.DataNotFoundException;
 
 public class LogicComentario {
 	public DataComentario cDao = new DataComentario();
 	
-	public Comentario getOne(Comentario c) {
+	public Comentario getOne(Comentario c) throws DataNotFoundException {
 		return cDao.getOne(c);
 	}
 	
@@ -22,7 +23,7 @@ public class LogicComentario {
 		return cDao.save(c);
 	}
 	
-	public Comentario update(Comentario c) {
+	public Comentario update(Comentario c) throws DataNotFoundException {
 		LocalDateTime oldDate = c.getFecha();
 		c.setFecha(LocalDateTime.now());
 		return cDao.update(c, oldDate);

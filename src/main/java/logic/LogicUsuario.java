@@ -7,13 +7,12 @@ import java.util.LinkedList;
 import data.DataUsuario;
 import entities.Investigador;
 import entities.Usuario;
-
-
+import exceptions.DataNotFoundException;
 
 public class LogicUsuario {
 	private DataUsuario usDAO = new DataUsuario();
 	
-	public Usuario getOne(Usuario us) {
+	public Usuario getOne(Usuario us) throws DataNotFoundException {
 		us = usDAO.getOne(us);
 		if(us != null) {
 			us.setContraseña(dehashPassword(us.getContraseña()));
@@ -40,7 +39,7 @@ public class LogicUsuario {
 		return us;
 	}
 	
-	public Usuario update(Usuario us) {
+	public Usuario update(Usuario us) throws DataNotFoundException {
 		if(us != null) {
 			us.setContraseña(hashPassword(us.getContraseña())); // hashea para guarda en bd
 		}
@@ -61,7 +60,7 @@ public class LogicUsuario {
 		return decoded.toString();
 	}
 	
-	public Usuario getByEmail(String correo) {
+	public Usuario getByEmail(String correo) throws DataNotFoundException {
 		Usuario us = usDAO.getByEmail(correo);
 		return us;
 	}
@@ -74,8 +73,7 @@ public class LogicUsuario {
 		return usDAO.getCorreosInvestigadoresYRecibNot();
 	}
 	
-	public Usuario delete(Usuario us) {
+	public Usuario delete(Usuario us) throws DataNotFoundException {
 		return usDAO.delete(us);
 	}
-	
 }

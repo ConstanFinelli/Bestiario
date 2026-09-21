@@ -5,6 +5,7 @@ import data.DataCaracteristicaHabitat;
 import data.DataHabitat;
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 
 
 public class LogicCaracteristicaHabitat {
@@ -15,10 +16,8 @@ public class LogicCaracteristicaHabitat {
 		return carDAO.findAllById(ht);
 	}
 	
-	public CaracteristicaHabitat save(CaracteristicaHabitat ch, Habitat ht) {
-		if(htDAO.getOne(ht) == null) {
-			return null;
-		}
+	public CaracteristicaHabitat save(CaracteristicaHabitat ch, Habitat ht) throws DataNotFoundException {
+		htDAO.getOne(ht);
 		return carDAO.save(ch, ht);
 	}
 	
@@ -26,7 +25,7 @@ public class LogicCaracteristicaHabitat {
 		return carDAO.delete(ch);
 	}
 	
-	public CaracteristicaHabitat update(CaracteristicaHabitat ch, String newDescripcion) {
+	public CaracteristicaHabitat update(CaracteristicaHabitat ch, String newDescripcion) throws DataNotFoundException {
 		return carDAO.update(ch, newDescripcion);
 	}
 }

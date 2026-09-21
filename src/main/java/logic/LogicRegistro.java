@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import data.DataRegistro;
 import entities.Bestia;
 import entities.Registro;
+import exceptions.DataNotFoundException;
 import helpers.CloudinaryHelper;
 import helpers.EnvHelper;
 
@@ -22,7 +23,7 @@ public class LogicRegistro {
 		return registro != null? registro.getMainPic() : EnvHelper.get("DEFAULT_PICTURE_ID");
 	}
 	
-	public Registro getOne(Registro r) {
+	public Registro getOne(Registro r) throws DataNotFoundException {
 		return rDao.getOne(r);
 	}
 	
@@ -43,7 +44,7 @@ public class LogicRegistro {
 		return rDao.save(r);
 	}
 	
-	public Registro update(Registro r) {
+	public Registro update(Registro r) throws DataNotFoundException {
 		return rDao.update(r);
 	}
 	
@@ -60,7 +61,7 @@ public class LogicRegistro {
 		}
 	}
 	
-	public void updateEstado(Registro r) {
+	public void updateEstado(Registro r) throws DataNotFoundException {
 		rDao.updateEstado(r);
 	}
 	

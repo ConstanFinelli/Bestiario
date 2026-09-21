@@ -5,12 +5,13 @@ import java.util.LinkedList;
 import data.DataHabitat;
 import entities.Bestia;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 
 public class LogicHabitat {
 	private DataHabitat hDAO = new DataHabitat();
 	private LogicBestia controladorB = new LogicBestia();
 	
-	public Habitat getOne(Habitat ht) {
+	public Habitat getOne(Habitat ht) throws DataNotFoundException {
 		return hDAO.getOne(ht);
 	}
 	
@@ -30,7 +31,7 @@ public class LogicHabitat {
 		return hDAO.save(ht);
 	}
 	
-	public Habitat update(Habitat ht) {
+	public Habitat update(Habitat ht) throws DataNotFoundException {
 		return hDAO.update(ht);
 	}
 	

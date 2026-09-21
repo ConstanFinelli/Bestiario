@@ -4,11 +4,12 @@ import java.util.LinkedList;
 
 import data.DataCategoria;
 import entities.Categoria;
+import exceptions.DataNotFoundException;
 
 public class LogicCategoria {
 public DataCategoria catDAO = new DataCategoria();
 	
-	public Categoria getOne(Categoria catE) {
+	public Categoria getOne(Categoria catE) throws DataNotFoundException {
 		return catDAO.getOne(catE);
 	}
 	
@@ -20,11 +21,11 @@ public DataCategoria catDAO = new DataCategoria();
 		return catDAO.save(catS);
 	}
 	
-	public Categoria update(Categoria datos) {
+	public Categoria update(Categoria datos) throws DataNotFoundException {
 		return catDAO.update(datos);
 	}
 	
-	public Categoria delete(Categoria datoBorrado) {
+	public Categoria delete(Categoria datoBorrado) throws DataNotFoundException {
 		Categoria dato = getOne(datoBorrado); // consultar 
 		return catDAO.delete(dato);
 	}
