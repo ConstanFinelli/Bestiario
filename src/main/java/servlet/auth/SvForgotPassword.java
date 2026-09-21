@@ -1,10 +1,5 @@
 package servlet.auth;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,6 +11,11 @@ import data.DataUsuario;
 import entities.PasswordResetToken;
 import entities.Usuario;
 import helpers.HttpRoutes;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicEmail;
 /**
  * Servlet implementation class SvForgotPassword
@@ -77,7 +77,12 @@ String correo = request.getParameter("correo");
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error crítico al agregar el token del usuario en el servlet SvForgotPassword", e);
 			}
-			String link = "http://localhost:8080" + HttpRoutes.RESET_PASSWORD(request.getContextPath()) + "?token=" + token;
+			int port = request.getServerPort();
+			String scheme = request.getScheme();
+			String host = request.getServerName();
+			boolean isDefaultPort = ("http".equalsIgnoreCase(scheme) && port == 80) || ("https".equalsIgnoreCase(scheme) && port == 443);
+			String baseUrl = scheme + "://" + host + (isDefaultPort ? "" : ":" + port);
+			String link = baseUrl + HttpRoutes.RESET_PASSWORD(request.getContextPath()) + "?token=" + token;
 			
 			LogicEmail logicEmail = new LogicEmail();
 			

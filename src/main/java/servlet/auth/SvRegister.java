@@ -1,13 +1,5 @@
 package servlet.auth;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import logic.LogicUsuario;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,6 +10,13 @@ import java.util.logging.Logger;
 import entities.Lector;
 import entities.Usuario;
 import helpers.HttpRoutes;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import logic.LogicUsuario;
 
 /**
  * Servlet implementation class SvRegister
@@ -38,7 +37,7 @@ public class SvRegister extends HttpServlet {
 
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("register.jsp").forward(request, response);
+		request.getRequestDispatcher(HttpRoutes.REGISTER_JSP("")).forward(request, response);
 	}
 
 	/**

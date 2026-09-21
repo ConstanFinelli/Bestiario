@@ -1,10 +1,5 @@
 package servlet.auth;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -14,6 +9,11 @@ import data.DataPasswordResetToken;
 import data.DataUsuario;
 import entities.PasswordResetToken;
 import helpers.HttpRoutes;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicUsuario;
 
 /**
@@ -67,6 +67,7 @@ public class SvResetPassword extends HttpServlet {
 		if(!confirmPassword.equals(nuevaPassword)) {
 			request.setAttribute("logMsg", "Las contraseñas ingresadas no coinciden");
 			request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
+			return;
 		}
 		
 		DataPasswordResetToken tokenDao = new DataPasswordResetToken();
