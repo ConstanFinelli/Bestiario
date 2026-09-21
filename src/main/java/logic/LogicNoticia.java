@@ -1,20 +1,19 @@
 package logic;
 
-import entities.Noticia;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import entities.Usuario;
-import data.DataUsuario;
-import data.DbConnector;
 import data.DataNoticia;
+import data.DataUsuario;
+import entities.Noticia;
+import entities.Usuario;
 
 public class LogicNoticia {
 	private DataNoticia dataNoticia = new DataNoticia();
 	private DataUsuario dataUsuario = new DataUsuario();
 	private LogicEmail logicEmail = new LogicEmail();
-	private static final Logger logger = Logger.getLogger(DbConnector.class.getName());
+	private static final Logger logger = Logger.getLogger(LogicNoticia.class.getName());
 	
 	public Noticia getOne(Noticia noticia) {
 		return(dataNoticia.getOne(noticia));
@@ -41,7 +40,7 @@ public class LogicNoticia {
 		                noticia.getTitulo()
 		            );
 		        } catch (Exception e) {
-		            logger.log(Level.WARNING,"Falló envío a: " + u.getCorreo());
+		            logger.log(Level.WARNING, "Falló envío a: " + u.getCorreo(), e);
 		        }
 		    }
 		}).start();

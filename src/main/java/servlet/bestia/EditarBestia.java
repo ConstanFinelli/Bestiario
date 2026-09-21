@@ -47,7 +47,7 @@ public class EditarBestia extends HttpServlet {
 		try {
 			bestia = new Bestia(Integer.parseInt(id), null, null, null);
 		}catch(NumberFormatException nfe) {
-			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet ActualizarBestia");
+			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet EditarBestia", nfe);
 			request.setAttribute("errorGlobal","Id invalida");
 			rd.forward(request, response);
 			return;

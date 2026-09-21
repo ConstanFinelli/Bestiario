@@ -87,7 +87,7 @@ public class CrearEvidencia extends HttpServlet {
 		try {
 			 fecha = LocalDate.parse(request.getParameter("fechaObtencion"));
 		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error parseando la fecha de obtencion en el servlet CrearEvidencia");
+			logger.log(Level.WARNING, "Error parseando la fecha de obtencion en el servlet CrearEvidencia", e);
 			request.setAttribute("errorGlobal","Error leyendo la fecha de obtencion");
 			rd.forward(request,response);
 			return;
@@ -110,12 +110,12 @@ public class CrearEvidencia extends HttpServlet {
 		        controladorBestia.saveEvidencias(bestia);
 
 		    } catch (NumberFormatException e) {
-		        logger.log(Level.SEVERE, "Error al recibir el numero de tipo de evidencia en el servlet ActualizarRegistro");
+		        logger.log(Level.SEVERE, "Error al recibir el numero de tipo de evidencia en el servlet CrearEvidencia", e);
 		        request.setAttribute("errorGlobal", "Tipo de Evidencia Invalido");
 		        doGet(request, response);
 		        return;
 		    } catch (DateTimeParseException ex) {
-		        logger.log(Level.SEVERE, "Error al parsear la fecha de obtencion de la evidencia en el servlet ActualizarRegistro");
+		        logger.log(Level.SEVERE, "Error al parsear la fecha de obtencion de la evidencia en el servlet CrearEvidencia", ex);
 		        request.setAttribute("errorGlobal", "Fecha Invalida");
 		        doGet(request, response);
 		        return;

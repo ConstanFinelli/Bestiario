@@ -48,9 +48,9 @@ public class CrearBestia extends HttpServlet {
 			LinkedList<TipoEvidencia> te = controladorTipoEvidencia.findAll();
 			request.setAttribute("tiposEvidencia", te);
 		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error buscando los tipos de evidencia en la base de datos en el servlet CrearBestia");
+			logger.log(Level.WARNING, "Error buscando los tipos de evidencia en la base de datos en el servlet CrearBestia", e);
 			request.setAttribute("errorGlobal", "Error buscando los tipos de evidencia");
-			request.getRequestDispatcher(HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP("")).forward(request, response);;
+			request.getRequestDispatcher(HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP("")).forward(request, response);
 		}
 		
 		

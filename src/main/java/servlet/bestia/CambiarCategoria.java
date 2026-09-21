@@ -43,7 +43,7 @@ public class CambiarCategoria extends HttpServlet {
 		try {
 			bestia = controlador.getOne(new Bestia(Integer.parseInt(id), null, null, null));
 		}catch(NumberFormatException nfe) {
-			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet CambiarCategoria");
+			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet CambiarCategoria", nfe);
 			request.setAttribute("errorGlobal", "Id invalida");
 			rd.forward(request, response);
 			return;

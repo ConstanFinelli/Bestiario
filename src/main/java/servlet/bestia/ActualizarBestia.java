@@ -1,14 +1,5 @@
 package servlet.bestia;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import logic.LogicBestia;
-import logic.LogicRegistro;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -17,6 +8,14 @@ import java.util.logging.Logger;
 import entities.Bestia;
 import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import logic.LogicBestia;
+import logic.LogicRegistro;
 
 /**
  * Servlet implementation class ActualizarBestia
@@ -47,7 +46,7 @@ public class ActualizarBestia extends HttpServlet {
 		try {
 			bestia = new Bestia(Integer.parseInt(id), nombre, peligrosidad, estado);
 		}catch(NumberFormatException nfe) {
-			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet ActualizarBestia");
+			logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet ActualizarBestia", nfe);
 			request.setAttribute("errorGlobal", "Id invalida");
 			rd.forward(request, response);
 			return;
