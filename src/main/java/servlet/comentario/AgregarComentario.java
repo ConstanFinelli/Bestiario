@@ -45,9 +45,18 @@ public class AgregarComentario extends HttpServlet {
 		String idUsuario = request.getParameter("idUsuario");
 		String idBestia = request.getParameter("idBestia");
 		String nroRegistro = request.getParameter("nroRegistro");
-		String ruta = HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + idBestia + "&nroRegistro=" + nroRegistro + "#comentarios";
+
+		if (idBestia == null || idBestia.isBlank()) {
+			logger.log(Level.WARNING, "idBestia nulo o vacío en el servlet AgregarComentario");
+			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+			return;
+		}
+
+		String queryParams = "?id=" + idBestia + (nroRegistro != null && !nroRegistro.isBlank() ? "&nroRegistro=" + nroRegistro : "");
+		String rutaForward = HttpRoutes.OBTENER_REGISTRO_BESTIA("") + queryParams;
+		String rutaRedirect = HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + queryParams + "#comentarios";
 		
-		if(contenido != null && idUsuario != null && idBestia != null) {
+		if(contenido != null && idUsuario != null) {
 			LocalDateTime fechaComentario = LocalDateTime.now();
 			Usuario publicador = null;
 			Bestia bestia = null;
@@ -56,17 +65,17 @@ public class AgregarComentario extends HttpServlet {
 			}catch(NumberFormatException e) {
 				logger.log(Level.WARNING, "Id de usuario inválido en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal", "Id de usuario inválido");
-				request.getRequestDispatcher(ruta).forward(request, response);
+				request.getRequestDispatcher(rutaForward).forward(request, response);
 				return;
 			}catch(DataNotFoundException e) {
 				logger.log(Level.WARNING, "Publicador no encontrado en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal", "El usuario publicador no existe");
-				request.getRequestDispatcher(ruta).forward(request, response);
+				request.getRequestDispatcher(rutaForward).forward(request, response);
 				return;
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al conseguir publicador del comentario a agregar en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal","No se ha podido conseguir el publicador del comentario a agregar");
-				request.getRequestDispatcher(ruta).forward(request, response); // para manejar correctamente el error al no limpiar request y mostrar el jsp
+				request.getRequestDispatcher(rutaForward).forward(request, response);
 				return;
 			}
 			try {
@@ -74,17 +83,17 @@ public class AgregarComentario extends HttpServlet {
 			}catch(NumberFormatException e) {
 				logger.log(Level.WARNING, "Id de bestia inválido en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal", "Id de bestia inválido");
-				request.getRequestDispatcher(ruta).forward(request, response);
+				request.getRequestDispatcher(rutaForward).forward(request, response);
 				return;
 			}catch(DataNotFoundException e) {
 				logger.log(Level.WARNING, "Bestia no encontrada en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal", "La bestia asociada al comentario no existe");
-				request.getRequestDispatcher(ruta).forward(request, response);
+				request.getRequestDispatcher(rutaForward).forward(request, response);
 				return;
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al conseguir la bestia asociada al comentario a agregar en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal","No se ha podido conseguir la bestia asociada al comentario a agregar");
-				request.getRequestDispatcher(ruta).forward(request, response);
+				request.getRequestDispatcher(rutaForward).forward(request, response);
 				return;
 			}
 			Comentario comentario = new Comentario(publicador, bestia, fechaComentario, contenido);
@@ -93,12 +102,12 @@ public class AgregarComentario extends HttpServlet {
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error al crear comentario en el servlet AgregarComentario", e);
 				request.setAttribute("errorGlobal","No se ha podido crear el comentario");
-				request.getRequestDispatcher(ruta).forward(request, response);
+				request.getRequestDispatcher(rutaForward).forward(request, response);
 				return; 
 			}
 		}
 		
-		response.sendRedirect(ruta);
+		response.sendRedirect(rutaRedirect);
 	}
 
 }
