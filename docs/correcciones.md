@@ -11,7 +11,8 @@
 2. [Métodos, Lógica Repetida y Código Muerto](#1-métodos-lógica-repetida-y-código-muerto)
 3. [Atributos No Utilizados en Entidades de Dominio (`entities.*`)](#2-atributos-no-utilizados-en-entidades-de-dominio)
 4. [Auditoría Integral de Logging (`java.util.logging.Logger`)](#3-auditoría-integral-de-logging)
-5. [Plan de Acción Priorizado](#4-plan-de-acción-priorizado)
+5. [Refactorización Arquitectónica SOLID: Descomposición de Capa DAO](#4-refactorización-arquitectónica-solid-descomposición-de-capa-dao)
+6. [Plan de Acción Priorizado](#5-plan-de-acción-priorizado)
 
 ---
 
@@ -19,6 +20,7 @@
 
 El presente documento concentra exclusivamente los defectos, código redundante, inconsistencias y oportunidades de optimización que restan por solucionar en el proyecto:
 
+- **Refactorización modular de la capa DAO (`data.*`)**: Modularizar clases DAO extensas (`DataBestia`, `DataRegistro`, `DataUsuario`, etc.) convirtiéndolas en ensambladores/fachadas que deleguen a clases individuales por operación (Single Responsibility Principle - SRP).
 - **3 métodos DAO muertos** (`DataBestia.java`).
 - **2 métodos auxiliares públicos** que deben restringirse a visibilidad `private` (`DataEvidencia.java`, `DataRegistro.java`).
 - **1 consulta N+1 innecesaria** ejecutada en cada obtención de Bestia (`DataBestia.completarBestia`).
@@ -233,7 +235,80 @@ public class DataBestia {
 
 ---
 
-## 4. Plan de Acción Priorizado
+## 4. Refactorización Arquitectónica SOLID: Descomposición de Capa DAO
+
+### 4.1. Motivación y Diagnóstico
+Actualmente, las clases de la capa DAO (`src/main/java/data/`) concentran la totalidad de las operaciones de persistencia de una entidad en archivos únicos de gran tamaño (e.g., `DataBestia.java` ~540 líneas, `DataRegistro.java` ~490 líneas, `DataUsuario.java` ~450 líneas).
+
+Esto presenta desventajas frente a los principios **SOLID**, especialmente el **Principio de Responsabilidad Única (SRP - Single Responsibility Principle)**:
+- **Sobrecarga de responsabilidades:** Una misma clase gestiona consultas individuales, listados filtrados, comandos de alta, actualización de estado, borrados en cascada manuales y gestión de relaciones N:M.
+- **Dificultad de mantenimiento y testeo:** La modificación de una consulta SQL o el ajuste de una regla de mapeo (`ResultSet`) obliga a editar un archivo extenso y central, aumentando el riesgo de efectos colaterales.
+- **Baja cohesión:** Cada método maneja sus propios parámetros, sentencias SQL y ciclos de vida de recursos, compartiendo únicamente la conexión a base de datos.
+
+### 4.2. Propuesta: Clases DAO como Ensambladores de Clases de Operación Individual
+Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador / Fachada (Facade)** que delega la ejecución en clases granulares independientes (una clase por método u operación de persistencia):
+
+#### Arquitectura Propuesta:
+1. **Clases de Operación Específicas (Action / Query / Command Objects):**
+   - Agrupadas en subpaquetes modulares bajo `data` (por ejemplo, `data.bestia.*`, `data.registro.*`, `data.usuario.*`).
+   - Cada clase encapsula:
+     - La consulta SQL correspondiente como constante.
+     - El manejo del ciclo de vida de `PreparedStatement`, `ResultSet` y liberación de recursos en bloque `finally`.
+     - El mapeo específico de la entidad.
+     - El control y lanzamiento de `DataNotFoundException` y registro en `Logger`.
+   - *Ejemplo en `data.bestia`:*
+     - `GetOneBestia.java`: Búsqueda individual por ID.
+     - `FindAllBestias.java`: Listado completo.
+     - `FindByCategoriaBestia.java`: Filtrado por categoría.
+     - `SaveBestia.java`: Inserción de nueva bestia.
+     - `UpdateBestia.java`: Actualización de datos básicos.
+     - `ApproveBestia.java`: Cambio de estado a aprobado.
+     - `DeleteBestia.java`: Eliminación de bestia.
+     - `VincularHabitatBestia.java` / `DesvincularHabitatBestia.java`: Gestión de relaciones intermedias.
+
+2. **Clase `Data*` como Ensamblador / Fachada (`DataBestia.java`):**
+   - Conserva exactamente los mismos métodos y firmas públicas consumidas por la capa `logic` (`LogicBestia`), garantizando **cero impacto y total compatibilidad hacia atrás**:
+     ```java
+     package data;
+     
+     import data.bestia.*;
+     import entities.Bestia;
+     import exceptions.DataNotFoundException;
+     import java.util.LinkedList;
+     
+     public class DataBestia {
+         private final GetOneBestia getOneOp = new GetOneBestia();
+         private final FindAllBestias findAllOp = new FindAllBestias();
+         private final SaveBestia saveOp = new SaveBestia();
+         private final UpdateBestia updateOp = new UpdateBestia();
+         private final ApproveBestia approveOp = new ApproveBestia();
+         private final DeleteBestia deleteOp = new DeleteBestia();
+         // ...
+         
+         public Bestia getOne(Bestia b) throws DataNotFoundException {
+             return getOneOp.execute(b);
+         }
+         
+         public LinkedList<Bestia> findAll() {
+             return findAllOp.execute();
+         }
+         
+         public Bestia update(Bestia b) throws DataNotFoundException {
+             return updateOp.execute(b);
+         }
+         // ...
+     }
+     ```
+
+### 4.3. Beneficios Técnicos
+- **Cumplimiento estricto de SRP:** Cada clase de operación tiene una sola razón para cambiar (su sentencia SQL o mapeo específico).
+- **Archivos compactos y legibles:** Clases individuales de 30 a 70 líneas en lugar de archivos monolíticos de 500+ líneas.
+- **Facilidad para pruebas unitarias / de integración:** Posibilidad de testear o mockear operaciones individuales de forma aislada.
+- **Sin impacto en capas superiores:** La capa `logic` continúa consumiendo `DataBestia`, `DataRegistro`, etc., sin requerir modificaciones.
+
+---
+
+## 5. Plan de Acción Priorizado
 
 ### Fase 1: Correcciones Críticas de Logger y Mensajería (Alta Prioridad)
 - [x] Corregir la clase referenciada en `LogicNoticia.java` (`LogicNoticia.class`).
@@ -255,6 +330,12 @@ public class DataBestia {
 - [ ] Renombrar `Usuario.contraseña` a `contrasena` o `password`.
 - [x] Normalizar nombres de servlets de características de hábitat a `*CaracteristicaHabitat`.
 - [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
+
+### Fase 4: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
+- [ ] Definir la estructura base de clases de operación (convención o interfaz `execute(...)`) y subpaquetes (`data.<entidad>.*`).
+- [ ] Implementar la descomposición piloto en `DataBestia.java` (el DAO más extenso y acoplado).
+- [ ] Reestructurar progresivamente `DataRegistro.java` y `DataUsuario.java`.
+- [ ] Extender la arquitectura al resto de DAOs del sistema (`DataEvidencia`, `DataHabitat`, `DataCategoria`, etc.).
 
 ---
 *Documento de seguimiento técnico - Proyecto Bestiario.*
