@@ -25,7 +25,8 @@ El presente documento concentra exclusivamente los defectos, código redundante,
 - **2 métodos auxiliares públicos** que deben restringirse a visibilidad `private` (`DataEvidencia.java`, `DataRegistro.java`).
 - **1 consulta N+1 innecesaria** ejecutada en cada obtención de Bestia (`DataBestia.completarBestia`).
 - **[RESUELTO] Inconsistencias en nombres de servlets** de hábitats (`ActualizarCaracteristicaHabitat.java`, `EliminarCaracteristicaHabitat.java`).
-- **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI) y error de forward en `AgregarComentario.java`.
+- **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
+- **[RESUELTO] Error de forward y dispatching en `AgregarComentario.java`** (separada ruta de forward de URL de redirect con ancla).
 - **4 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
 - **[RESUELTO] 502 líneas de `System.out.println` y `e.printStackTrace()`** en 13 clases del backend migradas a `java.util.logging.Logger`.
 - **22 clases de backend sin Logger instanciado** (capas DAO, Logic y Listeners).
@@ -107,15 +108,10 @@ Cuando `errorGlobal` es una lista, SweetAlert2 imprime el resultado de `List.toS
   ```
   y eliminar la adición de cadenas vacías (`errores.add("")`).
 
-### 1.6. Error de Dispatching en `AgregarComentario.java`
+### 1.6. Error de Dispatching en `AgregarComentario.java` [RESUELTO]
+**Estado:** ✔️ **RESUELTO**  
 En `src/main/java/servlet/comentario/AgregarComentario.java`:
-```java
-String ruta = HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + "?id=" + idBestia + "&nroRegistro=" + nroRegistro + "#comentarios";
-...
-request.getRequestDispatcher(ruta).forward(request, response);
-```
-`request.getRequestDispatcher` no debe recibir el `contextPath` (ya que es relativo al contexto de la aplicación) ni fragmentos de ancla `#comentarios` (los fragmentos solo tienen sentido en redirecciones del cliente HTTP con `response.sendRedirect`).
-- **Solución:** Separar la ruta interna del forward (`HttpRoutes.OBTENER_REGISTRO_BESTIA("") + "?id=..."`) de la URL absoluta utilizada para `sendRedirect`.
+Se separó la ruta interna para el forward (`HttpRoutes.OBTENER_REGISTRO_BESTIA("") + queryParams`) de la URL absoluta utilizada para la redirección del cliente (`HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + queryParams + "#comentarios"`). El dispatcher ya no recibe el `contextPath` ni el fragmento `#comentarios`, evitando fallos en el despacho interno de peticiones. Adicionalmente, se agregó validación para `idBestia` nulo o vacío.
 
 ---
 
@@ -315,7 +311,7 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 - [x] Normalizar la declaración en `EliminarCaracteristicaHabitat.java` a `private static final Logger`.
 - [x] Pasar el parámetro `Throwable` en las 8 llamadas truncadas de `logger.log(...)`.
 - [x] Corregir los textos con nombres de servlets erróneos en `CrearEvidencia.java` y `EditarBestia.java`.
-- [ ] Corregir la lógica de dispatch en `AgregarComentario.java` (separar URL de redirect del dispatcher).
+- [x] Corregir la lógica de dispatch en `AgregarComentario.java` (separar URL de redirect del dispatcher).
 
 ### Fase 2: Estandarización de Logging en DAOs y Servicios (Media Prioridad)
 - [x] Incorporar `Logger` en todas las clases DAO (`Data*.java`), reemplazando las llamadas a `System.out.println` con registro de `SQLState`, código de error y objeto `SQLException`.
