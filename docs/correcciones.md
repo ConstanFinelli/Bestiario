@@ -27,6 +27,7 @@ El presente documento concentra exclusivamente los defectos, código redundante,
 - **[RESUELTO] Inconsistencias en nombres de servlets** de hábitats (`ActualizarCaracteristicaHabitat.java`, `EliminarCaracteristicaHabitat.java`).
 - **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
 - **[RESUELTO] Error de forward y dispatching en `AgregarComentario.java`** (separada ruta de forward de URL de redirect con ancla).
+- **Funcionalidad faltante: Eliminación de comentarios para Investigadores**: Permitir la moderación y eliminación de comentarios en la vista de la bestia (`registro.jsp`) exclusivamente para usuarios con rol de investigador, implementando la ruta en `HttpRoutes`, el servlet `EliminarComentario.java` y los controles correspondientes en la interfaz.
 - **4 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
 - **[RESUELTO] 502 líneas de `System.out.println` y `e.printStackTrace()`** en 13 clases del backend migradas a `java.util.logging.Logger`.
 - **22 clases de backend sin Logger instanciado** (capas DAO, Logic y Listeners).
@@ -112,6 +113,20 @@ Cuando `errorGlobal` es una lista, SweetAlert2 imprime el resultado de `List.toS
 **Estado:** ✔️ **RESUELTO**  
 En `src/main/java/servlet/comentario/AgregarComentario.java`:
 Se separó la ruta interna para el forward (`HttpRoutes.OBTENER_REGISTRO_BESTIA("") + queryParams`) de la URL absoluta utilizada para la redirección del cliente (`HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + queryParams + "#comentarios"`). El dispatcher ya no recibe el `contextPath` ni el fragmento `#comentarios`, evitando fallos en el despacho interno de peticiones. Adicionalmente, se agregó validación para `idBestia` nulo o vacío.
+
+### 1.7. Funcionalidad Faltante: Eliminación de Comentarios por Investigadores
+Actualmente, el sistema permite registrar nuevos comentarios en la vista de la bestia (`registro.jsp`) a través de `AgregarComentario.java`, pero carece de un mecanismo en la capa web para eliminarlos o moderarlos:
+- **Estado en persistencia y negocio:** Tanto `DataComentario.delete(Comentario c)` como `LogicComentario.delete(Comentario c)` ya se encuentran implementados y funcionales, eliminando registros mediante su clave primaria compuesta (`idUsuario`, `idBestia`, `fechaPublicacion`).
+- **Carencias identificadas:**
+  1. **Control de Acceso / Autorización:** Solo usuarios autenticados con rol `"investigador"` deben tener permisos para eliminar comentarios.
+  2. **Ruta centralizada:** Falta la definición del helper `ELIMINAR_COMENTARIO` en `helpers/HttpRoutes.java` (apuntando a `/comentarios/eliminar`).
+  3. **Servlet controlador:** Falta implementar el servlet `servlet.comentario.EliminarComentario.java` (`@WebServlet("/comentarios/eliminar")`), el cual debe:
+     - Validar que el usuario en sesión esté autenticado y sea de tipo `"investigador"`.
+     - Parsear los parámetros `idUsuario`, `idBestia`, `fechaPublicacion` y opcionalmente `nroRegistro` (para preservar la vista del registro específico).
+     - Invocar `controladorComentario.delete(comentario)` capturando `DataNotFoundException` y excepciones generales con log adecuado.
+     - Redirigir al usuario con `sendRedirect` a la ficha de la bestia (`HttpRoutes.OBTENER_REGISTRO_BESTIA(...) + queryParams + "#comentarios"`).
+  4. **Interfaz de usuario (`registro.jsp`):** En la sección de renderizado de comentarios (`#comentarios`), agregar un botón/formulario de eliminación ("Eliminar comentario") visible únicamente si `usuario != null && "investigador".equals(usuario.getEstado())`.
+- **Solución:** Crear la ruta en `HttpRoutes.java`, desarrollar el servlet `EliminarComentario.java` con validación estricta del rol de investigador e integrar el botón de acción en `registro.jsp`.
 
 ---
 
@@ -326,6 +341,7 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 - [ ] Renombrar `Usuario.contraseña` a `contrasena` o `password`.
 - [x] Normalizar nombres de servlets de características de hábitat a `*CaracteristicaHabitat`.
 - [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
+- [ ] Implementar la eliminación de comentarios para usuarios con rol investigador (ruta `HttpRoutes`, servlet `EliminarComentario` y UI en `registro.jsp`).
 
 ### Fase 4: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
 - [ ] Definir la estructura base de clases de operación (convención o interfaz `execute(...)`) y subpaquetes (`data.<entidad>.*`).
