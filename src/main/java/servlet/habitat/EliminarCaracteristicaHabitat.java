@@ -18,20 +18,20 @@ import entities.Habitat;
 import helpers.HttpRoutes;
 
 /**
- * Servlet implementation class EliminarCaracteristica
+ * Servlet implementation class EliminarCaracteristicaHabitat
  */
 @WebServlet("/habitats/eliminarCaracteristicaHabitat")
-public class EliminarCaracteristica extends HttpServlet {
+public class EliminarCaracteristicaHabitat extends HttpServlet {
 	private LogicCaracteristicaHabitat controlador = new LogicCaracteristicaHabitat();
 	private LogicHabitat controladorHabitat = new LogicHabitat();
-	private final static Logger logger = Logger.getLogger(EliminarCaracteristica.class.getName());
+	private static final Logger logger = Logger.getLogger(EliminarCaracteristicaHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EliminarCaracteristica() {
+    public EliminarCaracteristicaHabitat() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,12 +45,12 @@ public class EliminarCaracteristica extends HttpServlet {
 		Habitat ht = new Habitat(Integer.parseInt(id));
 		ht = controladorHabitat.getOne(ht);
 		}catch(NumberFormatException e) {
-			logger.log(Level.WARNING, "Error parseando la id del habitat en el servlet EliminarCaracteristica", e);
+			logger.log(Level.WARNING, "Error parseando la id del habitat en el servlet EliminarCaracteristicaHabitat", e);
 			request.setAttribute("errorGlobal", "Id del habitat invalida");
 			rd.forward(request, response);
 			return;
 		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error obteniendo el habitat en el servlet EliminarCaracteristica", e);
+			logger.log(Level.WARNING, "Error obteniendo el habitat en el servlet EliminarCaracteristicaHabitat", e);
 			request.setAttribute("errorGlobal", "No se ha podido obtener el habitat");
 			rd.forward(request, response);
 			return;
@@ -59,12 +59,12 @@ public class EliminarCaracteristica extends HttpServlet {
 			CaracteristicaHabitat ch = new CaracteristicaHabitat(Integer.parseInt(id), descripcion);
 			ch = controlador.delete(ch);
 		}catch(NumberFormatException e) {
-			logger.log(Level.WARNING, "Error parseando la id de la característica en el servlet EliminarCaracteristica", e);
+			logger.log(Level.WARNING, "Error parseando la id de la característica en el servlet EliminarCaracteristicaHabitat", e);
 			request.setAttribute("errorGlobal", "Id de la característica invalida");
 			rd.forward(request, response);
 			return;
 		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error eliminando la característica en el servlet EliminarCaracteristica", e);
+			logger.log(Level.WARNING, "Error eliminando la característica en el servlet EliminarCaracteristicaHabitat", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar la característica");
 			rd.forward(request, response);
 			return;

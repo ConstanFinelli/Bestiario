@@ -18,20 +18,20 @@ import entities.Habitat;
 import helpers.HttpRoutes;
 
 /**
- * Servlet implementation class ActualizarCaracteristica
+ * Servlet implementation class ActualizarCaracteristicaHabitat
  */
 @WebServlet("/habitats/actualizarCaracteristicaHabitat")
-public class ActualizarCaracteristica extends HttpServlet {
+public class ActualizarCaracteristicaHabitat extends HttpServlet {
 	private LogicCaracteristicaHabitat controlador = new LogicCaracteristicaHabitat();
 	private LogicHabitat controladorHabitat = new LogicHabitat();
-	private static final Logger logger = Logger.getLogger(ActualizarCaracteristica.class.getName());
+	private static final Logger logger = Logger.getLogger(ActualizarCaracteristicaHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ActualizarCaracteristica() {
+    public ActualizarCaracteristicaHabitat() {
         super();
         // TODO Auto-generated constructor stub
     }
