@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import entities.Lector;
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -50,6 +51,8 @@ public class SvRegister extends HttpServlet {
 		Usuario user = null;
 		try {
 			user = logicUsuario.getByEmail(email);
+		}catch(DataNotFoundException e) {
+			user = null;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet SvRegister", e);
 			errores.add("No se ha podido conseguir el usuario");

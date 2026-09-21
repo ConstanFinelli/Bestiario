@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import data.DataPasswordResetToken;
 import data.DataUsuario;
 import entities.PasswordResetToken;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -42,6 +43,9 @@ public class SvResetPassword extends HttpServlet {
 
 		try {
 			t = tokenDao.getOne(token);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Token no encontrado en el servlet SvResetPassword: " + token, e);
+			t = null;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error crítico al conseguir el token del usuario en el servlet SvResetPassword", e);
 		}
@@ -77,6 +81,9 @@ public class SvResetPassword extends HttpServlet {
 		
 		try {
 			t = tokenDao.getOne(token);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Token no encontrado en el servlet SvResetPassword: " + token, e);
+			t = null;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error crítico al conseguir el token del usuario en el servlet SvResetPassword", e);
 		}

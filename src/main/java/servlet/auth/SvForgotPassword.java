@@ -10,6 +10,7 @@ import data.DataPasswordResetToken;
 import data.DataUsuario;
 import entities.PasswordResetToken;
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -55,7 +56,16 @@ String correo = request.getParameter("correo");
 		
 		DataUsuario daoUsuario = new DataUsuario();
 		
-		Usuario usuario = daoUsuario.getByEmail(correo);
+		Usuario usuario = null;
+		try {
+			usuario = daoUsuario.getByEmail(correo);
+		} catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Correo no encontrado en SvForgotPassword: " + correo, e);
+			usuario = null;
+		} catch(Exception e) {
+			logger.log(Level.SEVERE, "Error al buscar usuario por email en SvForgotPassword", e);
+			usuario = null;
+		}
 		
 		if(usuario != null) {
 			DataPasswordResetToken daoToken = new DataPasswordResetToken();
@@ -85,10 +95,11 @@ String correo = request.getParameter("correo");
 			String link = baseUrl + HttpRoutes.RESET_PASSWORD(request.getContextPath()) + "?token=" + token;
 			
 			LogicEmail logicEmail = new LogicEmail();
+			final String emailDestino = usuario.getCorreo();
 			
 			new Thread(() -> {
 			    try {
-			        logicEmail.notificarCambioContraseña(usuario.getCorreo(), link);
+			        logicEmail.notificarCambioContraseña(emailDestino, link);
 			    } catch(Exception e) {
 					logger.log(Level.WARNING, "Error crítico en el hilo de envío de mail en el servlet SvForgotPassword", e);
 				}

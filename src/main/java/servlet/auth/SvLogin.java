@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Usuario;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -42,6 +43,9 @@ public class SvLogin extends HttpServlet {
 		
 		try {
 			usuario = controladorUsuario.getByEmail(correo);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Usuario no encontrado en el servlet SvLogin: " + correo, e);
+			usuario = null;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet SvLogin", e);
 			request.setAttribute("errorGlobal", "No se ha podido conseguir el usuario. ");
