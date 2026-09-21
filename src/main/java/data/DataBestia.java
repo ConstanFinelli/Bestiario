@@ -13,8 +13,9 @@ import entities.Categoria;
 import entities.Evidencia;
 import entities.Habitat;
 import entities.Registro;
+import exceptions.DataNotFoundException;
 
-
+//INCOMPLETO: DEBATIR EN GRUPO COMO PROSEGUIR Y ORGANIZAR EL TEMA DE CATEGORIAS, HABITATS Y REGISTROS EN EL SAVE
 public class DataBestia {
 	private static final Logger logger = Logger.getLogger(DataBestia.class.getName());
 	public DataHabitat habDAO = new DataHabitat();
@@ -23,7 +24,10 @@ public class DataBestia {
 	public DataComentario comDAO = new DataComentario();
 	public DataEvidencia evDAO = new DataEvidencia();
 	
-	public Bestia getOne(Bestia b) throws Exception {
+	public Bestia getOne(Bestia b) {
+		if(b == null) {
+			throw new DataNotFoundException("No se proporcionó una bestia para buscar.");
+		}
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Bestia bestiaEncontrada = null;
@@ -58,12 +62,10 @@ public class DataBestia {
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
-		if(bestiaEncontrada != null) {
-			return bestiaEncontrada;	
-		}else {
-			throw new Exception();
+		if(bestiaEncontrada == null) {
+			throw new DataNotFoundException("No se encontró la bestia con id " + b.getIdBestia());
 		}
-		
+		return bestiaEncontrada;
 	}
 	
 	public LinkedList<Bestia> findAll(){
@@ -415,7 +417,7 @@ public class DataBestia {
 		}
 	}
 	
-	public LinkedList<Bestia> findAllBestiasFromHabitat(Habitat ht) throws Exception{
+	public LinkedList<Bestia> findAllBestiasFromHabitat(Habitat ht){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		LinkedList<Bestia> bestiasHabitat = new LinkedList<>();

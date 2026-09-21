@@ -6,12 +6,13 @@ import data.DataBestia;
 import entities.Bestia;
 import entities.Categoria;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 
 public class LogicBestia {
 	public DataBestia bDao = new DataBestia();
 	public LogicRegistro controladorRegistro = new LogicRegistro();
 	
-	public Bestia getOne(Bestia b) {
+	public Bestia getOne(Bestia b) throws DataNotFoundException {
 		return bDao.getOne(b);
 	}
 	
@@ -60,7 +61,7 @@ public class LogicBestia {
 		controladorRegistro.deleteImages(b);
 	}
 	
-	public Bestia update(Bestia besActualizada) {
+	public Bestia update(Bestia besActualizada) throws DataNotFoundException {
 			Bestia besAnterior = bDao.getOne(besActualizada);
 			if(besAnterior != null) {
 				if(besActualizada.getNombre() == "") {

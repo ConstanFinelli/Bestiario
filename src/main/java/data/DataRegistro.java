@@ -12,6 +12,7 @@ import entities.Registro;
 import entities.Bestia;
 import entities.Usuario;
 import entities.Investigador;
+import exceptions.DataNotFoundException;
 
 public class DataRegistro {
 	private static final Logger logger = Logger.getLogger(DataRegistro.class.getName());
@@ -175,7 +176,7 @@ public class DataRegistro {
 		return registros;
 	}
 	
-	public LinkedList<Registro> findRegistrosAprobadosHoy() throws Exception{
+	public LinkedList<Registro> findRegistrosAprobadosHoy() throws DataNotFoundException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		LinkedList<Registro> registros = new LinkedList<>();

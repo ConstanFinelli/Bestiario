@@ -13,6 +13,7 @@ import entities.TipoEvidencia;
 import helpers.CloudinaryHelper;
 import helpers.EnvHelper;
 import helpers.HttpRoutes;
+import exceptions.DataNotFoundException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -58,6 +59,11 @@ public class ObtenerRegistroBestia extends HttpServlet {
 			}catch(NumberFormatException e) {
 				logger.log(Level.WARNING, "Error al parsear id en el servlet ObtenerRegistroBestia", e);
 				request.setAttribute("errorGlobal", "La id de la bestia es inválida. ");
+				rd.forward(request, response);
+				return;
+			}catch(DataNotFoundException e) {
+				logger.log(Level.WARNING, "Bestia no encontrada en el servlet ObtenerRegistroBestia", e);
+				request.setAttribute("errorGlobal", "La id ingresada no corresponde a ninguna bestia. ");
 				rd.forward(request, response);
 				return;
 			}catch(Exception e) {
