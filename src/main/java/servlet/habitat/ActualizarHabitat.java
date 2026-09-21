@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -46,6 +47,11 @@ public class ActualizarHabitat extends HttpServlet {
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error parseando los parámetros del habitat en el servlet ActualizarHabitat", e);
 			request.setAttribute("errorGlobal", "Id, latitud o longitud inválidos");
+			rd.forward(request, response);
+			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Hábitat no encontrado al actualizar en ActualizarHabitat", e);
+			request.setAttribute("errorGlobal", "El hábitat a actualizar no existe.");
 			rd.forward(request, response);
 			return;
 		}catch(Exception e) {

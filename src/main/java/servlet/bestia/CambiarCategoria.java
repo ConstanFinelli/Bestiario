@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Categoria;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -47,6 +48,11 @@ public class CambiarCategoria extends HttpServlet {
 			request.setAttribute("errorGlobal", "Id invalida");
 			rd.forward(request, response);
 			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Bestia no encontrada en CambiarCategoria", e);
+			request.setAttribute("errorGlobal", "La bestia seleccionada no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener bestia en el servlet CambiarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido obtener la bestia seleccionada");
@@ -56,6 +62,11 @@ public class CambiarCategoria extends HttpServlet {
 		String idCategoria = request.getParameter("idCategoria");
 		try {
 			cat = controladorCategoria.getOne(new Categoria(Integer.parseInt(idCategoria),null,null));
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Categoría no encontrada en CambiarCategoria", e);
+			request.setAttribute("errorGlobal", "La categoría seleccionada no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener categoría de la bestia seleccionada en el servlet CambiarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido obtener la categoría de la bestia seleccionada");

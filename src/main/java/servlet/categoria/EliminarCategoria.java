@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Categoria;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -38,6 +39,9 @@ public class EliminarCategoria extends HttpServlet {
 		Categoria cat = new Categoria(Integer.parseInt(id),null, null);
 		try {
 			cat = controlador.delete(cat);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Categoría no encontrada al eliminar en EliminarCategoria", e);
+			request.setAttribute("errorGlobal", "La categoría que intentó eliminar no existe.");
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al eliminar una categoría en el servlet EliminarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar la categoría.");

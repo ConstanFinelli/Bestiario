@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Bestia;
+import exceptions.DataNotFoundException;
 import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
 import jakarta.servlet.RequestDispatcher;
@@ -63,6 +64,11 @@ public class ActualizarBestia extends HttpServlet {
 		}
 		try {
 			bestia = controlador.update(bestia);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Bestia no encontrada al actualizar en ActualizarBestia", e);
+			request.setAttribute("errorGlobal", "La bestia ingresada no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al actualizar la bestia en el servlet ActualizarBestia", e);
 			request.setAttribute("errorGlobal", "No se ha podido actualizar la bestia");

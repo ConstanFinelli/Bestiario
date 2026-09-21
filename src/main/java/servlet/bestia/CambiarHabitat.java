@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import entities.Bestia;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -52,6 +53,9 @@ public class CambiarHabitat extends HttpServlet {
 		String idHabitat = request.getParameter("idHabitat");
 		try {
 			bestia = controlador.getOne(bestia);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Bestia no encontrada en CambiarHabitat", e);
+			errores.add("La bestia seleccionada no existe.");
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener la bestia en el servlet CambiarHabitat", e);
 			errores.add("No se ha podido obtener la bestia seleccionada");
@@ -59,6 +63,9 @@ public class CambiarHabitat extends HttpServlet {
 		
 		try {
 			ht = controladorHabitat.getOne(new Habitat(Integer.parseInt(idHabitat)));
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Hábitat no encontrado en CambiarHabitat", e);
+			errores.add("El hábitat seleccionado no existe.");
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener habitat en el servlet CambiarHabitat", e);
 			errores.add("No se ha podido obtener habitat de la bestia seleccionada");

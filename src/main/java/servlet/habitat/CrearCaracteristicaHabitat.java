@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -49,6 +50,11 @@ public class CrearCaracteristicaHabitat extends HttpServlet {
 			request.setAttribute("errorGlobal", "Id del habitat invalida");
 			rd.forward(request, response);
 			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Hábitat no encontrado en CrearCaracteristicaHabitat", e);
+			request.setAttribute("errorGlobal", "El hábitat especificado no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error obteniendo el habitat en el servlet CrearCaracteristicaHabitat", e);
 			request.setAttribute("errorGlobal", "No se ha podido obtener el habitat");
@@ -58,6 +64,11 @@ public class CrearCaracteristicaHabitat extends HttpServlet {
 		try{
 		CaracteristicaHabitat ch = new CaracteristicaHabitat(ht.getId(), descripcion);
 		ch = controlador.save(ch, ht);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Hábitat no encontrado al guardar característica", e);
+			request.setAttribute("errorGlobal", "El hábitat especificado no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error creando la característica en el servlet CrearCaracteristicaHabitat", e);
 			request.setAttribute("errorGlobal", "No se ha podido crear la característica");

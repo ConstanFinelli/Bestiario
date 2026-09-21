@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import entities.Bestia;
 import entities.Categoria;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 import helpers.CloudinaryHelper;
 import helpers.HttpRoutes;
 
@@ -69,11 +70,11 @@ public class EditarBestia extends HttpServlet {
 		
 		try {
 			bestia = controlador.getOne(bestia);
-			if(bestia == null) {
-			request.setAttribute("errorGlobal", "La bestia no ha sido encontrada");
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Bestia no encontrada en el servlet EditarBestia", e);
+			request.setAttribute("errorGlobal", "La bestia ingresada no existe.");
 			rd.forward(request, response);
 			return;
-			}
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al listar bestia editada en el servlet EditarBestia", e);
 			request.setAttribute("errorGlobal","Ha habido un error al listar la bestia");

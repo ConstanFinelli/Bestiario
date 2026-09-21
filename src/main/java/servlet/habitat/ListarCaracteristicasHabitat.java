@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -53,6 +54,11 @@ public class ListarCaracteristicasHabitat extends HttpServlet {
 
 		try {
 			ht = controladorHabitat.getOne(ht);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Hábitat no encontrado en ListarCaracteristicasHabitat", e);
+			request.setAttribute("errorGlobal", "El hábitat especificado no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir habitat en el servlet ListarCaracteristicasHabitat", e);
 			request.setAttribute("errorGlobal", "No se ha podido conseguir el habitat. ");

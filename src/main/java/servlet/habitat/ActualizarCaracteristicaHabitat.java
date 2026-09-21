@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -51,6 +52,11 @@ public class ActualizarCaracteristicaHabitat extends HttpServlet {
 			request.setAttribute("errorGlobal", "Id de habitat invalido");
 			rd.forward(request, response);
 			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Hábitat no encontrado en ActualizarCaracteristicaHabitat", e);
+			request.setAttribute("errorGlobal", "El hábitat especificado no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error obteniendo el habitat", e);
 			request.setAttribute("errorGlobal", "Error buscando el habitat");
@@ -60,6 +66,11 @@ public class ActualizarCaracteristicaHabitat extends HttpServlet {
 		
 		try {
 			ch = controlador.update(ch, newDescripcion);
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Característica no encontrada en ActualizarCaracteristicaHabitat", e);
+			request.setAttribute("errorGlobal", "La característica que intentó actualizar no existe.");
+			rd.forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error actualizando las caracteristicas del habitat", e);
 			request.setAttribute("errorGlobal", "Error actualizando las caracteristicas");

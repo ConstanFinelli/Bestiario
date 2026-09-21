@@ -15,6 +15,7 @@ import java.util.logging.Level;
 
 import entities.CaracteristicaHabitat;
 import entities.Habitat;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -47,6 +48,11 @@ public class EliminarCaracteristicaHabitat extends HttpServlet {
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error parseando la id del habitat en el servlet EliminarCaracteristicaHabitat", e);
 			request.setAttribute("errorGlobal", "Id del habitat invalida");
+			rd.forward(request, response);
+			return;
+		}catch(DataNotFoundException e) {
+			logger.log(Level.WARNING, "Hábitat no encontrado en EliminarCaracteristicaHabitat", e);
+			request.setAttribute("errorGlobal", "El hábitat especificado no existe.");
 			rd.forward(request, response);
 			return;
 		}catch(Exception e) {

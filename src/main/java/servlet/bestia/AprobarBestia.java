@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Bestia;
+import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 
 /**
@@ -39,8 +40,13 @@ public class AprobarBestia extends HttpServlet {
 			bestia = new Bestia(Integer.parseInt(bestiaId));
 			controladorBestia.approve(bestia);
 		}catch(NumberFormatException nfe) {
-			logger.log(Level.WARNING, "Error al parsea el id de la bestia en el servlet AprobarBestia", nfe);
+			logger.log(Level.WARNING, "Error al parsear el id de la bestia en el servlet AprobarBestia", nfe);
 			request.setAttribute("errorGlobal","Id de bestia invalido");
+			request.getRequestDispatcher(HttpRoutes.LISTAR_BESTIAS("")).forward(request, response);
+			return;
+		}catch(DataNotFoundException dnfe) {
+			logger.log(Level.WARNING, "Bestia no encontrada al aprobar en el servlet AprobarBestia", dnfe);
+			request.setAttribute("errorGlobal", "La bestia a aprobar no existe");
 			request.getRequestDispatcher(HttpRoutes.LISTAR_BESTIAS("")).forward(request, response);
 			return;
 		}catch(Exception e) {
