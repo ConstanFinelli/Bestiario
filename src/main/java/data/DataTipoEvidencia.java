@@ -129,7 +129,8 @@ public class DataTipoEvidencia {
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("update tipo_evidencia set descripcion = ?, resourceType = ? where idTipoEvidencia = ?");
 			pstmt.setString(1, datos.getDescripcion());
-			pstmt.setInt(2, datos.getId());
+			pstmt.setString(2, datos.getResourceType());
+			pstmt.setInt(3, datos.getId());
 			int error = pstmt.executeUpdate();
 			if(error == 0) {
 				datos = null;
