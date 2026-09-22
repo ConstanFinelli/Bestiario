@@ -25,31 +25,6 @@
     justify-content: center;
 }
 
-.btnAceptar {
-    background: linear-gradient(105deg, #7fd37f, #4CAF50);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.btnRechazar {
-    background: linear-gradient(105deg, #ff7b7b, #e53935);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.btnAceptar:hover { transform: scale(1.05); }
-.btnRechazar:hover { transform: scale(1.05); }
-
 .btnExaminar {
     background: var(--primary-button);
     color: white;

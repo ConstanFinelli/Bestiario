@@ -39,22 +39,22 @@
             LinkedList<Investigador> candidaturas = (LinkedList<Investigador>) request.getAttribute("solicitantes");
             if (candidaturas != null) {
                 for (Investigador candidato : candidaturas) {%>
-                    <article class="bestia">
-                    	<h1><%= candidato.getNombre() + candidato.getApellido()%></h1>
+                    <article class="candidatura">
+                    	<h1><%= candidato.getNombre() + " " + candidato.getApellido()%></h1>
                     	<aside>
-                    		<h4>Dni: </h4>
-                    		<p>
-           					<%= candidato.getDni()%>
-                    		</p>
+                    		<div class="dniCandidatura">DNI:<span><%= candidato.getDni()%></span> </div> 
+                    		
                     	</aside>
+                    	<div>
                     	<form action="<%=HttpRoutes.APROBAR_SOLICITUD(request.getContextPath()) %>" method="post" style="display:inline;">
     					<input type="hidden" name="idUsuario" value="<%= candidato.getIdUsuario() %>">
-    					<button type="submit" class="btnBestia">Aprobar</button>
+    					<button type="submit" class="btnAceptar">Aprobar</button>
 						</form>
                     	<form action="<%= HttpRoutes.RECHAZAR_SOLICITUD(request.getContextPath()) %>" method="post" style="display:inline;">
 					    <input type="hidden" name="idUsuario" value="<%= candidato.getIdUsuario() %>">
-					    <button type="submit" class="btnBestia">Rechazar</button>
+					    <button type="submit" class="btnRechazar">Rechazar</button>
 						</form>
+						</div>
                     </article>
         <%
                 } 

@@ -60,11 +60,22 @@ footer {
     filter: sepia(1) saturate(5);
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4{
 	font-family: "MedievalSharp", cursive;
 	line-height: 2lh;
 	font-weight: 600;
 }
+
+.dniCandidatura{
+	font-family: "MedievalSharp", cursive;
+	line-height: 2lh;
+	font-weight: 900;
+}
+
+.dniCandidatura span{
+	font-weight: 100;
+}
+
 
 .btnAgregar{
 	padding: 0.75rem 1.75rem;
@@ -83,6 +94,31 @@ h1, h2, h3, h4 {
 	transform: scale(1.01);
 	filter: brightness(1.2);
 }
+
+.btnAceptar {
+    background: linear-gradient(105deg, #7fd37f, #4CAF50);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnRechazar {
+    background: linear-gradient(105deg, #ff7b7b, #e53935);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btnAceptar:hover { transform: scale(1.05); }
+.btnRechazar:hover { transform: scale(1.05); }
 
 .mapaButton:hover{
 	transform: scale(1.02); 
