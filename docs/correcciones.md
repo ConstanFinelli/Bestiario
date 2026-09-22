@@ -126,7 +126,7 @@ Actualmente, el sistema permite registrar nuevos comentarios en la vista de la b
      - Invocar `controladorComentario.delete(comentario)` capturando `DataNotFoundException` y excepciones generales con log adecuado.
      - Redirigir al usuario con `sendRedirect` a la ficha de la bestia (`HttpRoutes.OBTENER_REGISTRO_BESTIA(...) + queryParams + "#comentarios"`).
   4. **Interfaz de usuario (`registro.jsp`):** En la sección de renderizado de comentarios (`#comentarios`), agregar un botón/formulario de eliminación ("Eliminar comentario") visible únicamente si `usuario != null && "investigador".equals(usuario.getEstado())`.
-- **Solución:** Crear la ruta en `HttpRoutes.java`, desarrollar el servlet `EliminarComentario.java` con validación estricta del rol de investigador e integrar el botón de acción en `registro.jsp`.
+- **Solución:** *(Ver plan detallado en [plan_correcciones_1_7_y_3_2.md](./plan_correcciones_1_7_y_3_2.md))*. Crear la ruta en `HttpRoutes.java`, desarrollar el servlet `EliminarComentario.java` con validación estricta del rol de investigador e integrar el botón de acción en `registro.jsp`.
 
 ---
 
@@ -165,9 +165,9 @@ Se migraron las **502 líneas** de salida estándar no estructurada a `java.util
 ---
 
 ### 3.2. Clases sin Logger Instanciado (22 Clases)
-- **Capa DAO (11 clases):** `DataBestia`, `DataCaracteristicaHabitat`, `DataCategoria`, `DataComentario`, `DataEvidencia`, `DataHabitat`, `DataNoticia`, `DataPasswordResetToken`, `DataRegistro`, `DataTipoEvidencia`, `DataUsuario`.
-- **Capa Logic (10 clases):** `LogicBestia`, `LogicCaracteristicaHabitat`, `LogicCategoria`, `LogicComentario`, `LogicEmail`, `LogicEvidencia`, `LogicHabitat`, `LogicRegistro`, `LogicTipoEvidencia`, `LogicUsuario`.
-- **Listeners (1 clase):** `BackgroundJobListener`.
+- **Capa DAO (11 clases):** `DataBestia`, `DataCaracteristicaHabitat`, `DataCategoria`, `DataComentario`, `DataEvidencia`, `DataHabitat`, `DataNoticia`, `DataPasswordResetToken`, `DataRegistro`, `DataTipoEvidencia`, `DataUsuario`. *(Completado en 3.1)*.
+- **Capa Logic (10 clases):** `LogicBestia`, `LogicCaracteristicaHabitat`, `LogicCategoria`, `LogicComentario`, `LogicEmail`, `LogicEvidencia`, `LogicHabitat`, `LogicRegistro`, `LogicTipoEvidencia`, `LogicUsuario`. *(LogicEmail y LogicNoticia ya disponen de logger; las 8 restantes están programadas en [plan_correcciones_1_7_y_3_2.md](./plan_correcciones_1_7_y_3_2.md))*.
+- **Listeners (1 clase):** `BackgroundJobListener`. *(Completado en 3.1)*.
 
 ---
 
