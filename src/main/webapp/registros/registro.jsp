@@ -183,9 +183,10 @@
         <%
         	if(bestia != null){
 				
-            		LinkedList<Comentario> comentarios = bestia.getComentarios(); %>
+            		LinkedList<Comentario> comentarios = bestia.getComentarios();%>
         <section id="comentarios" class="comentarios mainContent">
-        	<% if(registro != null){ %>
+        
+        	<% if(registro != null && "aprobado".equals(registro.getEstado())){ %>
             	<% if(usuario != null){ %>
             	<form class="comentariosForm" action="<%= HttpRoutes.AGREGAR_COMENTARIO(request.getContextPath()) %>?id=<%= bestia.getIdBestia() %>" method="post">
 	            	<input class="inputComentario" type="text" placeholder="Escribir comentario..." name="contenido" maxlength="200" required>
@@ -204,7 +205,7 @@
             	</section>
             	<%}}else{%>
             	<p>No hay comentarios para esta bestia.</p>
-            	<%}} %>
+            	<%} %>
             	<div class="anotherRegistros">
             		<h3>Cargar registro en determinada fecha</h3>
 				    <form action="<%=HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath())%>" method="get" class="registrosForm">
@@ -213,7 +214,7 @@
 				        <button type="submit" class="btnRegistro">Cargar registro</button>
 				    </form>
 				</div>
-				<%} %>
+			<%} %>
                 <% if(usuario != null && bestia != null){%><a class="btnAgregar" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>	
                 <div id="modal" class="modal-container">
 					<div class="modal-content">
