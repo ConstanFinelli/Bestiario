@@ -24,14 +24,6 @@ import logic.LogicUsuario;
 public class SvResetPassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(SvResetPassword.class.getName());
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SvResetPassword() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

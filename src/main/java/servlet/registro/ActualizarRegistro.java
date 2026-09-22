@@ -10,16 +10,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import logic.LogicBestia;
-import logic.LogicEvidencia;
 import logic.LogicRegistro;
 import logic.LogicTipoEvidencia;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +23,6 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import entities.Bestia;
-import entities.Evidencia;
 import entities.Investigador;
 import entities.Registro;
 import entities.TipoEvidencia;
@@ -50,18 +45,9 @@ public class ActualizarRegistro extends HttpServlet {
 	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
 	private LogicBestia controladorBestia = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
-	private LogicEvidencia controladorEvidencia = new LogicEvidencia();
 	private static final Logger logger = Logger.getLogger(ActualizarRegistro.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ActualizarRegistro() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ACTUALIZACION_REGISTRO_JSP(""));

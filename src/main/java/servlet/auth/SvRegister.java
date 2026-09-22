@@ -27,14 +27,6 @@ public class SvRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public LogicUsuario logicUsuario = new LogicUsuario();
 	private static final Logger logger = Logger.getLogger(SvRegister.class.getName());
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SvRegister() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

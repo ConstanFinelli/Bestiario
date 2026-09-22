@@ -29,11 +29,6 @@ public class ObtenerRegistrosPendientesBestia extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(ObtenerRegistrosPendientesBestia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    public ObtenerRegistrosPendientesBestia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.REGISTROS_PENDIENTES_JSP(""));

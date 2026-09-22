@@ -24,14 +24,6 @@ public class CrearHabitat extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(CrearHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CrearHabitat() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");

@@ -24,14 +24,6 @@ public class EliminarBestia extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(EliminarBestia.class.getName());
 
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EliminarBestia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");

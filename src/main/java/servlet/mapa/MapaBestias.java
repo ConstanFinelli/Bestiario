@@ -31,14 +31,6 @@ public class MapaBestias extends HttpServlet {
 	LogicRegistro controladorRegistro = new LogicRegistro();
 	private static final Logger logger = Logger.getLogger(MapaBestias.class.getName());
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MapaBestias() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

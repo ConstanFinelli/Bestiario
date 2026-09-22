@@ -35,11 +35,6 @@ public class ObtenerRegistroBestia extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(ObtenerRegistroBestia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-     
-    public ObtenerRegistroBestia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

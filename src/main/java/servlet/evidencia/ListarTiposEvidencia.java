@@ -24,14 +24,6 @@ public class ListarTiposEvidencia extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(ListarTiposEvidencia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ListarTiposEvidencia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LinkedList<TipoEvidencia> tipos = new LinkedList<>();

@@ -24,15 +24,6 @@ public class AprobarBestia extends HttpServlet {
 	private LogicBestia controladorBestia = new LogicBestia();
 	private static final Logger logger = Logger.getLogger(AprobarBestia.class.getName());
 
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AprobarBestia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String bestiaId = request.getParameter("id");
 		Bestia bestia = null;

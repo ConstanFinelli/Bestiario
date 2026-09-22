@@ -20,10 +20,6 @@ public class Noticia {
 	public Noticia(int id) {
 		this.id = id;
 	}
-	
-	public Noticia() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public Noticia(String titulo, String contenido, String estado, LocalDateTime fechaPublicacion, Investigador publicador) {
 		this.titulo = titulo;

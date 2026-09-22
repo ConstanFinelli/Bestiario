@@ -27,14 +27,6 @@ public class ListarLectores extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(ListarLectores.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ListarLectores() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LinkedList<Usuario> usuarios = new LinkedList<>();

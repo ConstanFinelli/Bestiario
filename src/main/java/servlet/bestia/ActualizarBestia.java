@@ -28,14 +28,6 @@ public class ActualizarBestia extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(ActualizarBestia.class.getName());
 
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ActualizarBestia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));

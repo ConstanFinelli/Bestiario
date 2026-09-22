@@ -31,14 +31,6 @@ public class CambiarHabitat extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(CambiarHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CambiarHabitat() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
     	RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.EDITAR_BESTIA_JSP(""));

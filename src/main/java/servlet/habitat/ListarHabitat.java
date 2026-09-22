@@ -25,14 +25,6 @@ public class ListarHabitat extends HttpServlet {
 	private LogicHabitat controlador = new LogicHabitat();
 	private static final Logger logger = Logger.getLogger(ListarHabitat.class.getName());
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ListarHabitat() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

@@ -26,20 +26,14 @@ public class EliminarNoticia extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EliminarNoticia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("idNoticia");
-		Noticia noticia = new Noticia();
 		try {
-			noticia.setId(Integer.parseInt(id));
+			Noticia noticia = new Noticia(Integer.parseInt(id));
 			controlador.delete(noticia);
 		}catch(NumberFormatException nfe) {
 			logger.log(Level.WARNING, "Error parseando el id ingresado en el servlet EliminarNoticia", nfe);

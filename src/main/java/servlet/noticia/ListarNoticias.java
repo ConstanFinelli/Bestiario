@@ -25,14 +25,6 @@ public class ListarNoticias extends HttpServlet {
 	
 	private LogicNoticia controlador = new LogicNoticia();
 	private static final Logger logger = Logger.getLogger(ListarNoticias.class.getName());
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ListarNoticias() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

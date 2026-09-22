@@ -28,14 +28,6 @@ public class EliminarCaracteristicaHabitat extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(EliminarCaracteristicaHabitat.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EliminarCaracteristicaHabitat() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

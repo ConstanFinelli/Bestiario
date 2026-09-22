@@ -27,14 +27,6 @@ public class AceptarRegistro extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(AceptarRegistro.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AceptarRegistro() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");

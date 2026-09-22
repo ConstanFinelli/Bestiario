@@ -25,14 +25,6 @@ import logic.LogicEmail;
 public class SvForgotPassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = Logger.getLogger(SvForgotPassword.class.getName());
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SvForgotPassword() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

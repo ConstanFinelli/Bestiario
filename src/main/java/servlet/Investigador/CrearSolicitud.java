@@ -28,14 +28,6 @@ public class CrearSolicitud extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(CrearSolicitud.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CrearSolicitud() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion = request.getSession();

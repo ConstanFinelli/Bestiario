@@ -21,11 +21,6 @@ public class SvLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public LogicUsuario controladorUsuario = new LogicUsuario();
     private static final Logger logger = Logger.getLogger(SvLogin.class.getName());
-	
-    public SvLogin() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LOGIN_JSP(""));

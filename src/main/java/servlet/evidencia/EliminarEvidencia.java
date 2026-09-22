@@ -25,14 +25,6 @@ public class EliminarEvidencia extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(EliminarEvidencia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EliminarEvidencia() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idBestia = request.getParameter("idBestia");

@@ -25,14 +25,6 @@ public class AprobarSolicitud extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(AprobarSolicitud.class.getName());
 	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AprobarSolicitud() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idUsuario = request.getParameter("idUsuario");

@@ -24,14 +24,6 @@ public class RechazarSolicitud extends HttpServlet {
 	private static final Logger logger = Logger.getLogger(RechazarSolicitud.class.getName());
 
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RechazarSolicitud() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idUsuario = request.getParameter("idUsuario");
