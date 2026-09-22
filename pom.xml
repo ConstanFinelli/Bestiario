@@ -42,6 +42,9 @@
     </dependencies>
 
   <build>
+
+  <finalName>Bestiario</finalName> 
+  
     <plugins>
 
       <plugin>
