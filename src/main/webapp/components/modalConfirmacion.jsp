@@ -35,8 +35,30 @@
 		var input = document.getElementById('modalInputId');
 		
 		formBtn.action = actionUrl;
-		input.name = paramName || 'id';
-		input.value = paramValue || '';
+		
+		// Limpiar inputs dinamicos previos
+		var dynamicInputs = formBtn.querySelectorAll('.modalDynamicInput');
+		dynamicInputs.forEach(function(el) { el.remove(); });
+
+		if (typeof paramName === 'object' && paramName !== null) {
+			input.name = '';
+			input.value = '';
+			input.style.display = 'none';
+			for (var key in paramName) {
+				if (paramName.hasOwnProperty(key)) {
+					var hidden = document.createElement('input');
+					hidden.type = 'hidden';
+					hidden.name = key;
+					hidden.value = paramName[key];
+					hidden.classList.add('modalDynamicInput');
+					formBtn.insertBefore(hidden, formBtn.querySelector('button'));
+				}
+			}
+		} else {
+			input.style.display = '';
+			input.name = paramName || 'id';
+			input.value = paramValue || '';
+		}
 		
 		formBtn.style.display = 'inline';
 		linkBtn.style.display = 'none';

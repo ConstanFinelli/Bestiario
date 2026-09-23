@@ -169,7 +169,10 @@ public class DataComentario {
 			pstmt.setInt(1, c.getPublicador().getIdUsuario());
 			pstmt.setInt(2, c.getBestia().getIdBestia());
 			pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(c.getFecha()));
-			pstmt.executeUpdate();
+			int affectedRows = pstmt.executeUpdate();
+			if(affectedRows == 0) {
+				c = null;
+			}
 		} catch(SQLException ex) {
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al eliminar comentario [SQLState: %s, ErrorCode: %d]: %s",
@@ -185,6 +188,9 @@ public class DataComentario {
 					"Error SQL al cerrar recursos en delete de comentario [SQLState: %s, ErrorCode: %d]: %s",
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
+		}
+		if(c == null) {
+			throw new DataNotFoundException("No se encontró el comentario para eliminar.");
 		}
 		return c;
 	}

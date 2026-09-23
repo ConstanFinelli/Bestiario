@@ -200,7 +200,12 @@
             	for(Comentario comentario:comentarios){
             	%>
             	<section class="comentario">
-            		<aside class="comentarioDatos"><%= comentario.getPublicador().getCorreo() %> - <span class="fechaComentario">Publicado el <%= comentario.getFecha() %></span></aside>
+            		<div class="comentarioHeader">
+            			<aside class="comentarioDatos"><%= comentario.getPublicador().getCorreo() %> - <span class="fechaComentario">Publicado el <%= comentario.getFecha() %></span></aside>
+            			<% if (usuario != null && "investigador".equals(usuario.getEstado())) { %>
+            			<button type="button" class="btnEliminarComentario" onclick="abrirModalForm('ELIMINAR COMENTARIO', '¿Estás seguro que deseas eliminar este comentario?', '<%= HttpRoutes.ELIMINAR_COMENTARIO(request.getContextPath()) %>', { idUsuario: '<%= comentario.getPublicador().getIdUsuario() %>', idBestia: '<%= bestia.getIdBestia() %>', fechaPublicacion: '<%= comentario.getFecha() %>'<%= (registro != null) ? ", nroRegistro: '" + registro.getNroRegistro() + "'" : "" %> })">Eliminar</button>
+            			<% } %>
+            		</div>
             		<article class="comentarioContenido"><%= comentario.getContenido() %></article>
             	</section>
             	<%}}else{%>
@@ -222,7 +227,9 @@
 					</div>
 				</div>	
             </section>
+        <% } %>
         <%@ include file="../components/footer.jsp" %>
+        <%@ include file="../components/modalConfirmacion.jsp" %>
         <script>
 		// javascript para modal
 		function abrirModalVer(link) {

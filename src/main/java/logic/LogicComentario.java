@@ -29,7 +29,7 @@ public class LogicComentario {
 		return cDao.update(c, oldDate);
 	}
 	
-	public Comentario delete(Comentario c) {
+	public Comentario delete(Comentario c) throws DataNotFoundException {
 		return cDao.delete(c);
 	}
 }

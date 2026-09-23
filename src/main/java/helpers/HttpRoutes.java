@@ -266,6 +266,10 @@ public final class HttpRoutes {
 		return base + "/comentarios/agregar";
 	}
 	
+	public static String ELIMINAR_COMENTARIO(String base) {
+		return base + "/comentarios/eliminar";
+	}
+	
 	// Mapas
 	
 	public static String MAPA_JSP(String base) {
