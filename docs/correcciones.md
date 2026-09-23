@@ -28,7 +28,8 @@ El presente documento concentra exclusivamente los defectos, código redundante,
 - **[RESUELTO] Inconsistencias en nombres de servlets** de hábitats (`ActualizarCaracteristicaHabitat.java`, `EliminarCaracteristicaHabitat.java`).
 - **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
 - **[RESUELTO] Error de forward y dispatching en `AgregarComentario.java`** (separada ruta de forward de URL de redirect con ancla).
-- **[RESUELTO] Funcionalidad de eliminación de comentarios para Investigadores**: Implementada la ruta en `HttpRoutes`, el servlet `EliminarComentario.java` con autorización estricta para rol `"investigador"` y el botón/formulario de eliminación en `registro.jsp` con confirmación.
+- **[RESUELTO] Funcionalidad de eliminación de comentarios para Investigadores**: Implementada la ruta en `HttpRoutes`, el servlet `EliminarComentario.java` con autorización estricta para rol `"investigador"` y el botón de eliminación en `registro.jsp` integrado con el modal corporativo `modalConfirmacion.jsp`.
+- **Paginación para las evidencias (`registro.jsp`)**: Implementar un sistema de paginación para la lista de evidencias en la ficha de la bestia a fin de evitar el sobrecrecimiento del DOM y optimizar la experiencia de navegación cuando existen múltiples archivos multimedia.
 - **4 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
 - **[RESUELTO] 502 líneas de `System.out.println` y `e.printStackTrace()`** en 13 clases del backend migradas a `java.util.logging.Logger`.
 - **[RESUELTO] 13 clases de backend sin Logger instanciado** (capa DAO con 11 clases y Listeners completadas al 100% con Logger canónico. Por decisión de diseño, la capa `logic` no requiere Logger ya que actúa como orquestadora de negocio sin llamadas de logging directo, a excepción de envíos asíncronos en `LogicEmail` y `LogicNoticia`).
@@ -144,9 +145,23 @@ Se implementó de forma integral la eliminación de comentarios para usuarios co
    - Control de acceso: Valida que el usuario en sesión esté autenticado y posea rol `"investigador"`, respondiendo con `403 Forbidden` ante accesos no autorizados.
    - Procesamiento defensivo: Valida y parsea `idUsuario`, `idBestia`, `fechaPublicacion` y opcionalmente `nroRegistro`, capturando `DataNotFoundException`, `DateTimeParseException` y `NumberFormatException` con registro en logger.
    - Redirección: Redirige con `sendRedirect` a `HttpRoutes.OBTENER_REGISTRO_BESTIA(...) + queryParams + "#comentarios"`.
-4. **Capa de Presentación (`registro.jsp` y `registro.css`):**
-   - Se añadió un formulario y botón `.btnEliminarComentario` visible exclusivamente para investigadores dentro de `.comentarioHeader`, con diálogo de confirmación `onsubmit="return confirm('¿Desea eliminar este comentario?');"`.
+4. **Capa de Presentación (`registro.jsp`, `registro.css` y `modalConfirmacion.jsp`):**
+   - Se integró el modal corporativo reutilizable (`modalConfirmacion.jsp`) para solicitar confirmación antes de la eliminación del comentario, extendiendo la función `abrirModalForm` para soportar objetos con múltiples parámetros POST.
    - Se crearon los estilos correspondientes en `registro.css` para alinear el encabezado y dar un aspecto visual claro y de advertencia al botón de eliminación.
+
+### 1.8. Paginación de Evidencias en Ficha de Bestia (`registro.jsp`)
+
+- **Diagnóstico:**  
+  En `registro.jsp` (y en el servlet `ObtenerRegistroBestia.java`), la totalidad de las evidencias aprobadas de una bestia (además de las evidencias pendientes cuando el usuario autenticado posee rol `"investigador"`) se renderizan de manera continua e indivisa dentro del elemento `<ul class="evidencias">`. A medida que la comunidad y los investigadores cargan registros multimedia (imágenes, videos, documentos), la lista crece indefinidamente, incrementando de manera excesiva el tamaño del árbol DOM, degradando los tiempos de carga inicial y dificultando el desplazamiento vertical y la navegación del usuario.
+
+- **Solución Recomendada:**  
+  1. **Estrategia de Paginación:**
+     - **Paginación en Servidor (recomendada):** Parametrizar la consulta en `ObtenerRegistroBestia.java` recibiendo `paginaEvidencias` (por defecto 1) y tamaño de página (e.g. 6 u 8 evidencias por página), implementando `LIMIT` y `OFFSET` en `DataEvidencia.java` y calculando el número total de páginas.
+     - **Paginación en Cliente (alternativa rápida):** Implementar la segmentación en `registro.jsp` mediante JavaScript, dividiendo los elementos `li.evidencias-item` en lotes paginados con visibilidad alternada sin requerir recargas completas.
+  2. **Controles de Navegación UI:**
+     - Añadir una barra de paginación debajo de la lista `.evidencias` con botones *"Anterior"*, *"Siguiente"* y los números de página activos.
+     - Mostrar el estado actual de navegación (ejemplo: *"Mostrando página X de Y"*).
+     - Conservar los parámetros de contexto (`id`, `nroRegistro`) y el fragmento ancla `#evidencias` al cambiar de página para preservar la posición de visualización.
 
 ---
 
@@ -387,6 +402,7 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 - [x] Normalizar nombres de servlets de características de hábitat a `*CaracteristicaHabitat`.
 - [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
 - [x] Implementar la eliminación de comentarios para usuarios con rol investigador (ruta `HttpRoutes`, servlet `EliminarComentario` y UI en `registro.jsp`).
+- [ ] Implementar paginación para la lista de evidencias en la ficha de la bestia (`registro.jsp` / `DataEvidencia`).
 
 ### Fase 4: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
 
