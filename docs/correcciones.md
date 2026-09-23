@@ -154,13 +154,13 @@ Se implementó de forma integral la eliminación de comentarios para usuarios co
 - **Diagnóstico:**  
   En `registro.jsp` (y en el servlet `ObtenerRegistroBestia.java`), la totalidad de las evidencias aprobadas de una bestia (además de las evidencias pendientes cuando el usuario autenticado posee rol `"investigador"`) se renderizan de manera continua e indivisa dentro del elemento `<ul class="evidencias">`. A medida que la comunidad y los investigadores cargan registros multimedia (imágenes, videos, documentos), la lista crece indefinidamente, incrementando de manera excesiva el tamaño del árbol DOM, degradando los tiempos de carga inicial y dificultando el desplazamiento vertical y la navegación del usuario.
 
-- **Solución Recomendada:**  
+- **Solución Recomendada:**
   1. **Estrategia de Paginación:**
      - **Paginación en Servidor (recomendada):** Parametrizar la consulta en `ObtenerRegistroBestia.java` recibiendo `paginaEvidencias` (por defecto 1) y tamaño de página (e.g. 6 u 8 evidencias por página), implementando `LIMIT` y `OFFSET` en `DataEvidencia.java` y calculando el número total de páginas.
      - **Paginación en Cliente (alternativa rápida):** Implementar la segmentación en `registro.jsp` mediante JavaScript, dividiendo los elementos `li.evidencias-item` en lotes paginados con visibilidad alternada sin requerir recargas completas.
   2. **Controles de Navegación UI:**
-     - Añadir una barra de paginación debajo de la lista `.evidencias` con botones *"Anterior"*, *"Siguiente"* y los números de página activos.
-     - Mostrar el estado actual de navegación (ejemplo: *"Mostrando página X de Y"*).
+     - Añadir una barra de paginación debajo de la lista `.evidencias` con botones _"Anterior"_, _"Siguiente"_ y los números de página activos.
+     - Mostrar el estado actual de navegación (ejemplo: _"Mostrando página X de Y"_).
      - Conservar los parámetros de contexto (`id`, `nroRegistro`) y el fragmento ancla `#evidencias` al cambiar de página para preservar la posición de visualización.
 
 ---
