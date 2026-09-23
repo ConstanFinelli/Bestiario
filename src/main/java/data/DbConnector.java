@@ -41,14 +41,17 @@ public class DbConnector {
     public Connection getConn() {
         try {
             Connection conn = connHolder.get();
-            if (conn == null || conn.isClosed()) {
-                conn = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + db, user, password);
+            if (conn == null || conn.isClosed() || !conn.isValid(2)) {
+                String url = "jdbc:mysql://" + host + ":" + port + "/" + db + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+                conn = DriverManager.getConnection(url, user, password);
                 connHolder.set(conn);
                 conectadosHolder.set(0);
             }
             conectadosHolder.set(conectadosHolder.get() + 1);
             return conn;
         } catch (SQLException e) {
+            connHolder.remove();
+            conectadosHolder.remove();
             logger.log(Level.SEVERE, "Error crítico al conectar a la base de datos", e);
             throw new RuntimeException("No se pudo establecer conexión con la base de datos", e);
         }
