@@ -59,9 +59,6 @@ public class DataUsuario {
 					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
-		if(usuarioEncontrado == null) {
-			throw new DataNotFoundException("No se encontró el usuario con id " + usB.getIdUsuario());
-		}
 		return usuarioEncontrado;
 	}
 	
