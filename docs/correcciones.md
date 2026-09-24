@@ -22,10 +22,8 @@ El presente documento concentra exclusivamente los defectos, código redundante,
 
 - **Refactorización modular de la capa DAO (`data.*`)**: Modularizar clases DAO extensas (`DataBestia`, `DataRegistro`, `DataUsuario`, etc.) convirtiéndolas en ensambladores/fachadas que deleguen a clases individuales por operación (Single Responsibility Principle - SRP).
 - **3 métodos DAO muertos** (`DataBestia.java`).
-- **2 métodos auxiliares públicos** que deben restringirse a visibilidad `private` (`DataEvidencia.java`, `DataRegistro.java`).
 - **1 consulta N+1 innecesaria** ejecutada en cada obtención de Bestia (`DataBestia.completarBestia`).
 - **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
-- **Paginación para las evidencias (`registro.jsp`)**: Implementar un sistema de paginación para la lista de evidencias en la ficha de la bestia a fin de evitar el sobrecrecimiento del DOM y optimizar la experiencia de navegación cuando existen múltiples archivos multimedia.
 - **4 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
 
 ---
@@ -44,18 +42,7 @@ El presente documento concentra exclusivamente los defectos, código redundante,
    - Cuando se da de alta una bestia en `CrearBestia.java`, la lista de registros siempre está vacía (`registros` se inicializa como `new LinkedList<>()`). Los registros poseen su propio ciclo de vida a través de `CrearRegistro.java` y `ActualizarRegistro.java`.
    - **Solución:** Eliminar el método `saveRegistros(Bestia b)` y su invocación en `DataBestia.save(b)`.
 
-### 1.2. Métodos Auxiliares con Visibilidad Excesiva
-
-En `DataEvidencia.java` (línea 191) y `DataRegistro.java` (línea 398):
-
-- `public void asignarNroEvidencia(Evidencia e)`
-- `public void asignarNroRegistro(Registro r)`
-
-Ambos métodos solo son consumidos internamente dentro de su propia clase DAO durante la ejecución de `save(...)` para calcular el siguiente identificador de secuencia.
-
-- **Solución:** Modificar la visibilidad de ambos métodos de `public` a `private`.
-
-### 1.3. Sobrecarga Innecesaria en `DataBestia.completarBestia()`
+### 1.2. Sobrecarga Innecesaria en `DataBestia.completarBestia()`
 
 Al consultar una bestia mediante `DataBestia.getOne(bestia)`, se ejecuta el método `completarBestia(bestia)`:
 
@@ -74,7 +61,7 @@ public void completarBestia(Bestia bestia) {
 - Esto genera una consulta SQL pesada innecesaria cada vez que se busca o visualiza una bestia.
 - **Solución:** Retirar la llamada `addRegistros(bestia)` dentro de `completarBestia()`.
 
-### 1.4. Disparidad en Manejo de Errores Globales (`errorGlobal`)
+### 1.3. Disparidad en Manejo de Errores Globales (`errorGlobal`)
 
 Existe una discrepancia entre cómo los distintos servlets cargan los mensajes de error en el request:
 
@@ -104,20 +91,6 @@ Cuando `errorGlobal` es una lista, SweetAlert2 imprime el resultado de `List.toS
   request.setAttribute("errorGlobal", String.join("<br>", errores));
   ```
   y eliminar la adición de cadenas vacías (`errores.add("")`).
-
-### 1.5. Paginación de Evidencias en Ficha de Bestia (`registro.jsp`)
-
-- **Diagnóstico:**  
-  En `registro.jsp` (y en el servlet `ObtenerRegistroBestia.java`), la totalidad de las evidencias aprobadas de una bestia (además de las evidencias pendientes cuando el usuario autenticado posee rol `"investigador"`) se renderizan de manera continua e indivisa dentro del elemento `<ul class="evidencias">`. A medida que la comunidad y los investigadores cargan registros multimedia (imágenes, videos, documentos), la lista crece indefinidamente, incrementando de manera excesiva el tamaño del árbol DOM, degradando los tiempos de carga inicial y dificultando el desplazamiento vertical y la navegación del usuario.
-
-- **Solución Recomendada:**  
-  1. **Estrategia de Paginación:**
-     - **Paginación en Servidor (recomendada):** Parametrizar la consulta en `ObtenerRegistroBestia.java` recibiendo `paginaEvidencias` (por defecto 1) y tamaño de página (e.g. 6 u 8 evidencias por página), implementando `LIMIT` y `OFFSET` en `DataEvidencia.java` y calculando el número total de páginas.
-     - **Paginación en Cliente (alternativa rápida):** Implementar la segmentación en `registro.jsp` mediante JavaScript, dividiendo los elementos `li.evidencias-item` en lotes paginados con visibilidad alternada sin requerir recargas completas.
-  2. **Controles de Navegación UI:**
-     - Añadir una barra de paginación debajo de la lista `.evidencias` con botones _"Anterior"_, _"Siguiente"_ y los números de página activos.
-     - Mostrar el estado actual de navegación (ejemplo: _"Mostrando página X de Y"_).
-     - Conservar los parámetros de contexto (`id`, `nroRegistro`) y el fragmento ancla `#evidencias` al cambiar de página para preservar la posición de visualización.
 
 ---
 
@@ -218,11 +191,9 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 
 - [ ] Retirar `addRegistros(bestia)` de `DataBestia.completarBestia()` para evitar la consulta N+1.
 - [ ] Eliminar los métodos muertos `deleteCategorias`, `deleteHabitats` y `saveRegistros` de `DataBestia.java`.
-- [ ] Cambiar a `private` los métodos auxiliares `asignarNroEvidencia` y `asignarNroRegistro`.
 - [ ] Eliminar atributos y accesores de `caracteristicas` y `bestias` en `Habitat.java`.
 - [ ] Renombrar `Usuario.contraseña` a `contrasena` o `password`.
 - [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
-- [ ] Implementar paginación para la lista de evidencias en la ficha de la bestia (`registro.jsp` / `DataEvidencia`).
 
 ### Fase 2: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
 
