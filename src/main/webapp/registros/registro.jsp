@@ -76,8 +76,8 @@
                     }
                 }
                 if(hayEvidenciasVisibles){ %>
-                <h2>Evidencias</h2>
-                <ul class="evidencias">
+                <h2 id="tituloEvidencias">Evidencias</h2>
+                <ul class="evidencias" id="listaEvidencias">
                 <% 
                 for(Evidencia evidencia : evidencias){ 
                     boolean esAprobada = "aprobado".equalsIgnoreCase(evidencia.getEstado());
@@ -121,6 +121,14 @@
                 	</li>
                 <% } %>
                 </ul>
+                <div id="paginacionEvidencias" class="paginacionEvidencias">
+                	<span class="paginacionInfo" id="paginacionInfo"></span>
+                	<div class="paginacionControles">
+                		<button type="button" class="btnPaginacion" id="btnPrevEvidencias" title="Página anterior">&laquo; Anterior</button>
+                		<div class="paginacionNumeros" id="paginacionNumeros"></div>
+                		<button type="button" class="btnPaginacion" id="btnNextEvidencias" title="Página siguiente">Siguiente &raquo;</button>
+                	</div>
+                </div>
                 <% } %>
                 <% if(usuario != null){%><a class="btnAgregar" onclick="abrirModalUpload()">Proponer nueva evidencia</a><%} %>	
             </section>
@@ -446,6 +454,128 @@
 				cerrarModal();
 
 			}
+		}
+
+		// Paginación de evidencias en el cliente
+		function inicializarPaginacionEvidencias() {
+			const lista = document.getElementById('listaEvidencias');
+			const contenedor = document.getElementById('paginacionEvidencias');
+			if (!lista || !contenedor) return;
+
+			const items = Array.from(lista.querySelectorAll('.evidenciasItem'));
+			const totalItems = items.length;
+			const itemsPorPagina = 5;
+			const totalPaginas = Math.ceil(totalItems / itemsPorPagina);
+
+			if (totalPaginas <= 1) {
+				contenedor.style.display = 'none';
+				return;
+			}
+
+			let paginaActual = 1;
+			const info = document.getElementById('paginacionInfo');
+			const btnPrev = document.getElementById('btnPrevEvidencias');
+			const btnNext = document.getElementById('btnNextEvidencias');
+			const contenedorNumeros = document.getElementById('paginacionNumeros');
+
+			function irAPagina(pagina, scroll) {
+				if (pagina < 1) pagina = 1;
+				if (pagina > totalPaginas) pagina = totalPaginas;
+				paginaActual = pagina;
+
+				const inicio = (paginaActual - 1) * itemsPorPagina;
+				const fin = inicio + itemsPorPagina;
+
+				items.forEach(function(item, idx) {
+					if (idx >= inicio && idx < fin) {
+						item.style.display = 'flex';
+					} else {
+						item.style.display = 'none';
+					}
+				});
+
+				const finMostrado = Math.min(fin, totalItems);
+				if (info) {
+					info.textContent = 'Mostrando ' + (inicio + 1) + ' - ' + finMostrado + ' de ' + totalItems + ' evidencias (Página ' + paginaActual + ' de ' + totalPaginas + ')';
+				}
+
+				if (btnPrev) btnPrev.disabled = (paginaActual === 1);
+				if (btnNext) btnNext.disabled = (paginaActual === totalPaginas);
+
+				if (contenedorNumeros) {
+					contenedorNumeros.innerHTML = '';
+
+					function crearBtnNum(num) {
+						const btnNum = document.createElement('button');
+						btnNum.type = 'button';
+						btnNum.className = 'btnPaginacionNum' + (num === paginaActual ? ' activa' : '');
+						btnNum.textContent = num;
+						btnNum.setAttribute('aria-label', 'Página ' + num);
+						if (num === paginaActual) {
+							btnNum.setAttribute('aria-current', 'page');
+						} else {
+							btnNum.addEventListener('click', function() {
+								irAPagina(num, true);
+							});
+						}
+						return btnNum;
+					}
+
+					function crearEllipsis() {
+						const span = document.createElement('span');
+						span.className = 'paginacionEllipsis';
+						span.textContent = '...';
+						return span;
+					}
+
+					if (totalPaginas <= 7) {
+						for (let i = 1; i <= totalPaginas; i++) {
+							contenedorNumeros.appendChild(crearBtnNum(i));
+						}
+					} else {
+						contenedorNumeros.appendChild(crearBtnNum(1));
+						if (paginaActual > 3) {
+							contenedorNumeros.appendChild(crearEllipsis());
+						}
+						const start = Math.max(2, paginaActual - 1);
+						const end = Math.min(totalPaginas - 1, paginaActual + 1);
+						for (let i = start; i <= end; i++) {
+							contenedorNumeros.appendChild(crearBtnNum(i));
+						}
+						if (paginaActual < totalPaginas - 2) {
+							contenedorNumeros.appendChild(crearEllipsis());
+						}
+						contenedorNumeros.appendChild(crearBtnNum(totalPaginas));
+					}
+				}
+
+				if (scroll) {
+					const titulo = document.getElementById('tituloEvidencias');
+					if (titulo) {
+						titulo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					}
+				}
+			}
+
+			if (btnPrev) {
+				btnPrev.addEventListener('click', function() {
+					if (paginaActual > 1) irAPagina(paginaActual - 1, true);
+				});
+			}
+
+			if (btnNext) {
+				btnNext.addEventListener('click', function() {
+					if (paginaActual < totalPaginas) irAPagina(paginaActual + 1, true);
+				});
+			}
+
+			irAPagina(1, false);
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', inicializarPaginacionEvidencias);
+		} else {
+			inicializarPaginacionEvidencias();
 		}
 	</script>
     </body>

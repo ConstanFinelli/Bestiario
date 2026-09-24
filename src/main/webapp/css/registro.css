@@ -84,7 +84,7 @@ h1 {
   list-style-position: inside;
   height: fit-content;
   margin-left: 5px;
-  padding-bottom: 40px;
+  padding-bottom: 10px;
 }
 
 .evidenciasItem {
@@ -490,4 +490,84 @@ textarea {
   object-fit: contain;
   border-radius: 8px;
   display: block;
+}
+
+/* Paginación de evidencias */
+.paginacionEvidencias {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0 25px 0;
+  user-select: none;
+}
+
+.paginacionInfo {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.paginacionControles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btnPaginacion,
+.btnPaginacionNum {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: var(--font-color);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btnPaginacion:hover:not(:disabled),
+.btnPaginacionNum:hover:not(.activa) {
+  background-color: color-mix(in srgb, var(--primary-color), transparent 85%);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.btnPaginacion:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+  transform: none;
+}
+
+.btnPaginacionNum.activa {
+  background: var(--primary-button);
+  color: #ffffff;
+  border-color: #c49623;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  cursor: default;
+  transform: none;
+}
+
+.paginacionNumeros {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.paginacionEllipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  color: #8f8f8f;
+  font-weight: 700;
+  user-select: none;
 }
