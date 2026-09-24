@@ -11,9 +11,8 @@
 1. [Resumen de Tareas Pendientes](#resumen-de-tareas-pendientes)
 2. [Métodos, Lógica Repetida y Código Muerto](#1-métodos-lógica-repetida-y-código-muerto)
 3. [Atributos No Utilizados en Entidades de Dominio (`entities.*`)](#2-atributos-no-utilizados-en-entidades-de-dominio)
-4. [Auditoría Integral de Logging (`java.util.logging.Logger`)](#3-auditoría-integral-de-logging)
-5. [Refactorización Arquitectónica SOLID: Descomposición de Capa DAO](#4-refactorización-arquitectónica-solid-descomposición-de-capa-dao)
-6. [Plan de Acción Priorizado](#5-plan-de-acción-priorizado)
+4. [Refactorización Arquitectónica SOLID: Descomposición de Capa DAO](#3-refactorización-arquitectónica-solid-descomposición-de-capa-dao)
+5. [Plan de Acción Priorizado](#4-plan-de-acción-priorizado)
 
 ---
 
@@ -25,17 +24,9 @@ El presente documento concentra exclusivamente los defectos, código redundante,
 - **3 métodos DAO muertos** (`DataBestia.java`).
 - **2 métodos auxiliares públicos** que deben restringirse a visibilidad `private` (`DataEvidencia.java`, `DataRegistro.java`).
 - **1 consulta N+1 innecesaria** ejecutada en cada obtención de Bestia (`DataBestia.completarBestia`).
-- **[RESUELTO] Inconsistencias en nombres de servlets** de hábitats (`ActualizarCaracteristicaHabitat.java`, `EliminarCaracteristicaHabitat.java`).
 - **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
-- **[RESUELTO] Error de forward y dispatching en `AgregarComentario.java`** (separada ruta de forward de URL de redirect con ancla).
-- **[RESUELTO] Funcionalidad de eliminación de comentarios para Investigadores**: Implementada la ruta en `HttpRoutes`, el servlet `EliminarComentario.java` con autorización estricta para rol `"investigador"` y el botón de eliminación en `registro.jsp` integrado con el modal corporativo `modalConfirmacion.jsp`.
 - **Paginación para las evidencias (`registro.jsp`)**: Implementar un sistema de paginación para la lista de evidencias en la ficha de la bestia a fin de evitar el sobrecrecimiento del DOM y optimizar la experiencia de navegación cuando existen múltiples archivos multimedia.
 - **4 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
-- **[RESUELTO] 502 líneas de `System.out.println` y `e.printStackTrace()`** en 13 clases del backend migradas a `java.util.logging.Logger`.
-- **[RESUELTO] 13 clases de backend sin Logger instanciado** (capa DAO con 11 clases y Listeners completadas al 100% con Logger canónico. Por decisión de diseño, la capa `logic` no requiere Logger ya que actúa como orquestadora de negocio sin llamadas de logging directo, a excepción de envíos asíncronos en `LogicEmail` y `LogicNoticia`).
-- **[RESUELTO] 2 declaraciones incorrectas de Logger** (`LogicNoticia.java` referenciando clase errónea, `EliminarCaracteristicaHabitat.java` con orden de modificadores no canónico).
-- **[RESUELTO] 8 capturas de excepción donde se pierde el objeto `Throwable`** al llamar a `logger.log(...)`.
-- **[RESUELTO] Mensajes de log con textos copiados y pegados erróneos**.
 
 ---
 
@@ -83,18 +74,7 @@ public void completarBestia(Bestia bestia) {
 - Esto genera una consulta SQL pesada innecesaria cada vez que se busca o visualiza una bestia.
 - **Solución:** Retirar la llamada `addRegistros(bestia)` dentro de `completarBestia()`.
 
-### 1.4. Inconsistencia de Nombres en Servlets de Hábitats [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**  
-En el paquete `servlet.habitat`:
-
-- `CrearCaracteristicaHabitat.java`
-- `ActualizarCaracteristicaHabitat.java` _(renombrada desde `ActualizarCaracteristica.java`)_
-- `EliminarCaracteristicaHabitat.java` _(renombrada desde `EliminarCaracteristica.java`)_
-
-Se renombraron los archivos, clases y constructores a `ActualizarCaracteristicaHabitat` y `EliminarCaracteristicaHabitat`, asegurando consistencia con las anotaciones `@WebServlet` (`/habitats/actualizarCaracteristicaHabitat` y `/habitats/eliminarCaracteristicaHabitat`) y sus loggers.
-
-### 1.5. Disparidad en Manejo de Errores Globales (`errorGlobal`)
+### 1.4. Disparidad en Manejo de Errores Globales (`errorGlobal`)
 
 Existe una discrepancia entre cómo los distintos servlets cargan los mensajes de error en el request:
 
@@ -125,36 +105,12 @@ Cuando `errorGlobal` es una lista, SweetAlert2 imprime el resultado de `List.toS
   ```
   y eliminar la adición de cadenas vacías (`errores.add("")`).
 
-### 1.6. Error de Dispatching en `AgregarComentario.java` [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**  
-En `src/main/java/servlet/comentario/AgregarComentario.java`:
-Se separó la ruta interna para el forward (`HttpRoutes.OBTENER_REGISTRO_BESTIA("") + queryParams`) de la URL absoluta utilizada para la redirección del cliente (`HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) + queryParams + "#comentarios"`). El dispatcher ya no recibe el `contextPath` ni el fragmento `#comentarios`, evitando fallos en el despacho interno de peticiones. Adicionalmente, se agregó validación para `idBestia` nulo o vacío.
-
-### 1.7. Funcionalidad Faltante: Eliminación de Comentarios por Investigadores [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**  
-Se implementó de forma integral la eliminación de comentarios para usuarios con rol `"investigador"`:
-
-1. **Ruta centralizada (`HttpRoutes.java`):** Se definió el método estático `ELIMINAR_COMENTARIO(String base)` mapeando a `/comentarios/eliminar`.
-2. **Capa DAO y Negocio:**
-   - En `DataComentario.delete(Comentario c)`: Se valida la cantidad de filas afectadas (`affectedRows == 0`), asignando `c = null` y lanzando `DataNotFoundException("No se encontró el comentario para eliminar.")`.
-   - En `LogicComentario.java`: Se instanció el logger estándar y se propagó `throws DataNotFoundException` en el método `delete(Comentario c)`.
-3. **Servlet Controlador (`EliminarComentario.java`):**
-   - Mapeado en `/comentarios/eliminar` mediante `@WebServlet`.
-   - Control de acceso: Valida que el usuario en sesión esté autenticado y posea rol `"investigador"`, respondiendo con `403 Forbidden` ante accesos no autorizados.
-   - Procesamiento defensivo: Valida y parsea `idUsuario`, `idBestia`, `fechaPublicacion` y opcionalmente `nroRegistro`, capturando `DataNotFoundException`, `DateTimeParseException` y `NumberFormatException` con registro en logger.
-   - Redirección: Redirige con `sendRedirect` a `HttpRoutes.OBTENER_REGISTRO_BESTIA(...) + queryParams + "#comentarios"`.
-4. **Capa de Presentación (`registro.jsp`, `registro.css` y `modalConfirmacion.jsp`):**
-   - Se integró el modal corporativo reutilizable (`modalConfirmacion.jsp`) para solicitar confirmación antes de la eliminación del comentario, extendiendo la función `abrirModalForm` para soportar objetos con múltiples parámetros POST.
-   - Se crearon los estilos correspondientes en `registro.css` para alinear el encabezado y dar un aspecto visual claro y de advertencia al botón de eliminación.
-
-### 1.8. Paginación de Evidencias en Ficha de Bestia (`registro.jsp`)
+### 1.5. Paginación de Evidencias en Ficha de Bestia (`registro.jsp`)
 
 - **Diagnóstico:**  
   En `registro.jsp` (y en el servlet `ObtenerRegistroBestia.java`), la totalidad de las evidencias aprobadas de una bestia (además de las evidencias pendientes cuando el usuario autenticado posee rol `"investigador"`) se renderizan de manera continua e indivisa dentro del elemento `<ul class="evidencias">`. A medida que la comunidad y los investigadores cargan registros multimedia (imágenes, videos, documentos), la lista crece indefinidamente, incrementando de manera excesiva el tamaño del árbol DOM, degradando los tiempos de carga inicial y dificultando el desplazamiento vertical y la navegación del usuario.
 
-- **Solución Recomendada:**
+- **Solución Recomendada:**  
   1. **Estrategia de Paginación:**
      - **Paginación en Servidor (recomendada):** Parametrizar la consulta en `ObtenerRegistroBestia.java` recibiendo `paginaEvidencias` (por defecto 1) y tamaño de página (e.g. 6 u 8 evidencias por página), implementando `LIMIT` y `OFFSET` en `DataEvidencia.java` y calculando el número total de páginas.
      - **Paginación en Cliente (alternativa rápida):** Implementar la segmentación en `registro.jsp` mediante JavaScript, dividiendo los elementos `li.evidencias-item` en lotes paginados con visibilidad alternada sin requerir recargas completas.
@@ -177,129 +133,9 @@ Se implementó de forma integral la eliminación de comentarios para usuarios co
 
 ---
 
-## 3. Auditoría Integral de Logging (`java.util.logging.Logger`)
+## 3. Refactorización Arquitectónica SOLID: Descomposición de Capa DAO
 
-### 3.1. Uso Masivo de `System.out.println` y `e.printStackTrace()` [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**  
-Se migraron las **502 líneas** de salida estándar no estructurada a `java.util.logging.Logger` en las 13 clases del backend, capturando el stack trace completo (`Throwable`), el `SQLState` y el código del proveedor en nivel `Level.SEVERE` para errores de base de datos, y en niveles `Level.INFO` y `Level.WARNING` para tareas en segundo plano y envíos de correo:
-
-- `src/main/java/data/DataBestia.java`: 90 líneas (30 bloques catch)
-- `src/main/java/data/DataRegistro.java`: 66 líneas (22 bloques catch)
-- `src/main/java/data/DataUsuario.java`: 66 líneas (22 bloques catch)
-- `src/main/java/data/DataEvidencia.java`: 54 líneas (18 bloques catch)
-- `src/main/java/data/DataHabitat.java`: 39 líneas (13 bloques catch)
-- `src/main/java/data/DataCategoria.java`: 36 líneas (12 bloques catch)
-- `src/main/java/data/DataNoticia.java`: 36 líneas (12 bloques catch)
-- `src/main/java/data/DataComentario.java`: 30 líneas (10 bloques catch)
-- `src/main/java/data/DataTipoEvidencia.java`: 30 líneas (10 bloques catch)
-- `src/main/java/data/DataCaracteristicaHabitat.java`: 24 líneas (8 bloques catch)
-- `src/main/java/data/DataPasswordResetToken.java`: 24 líneas (8 bloques catch)
-- `src/main/java/listeners/BackgroundJobListener.java`: 4 líneas
-- `src/main/java/logic/LogicEmail.java`: 3 líneas
-
----
-
-### 3.2. Clases sin Logger Instanciado [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**  
-Se completó la instanciación canónica de `Logger` (`private static final Logger logger = Logger.getLogger(Clase.class.getName());`) en los componentes que efectivamente registran eventos:
-
-- **Capa DAO (11 clases):** `DataBestia`, `DataCaracteristicaHabitat`, `DataCategoria`, `DataComentario`, `DataEvidencia`, `DataHabitat`, `DataNoticia`, `DataPasswordResetToken`, `DataRegistro`, `DataTipoEvidencia`, `DataUsuario`. _(Completado)_.
-- **Listeners (1 clase):** `BackgroundJobListener`. _(Completado)_.
-- **Capa Logic:** Se determinó por decisión de diseño que las clases de negocio (`LogicBestia`, `LogicCaracteristicaHabitat`, `LogicCategoria`, `LogicComentario`, `LogicEvidencia`, `LogicHabitat`, `LogicRegistro`, `LogicTipoEvidencia`, `LogicUsuario`) no requieren `Logger`, ya que no capturan excepciones de infraestructura ni efectúan logging directo. Únicamente mantienen Logger las clases con operaciones asíncronas de notificación (`LogicEmail` y `LogicNoticia`).
-
----
-
-### 3.3. Declaraciones Incorrectas de Logger [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**
-
-1. **`LogicNoticia.java`:**
-   - Corregido a: `private static final Logger logger = Logger.getLogger(LogicNoticia.class.getName());`
-   - Se removió además la importación y referencia errónea a `DbConnector`.
-
-2. **`servlet.habitat.EliminarCaracteristicaHabitat.java`:**
-   - Corregido a: `private static final Logger logger = Logger.getLogger(EliminarCaracteristicaHabitat.class.getName());`
-   - Normalizado al orden canónico de modificadores Java (`private static final`).
-
----
-
-### 3.4. Llamadas a `logger.log(...)` sin Pasar el `Throwable` (Pérdida de Stack Trace) [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**  
-Se actualizaron las 8 llamadas a `logger.log(...)` pasando la instancia de la excepción atrapada (`Throwable`) como parámetro para registrar el stack trace completo:
-
-1. **`LogicNoticia.java`:** `logger.log(Level.WARNING, "Falló envío a: " + u.getCorreo(), e);`
-2. **`ActualizarBestia.java`:** `logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet ActualizarBestia", nfe);`
-3. **`CambiarCategoria.java`:** `logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet CambiarCategoria", nfe);`
-4. **`CrearBestia.java`:** `logger.log(Level.WARNING, "Error buscando los tipos de evidencia en la base de datos en el servlet CrearBestia", e);`
-5. **`EditarBestia.java`:** `logger.log(Level.WARNING, "Error parseando la id de la bestia en el servlet EditarBestia", nfe);`
-6. **`CrearEvidencia.java`:** `logger.log(Level.WARNING, "Error parseando la fecha de obtencion en el servlet CrearEvidencia", e);`
-7. **`CrearEvidencia.java`:** `logger.log(Level.SEVERE, "Error al recibir el numero de tipo de evidencia en el servlet CrearEvidencia", e);`
-8. **`CrearEvidencia.java`:** `logger.log(Level.SEVERE, "Error al parsear la fecha de obtencion de la evidencia en el servlet CrearEvidencia", ex);`
-
----
-
-### 3.5. Mensajes de Log con Texto Copiado y Pegado Erróneo [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**
-
-- **`CrearEvidencia.java`:** Se corrigieron los mensajes que indicaban erróneamente `"...en el servlet ActualizarRegistro"` reemplazándolos por `CrearEvidencia`.
-- **`EditarBestia.java`:** Se corrigió el mensaje `"Error parseando la id de la bestia en el servlet ActualizarBestia"` por `EditarBestia`.
-- _(Nota: `ObtenerEvidencia.java` ya fue eliminado previamente en la limpieza de servlets huérfanos)._
-
----
-
-### 3.6. Estándar de Implementación para Logging [RESUELTO]
-
-**Estado:** ✔️ **RESUELTO**  
-Se implementó este estándar en las 11 clases DAO (`Data*.java`), `BackgroundJobListener.java` y `LogicEmail.java`:
-
-#### En Clases DAO (`Data*.java`):
-
-Reemplazar:
-
-```java
-} catch (SQLException ex) {
-    System.out.println("Mensaje: " + ex.getMessage());
-    System.out.println("SQLState: " + ex.getSQLState());
-    System.out.println("Error del proveedor (VendorError): " + ex.getErrorCode());
-}
-```
-
-Por:
-
-```java
-public class DataBestia {
-    private static final Logger logger = Logger.getLogger(DataBestia.class.getName());
-
-    // ...
-    } catch (SQLException ex) {
-        logger.log(Level.SEVERE, String.format(
-            "Error SQL al consultar bestia [SQLState: %s, ErrorCode: %d]: %s",
-            ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-    }
-```
-
-#### En `BackgroundJobListener.java` y `LogicEmail.java`:
-
-- Sustituir `System.out.println` y `e.printStackTrace()` por:
-  ```java
-  logger.log(Level.INFO, "Iniciando ejecución programada del resumen diario de registros.");
-  logger.log(Level.WARNING, "Falló el envío de correo de resumen a: " + investigador.getCorreo(), e);
-  ```
-- En `LogicEmail.java`:
-  ```java
-  logger.log(Level.INFO, "Email enviado satisfactoriamente a: {0}", destinatario);
-  logger.log(Level.SEVERE, "Error al enviar email a: " + destinatario, e);
-  ```
-
----
-
-## 4. Refactorización Arquitectónica SOLID: Descomposición de Capa DAO
-
-### 4.1. Motivación y Diagnóstico
+### 3.1. Motivación y Diagnóstico
 
 Actualmente, las clases de la capa DAO (`src/main/java/data/`) concentran la totalidad de las operaciones de persistencia de una entidad en archivos únicos de gran tamaño (e.g., `DataBestia.java` ~540 líneas, `DataRegistro.java` ~490 líneas, `DataUsuario.java` ~450 líneas).
 
@@ -309,7 +145,7 @@ Esto presenta desventajas frente a los principios **SOLID**, especialmente el **
 - **Dificultad de mantenimiento y testeo:** La modificación de una consulta SQL o el ajuste de una regla de mapeo (`ResultSet`) obliga a editar un archivo extenso y central, aumentando el riesgo de efectos colaterales.
 - **Baja cohesión:** Cada método maneja sus propios parámetros, sentencias SQL y ciclos de vida de recursos, compartiendo únicamente la conexión a base de datos.
 
-### 4.2. Propuesta: Clases DAO como Ensambladores de Clases de Operación Individual
+### 3.2. Propuesta: Clases DAO como Ensambladores de Clases de Operación Individual
 
 Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador / Fachada (Facade)** que delega la ejecución en clases granulares independientes (una clase por método u operación de persistencia):
 
@@ -367,7 +203,7 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
      }
      ```
 
-### 4.3. Beneficios Técnicos
+### 3.3. Beneficios Técnicos
 
 - **Cumplimiento estricto de SRP:** Cada clase de operación tiene una sola razón para cambiar (su sentencia SQL o mapeo específico).
 - **Archivos compactos y legibles:** Clases individuales de 30 a 70 líneas en lugar de archivos monolíticos de 500+ líneas.
@@ -376,35 +212,19 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 
 ---
 
-## 5. Plan de Acción Priorizado
+## 4. Plan de Acción Priorizado
 
-### Fase 1: Correcciones Críticas de Logger y Mensajería (Alta Prioridad)
-
-- [x] Corregir la clase referenciada en `LogicNoticia.java` (`LogicNoticia.class`).
-- [x] Normalizar la declaración en `EliminarCaracteristicaHabitat.java` a `private static final Logger`.
-- [x] Pasar el parámetro `Throwable` en las 8 llamadas truncadas de `logger.log(...)`.
-- [x] Corregir los textos con nombres de servlets erróneos en `CrearEvidencia.java` y `EditarBestia.java`.
-- [x] Corregir la lógica de dispatch en `AgregarComentario.java` (separar URL de redirect del dispatcher).
-
-### Fase 2: Estandarización de Logging en DAOs y Servicios (Media Prioridad)
-
-- [x] Incorporar `Logger` en todas las clases DAO (`Data*.java`), reemplazando las llamadas a `System.out.println` con registro de `SQLState`, código de error y objeto `SQLException`.
-- [x] Incorporar `Logger` en `BackgroundJobListener.java` y `LogicEmail.java`, retirando `System.out.println` y `e.printStackTrace()`.
-- [x] Incorporar `Logger` en las clases de la capa `logic` para trazabilidad de reglas de negocio.
-
-### Fase 3: Optimización de Consultas, Entidades y Código Muerto (Media/Baja Prioridad)
+### Fase 1: Optimización de Consultas, Entidades y Código Muerto (Media/Baja Prioridad)
 
 - [ ] Retirar `addRegistros(bestia)` de `DataBestia.completarBestia()` para evitar la consulta N+1.
 - [ ] Eliminar los métodos muertos `deleteCategorias`, `deleteHabitats` y `saveRegistros` de `DataBestia.java`.
 - [ ] Cambiar a `private` los métodos auxiliares `asignarNroEvidencia` y `asignarNroRegistro`.
 - [ ] Eliminar atributos y accesores de `caracteristicas` y `bestias` en `Habitat.java`.
 - [ ] Renombrar `Usuario.contraseña` a `contrasena` o `password`.
-- [x] Normalizar nombres de servlets de características de hábitat a `*CaracteristicaHabitat`.
 - [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
-- [x] Implementar la eliminación de comentarios para usuarios con rol investigador (ruta `HttpRoutes`, servlet `EliminarComentario` y UI en `registro.jsp`).
 - [ ] Implementar paginación para la lista de evidencias en la ficha de la bestia (`registro.jsp` / `DataEvidencia`).
 
-### Fase 4: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
+### Fase 2: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
 
 - [ ] Definir la estructura base de clases de operación (convención o interfaz `execute(...)`) y subpaquetes (`data.<entidad>.*`).
 - [ ] Implementar la descomposición piloto en `DataBestia.java` (el DAO más extenso y acoplado).
