@@ -193,7 +193,7 @@ public class DataEvidencia {
 		return e;
 	}
 	
-	public void asignarNroEvidencia(Evidencia e) {
+	private void asignarNroEvidencia(Evidencia e) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {

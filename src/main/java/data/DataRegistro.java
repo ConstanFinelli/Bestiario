@@ -398,7 +398,7 @@ public class DataRegistro {
 		return r;
 	}
 	
-	public void asignarNroRegistro(Registro r) {
+	private void asignarNroRegistro(Registro r) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
