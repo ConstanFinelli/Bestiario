@@ -19,7 +19,6 @@ public class DataBestia {
 	private static final Logger logger = Logger.getLogger(DataBestia.class.getName());
 	public DataHabitat habDAO = new DataHabitat();
 	public DataCategoria catDAO = new DataCategoria();
-	public DataComentario comDAO = new DataComentario();
 	public DataEvidencia evDAO = new DataEvidencia();
 	
 	public Bestia getOne(Bestia b) {
@@ -253,11 +252,6 @@ public class DataBestia {
 	public void addHabitats(Bestia bestiaEncontrada) {
 		bestiaEncontrada.setHabitats(habDAO.findAllByBestia(bestiaEncontrada));
 	}
-	
-	public void addComentarios(Bestia bestiaEncontrada) {
-		bestiaEncontrada.setComentarios(comDAO.findAllByBestia(bestiaEncontrada));
-	}
-	
 	public void addEvidencias(Bestia bestiaEncontrada) {
 		bestiaEncontrada.setEvidencias(evDAO.findAllByBestia(bestiaEncontrada));
 	}
@@ -265,7 +259,6 @@ public class DataBestia {
 	public void completarBestia(Bestia bestia) {
 		addHabitats(bestia);
 		addCategorias(bestia);
-		addComentarios(bestia);
 		addEvidencias(bestia);
 	}
 	

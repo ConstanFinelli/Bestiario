@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Bestia;
+import entities.Comentario;
 import entities.Registro;
 import entities.TipoEvidencia;
 import helpers.CloudinaryHelper;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
+import logic.LogicComentario;
 import logic.LogicRegistro;
 import logic.LogicTipoEvidencia;
 
@@ -32,6 +34,7 @@ public class ObtenerRegistroBestia extends HttpServlet {
 	private LogicBestia controlador = new LogicBestia();
 	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private LogicTipoEvidencia controladorTipoEvidencia = new LogicTipoEvidencia();
+	private LogicComentario controladorComentario = new LogicComentario();
 	private static final Logger logger = Logger.getLogger(ObtenerRegistroBestia.class.getName());
 	
 	private static final long serialVersionUID = 1L;
@@ -131,10 +134,20 @@ public class ObtenerRegistroBestia extends HttpServlet {
 				return;
 			}
 			
+			LinkedList<Comentario> comentarios = null;
+			if(bestia != null) {
+				try {
+					comentarios = controladorComentario.findAllByBestia(bestia);
+				} catch(Exception e) {
+					logger.log(Level.WARNING, "Error al conseguir comentarios en el servlet ObtenerRegistroBestia", e);
+				}
+			}
+			
 			request.setAttribute("UrlImagen", imagen);
 			request.setAttribute("foundBestia", bestia);
 			request.setAttribute("foundRegistro", registro);
 			request.setAttribute("tiposEvidencia", tes);
+			request.setAttribute("comentarios", comentarios);
 			rd.forward(request, response);	
 	}
 	

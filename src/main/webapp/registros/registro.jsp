@@ -190,8 +190,9 @@
         </section>
         <%
         	if(bestia != null){
-				
-            		LinkedList<Comentario> comentarios = bestia.getComentarios();%>
+            		LinkedList<Comentario> comentarios = (LinkedList<Comentario>) request.getAttribute("comentarios");
+            		if(comentarios == null) { comentarios = new LinkedList<>(); }
+            %>
         <section id="comentarios" class="comentarios mainContent">
         
         	<% if(registro != null && "aprobado".equals(registro.getEstado())){ %>
