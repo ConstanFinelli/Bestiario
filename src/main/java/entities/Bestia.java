@@ -8,7 +8,6 @@ public class Bestia {
 	private String peligrosidad;
 	private LinkedList<Habitat> habitats = new LinkedList<>();
 	private LinkedList<Categoria> categorias  = new LinkedList<>();
-	private LinkedList<Registro> registros  = new LinkedList<>();
 	private LinkedList<Comentario> comentarios = new LinkedList<>();
 	private LinkedList<Evidencia> evidencias = new LinkedList<>();
 	private String estado;
@@ -60,12 +59,6 @@ public class Bestia {
 	public void setCategorias(LinkedList<Categoria> cats){
 		this.categorias = cats;
 	}
-	public LinkedList<Registro> getRegistros(){
-		return registros;
-	}
-	public void setRegistros(LinkedList<Registro> regs){
-		this.registros = regs;
-	}
 	public LinkedList<Comentario> getComentarios() {
 		return comentarios;
 	}
@@ -94,17 +87,6 @@ public class Bestia {
 		}
 		return lista;
 	}
-	public String listarRegistros() {
-		String lista = "";
-		for(Registro reg: registros) {
-			if(reg.getFechaAprobacion() != null) {
-			lista = lista + "<br>" + reg.getNroRegistro() + reg.getResumen() + (reg.getFechaAprobacion().toString() == null) +  reg.getEstado() + 
-					((reg.getFechaBaja() == null) ? "Vigente":(reg.getFechaBaja().toString())) + reg.getPublicador().getIdUsuario();
-			}
-		}
-		return lista;
-	}
-	
 	public String listarComentarios() {
 		String lista = "";
 		for(Comentario comentario: comentarios) {
@@ -119,7 +101,6 @@ public class Bestia {
 				 "<br>Peligrosidad: " + peligrosidad+
 				 "<br>" + listarHabitats() + 
 				 "<br>" + listarCategorias() + 
-				 "<br>" + listarRegistros() + 
 				 "<br>" + listarComentarios());
 	 }
 
