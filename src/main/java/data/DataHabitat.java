@@ -15,30 +15,19 @@ public class DataHabitat {
 	public Habitat getOne(Habitat ht) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		PreparedStatement pstmtC = null;
-		ResultSet rsC = null;
 		Habitat htEncontrada = null;
-		LinkedList<String> caracteristicas = new LinkedList<>();
 		
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("SELECT * FROM habitat WHERE idHabitat=?");
 			pstmt.setInt(1, ht.getId());
 			rs = pstmt.executeQuery();
-			pstmtC = DbConnector.getInstancia().getConn().prepareStatement("SELECT * FROM caracteristica WHERE idHabitat=?");
-			pstmtC.setInt(1, ht.getId());
-			rsC = pstmtC.executeQuery();
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("idHabitat");
 				String nombre = rs.getString("nombre");
 				String localizacion = rs.getString("localizacion");
 				double latitud = rs.getDouble("latitud");
 				double longitud = rs.getDouble("longitud");
-				if(rsC != null) {
-					while(rsC.next()){
-						caracteristicas.add(rsC.getString("descripcion"));
-					}
-				}
-				htEncontrada = new Habitat(id, nombre, caracteristicas, localizacion, latitud, longitud);
+				htEncontrada = new Habitat(id, nombre, localizacion, latitud, longitud);
 			}
 		} catch(SQLException ex) {
 			logger.log(Level.SEVERE, String.format(
@@ -48,8 +37,6 @@ public class DataHabitat {
 			try {
 				if(rs != null) {rs.close();}
 				if(pstmt != null) {pstmt.close();}
-				if(rsC != null) {rsC.close();}
-				if(pstmtC != null) {pstmtC.close();}
 				DbConnector.getInstancia().releaseConn();
 			} catch(SQLException ex) {
 				logger.log(Level.SEVERE, String.format(
@@ -66,8 +53,6 @@ public class DataHabitat {
 	public LinkedList<Habitat> findAll(){
 		Statement stmt = null;
 		ResultSet rs = null;
-		PreparedStatement pstmtC = null;
-		ResultSet rsC = null;
 		LinkedList<Habitat> htsEncontradas = new LinkedList<>();
 		Habitat htEncontrada = null;
 		
@@ -76,30 +61,12 @@ public class DataHabitat {
 			rs = stmt.executeQuery("SELECT * FROM habitat");
 			if(rs != null) {
 				while(rs.next()) {
-					LinkedList<String> caracteristicas = new LinkedList<>();
 					int id = rs.getInt("idHabitat");
 					String nombre = rs.getString("nombre");
 					String localizacion = rs.getString("localizacion");
 					double latitud = rs.getDouble("latitud");
 					double longitud = rs.getDouble("longitud");
-					try {
-						pstmtC = DbConnector.getInstancia().getConn().prepareStatement("SELECT * FROM caracteristica WHERE idHabitat=?");
-						pstmtC.setInt(1, id);
-						rsC = pstmtC.executeQuery();
-						if(rsC != null) {
-							while(rsC.next()) {
-								caracteristicas.add(rsC.getString("descripcion"));
-							}
-						}
-					} catch(SQLException ex){
-						logger.log(Level.SEVERE, String.format(
-							"Error SQL al consultar caracteristicas de habitat %d [SQLState: %s, ErrorCode: %d]: %s",
-							id, ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-					} finally {
-						if(rsC != null) { try { rsC.close(); } catch(SQLException ignored) {} }
-						if(pstmtC != null) { try { pstmtC.close(); } catch(SQLException ignored) {} }
-					}
-					htEncontrada = new Habitat(id, nombre, caracteristicas, localizacion,  latitud, longitud);
+					htEncontrada = new Habitat(id, nombre, localizacion, latitud, longitud);
 					htsEncontradas.add(htEncontrada);
 				}
 			}
@@ -111,8 +78,6 @@ public class DataHabitat {
 			try {
 				if(rs != null) {rs.close();}
 				if(stmt != null) {stmt.close();}
-				if(rsC != null) {rsC.close();}
-				if(pstmtC != null) {pstmtC.close();}
 				DbConnector.getInstancia().releaseConn();
 			} catch(SQLException ex) {
 				logger.log(Level.SEVERE, String.format(
@@ -137,7 +102,6 @@ public class DataHabitat {
 			rs = pstmt.getGeneratedKeys();
 			if(rs != null && rs.next()) {
 				htGuardada = ht;
-				htGuardada.setCaracteristicas(null);
 				htGuardada.setId(rs.getInt(1));
 			}
 		} catch(SQLException ex) {

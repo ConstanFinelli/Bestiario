@@ -9,18 +9,13 @@ import exceptions.DataNotFoundException;
 
 public class LogicHabitat {
 	private DataHabitat hDAO = new DataHabitat();
-	private LogicBestia controladorB = new LogicBestia();
 	
 	public Habitat getOne(Habitat ht) throws DataNotFoundException {
 		return hDAO.getOne(ht);
 	}
 	
 	public LinkedList<Habitat> findAll(){
-		LinkedList<Habitat> hts = hDAO.findAll();
-		for(Habitat ht:hts) {
-			ht.setBestias(controladorB.findAllBestiasFromHabitat(ht));
-		}
-		return hts;
+		return hDAO.findAll();
 	}
 	
 	public LinkedList<Habitat> findAllByBestia(Bestia b){
