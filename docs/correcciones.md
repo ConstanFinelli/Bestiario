@@ -21,47 +21,14 @@
 El presente documento concentra exclusivamente los defectos, código redundante, inconsistencias y oportunidades de optimización que restan por solucionar en el proyecto:
 
 - **Refactorización modular de la capa DAO (`data.*`)**: Modularizar clases DAO extensas (`DataBestia`, `DataRegistro`, `DataUsuario`, etc.) convirtiéndolas en ensambladores/fachadas que deleguen a clases individuales por operación (Single Responsibility Principle - SRP).
-- **3 métodos DAO muertos** (`DataBestia.java`).
-- **1 consulta N+1 innecesaria** ejecutada en cada obtención de Bestia (`DataBestia.completarBestia`).
 - **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
-- **4 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
+- **3 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
 
 ---
 
 ## 1. Métodos, Lógica Repetida y Código Muerto
 
-### 1.1. Métodos Muertos en Capa DAO (`DataBestia.java`)
-
-1. **`deleteCategorias(Bestia b)` y `deleteHabitats(Bestia b)`**:
-   - En `DataBestia.java` (líneas 224-229), el método `delete(Bestia b)` invoca manualmente a `deleteCategorias(b)` y `deleteHabitats(b)`.
-   - En el esquema de base de datos (`bestiario.sql`), las tablas intermedias `bestia_categoria` y `bestia_habitat` poseen restricciones de clave foránea con `ON DELETE CASCADE`, por lo que el motor relacional elimina automáticamente los vínculos.
-   - Además, la desvinculación explícita ya se gestiona a través de `removeRelation(Bestia b, Categoria cat)` y `removeRelation(Bestia b, Habitat ht)`.
-   - **Solución:** Remover las llamadas y los métodos redundantes `deleteCategorias` y `deleteHabitats` de `DataBestia.java`.
-2. **`saveRegistros(Bestia b)`**:
-   - En `DataBestia.save(b)` (línea 162), se invoca `saveRegistros(b)`, el cual itera sobre `b.getRegistros()` y llama a `regDAO.save(registro)`.
-   - Cuando se da de alta una bestia en `CrearBestia.java`, la lista de registros siempre está vacía (`registros` se inicializa como `new LinkedList<>()`). Los registros poseen su propio ciclo de vida a través de `CrearRegistro.java` y `ActualizarRegistro.java`.
-   - **Solución:** Eliminar el método `saveRegistros(Bestia b)` y su invocación en `DataBestia.save(b)`.
-
-### 1.2. Sobrecarga Innecesaria en `DataBestia.completarBestia()`
-
-Al consultar una bestia mediante `DataBestia.getOne(bestia)`, se ejecuta el método `completarBestia(bestia)`:
-
-```java
-public void completarBestia(Bestia bestia) {
-    addRegistros(bestia);
-    addHabitats(bestia);
-    addCategorias(bestia);
-    addComentarios(bestia);
-    addEvidencias(bestia);
-}
-```
-
-- `addRegistros(bestia)` ejecuta una consulta SQL a la base de datos (`regDAO.findAllByBestia`) para poblar la lista `registros`.
-- Ninguna vista ni lógica de negocio lee `bestia.getRegistros()`. Todas las consultas de registros se efectúan de forma independiente mediante `LogicRegistro.getRegistrosBestia(bestia)` o `LogicRegistro.getRegistroActual(bestia)`.
-- Esto genera una consulta SQL pesada innecesaria cada vez que se busca o visualiza una bestia.
-- **Solución:** Retirar la llamada `addRegistros(bestia)` dentro de `completarBestia()`.
-
-### 1.3. Disparidad en Manejo de Errores Globales (`errorGlobal`)
+### 1.1. Disparidad en Manejo de Errores Globales (`errorGlobal`)
 
 Existe una discrepancia entre cómo los distintos servlets cargan los mensajes de error en el request:
 
@@ -100,7 +67,6 @@ Cuando `errorGlobal` es una lista, SweetAlert2 imprime el resultado de `List.toS
 | -------------- | ----------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | `Habitat.java` | `caracteristicas` | `LinkedList<String>`     | **Nunca leído** (`gets=0`). Las características se gestionan mediante la entidad `CaracteristicaHabitat`.      | Eliminar el atributo y sus métodos getters/setters en `Habitat.java`.                                     |
 | `Habitat.java` | `bestias`         | `LinkedList<Bestia>`     | **Nunca leído** (`gets=0`). La relación inversa es gestionada desde `Bestia` y `bestia_habitat`.               | Eliminar el atributo y sus métodos getters/setters en `Habitat.java`.                                     |
-| `Bestia.java`  | `registros`       | `LinkedList<Registro>`   | **Solo se asigna**, nunca se consume en ninguna vista (la interfaz utiliza `LogicRegistro`).                   | Remover de la entidad y retirar su carga en `DataBestia.completarBestia()`.                               |
 | `Bestia.java`  | `comentarios`     | `LinkedList<Comentario>` | Solo se utiliza dentro del método `toString()`. Los comentarios se cargan en el servlet vía `LogicComentario`. | Evaluar su remoción para evitar retención innecesaria de objetos en memoria.                              |
 | `Usuario.java` | `contraseña`      | `String`                 | El atributo y sus métodos accesores contienen la letra **ñ** (`getContraseña()`, `setContraseña()`).           | Renombrar a `contrasena` o `password` para evitar problemas de encoding entre plataformas y compiladores. |
 
@@ -189,8 +155,6 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 
 ### Fase 1: Optimización de Consultas, Entidades y Código Muerto (Media/Baja Prioridad)
 
-- [ ] Retirar `addRegistros(bestia)` de `DataBestia.completarBestia()` para evitar la consulta N+1.
-- [ ] Eliminar los métodos muertos `deleteCategorias`, `deleteHabitats` y `saveRegistros` de `DataBestia.java`.
 - [ ] Eliminar atributos y accesores de `caracteristicas` y `bestias` en `Habitat.java`.
 - [ ] Renombrar `Usuario.contraseña` a `contrasena` o `password`.
 - [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
