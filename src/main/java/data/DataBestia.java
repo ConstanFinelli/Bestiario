@@ -12,7 +12,6 @@ import entities.Bestia;
 import entities.Categoria;
 import entities.Evidencia;
 import entities.Habitat;
-import entities.Registro;
 import exceptions.DataNotFoundException;
 
 //INCOMPLETO: DEBATIR EN GRUPO COMO PROSEGUIR Y ORGANIZAR EL TEMA DE CATEGORIAS, HABITATS Y REGISTROS EN EL SAVE
@@ -20,7 +19,6 @@ public class DataBestia {
 	private static final Logger logger = Logger.getLogger(DataBestia.class.getName());
 	public DataHabitat habDAO = new DataHabitat();
 	public DataCategoria catDAO = new DataCategoria();
-	public DataRegistro regDAO = new DataRegistro();
 	public DataComentario comDAO = new DataComentario();
 	public DataEvidencia evDAO = new DataEvidencia();
 	
@@ -166,7 +164,6 @@ public class DataBestia {
 				b.setIdBestia(rs.getInt(1));
 			}
 			saveCategorias(b);
-			saveRegistros(b);
 			saveHabitats(b);
 			saveEvidencias(b);
 		} catch(SQLException ex) {
@@ -231,13 +228,6 @@ public class DataBestia {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia where idbestia = ?");
 			pstmt.setInt(1, b.getIdBestia());
 			pstmt.executeUpdate();
-			if(b.getCategorias() != null) {
-				deleteCategorias(b);
-			}
-			if(b.getHabitats() != null) {
-				deleteHabitats(b);
-			}
-			//preguntar si se deberian eliminar las bestias
 		} catch(SQLException ex) {
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al eliminar bestia [SQLState: %s, ErrorCode: %d]: %s",
@@ -263,9 +253,6 @@ public class DataBestia {
 	public void addHabitats(Bestia bestiaEncontrada) {
 		bestiaEncontrada.setHabitats(habDAO.findAllByBestia(bestiaEncontrada));
 	}
-	public void addRegistros(Bestia bestiaEncontrada) {
-		bestiaEncontrada.setRegistros(regDAO.findAllByBestia(bestiaEncontrada));
-	}
 	
 	public void addComentarios(Bestia bestiaEncontrada) {
 		bestiaEncontrada.setComentarios(comDAO.findAllByBestia(bestiaEncontrada));
@@ -276,7 +263,6 @@ public class DataBestia {
 	}
 	
 	public void completarBestia(Bestia bestia) {
-		addRegistros(bestia);
 		addHabitats(bestia);
 		addCategorias(bestia);
 		addComentarios(bestia);
@@ -362,60 +348,6 @@ public class DataBestia {
 						"Error SQL al cerrar recursos en saveEvidencias de bestia [SQLState: %s, ErrorCode: %d]: %s",
 						ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 				}
-			}
-		}	
-	}
-	
-	public void saveRegistros(Bestia b) {
-		for(Registro registro : b.getRegistros()) {
-			regDAO.save(registro);
-		}
-	}
-	
-	public void deleteCategorias(Bestia b) {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia_categoria where idbestia = ?");
-			pstmt.setInt(1, b.getIdBestia());
-			pstmt.executeUpdate();
-		} catch(SQLException ex) {
-			logger.log(Level.SEVERE, String.format(
-				"Error SQL al eliminar categorias de bestia %d [SQLState: %s, ErrorCode: %d]: %s",
-				b.getIdBestia(), ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			} catch(SQLException ex) {
-				logger.log(Level.SEVERE, String.format(
-					"Error SQL al cerrar recursos en deleteCategorias de bestia [SQLState: %s, ErrorCode: %d]: %s",
-					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-			}
-		}
-	}
-	
-	public void deleteHabitats(Bestia b) {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("delete from bestia_habitat where idbestia = ?");
-			pstmt.setInt(1, b.getIdBestia());
-			pstmt.executeUpdate();
-		} catch(SQLException ex) {
-			logger.log(Level.SEVERE, String.format(
-				"Error SQL al eliminar habitats de bestia %d [SQLState: %s, ErrorCode: %d]: %s",
-				b.getIdBestia(), ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-		} finally {
-			try {
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			} catch(SQLException ex) {
-				logger.log(Level.SEVERE, String.format(
-					"Error SQL al cerrar recursos en deleteHabitats de bestia [SQLState: %s, ErrorCode: %d]: %s",
-					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 			}
 		}
 	}
