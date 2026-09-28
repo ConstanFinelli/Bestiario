@@ -9,30 +9,30 @@ public class Investigador extends Usuario{
 		
 	}
 	
-	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni) {
-		super(id, correo, contraseña, "investigador");
+	public Investigador(int id, String correo, String contrasena, String nombre, String apellido, String dni) {
+		super(id, correo, contrasena, "investigador");
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 	}
 	
-	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni, String state) {
-		super(id, correo, contraseña, state);
+	public Investigador(int id, String correo, String contrasena, String nombre, String apellido, String dni, String state) {
+		super(id, correo, contrasena, state);
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 	}
 	
-	public Investigador(int id, String correo, String contraseña, String nombre, String apellido, String dni, String state, Boolean recibirNotificaciones) {
-		super(id, correo, contraseña, state, recibirNotificaciones);
+	public Investigador(int id, String correo, String contrasena, String nombre, String apellido, String dni, String state, Boolean recibirNotificaciones) {
+		super(id, correo, contrasena, state, recibirNotificaciones);
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 		
 	}
 	
-	public Investigador(String correo, String contraseña, String nombre, String apellido, String dni) {
-		super(correo, contraseña, "investigador");
+	public Investigador(String correo, String contrasena, String nombre, String apellido, String dni) {
+		super(correo, contrasena, "investigador");
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;

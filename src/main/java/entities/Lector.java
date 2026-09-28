@@ -5,23 +5,23 @@ import java.time.LocalDateTime;
 public class Lector extends Usuario {
 	private LocalDateTime fechaNacimiento;
 
-	public Lector(int id, String correo, String contraseña, LocalDateTime fecha) {
-		super(id, correo, contraseña, "lector");
+	public Lector(int id, String correo, String contrasena, LocalDateTime fecha) {
+		super(id, correo, contrasena, "lector");
 		this.fechaNacimiento = fecha;
 	}
 	
-	public Lector(String correo, String contraseña, LocalDateTime fecha) {
-		super(correo, contraseña, "lector");
+	public Lector(String correo, String contrasena, LocalDateTime fecha) {
+		super(correo, contrasena, "lector");
 		this.fechaNacimiento = fecha;
 	}
 	
-	public Lector(String correo, String contraseña, LocalDateTime fecha, String state) {
-		super(correo, contraseña, state);
+	public Lector(String correo, String contrasena, LocalDateTime fecha, String state) {
+		super(correo, contrasena, state);
 		this.fechaNacimiento = fecha;
 	}
 	
-	public Lector(int id, String correo, String contraseña, LocalDateTime fecha, String state) {
-		super(id, correo, contraseña, state);
+	public Lector(int id, String correo, String contrasena, LocalDateTime fecha, String state) {
+		super(id, correo, contrasena, state);
 		this.fechaNacimiento = fecha;
 	}
 	

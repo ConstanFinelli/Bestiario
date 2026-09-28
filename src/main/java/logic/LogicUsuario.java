@@ -15,7 +15,7 @@ public class LogicUsuario {
 	public Usuario getOne(Usuario us) throws DataNotFoundException {
 		us = usDAO.getOne(us);
 		if(us != null) {
-			us.setContraseña(dehashPassword(us.getContraseña()));
+			us.setContrasena(dehashPassword(us.getContrasena()));
 		}
 		return us;
 	}
@@ -24,7 +24,7 @@ public class LogicUsuario {
 		LinkedList<Usuario> users = usDAO.findAll();
 		if(!users.isEmpty()) {
 			for(Usuario user : users) { // dehashea la contraseña por usuario
-				user.setContraseña(dehashPassword(user.getContraseña()));
+				user.setContrasena(dehashPassword(user.getContrasena()));
 			}
 		}
 		return users;
@@ -32,20 +32,20 @@ public class LogicUsuario {
 	
 	public Usuario save(Usuario us) {
 		if(us !=null) {
-			us.setContraseña(hashPassword(us.getContraseña()));// hashea para guarda en bd
+			us.setContrasena(hashPassword(us.getContrasena()));// hashea para guarda en bd
 		}
 		us = usDAO.save(us);
-		us.setContraseña(dehashPassword(us.getContraseña())); // dehashea para mostrar a ui
+		us.setContrasena(dehashPassword(us.getContrasena())); // dehashea para mostrar a ui
 		return us;
 	}
 	
 	public Usuario update(Usuario us) throws DataNotFoundException {
 		if(us != null) {
-			us.setContraseña(hashPassword(us.getContraseña())); // hashea para guarda en bd
+			us.setContrasena(hashPassword(us.getContrasena())); // hashea para guarda en bd
 		}
 		us = usDAO.update(us);
 		if(us != null) {
-			us.setContraseña(dehashPassword(us.getContraseña())); // dehashea para mostrar a ui
+			us.setContrasena(dehashPassword(us.getContrasena())); // dehashea para mostrar a ui
 		}
 		return us;
 	}

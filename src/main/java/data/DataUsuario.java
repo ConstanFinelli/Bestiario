@@ -25,18 +25,18 @@ public class DataUsuario {
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("idUsuario");
 				String correo = rs.getString("correo");
-				String contraseña = rs.getString("contraseña");
+				String contrasena = rs.getString("contraseña");
 				String estado = rs.getString("estado");
 				Boolean recibirNotificaciones = rs.getBoolean("recibirNotificaciones");
 				if("lector".equals(estado)) {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
-					usuarioEncontrado = new Lector(id, correo, contraseña, fechaNacimiento);
+					usuarioEncontrado = new Lector(id, correo, contrasena, fechaNacimiento);
 					usuarioEncontrado.setRecibirNotificaciones(recibirNotificaciones);
 				}else {
 					String dni = rs.getString("dni");
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
-					usuarioEncontrado = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+					usuarioEncontrado = new Investigador(id, correo, contrasena, nombre, apellido, dni);
 					usuarioEncontrado.setRecibirNotificaciones(recibirNotificaciones);
 				}
 			}
@@ -74,16 +74,16 @@ public class DataUsuario {
 				while(rs.next()) {
 					int id = rs.getInt("idUsuario");
 					String correo = rs.getString("correo");
-					String contraseña = rs.getString("contraseña");
+					String contrasena = rs.getString("contraseña");
 					String estado = rs.getString("estado");
 					if("Investigador".equals(estado)) {
 						String nombre = rs.getString("nombre");
 						String apellido = rs.getString("apellido");
 						String dni = rs.getString("dni");
-						us = new Investigador(id, correo, contraseña, nombre, apellido, dni, estado);
+						us = new Investigador(id, correo, contrasena, nombre, apellido, dni, estado);
 					}else {
 						LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
-						us = new Lector(id, correo, contraseña, fechaNacimiento, estado);
+						us = new Lector(id, correo, contrasena, fechaNacimiento, estado);
 					}
 					usuarios.add(us);
 				}
@@ -121,7 +121,7 @@ public class DataUsuario {
 				inv = (Investigador) us;
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,nombre,apellido,dni,estado,recibirNotificaciones) values(?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, inv.getCorreo());
-				pstmt.setString(2, inv.getContraseña());
+				pstmt.setString(2, inv.getContrasena());
 				pstmt.setString(3, inv.getNombre());
 				pstmt.setString(4, inv.getApellido());
 				pstmt.setString(5, inv.getDni());
@@ -131,7 +131,7 @@ public class DataUsuario {
 				le = (Lector) us;
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into usuario(correo,contraseña,fechaNacimiento,estado,recibirNotificaciones) values(?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 				pstmt.setString(1, le.getCorreo());
-				pstmt.setString(2, le.getContraseña());
+				pstmt.setString(2, le.getContrasena());
 				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
 				pstmt.setString(4, le.getEstado());
 				pstmt.setBoolean(5, le.getRecibirNotificaciones());
@@ -179,7 +179,7 @@ public class DataUsuario {
 				inv = (Investigador) us;
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, nombre = ?, apellido = ?, dni = ?, estado = ?, recibirNotificaciones = ? where idUsuario = ?");
 				pstmt.setString(1, inv.getCorreo());
-				pstmt.setString(2, inv.getContraseña());
+				pstmt.setString(2, inv.getContrasena());
 				pstmt.setString(3, inv.getNombre());
 				pstmt.setString(4, inv.getApellido());
 				pstmt.setString(5, inv.getDni());
@@ -187,10 +187,10 @@ public class DataUsuario {
 				pstmt.setInt(8, inv.getIdUsuario());
 				pstmt.setBoolean(7, inv.getRecibirNotificaciones());
 			}else {
-				le = new Lector(us.getIdUsuario(), us.getCorreo(), us.getContraseña(), getFechaNacimiento(us.getIdUsuario()));
+				le = new Lector(us.getIdUsuario(), us.getCorreo(), us.getContrasena(), getFechaNacimiento(us.getIdUsuario()));
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ?, estado = 'lector', recibirNotificaciones = ? where idUsuario = ?");
 				pstmt.setString(1, le.getCorreo());
-				pstmt.setString(2, le.getContraseña());
+				pstmt.setString(2, le.getContrasena());
 				pstmt.setTimestamp(3, java.sql.Timestamp.valueOf(le.getFechaNacimiento()));
 				pstmt.setInt(5, le.getIdUsuario());
 				pstmt.setBoolean(4, le.getRecibirNotificaciones());
@@ -260,18 +260,18 @@ public class DataUsuario {
 			rs = pstmt.executeQuery();
 			if(rs != null && rs.next()) {
 				int id = rs.getInt("idUsuario");
-				String contraseña = rs.getString("contraseña");
+				String contrasena = rs.getString("contraseña");
 				String estado = rs.getString("estado");
 				boolean recibirNotificaciones = rs.getBoolean("recibirNotificaciones");
 				if(estado.equals("investigador")) {
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String dni = rs.getString("dni");
-					us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+					us = new Investigador(id, correo, contrasena, nombre, apellido, dni);
 					us.setRecibirNotificaciones(recibirNotificaciones);
 				}else {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
-					us = new Lector(id, correo, contraseña, fechaNacimiento, estado);
+					us = new Lector(id, correo, contrasena, fechaNacimiento, estado);
 					us.setRecibirNotificaciones(recibirNotificaciones);
 				}
 			}
@@ -311,12 +311,12 @@ public class DataUsuario {
 				while(rs.next()) {
 					int id = rs.getInt("idUsuario");
 					String correo = rs.getString("correo");
-					String contraseña = rs.getString("contraseña");
+					String contrasena = rs.getString("contraseña");
 					String estado = rs.getString("estado");
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String dni = rs.getString("dni");
-					Investigador us = new Investigador(id, correo, contraseña, nombre, apellido, dni, estado);
+					Investigador us = new Investigador(id, correo, contrasena, nombre, apellido, dni, estado);
 					usuarios.add(us);
 				}
 			}
@@ -384,7 +384,7 @@ public class DataUsuario {
 			rs = pstmt.executeQuery();
 			while(rs != null && rs.next()) {
 				int id = rs.getInt("idUsuario");
-				String contraseña = rs.getString("contraseña");
+				String contrasena = rs.getString("contraseña");
 				String estado = rs.getString("estado");
 				String correo = rs.getString("correo");
 				Usuario us;
@@ -392,10 +392,10 @@ public class DataUsuario {
 					String nombre = rs.getString("nombre");
 					String apellido = rs.getString("apellido");
 					String dni = rs.getString("dni");
-					us = new Investigador(id, correo, contraseña, nombre, apellido, dni);
+					us = new Investigador(id, correo, contrasena, nombre, apellido, dni);
 				}else {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
-					us = new Lector(id, correo, contraseña, fechaNacimiento, estado);
+					us = new Lector(id, correo, contrasena, fechaNacimiento, estado);
 				}
 				usuarios.add(us);
 			}

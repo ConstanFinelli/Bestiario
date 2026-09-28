@@ -43,7 +43,7 @@ public class CrearSolicitud extends HttpServlet {
 		}
 
 		
-		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), LogicUsuario.dehashPassword(user.getContraseña()), nombre, apellido, dni, "solicitante", user.getRecibirNotificaciones());
+		Investigador solicitud = new Investigador (user.getIdUsuario(), user.getCorreo(), LogicUsuario.dehashPassword(user.getContrasena()), nombre, apellido, dni, "solicitante", user.getRecibirNotificaciones());
 	
 		Usuario actualizacion = null;
 		try{

@@ -3,7 +3,7 @@ package entities;
 public class Usuario {
 	private int idUsuario;
 	private String correo;
-	private String contraseña;
+	private String contrasena;
 	private String estado;
 	private Boolean recibirNotificaciones;
 
@@ -11,24 +11,24 @@ public class Usuario {
 		
 	}
 	
-	public Usuario(int id, String correo, String contraseña, String state) {
+	public Usuario(int id, String correo, String contrasena, String state) {
 		this.idUsuario = id;
 		this.correo = correo;
-		this.contraseña = contraseña;
+		this.contrasena = contrasena;
 		this.estado = state;
 	}
 	
-	public Usuario(int id, String correo, String contraseña, String state, Boolean recibirNotificaciones) {
+	public Usuario(int id, String correo, String contrasena, String state, Boolean recibirNotificaciones) {
 		this.idUsuario = id;
 		this.correo = correo;
-		this.contraseña = contraseña;
+		this.contrasena = contrasena;
 		this.estado = state;
 		this.recibirNotificaciones = recibirNotificaciones;
 	}
 
-	public Usuario(String correo, String contraseña, String state) {
+	public Usuario(String correo, String contrasena, String state) {
 		this.correo = correo;
-		this.contraseña = contraseña;
+		this.contrasena = contrasena;
 		this.estado = state;
 	}
 	
@@ -57,17 +57,17 @@ public class Usuario {
 		this.correo = correo;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getContrasena() {
+		return contrasena;
 	}
 
-	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
 	}
 
 	@Override
 	public String toString() {
-		return ("Id: " + idUsuario + "<br>Correo: " + correo + "<br>Contraseña:" + contraseña);
+		return ("Id: " + idUsuario + "<br>Correo: " + correo + "<br>Contraseña:" + contrasena);
 	}
 
 	public String getEstado() {

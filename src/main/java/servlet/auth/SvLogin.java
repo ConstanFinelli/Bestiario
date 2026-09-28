@@ -47,7 +47,7 @@ public class SvLogin extends HttpServlet {
 		}
 		
 		if(usuario != null) {
-			if(contrasena.equals(LogicUsuario.dehashPassword(usuario.getContraseña()))) {
+			if(contrasena.equals(LogicUsuario.dehashPassword(usuario.getContrasena()))) {
 				HttpSession session = request.getSession();
 	            session.setAttribute("user", usuario);
 	            if(urlAnterior != null && !urlAnterior.trim().isEmpty() 
