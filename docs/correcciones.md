@@ -10,9 +10,8 @@
 
 1. [Resumen de Tareas Pendientes](#resumen-de-tareas-pendientes)
 2. [Métodos, Lógica Repetida y Código Muerto](#1-métodos-lógica-repetida-y-código-muerto)
-3. [Atributos No Utilizados en Entidades de Dominio (`entities.*`)](#2-atributos-no-utilizados-en-entidades-de-dominio)
-4. [Refactorización Arquitectónica SOLID: Descomposición de Capa DAO](#3-refactorización-arquitectónica-solid-descomposición-de-capa-dao)
-5. [Plan de Acción Priorizado](#4-plan-de-acción-priorizado)
+3. [Refactorización Arquitectónica SOLID: Descomposición de Capa DAO](#2-refactorización-arquitectónica-solid-descomposición-de-capa-dao)
+4. [Plan de Acción Priorizado](#3-plan-de-acción-priorizado)
 
 ---
 
@@ -22,7 +21,6 @@ El presente documento concentra exclusivamente los defectos, código redundante,
 
 - **Refactorización modular de la capa DAO (`data.*`)**: Modularizar clases DAO extensas (`DataBestia`, `DataRegistro`, `DataUsuario`, etc.) convirtiéndolas en ensambladores/fachadas que deleguen a clases individuales por operación (Single Responsibility Principle - SRP).
 - **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
-- **3 atributos no utilizados** en entidades de dominio (`Habitat.java`, `Bestia.java`) e identificador con caracter no-ASCII (`Usuario.contraseña`).
 
 ---
 
@@ -61,18 +59,7 @@ Cuando `errorGlobal` es una lista, SweetAlert2 imprime el resultado de `List.toS
 
 ---
 
-## 2. Atributos No Utilizados en Entidades de Dominio (`entities.*`)
-
-| Entidad        | Atributo          | Tipo                     | Diagnóstico                                                                                                    | Solución Recomendada                                                                                      |
-| -------------- | ----------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `Habitat.java` | `caracteristicas` | `LinkedList<String>`     | **Nunca leído** (`gets=0`). Las características se gestionan mediante la entidad `CaracteristicaHabitat`.      | Eliminar el atributo y sus métodos getters/setters en `Habitat.java`.                                     |
-| `Habitat.java` | `bestias`         | `LinkedList<Bestia>`     | **Nunca leído** (`gets=0`). La relación inversa es gestionada desde `Bestia` y `bestia_habitat`.               | Eliminar el atributo y sus métodos getters/setters en `Habitat.java`.                                     |
-| `Bestia.java`  | `comentarios`     | `LinkedList<Comentario>` | Solo se utiliza dentro del método `toString()`. Los comentarios se cargan en el servlet vía `LogicComentario`. | Evaluar su remoción para evitar retención innecesaria de objetos en memoria.                              |
-| `Usuario.java` | `contraseña`      | `String`                 | El atributo y sus métodos accesores contienen la letra **ñ** (`getContraseña()`, `setContraseña()`).           | Renombrar a `contrasena` o `password` para evitar problemas de encoding entre plataformas y compiladores. |
-
----
-
-## 3. Refactorización Arquitectónica SOLID: Descomposición de Capa DAO
+## 2. Refactorización Arquitectónica SOLID: Descomposición de Capa DAO
 
 ### 3.1. Motivación y Diagnóstico
 
@@ -151,12 +138,10 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 
 ---
 
-## 4. Plan de Acción Priorizado
+## 3. Plan de Acción Priorizado
 
 ### Fase 1: Optimización de Consultas, Entidades y Código Muerto (Media/Baja Prioridad)
 
-- [ ] Eliminar atributos y accesores de `caracteristicas` y `bestias` en `Habitat.java`.
-- [ ] Renombrar `Usuario.contraseña` a `contrasena` o `password`.
 - [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
 
 ### Fase 2: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
