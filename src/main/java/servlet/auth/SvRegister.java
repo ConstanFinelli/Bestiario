@@ -93,8 +93,7 @@ public class SvRegister extends HttpServlet {
 		}
 		
 		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+			request.setAttribute("errorGlobal", String.join("<br>", errores));
 		}
 		request.setAttribute("logMsg", logMessage);
 		rd.forward(request, response);

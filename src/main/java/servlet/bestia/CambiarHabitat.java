@@ -91,8 +91,7 @@ public class CambiarHabitat extends HttpServlet {
 		}
 		
 		if(!errores.isEmpty()) {
-			errores.add("");
-			request.setAttribute("errorGlobal", errores);
+			request.setAttribute("errorGlobal", String.join("<br>", errores));
 		}
 		
 		request.getSession().setAttribute("bestia", bestia);

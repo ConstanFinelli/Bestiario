@@ -142,7 +142,7 @@ Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador 
 
 ### Fase 1: Optimización de Consultas, Entidades y Código Muerto (Media/Baja Prioridad)
 
-- [ ] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
+- [x] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
 
 ### Fase 2: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
 
