@@ -38,8 +38,7 @@ public class EliminarBestia extends HttpServlet {
 			request.setAttribute("errorGlobal", "No se ha podido eliminar la bestia seleccionada. ");
 		}
 		request.setAttribute("deletedBestia", bestia);
-		response.sendRedirect(HttpRoutes.LISTAR_BESTIAS(request.getContextPath()));		
-		
+		request.getRequestDispatcher(HttpRoutes.LISTAR_BESTIAS("")).forward(request, response);		
 	}
 
 }

@@ -36,17 +36,17 @@ public class AprobarSolicitud extends HttpServlet {
 		} catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error al parsear idUsuario en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "La id del usuario es inválida. ");
-			response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
+			request.getRequestDispatcher(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP("")).forward(request, response);
 			return;
 		} catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Usuario no encontrado en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "El usuario no fue encontrado. ");
-			response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
+			request.getRequestDispatcher(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP("")).forward(request, response);
 			return;
 		} catch(Exception e) {
 			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "No se ha conseguido el usuario. ");
-			response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
+			request.getRequestDispatcher(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP("")).forward(request, response);
 			return;
 		}
 
@@ -55,9 +55,13 @@ public class AprobarSolicitud extends HttpServlet {
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Usuario no encontrado al actualizar en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "El usuario no existe. ");
+			request.getRequestDispatcher(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP("")).forward(request, response);
+			return;
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error al aprobar solicitud en el servlet AprobarSolicitud", e);
 			request.setAttribute("errorGlobal", "No se ha podido aprobar la solicitud. ");
+			request.getRequestDispatcher(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP("")).forward(request, response);
+			return;
 		}
 
 		response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
