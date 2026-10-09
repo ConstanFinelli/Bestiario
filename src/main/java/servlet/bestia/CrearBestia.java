@@ -51,6 +51,7 @@ public class CrearBestia extends HttpServlet {
 			logger.log(Level.WARNING, "Error buscando los tipos de evidencia en la base de datos en el servlet CrearBestia", e);
 			request.setAttribute("errorGlobal", "Error buscando los tipos de evidencia");
 			request.getRequestDispatcher(HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP("")).forward(request, response);
+			return;
 		}
 		
 		
@@ -58,7 +59,7 @@ public class CrearBestia extends HttpServlet {
 		try {
 			if (nombre != null && peligrosidad != null) {
 				String estado = "pendiente";
-				if (usuario.getEstado().equals("investigador")) {
+				if (usuario != null && usuario.getEstado().equals("investigador")) {
 					estado = "aprobado";
 				} 
 				Bestia bestia = new Bestia(nombre, peligrosidad, estado);
@@ -68,7 +69,8 @@ public class CrearBestia extends HttpServlet {
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al crear bestia en el servlet CrearBestia", e);
 			request.setAttribute("errorGlobal", "No se ha podido crear la bestia. ");
-			request.getRequestDispatcher(HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP("")).forward(request, response);;
+			request.getRequestDispatcher(HttpRoutes.CREAR_PROPUESTA_BESTIA_JSP("")).forward(request, response);
+			return;
 		}
 		rd.forward(request, response);
 	}
