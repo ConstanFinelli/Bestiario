@@ -1,156 +1,167 @@
-# Informe de Correcciones Pendientes del Sistema Bestiario
+# Informe de Auditoría y Correcciones Pendientes del Sistema Bestiario
 
-**Fecha:** Septiembre 2026  
-**Proyecto:** Bestiario (Aplicación Web Jakarta EE / MVC / Tomcat)  
-**Ubicación del Documento:** `docs/correcciones.md`
+**Fecha de Actualización:** Octubre 2026  
+**Proyecto:** Bestiario (Aplicación Web Jakarta EE 10 / MVC / Apache Tomcat / MySQL 8)  
+**Ubicación del Documento:** `docs/correcciones.md`  
+**Dictamen de Entrega:** 🔴 **NO ESTÁ LISTO PARA SER ENTREGADO EN SU ESTADO ACTUAL**
 
 ---
 
 ## Índice
 
-1. [Resumen de Tareas Pendientes](#resumen-de-tareas-pendientes)
-2. [Métodos, Lógica Repetida y Código Muerto](#1-métodos-lógica-repetida-y-código-muerto)
-3. [Refactorización Arquitectónica SOLID: Descomposición de Capa DAO](#2-refactorización-arquitectónica-solid-descomposición-de-capa-dao)
-4. [Plan de Acción Priorizado](#3-plan-de-acción-priorizado)
+1. [Dictamen Ejecutivo](#1-dictamen-ejecutivo)
+2. [Bloqueantes Críticos de Ejecución y Despliegue (Showstoppers)](#2-bloqueantes-críticos-de-ejecución-y-despliegue-showstoppers)
+3. [Vulnerabilidades de Seguridad y Control de Acceso](#3-vulnerabilidades-de-seguridad-y-control-de-acceso)
+4. [Manejo de Errores, Robustez y Experiencia de Usuario](#4-manejo-de-errores-robustez-y-experiencia-de-usuario)
+5. [Arquitectura, Persistencia y Calidad de Código](#5-arquitectura-persistencia-y-calidad-de-código)
+6. [Documentación y Requisitos de Entrega](#6-documentación-y-requisitos-de-entrega)
+7. [Plan de Acción Priorizado](#7-plan-de-acción-priorizado)
 
 ---
 
-## Resumen de Tareas Pendientes
+## 1. Dictamen Ejecutivo
 
-El presente documento concentra exclusivamente los defectos, código redundante, inconsistencias y oportunidades de optimización que restan por solucionar en el proyecto:
+El proyecto compila exitosamente bajo Maven (`mvn compile` / `mvn package` -> `BUILD SUCCESS`) y cuenta con una arquitectura base MVC funcional, mapeo entidad-relacional e integraciones externas (Cloudinary, Jakarta Mail).
 
-- **Refactorización modular de la capa DAO (`data.*`)**: Modularizar clases DAO extensas (`DataBestia`, `DataRegistro`, `DataUsuario`, etc.) convirtiéndolas en ensambladores/fachadas que deleguen a clases individuales por operación (Single Responsibility Principle - SRP).
-- **Disparidad en el manejo de `errorGlobal`** (formatos de lista vs string con corchetes en UI).
+Sin embargo, **no está listo para ser entregado** debido a la presencia de:
+- **Fallas críticas de seguridad:** Endpoints administrativos sin autenticación ni filtros de acceso, contraseñas reversibles en Base64 y riesgo de inyección XSS.
+- **Pérdida de mensajes de error:** Anti-patrón de asignación a `request` previo a `response.sendRedirect(...)`.
+- **Fragilidad en despliegue:** Dependencia estricta de `.env` que impide el arranque fuera de entornos locales específicos y driver MySQL fuera del `pom.xml`.
+- **Cero tests automatizados:** Ausencia total de pruebas en `src/test/java`.
+- **Documentación incompleta:** `README.md` sin instrucciones de instalación, variables ni restauración de BD.
 
 ---
 
-## 1. Métodos, Lógica Repetida y Código Muerto
+## 2. Bloqueantes Críticos de Ejecución y Despliegue (Showstoppers)
 
-### 1.1. Disparidad en Manejo de Errores Globales (`errorGlobal`)
+### 2.1. Fragilidad en Carga de Variables de Entorno (`EnvHelper.java`)
+- **Ubicación:** `src/main/java/helpers/EnvHelper.java` (línea 6)
+- **Diagnóstico:** `public static Dotenv dotEnv = Dotenv.load();` exige la presencia física de un archivo `.env` en el directorio de trabajo del proceso JVM (`CATALINA_HOME/bin/` en Tomcat).
+- **Efecto:** Si un evaluador despliega el WAR en un servidor Tomcat o contenedor sin copiar manualmente el `.env` en `bin/`, la aplicación arroja `DotenvException` y falla con `ExceptionInInitializerError` al cargar cualquier clase que dependa de la base de datos o Cloudinary.
+- **Solución:** Configurar `Dotenv.configure().ignoreIfMissing().load()` y proveer un fallback a variables del sistema con `System.getenv(variableName)`.
 
-Existe una discrepancia entre cómo los distintos servlets cargan los mensajes de error en el request:
+### 2.2. Driver JDBC de MySQL Omitido en `pom.xml`
+- **Ubicación:** `pom.xml` vs `src/main/webapp/WEB-INF/lib/`
+- **Diagnóstico:** El archivo `mysql-connector-j-9.3.0.jar` se encuentra copiado manualmente en `WEB-INF/lib/` en vez de estar declarado como dependencia en el archivo de construcción Maven.
+- **Efecto:** Entornos de compilación limpia, empaquetado CI/CD o entornos que utilicen el POM carecerán del driver si no se incluye explícitamente.
+- **Solución:** Añadir la dependencia formal en `pom.xml`:
+  ```xml
+  <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>9.3.0</version>
+  </dependency>
+  ```
 
-- Algunos servlets guardan una lista:
+---
+
+## 3. Vulnerabilidades de Seguridad y Control de Acceso
+
+### 3.1. Inexistencia de Filtros (`Filter` / `@WebFilter`) y Endpoints Desprotegidos
+- **Diagnóstico:** El proyecto no posee ningún filtro Jakarta EE (`Filter` / `@WebFilter`). De más de 40 servlets en el sistema, más de 30 no realizan validación de sesión ni de rol.
+- **Efecto:** Cualquier usuario anónimo (mediante Postman, curl o formularios manipulados) puede ejecutar operaciones críticas sin autenticación:
+  - `POST /investigadores/aprobarSolicitud?idUsuario=X` -> Asciende a cualquier usuario a investigador ([`AprobarSolicitud.java`]).
+  - `POST /investigadores/rechazarSolicitud?idUsuario=X` -> Blanquea el perfil del usuario ([`RechazarSolicitud.java`]).
+  - `GET /investigadores/listarSolicitantes` -> Expone listado con DNI, nombre y correos de postulantes ([`ListarSolicitantes.java`]).
+  - `POST /bestias/eliminar?id=X` -> Borra una bestia de la BD ([`EliminarBestia.java`]).
+  - Operaciones CRUD sobre categorías, hábitats, tipos de evidencia y noticias totalmente abiertas.
+- **Solución:** Implementar un `AuthFilter` que intercepte `/admin/*`, `/investigadores/*` y endpoints de mutación, verificando sesión activa y rol (`investigador` / `lector`).
+
+### 3.2. Contraseñas Codificadas en Base64 (Falsa Encriptación)
+- **Ubicación:** `src/main/java/logic/LogicUsuario.java` (líneas 53-61)
+- **Diagnóstico:**
   ```java
-  List<String> errores = new ArrayList<>();
-  ...
-  if(!errores.isEmpty()) {
-      errores.add("");
-      request.setAttribute("errorGlobal", errores);
+  public static String hashPassword(String pass) {
+      String encoded = Base64.getEncoder().encodeToString(pass.getBytes(StandardCharsets.UTF_8));
+      return encoded.toString();
+  }
+  public static String dehashPassword(String pass) {
+      String decoded = new String(Base64.getDecoder().decode(pass.getBytes(StandardCharsets.UTF_8)));
+      return decoded.toString();
   }
   ```
-- Otros servlets asignan un string simple:
-  ```java
-  request.setAttribute("errorGlobal", "Mensaje de error");
+- **Efecto:** Base64 **no es un algoritmo criptográfico ni de hashing**, sino una simple codificación de texto plano totalmente reversible. Cualquier persona con acceso de lectura a la base de datos puede descifrar todas las contraseñas al instante. En una evaluación formal de desarrollo de software esto constituye un motivo habitual de reprobación.
+- **Solución:** Implementar hashing criptográfico unidireccional con salt mediante BCrypt (o PBKDF2 / SHA-256 con salt aleatorio).
+
+### 3.3. Riesgo de XSS e Inyección de Script en `components/error.jsp`
+- **Ubicación:** `src/main/webapp/components/error.jsp` (línea 28)
+- **Diagnóstico:**
+  ```jsp
+  html: '<%= request.getAttribute("errorGlobal")%><br>Por favor, intente mas tarde.',
   ```
-  En `components/error.jsp` se renderiza:
+- **Efecto:** La cadena Java se imprime sin escape dentro del script JS de SweetAlert2. Si un mensaje contiene comillas simples (`'`), saltos de línea o texto proveniente de parámetros de entrada, rompe el script o expone a vulnerabilidades de Cross-Site Scripting (XSS).
+- **Solución:** Escapar caracteres especiales con JSTL `<c:out value="..." />` o sanitizar comillas y caracteres HTML previo a la renderización en JS.
 
-```jsp
-html: '<%= request.getAttribute("errorGlobal")%><br>Por favor, intente mas tarde.',
-```
+---
 
-Cuando `errorGlobal` es una lista, SweetAlert2 imprime el resultado de `List.toString()`, mostrando corchetes y espacios extra (e.g. `[Error 1, Error 2, ]`).
+## 4. Manejo de Errores, Robustez y Experiencia de Usuario
 
-- **Solución:** Unificar el mecanismo para que `errorGlobal` contenga siempre un `String` limpio. Si se acumulan múltiples errores, unirlos previamente:
+### 4.1. Pérdida de Feedback por `request.setAttribute` Previo a `sendRedirect`
+- **Ubicaciones:**
+  - `src/main/java/servlet/Investigador/AprobarSolicitud.java` (líneas 38-40, 43-45)
+  - `src/main/java/servlet/Investigador/RechazarSolicitud.java` (líneas 40-42, 45-47)
+  - `src/main/java/servlet/bestia/EliminarBestia.java` (líneas 38-41)
+- **Diagnóstico:** Se guarda el mensaje en el `request` y luego se ejecuta una redirección:
   ```java
-  request.setAttribute("errorGlobal", String.join("<br>", errores));
+  request.setAttribute("errorGlobal", "La id del usuario es inválida. ");
+  response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
   ```
-  y eliminar la adición de cadenas vacías (`errores.add("")`).
+- **Efecto:** Al redirigir, se inicia un nuevo ciclo de petición HTTP y los atributos del `request` original se descartan. El usuario no recibe ninguna notificación de error.
+- **Solución:** Utilizar `session.setAttribute("errorMsg", ...)` (y consumirlo/removerlo en la vista receptora) o cambiar a `RequestDispatcher.forward(...)` cuando corresponda mantener los atributos del request.
 
 ---
 
-## 2. Refactorización Arquitectónica SOLID: Descomposición de Capa DAO
+## 5. Arquitectura, Persistencia y Calidad de Código
 
-### 3.1. Motivación y Diagnóstico
+### 5.1. Ausencia de Transacciones Relacionales (`ACID`)
+- **Diagnóstico:** Ningún método de la capa DAO (`data.*`) gestiona transacciones explícitas (`conn.setAutoCommit(false)`, `conn.commit()`, `conn.rollback()`).
+- **Efecto:** En operaciones compuestas (e.g. alta o edición de una bestia y sus relaciones en `bestia_categoria` y `bestia_habitat`), si una sentencia SQL secundaria falla, la base de datos queda con registros huérfanos e inconsistentes.
+- **Solución:** Implementar control transaccional explícito o encapsular operaciones atómicas multi-tabla dentro de transacciones JDBC.
 
-Actualmente, las clases de la capa DAO (`src/main/java/data/`) concentran la totalidad de las operaciones de persistencia de una entidad en archivos únicos de gran tamaño (e.g., `DataBestia.java` ~540 líneas, `DataRegistro.java` ~490 líneas, `DataUsuario.java` ~450 líneas).
+### 5.2. Violación de Capas en Módulos de Autenticación
+- **Ubicaciones:** `src/main/java/servlet/auth/SvForgotPassword.java` (línea 49) y `src/main/java/servlet/auth/SvResetPassword.java` (líneas 33, 70).
+- **Diagnóstico:** Los servlets instancian directamente `DataUsuario` y `DataPasswordResetToken`, puenteando la capa `Logic*`.
+- **Solución:** Enrutar todas las operaciones a través de `LogicUsuario` y crear `LogicPasswordResetToken`.
 
-Esto presenta desventajas frente a los principios **SOLID**, especialmente el **Principio de Responsabilidad Única (SRP - Single Responsibility Principle)**:
-
-- **Sobrecarga de responsabilidades:** Una misma clase gestiona consultas individuales, listados filtrados, comandos de alta, actualización de estado, borrados en cascada manuales y gestión de relaciones N:M.
-- **Dificultad de mantenimiento y testeo:** La modificación de una consulta SQL o el ajuste de una regla de mapeo (`ResultSet`) obliga a editar un archivo extenso y central, aumentando el riesgo de efectos colaterales.
-- **Baja cohesión:** Cada método maneja sus propios parámetros, sentencias SQL y ciclos de vida de recursos, compartiendo únicamente la conexión a base de datos.
-
-### 3.2. Propuesta: Clases DAO como Ensambladores de Clases de Operación Individual
-
-Se propone descomponer cada clase `Data*` para que actúe como un **Ensamblador / Fachada (Facade)** que delega la ejecución en clases granulares independientes (una clase por método u operación de persistencia):
-
-#### Arquitectura Propuesta:
-
-1. **Clases de Operación Específicas (Action / Query / Command Objects):**
-   - Agrupadas en subpaquetes modulares bajo `data` (por ejemplo, `data.bestia.*`, `data.registro.*`, `data.usuario.*`).
-   - Cada clase encapsula:
-     - La consulta SQL correspondiente como constante.
-     - El manejo del ciclo de vida de `PreparedStatement`, `ResultSet` y liberación de recursos en bloque `finally`.
-     - El mapeo específico de la entidad.
-     - El control y lanzamiento de `DataNotFoundException` y registro en `Logger`.
-   - _Ejemplo en `data.bestia`:_
-     - `GetOneBestia.java`: Búsqueda individual por ID.
-     - `FindAllBestias.java`: Listado completo.
-     - `FindByCategoriaBestia.java`: Filtrado por categoría.
-     - `SaveBestia.java`: Inserción de nueva bestia.
-     - `UpdateBestia.java`: Actualización de datos básicos.
-     - `ApproveBestia.java`: Cambio de estado a aprobado.
-     - `DeleteBestia.java`: Eliminación de bestia.
-     - `VincularHabitatBestia.java` / `DesvincularHabitatBestia.java`: Gestión de relaciones intermedias.
-
-2. **Clase `Data*` como Ensamblador / Fachada (`DataBestia.java`):**
-   - Conserva exactamente los mismos métodos y firmas públicas consumidas por la capa `logic` (`LogicBestia`), garantizando **cero impacto y total compatibilidad hacia atrás**:
-
-     ```java
-     package data;
-
-     import data.bestia.*;
-     import entities.Bestia;
-     import exceptions.DataNotFoundException;
-     import java.util.LinkedList;
-
-     public class DataBestia {
-         private final GetOneBestia getOneOp = new GetOneBestia();
-         private final FindAllBestias findAllOp = new FindAllBestias();
-         private final SaveBestia saveOp = new SaveBestia();
-         private final UpdateBestia updateOp = new UpdateBestia();
-         private final ApproveBestia approveOp = new ApproveBestia();
-         private final DeleteBestia deleteOp = new DeleteBestia();
-         // ...
-
-         public Bestia getOne(Bestia b) throws DataNotFoundException {
-             return getOneOp.execute(b);
-         }
-
-         public LinkedList<Bestia> findAll() {
-             return findAllOp.execute();
-         }
-
-         public Bestia update(Bestia b) throws DataNotFoundException {
-             return updateOp.execute(b);
-         }
-         // ...
-     }
-     ```
-
-### 3.3. Beneficios Técnicos
-
-- **Cumplimiento estricto de SRP:** Cada clase de operación tiene una sola razón para cambiar (su sentencia SQL o mapeo específico).
-- **Archivos compactos y legibles:** Clases individuales de 30 a 70 líneas en lugar de archivos monolíticos de 500+ líneas.
-- **Facilidad para pruebas unitarias / de integración:** Posibilidad de testear o mockear operaciones individuales de forma aislada.
-- **Sin impacto en capas superiores:** La capa `logic` continúa consumiendo `DataBestia`, `DataRegistro`, etc., sin requerir modificaciones.
+### 5.3. Inexistencia de Pruebas Automatizadas
+- **Diagnóstico:** La carpeta `src/test/java/` se encuentra vacía (0 pruebas unitarias y 0 pruebas de integración).
+- **Solución:** Incorporar suite mínima de pruebas unitarias con JUnit 5 para lógica de negocio crítica (`LogicUsuario`, `LogicBestia`, validaciones de hashing y tokens).
 
 ---
 
-## 3. Plan de Acción Priorizado
+## 6. Documentación y Requisitos de Entrega
 
-### Fase 1: Optimización de Consultas, Entidades y Código Muerto (Media/Baja Prioridad)
-
-- [x] Estandarizar la carga de `errorGlobal` como `String` limpio en todos los servlets.
-
-### Fase 2: Refactorización Arquitectónica SOLID en Capa DAO (Mejora Estructural)
-
-- [ ] Definir la estructura base de clases de operación (convención o interfaz `execute(...)`) y subpaquetes (`data.<entidad>.*`).
-- [ ] Implementar la descomposición piloto en `DataBestia.java` (el DAO más extenso y acoplado).
-- [ ] Reestructurar progresivamente `DataRegistro.java` y `DataUsuario.java`.
-- [ ] Extender la arquitectura al resto de DAOs del sistema (`DataEvidencia`, `DataHabitat`, `DataCategoria`, etc.).
+### 6.1. `README.md` Incompleto
+- **Diagnóstico:** El archivo `README.md` actual contiene únicamente 4 enlaces a carpetas de Google Drive.
+- **Solución:** Proveer una documentación completa que detalle:
+  1. Requisitos de entorno (JDK 21, Apache Tomcat 10.1+, MySQL 8.x).
+  2. Instrucciones para levantar la base de datos a partir de `docs/bestiario.sql` y `docs/seed_data.sql`.
+  3. Guía de configuración del archivo `.env` basada en `.env.example` (Cloudinary, Gmail SMTP, credenciales BD).
+  4. Credenciales de usuarios de prueba predefinidos (administrador/investigador y lector).
+  5. Instrucciones de compilación y empaquetado con Maven (`mvn clean package`).
 
 ---
 
-_Documento de seguimiento técnico - Proyecto Bestiario._
+## 7. Plan de Acción Priorizado
+
+### Fase 1: Correcciones Críticas Inmediatas (Imprescindibles para Aprobar)
+- [ ] Declarar la dependencia `mysql-connector-j` en `pom.xml`.
+- [ ] Implementar `AuthFilter` (`@WebFilter`) para proteger endpoints administrativos y de mutación (`/admin/*`, `/investigadores/*`, eliminación y altas).
+- [ ] Robustecer `EnvHelper.java` con `.ignoreIfMissing()` y fallback a `System.getenv(...)`.
+
+### Fase 2: Seguridad y Robustez de Errores
+- [ ] Reemplazar la codificación Base64 en `LogicUsuario` por hashing criptográfico unidireccional (BCrypt o SHA-256 + salt).
+- [ ] Corregir la pérdida de feedback de error (`request.setAttribute` + `sendRedirect`) en `AprobarSolicitud`, `RechazarSolicitud` y `EliminarBestia` migrando a atributos de sesión o forward.
+- [ ] Sanitizar o escapar el atributo `errorGlobal` en `components/error.jsp` para evitar rotura de script y riesgo XSS.
+
+### Fase 3: Arquitectura y Calidad
+- [ ] Encapsular el acceso a datos de tokens en `LogicPasswordResetToken` para eliminar la instanciación directa de DAOs en `SvForgotPassword` y `SvResetPassword`.
+- [ ] Implementar manejo transaccional explícito (`commit`/`rollback`) en operaciones compuestas multi-tabla.
+- [ ] Agregar suite de pruebas unitarias mínimas en `src/test/java` con JUnit 5.
+
+### Fase 4: Documentación y Entrega
+- [ ] Completar `README.md` con instrucciones de instalación, prerequisitos, guía de variables `.env`, restauración de base de datos y usuarios de prueba.
+
+---
+
+_Documento de seguimiento técnico y control de calidad - Proyecto Bestiario._
