@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import data.DataPasswordResetToken;
-import data.DataUsuario;
 import entities.PasswordResetToken;
 import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
@@ -15,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import logic.LogicPasswordResetToken;
 import logic.LogicUsuario;
 
 /**
@@ -30,11 +29,11 @@ public class SvResetPassword extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = request.getParameter("token");
-		DataPasswordResetToken tokenDao = new DataPasswordResetToken();
+		LogicPasswordResetToken logicToken = new LogicPasswordResetToken();
 		PasswordResetToken t = null;
 
 		try {
-			t = tokenDao.getOne(token);
+			t = logicToken.getOne(token);
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Token no encontrado en el servlet SvResetPassword: " + token, e);
 			t = null;
@@ -66,13 +65,13 @@ public class SvResetPassword extends HttpServlet {
 			return;
 		}
 		
-		DataPasswordResetToken tokenDao = new DataPasswordResetToken();
-		DataUsuario usuarioDao = new DataUsuario();
+		LogicPasswordResetToken logicToken = new LogicPasswordResetToken();
+		LogicUsuario logicUsuario = new LogicUsuario();
 
 		PasswordResetToken  t = null;
 		
 		try {
-			t = tokenDao.getOne(token);
+			t = logicToken.getOne(token);
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Token no encontrado en el servlet SvResetPassword: " + token, e);
 			t = null;
@@ -87,7 +86,7 @@ public class SvResetPassword extends HttpServlet {
 
 		// cambiar contraseña
 		try {
-			usuarioDao.updatePassword(t.getIdUsuario(), LogicUsuario.hashPassword(nuevaPassword));
+			logicUsuario.updatePassword(t.getIdUsuario(), nuevaPassword);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error crítico al actualizar la contraseña del usuario en el servlet SvResetPassword", e);
 			request.setAttribute("errorGlobal", "No se ha podido actualizar la contraseña del usuario. ");
@@ -95,7 +94,7 @@ public class SvResetPassword extends HttpServlet {
 
 		// invalidar token
 		try {
-			tokenDao.markAsUsed(token);
+			logicToken.markAsUsed(token);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error crítico al actualizar el token del usuario en el servlet SvResetPassword", e);
 		}

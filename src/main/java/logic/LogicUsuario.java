@@ -76,4 +76,8 @@ public class LogicUsuario {
 	public Usuario delete(Usuario us) throws DataNotFoundException {
 		return usDAO.delete(us);
 	}
+
+	public void updatePassword(int idUsuario, String newPassword) {
+		usDAO.updatePassword(idUsuario, hashPassword(newPassword));
+	}
 }

@@ -6,8 +6,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import data.DataPasswordResetToken;
-import data.DataUsuario;
 import entities.PasswordResetToken;
 import entities.Usuario;
 import exceptions.DataNotFoundException;
@@ -18,6 +16,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicEmail;
+import logic.LogicPasswordResetToken;
+import logic.LogicUsuario;
 /**
  * Servlet implementation class SvForgotPassword
  */
@@ -44,13 +44,13 @@ public class SvForgotPassword extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-String correo = request.getParameter("correo");
+		String correo = request.getParameter("correo");
 		
-		DataUsuario daoUsuario = new DataUsuario();
+		LogicUsuario logicUsuario = new LogicUsuario();
 		
 		Usuario usuario = null;
 		try {
-			usuario = daoUsuario.getByEmail(correo);
+			usuario = logicUsuario.getByEmail(correo);
 		} catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Correo no encontrado en SvForgotPassword: " + correo, e);
 			usuario = null;
@@ -60,7 +60,7 @@ String correo = request.getParameter("correo");
 		}
 		
 		if(usuario != null) {
-			DataPasswordResetToken daoToken = new DataPasswordResetToken();
+			LogicPasswordResetToken logicToken = new LogicPasswordResetToken();
 			String token = UUID.randomUUID().toString();
 			
 			PasswordResetToken resetToken = new PasswordResetToken();
@@ -70,12 +70,12 @@ String correo = request.getParameter("correo");
 			resetToken.setUsed(false);
 			
 			try {
-				daoToken.deleteByUser(usuario.getIdUsuario());
+				logicToken.deleteByUser(usuario.getIdUsuario());
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error crítico al eliminar el token del usuario en el servlet SvForgotPassword", e);
 			}
 			try {
-			daoToken.save(resetToken);
+				logicToken.save(resetToken);
 			}catch(Exception e) {
 				logger.log(Level.WARNING, "Error crítico al agregar el token del usuario en el servlet SvForgotPassword", e);
 			}
