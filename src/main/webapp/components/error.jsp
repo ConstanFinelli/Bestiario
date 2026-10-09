@@ -19,13 +19,30 @@
 	box-shadow: none;
 }
 </style>
-<% if (request.getAttribute("errorGlobal") != null) { %>
+<% 
+    Object rawError = request.getAttribute("errorGlobal");
+    if (rawError == null && session != null) {
+        rawError = session.getAttribute("errorGlobal");
+        if (rawError != null) {
+            session.removeAttribute("errorGlobal");
+        }
+    }
+    if (rawError != null) { 
+        String safeError = rawError.toString()
+            .replace("\\", "\\\\")
+            .replace("'", "\\'")
+            .replace("\"", "\\\"")
+            .replace("\r", "")
+            .replace("\n", "\\n")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;");
+%>
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
             Swal.fire({
                 icon: 'error',
                 title: '¡Ups!',
-                html: '<%= request.getAttribute("errorGlobal")%><br>Por favor, intente mas tarde.',
+                html: '<%= safeError %><br>Por favor, intente mas tarde.',
                 confirmButtonText: 'Entendido'
             });
         });
