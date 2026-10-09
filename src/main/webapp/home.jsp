@@ -8,6 +8,7 @@
 	if(noticias == null ){
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_NOTICIAS("") + "?flag=ultimasNoticias");
 		rd.forward(request, response);
+		return;
 	}
 %>
 <html>
