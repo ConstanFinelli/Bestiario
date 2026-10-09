@@ -17,6 +17,7 @@
 	if(categorias == null ){
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_CATEGORIAS("")+"?flag=listaBestias");
 		rd.forward(request, response);
+		return;
 	}
 %>
 <!DOCTYPE html>

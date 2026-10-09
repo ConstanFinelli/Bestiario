@@ -33,6 +33,7 @@
         %> 
         	<% if(usuario == null){
         	response.sendRedirect(HttpRoutes.REGISTRO_JSP(request.getContextPath()) + "?id="+bestia.getIdBestia());
+        	return;
         } %>
         <form action="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%= bestia.getIdBestia()%>" method="POST" enctype="multipart/form-data">
         <section class="mainContent">

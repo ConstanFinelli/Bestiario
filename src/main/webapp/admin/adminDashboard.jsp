@@ -6,8 +6,10 @@
 	Usuario user = (Usuario) session.getAttribute("user");
 	if(user == null){
 		response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+		return;
 	}else if(!"investigador".equals(user.getEstado())){
 		response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+		return;
 	}
 %>
 <html>

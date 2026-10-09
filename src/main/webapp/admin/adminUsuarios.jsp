@@ -9,6 +9,7 @@
 	if(lectores == null ){
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_LECTORES(""));
 		rd.forward(request, response);
+		return;
 	}
 %>
 <h2>Gestionar usuarios</h2>

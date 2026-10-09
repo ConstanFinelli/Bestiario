@@ -9,6 +9,7 @@
 	if(categorias == null ){
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_CATEGORIAS(""));
 		rd.forward(request, response);
+		return;
 	}
 %>
 <h2>Gestionar categorías</h2>

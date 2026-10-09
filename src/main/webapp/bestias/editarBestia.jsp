@@ -10,6 +10,7 @@
 	Usuario user = (Usuario) session.getAttribute("user");
 	if(user == null){
 		response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
+		return;
 	}
 	Bestia bestia = (Bestia) session.getAttribute("bestia");
 	String imagen = (String) session.getAttribute("imagen");

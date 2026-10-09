@@ -9,6 +9,7 @@
 	if(tipos == null ){
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_TIPOS_EVIDENCIA(""));
 		rd.forward(request, response);
+		return;
 	}
 %>
 <h2>Gestionar tipos de evidencia</h2>
