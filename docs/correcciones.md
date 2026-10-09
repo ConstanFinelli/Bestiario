@@ -11,9 +11,8 @@
 
 1. [Dictamen Ejecutivo](#1-dictamen-ejecutivo)
 2. [Vulnerabilidades de Seguridad y Control de Acceso](#2-vulnerabilidades-de-seguridad-y-control-de-acceso)
-3. [Manejo de Errores, Robustez y Experiencia de Usuario](#3-manejo-de-errores-robustez-y-experiencia-de-usuario)
-4. [Documentación y Requisitos de Entrega](#4-documentación-y-requisitos-de-entrega)
-5. [Plan de Acción Priorizado](#5-plan-de-acción-priorizado)
+3. [Documentación y Requisitos de Entrega](#3-documentación-y-requisitos-de-entrega)
+4. [Plan de Acción Priorizado](#4-plan-de-acción-priorizado)
 
 ---
 
@@ -23,7 +22,6 @@ El proyecto compila exitosamente bajo Maven (`mvn compile` / `mvn package` -> `B
 
 Sin embargo, **no está listo para ser entregado** debido a la presencia de:
 - **Fallas críticas de seguridad:** Endpoints administrativos sin autenticación ni filtros de acceso y contraseñas reversibles en Base64.
-- **Pérdida de mensajes de error:** Anti-patrón de asignación a `request` previo a `response.sendRedirect(...)`.
 - **Documentación incompleta:** `README.md` sin instrucciones de instalación, variables ni restauración de BD.
 
 ---
@@ -58,26 +56,9 @@ Sin embargo, **no está listo para ser entregado** debido a la presencia de:
 
 ---
 
-## 3. Manejo de Errores, Robustez y Experiencia de Usuario
+## 3. Documentación y Requisitos de Entrega
 
-### 3.1. Pérdida de Feedback por `request.setAttribute` Previo a `sendRedirect`
-- **Ubicaciones:**
-  - `src/main/java/servlet/Investigador/AprobarSolicitud.java` (líneas 38-40, 43-45)
-  - `src/main/java/servlet/Investigador/RechazarSolicitud.java` (líneas 40-42, 45-47)
-  - `src/main/java/servlet/bestia/EliminarBestia.java` (líneas 38-41)
-- **Diagnóstico:** Se guarda el mensaje en el `request` y luego se ejecuta una redirección:
-  ```java
-  request.setAttribute("errorGlobal", "La id del usuario es inválida. ");
-  response.sendRedirect(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(request.getContextPath()));
-  ```
-- **Efecto:** Al redirigir, se inicia un nuevo ciclo de petición HTTP y los atributos del `request` original se descartan. El usuario no recibe ninguna notificación de error.
-- **Solución:** Utilizar `session.setAttribute("errorMsg", ...)` (y consumirlo/removerlo en la vista receptora) o cambiar a `RequestDispatcher.forward(...)` cuando corresponda mantener los atributos del request.
-
----
-
-## 4. Documentación y Requisitos de Entrega
-
-### 4.1. `README.md` Incompleto
+### 3.1. `README.md` Incompleto
 - **Diagnóstico:** El archivo `README.md` actual contiene únicamente 4 enlaces a carpetas de Google Drive.
 - **Solución:** Proveer una documentación completa que detalle:
   1. Requisitos de entorno (JDK 21, Apache Tomcat 10.1+, MySQL 8.x).
@@ -88,14 +69,13 @@ Sin embargo, **no está listo para ser entregado** debido a la presencia de:
 
 ---
 
-## 5. Plan de Acción Priorizado
+## 4. Plan de Acción Priorizado
 
 ### Fase 1: Correcciones Críticas Inmediatas (Imprescindibles para Aprobar)
 - [ ] Implementar `AuthFilter` (`@WebFilter`) para proteger endpoints administrativos y de mutación (`/admin/*`, `/investigadores/*`, eliminación y altas).
 
 ### Fase 2: Seguridad y Robustez de Errores
 - [ ] Reemplazar la codificación Base64 en `LogicUsuario` por hashing criptográfico unidireccional (BCrypt o SHA-256 + salt).
-- [ ] Corregir la pérdida de feedback de error (`request.setAttribute` + `sendRedirect`) en `AprobarSolicitud`, `RechazarSolicitud` y `EliminarBestia` migrando a atributos de sesión o forward.
 
 ### Fase 3: Documentación y Entrega
 - [ ] Completar `README.md` con instrucciones de instalación, prerequisitos, guía de variables `.env`, restauración de base de datos y usuarios de prueba.
