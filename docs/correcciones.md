@@ -22,7 +22,7 @@
 El proyecto compila exitosamente bajo Maven (`mvn compile` / `mvn package` -> `BUILD SUCCESS`) y cuenta con una arquitectura base MVC funcional, mapeo entidad-relacional e integraciones externas (Cloudinary, Jakarta Mail).
 
 Sin embargo, **no está listo para ser entregado** debido a la presencia de:
-- **Fallas críticas de seguridad:** Endpoints administrativos sin autenticación ni filtros de acceso, contraseñas reversibles en Base64 y riesgo de inyección XSS.
+- **Fallas críticas de seguridad:** Endpoints administrativos sin autenticación ni filtros de acceso y contraseñas reversibles en Base64.
 - **Pérdida de mensajes de error:** Anti-patrón de asignación a `request` previo a `response.sendRedirect(...)`.
 - **Documentación incompleta:** `README.md` sin instrucciones de instalación, variables ni restauración de BD.
 
@@ -55,15 +55,6 @@ Sin embargo, **no está listo para ser entregado** debido a la presencia de:
   ```
 - **Efecto:** Base64 **no es un algoritmo criptográfico ni de hashing**, sino una simple codificación de texto plano totalmente reversible. Cualquier persona con acceso de lectura a la base de datos puede descifrar todas las contraseñas al instante. En una evaluación formal de desarrollo de software esto constituye un motivo habitual de reprobación.
 - **Solución:** Implementar hashing criptográfico unidireccional con salt mediante BCrypt (o PBKDF2 / SHA-256 con salt aleatorio).
-
-### 2.3. Riesgo de XSS e Inyección de Script en `components/error.jsp`
-- **Ubicación:** `src/main/webapp/components/error.jsp` (línea 28)
-- **Diagnóstico:**
-  ```jsp
-  html: '<%= request.getAttribute("errorGlobal")%><br>Por favor, intente mas tarde.',
-  ```
-- **Efecto:** La cadena Java se imprime sin escape dentro del script JS de SweetAlert2. Si un mensaje contiene comillas simples (`'`), saltos de línea o texto proveniente de parámetros de entrada, rompe el script o expone a vulnerabilidades de Cross-Site Scripting (XSS).
-- **Solución:** Escapar caracteres especiales con JSTL `<c:out value="..." />` o sanitizar comillas y caracteres HTML previo a la renderización en JS.
 
 ---
 
@@ -105,7 +96,6 @@ Sin embargo, **no está listo para ser entregado** debido a la presencia de:
 ### Fase 2: Seguridad y Robustez de Errores
 - [ ] Reemplazar la codificación Base64 en `LogicUsuario` por hashing criptográfico unidireccional (BCrypt o SHA-256 + salt).
 - [ ] Corregir la pérdida de feedback de error (`request.setAttribute` + `sendRedirect`) en `AprobarSolicitud`, `RechazarSolicitud` y `EliminarBestia` migrando a atributos de sesión o forward.
-- [ ] Sanitizar o escapar el atributo `errorGlobal` en `components/error.jsp` para evitar rotura de script y riesgo XSS.
 
 ### Fase 3: Documentación y Entrega
 - [ ] Completar `README.md` con instrucciones de instalación, prerequisitos, guía de variables `.env`, restauración de base de datos y usuarios de prueba.
