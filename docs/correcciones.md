@@ -20,23 +20,18 @@
 
 El proyecto compila exitosamente bajo Maven (`mvn compile` / `mvn package` -> `BUILD SUCCESS`) y cuenta con una arquitectura base MVC funcional, mapeo entidad-relacional e integraciones externas (Cloudinary, Jakarta Mail).
 
-Sin embargo, **no está listo para ser entregado** debido a la presencia de:
-- **Fallas críticas de seguridad:** Endpoints administrativos sin autenticación ni filtros de acceso.
-- **Documentación incompleta:** `README.md` sin instrucciones de instalación, variables ni restauración de BD.
+Sin embargo, **se encuentra en fase final de preparación para entrega**, restando únicamente:
+- **Seguridad y Control de Acceso:** ✅ **Resuelto** (AuthFilter y Hashing BCrypt implementados).
+- **Documentación:** `README.md` pendiente de completar con instrucciones de instalación, variables `.env` y restauración de BD.
 
 ---
 
 ## 2. Vulnerabilidades de Seguridad y Control de Acceso
 
 ### 2.1. Inexistencia de Filtros (`Filter` / `@WebFilter`) y Endpoints Desprotegidos
-- **Diagnóstico:** El proyecto no posee ningún filtro Jakarta EE (`Filter` / `@WebFilter`). De más de 40 servlets en el sistema, más de 30 no realizan validación de sesión ni de rol.
-- **Efecto:** Cualquier usuario anónimo (mediante Postman, curl o formularios manipulados) puede ejecutar operaciones críticas sin autenticación:
-  - `POST /investigadores/aprobarSolicitud?idUsuario=X` -> Asciende a cualquier usuario a investigador ([`AprobarSolicitud.java`]).
-  - `POST /investigadores/rechazarSolicitud?idUsuario=X` -> Blanquea el perfil del usuario ([`RechazarSolicitud.java`]).
-  - `GET /investigadores/listarSolicitantes` -> Expone listado con DNI, nombre y correos de postulantes ([`ListarSolicitantes.java`]).
-  - `POST /bestias/eliminar?id=X` -> Borra una bestia de la BD ([`EliminarBestia.java`]).
-  - Operaciones CRUD sobre categorías, hábitats, tipos de evidencia y noticias totalmente abiertas.
-- **Solución:** Implementar un `AuthFilter` que intercepte `/admin/*`, `/investigadores/*` y endpoints de mutación, verificando sesión activa y rol (`investigador` / `lector`).
+- **Diagnóstico:** El proyecto no poseía ningún filtro Jakarta EE (`Filter` / `@WebFilter`). De más de 40 servlets en el sistema, más de 30 no realizaban validación de sesión ni de rol.
+- **Efecto:** Cualquier usuario anónimo (mediante Postman, curl o formularios manipulados) podía ejecutar operaciones críticas sin autenticación.
+- **Solución Implementada:** Se implementó `AuthFilter` (`@WebFilter("/*")` en [`AuthFilter.java`](file:///Users/constantinofinelli/Desktop/Bestiario/src/main/java/filters/AuthFilter.java)), protegiendo mediante control de acceso por 3 zonas (Pública, Autenticada, Investigador) todos los endpoints administrativos (`/admin/*`), postulaciones y candidaturas (`/investigadores/*`), gestión de usuarios (`/lectores/*`), y mutaciones CRUD (bestias, hábitats, categorías, evidencias, comentarios y noticias), preservando la URL de origen tras el login.
 
 ---
 
@@ -56,7 +51,7 @@ Sin embargo, **no está listo para ser entregado** debido a la presencia de:
 ## 4. Plan de Acción Priorizado
 
 ### Fase 1: Correcciones Críticas Inmediatas (Imprescindibles para Aprobar)
-- [ ] Implementar `AuthFilter` (`@WebFilter`) para proteger endpoints administrativos y de mutación (`/admin/*`, `/investigadores/*`, eliminación y altas).
+- [x] **Completado:** Implementar `AuthFilter` (`@WebFilter`) para proteger endpoints administrativos y de mutación (`/admin/*`, `/investigadores/*`, eliminación y altas). Documentado en [`plan_implementacion_auth_filter.md`](file:///Users/constantinofinelli/Desktop/Bestiario/docs/plan_implementacion_auth_filter.md).
 
 ### Fase 2: Seguridad y Robustez de Errores
 - [x] **Completado:** Reemplazar la codificación Base64 en `LogicUsuario` por hashing criptográfico unidireccional (BCrypt con salt y migración transparente lazy).
