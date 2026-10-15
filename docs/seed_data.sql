@@ -1,9 +1,9 @@
 -- Insertar Usuarios
 INSERT INTO `usuario` (`idUsuario`, `correo`, `contraseña`, `estado`, `fechaNacimiento`, `nombre`, `apellido`, `dni`, `recibirNotificaciones`) VALUES 
-(1, 'juan@bestiario.com', 'MTIz', 'investigador', '1990-05-15', 'Juan', 'Perez', '12345678', 1),
-(2, 'maria@bestiario.com', 'MTIz', 'investigador', '1985-10-22', 'Maria', 'Gomez', '87654321', 1),
-(3, 'carlos@bestiario.com', 'MTIz', 'lector', '1995-03-30', 'Carlos', 'Ruiz', '11223344', 0),
-(4, 'test@a.com', 'MTIz', 'investigador', '1980-01-01', 'Admin', 'Test', '00000000', 1);
+(1, 'juan@bestiario.com', '$2a$12$PQZdB7GnHgPd.070e2tkC.dFiR1JbVkR4oxD/sdyfPRZlTEYn835.', 'investigador', '1990-05-15', 'Juan', 'Perez', '12345678', 1),
+(2, 'maria@bestiario.com', '$2a$12$PQZdB7GnHgPd.070e2tkC.dFiR1JbVkR4oxD/sdyfPRZlTEYn835.', 'investigador', '1985-10-22', 'Maria', 'Gomez', '87654321', 1),
+(3, 'carlos@bestiario.com', '$2a$12$PQZdB7GnHgPd.070e2tkC.dFiR1JbVkR4oxD/sdyfPRZlTEYn835.', 'lector', '1995-03-30', 'Carlos', 'Ruiz', '11223344', 0),
+(4, 'test@a.com', '$2a$12$PQZdB7GnHgPd.070e2tkC.dFiR1JbVkR4oxD/sdyfPRZlTEYn835.', 'investigador', '1980-01-01', 'Admin', 'Test', '00000000', 1);
 
 -- Insertar Hábitats
 INSERT INTO `habitat` (`idHabitat`, `nombre`, `latitud`, `longitud`, `localizacion`) VALUES 

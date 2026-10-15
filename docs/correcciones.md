@@ -21,7 +21,7 @@
 El proyecto compila exitosamente bajo Maven (`mvn compile` / `mvn package` -> `BUILD SUCCESS`) y cuenta con una arquitectura base MVC funcional, mapeo entidad-relacional e integraciones externas (Cloudinary, Jakarta Mail).
 
 Sin embargo, **no está listo para ser entregado** debido a la presencia de:
-- **Fallas críticas de seguridad:** Endpoints administrativos sin autenticación ni filtros de acceso y contraseñas reversibles en Base64.
+- **Fallas críticas de seguridad:** Endpoints administrativos sin autenticación ni filtros de acceso.
 - **Documentación incompleta:** `README.md` sin instrucciones de instalación, variables ni restauración de BD.
 
 ---
@@ -37,22 +37,6 @@ Sin embargo, **no está listo para ser entregado** debido a la presencia de:
   - `POST /bestias/eliminar?id=X` -> Borra una bestia de la BD ([`EliminarBestia.java`]).
   - Operaciones CRUD sobre categorías, hábitats, tipos de evidencia y noticias totalmente abiertas.
 - **Solución:** Implementar un `AuthFilter` que intercepte `/admin/*`, `/investigadores/*` y endpoints de mutación, verificando sesión activa y rol (`investigador` / `lector`).
-
-### 2.2. Contraseñas Codificadas en Base64 (Falsa Encriptación)
-- **Ubicación:** `src/main/java/logic/LogicUsuario.java` (líneas 53-61)
-- **Diagnóstico:**
-  ```java
-  public static String hashPassword(String pass) {
-      String encoded = Base64.getEncoder().encodeToString(pass.getBytes(StandardCharsets.UTF_8));
-      return encoded.toString();
-  }
-  public static String dehashPassword(String pass) {
-      String decoded = new String(Base64.getDecoder().decode(pass.getBytes(StandardCharsets.UTF_8)));
-      return decoded.toString();
-  }
-  ```
-- **Efecto:** Base64 **no es un algoritmo criptográfico ni de hashing**, sino una simple codificación de texto plano totalmente reversible. Cualquier persona con acceso de lectura a la base de datos puede descifrar todas las contraseñas al instante. En una evaluación formal de desarrollo de software esto constituye un motivo habitual de reprobación.
-- **Solución:** Implementar hashing criptográfico unidireccional con salt mediante BCrypt (o PBKDF2 / SHA-256 con salt aleatorio).
 
 ---
 
@@ -75,7 +59,7 @@ Sin embargo, **no está listo para ser entregado** debido a la presencia de:
 - [ ] Implementar `AuthFilter` (`@WebFilter`) para proteger endpoints administrativos y de mutación (`/admin/*`, `/investigadores/*`, eliminación y altas).
 
 ### Fase 2: Seguridad y Robustez de Errores
-- [ ] Reemplazar la codificación Base64 en `LogicUsuario` por hashing criptográfico unidireccional (BCrypt o SHA-256 + salt).
+- [x] **Completado:** Reemplazar la codificación Base64 en `LogicUsuario` por hashing criptográfico unidireccional (BCrypt con salt y migración transparente lazy).
 
 ### Fase 3: Documentación y Entrega
 - [ ] Completar `README.md` con instrucciones de instalación, prerequisitos, guía de variables `.env`, restauración de base de datos y usuarios de prueba.

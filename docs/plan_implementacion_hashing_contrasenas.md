@@ -3,7 +3,7 @@
 **Proyecto:** Bestiario (Jakarta EE 10 / Apache Tomcat 10.1+ / MySQL 8)  
 **Fecha:** Octubre 2026  
 **Documento de Referencia:** `docs/correcciones.md` (Punto 2.2)  
-**Estado:** Propuesta de Implementación  
+**Estado:** Implementado (Octubre 2026)  
 
 ---
 

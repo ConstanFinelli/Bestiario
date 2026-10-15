@@ -3,6 +3,7 @@ package logic;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.LinkedList;
+import org.mindrot.jbcrypt.BCrypt;
 
 import data.DataUsuario;
 import entities.Investigador;
@@ -13,51 +14,64 @@ public class LogicUsuario {
 	private DataUsuario usDAO = new DataUsuario();
 	
 	public Usuario getOne(Usuario us) throws DataNotFoundException {
-		us = usDAO.getOne(us);
-		if(us != null) {
-			us.setContrasena(dehashPassword(us.getContrasena()));
-		}
-		return us;
+		return usDAO.getOne(us);
 	}
 	
 	public LinkedList<Usuario> findAll() {
-		LinkedList<Usuario> users = usDAO.findAll();
-		if(!users.isEmpty()) {
-			for(Usuario user : users) { // dehashea la contraseña por usuario
-				user.setContrasena(dehashPassword(user.getContrasena()));
-			}
-		}
-		return users;
+		return usDAO.findAll();
 	}
 	
 	public Usuario save(Usuario us) {
-		if(us !=null) {
-			us.setContrasena(hashPassword(us.getContrasena()));// hashea para guarda en bd
+		if (us != null) {
+			us.setContrasena(hashPassword(us.getContrasena()));
 		}
-		us = usDAO.save(us);
-		us.setContrasena(dehashPassword(us.getContrasena())); // dehashea para mostrar a ui
-		return us;
+		return usDAO.save(us);
 	}
 	
 	public Usuario update(Usuario us) throws DataNotFoundException {
-		if(us != null) {
-			us.setContrasena(hashPassword(us.getContrasena())); // hashea para guarda en bd
-		}
-		us = usDAO.update(us);
-		if(us != null) {
-			us.setContrasena(dehashPassword(us.getContrasena())); // dehashea para mostrar a ui
-		}
-		return us;
+		return usDAO.update(us);
 	}
 	
-	public static String hashPassword(String pass) {
-		String encoded = Base64.getEncoder().encodeToString(pass.getBytes(StandardCharsets.UTF_8)); // hashea
-		return encoded.toString();
-    }
-	
-	public static String dehashPassword(String pass) {
-		String decoded = new String(Base64.getDecoder().decode(pass.getBytes(StandardCharsets.UTF_8))); // desconvierte a contraseña original
-		return decoded.toString();
+	public static String hashPassword(String plainPassword) {
+		if (plainPassword == null || plainPassword.isEmpty()) {
+			return plainPassword;
+		}
+		return BCrypt.hashpw(plainPassword, BCrypt.gensalt(12));
+	}
+
+	public boolean checkPassword(Usuario usuario, String plainPassword) {
+		if (usuario == null || plainPassword == null) {
+			return false;
+		}
+		String storedHash = usuario.getContrasena();
+		if (storedHash == null || storedHash.isEmpty()) {
+			return false;
+		}
+
+		// 1. Verificación moderna con BCrypt
+		if (storedHash.startsWith("$2a$") || storedHash.startsWith("$2b$") || storedHash.startsWith("$2y$")) {
+			try {
+				return BCrypt.checkpw(plainPassword, storedHash);
+			} catch (Exception e) {
+				return false;
+			}
+		}
+
+		// 2. Verificación de respaldo para migración de contraseñas legadas (Base64)
+		try {
+			String decoded = new String(java.util.Base64.getDecoder().decode(storedHash), java.nio.charset.StandardCharsets.UTF_8);
+			if (plainPassword.equals(decoded)) {
+				// Auto-migración a BCrypt en segundo plano
+				String newHash = hashPassword(plainPassword);
+				usDAO.updatePassword(usuario.getIdUsuario(), newHash);
+				usuario.setContrasena(newHash);
+				return true;
+			}
+		} catch (Exception ignored) {
+			// No era Base64 válido
+		}
+
+		return false;
 	}
 	
 	public Usuario getByEmail(String correo) throws DataNotFoundException {
