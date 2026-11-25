@@ -2,6 +2,7 @@ package servlet.auth;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -38,61 +39,71 @@ public class SvRegister extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("correo");
-		String logMessage = "";
-		List<String> errores = new ArrayList<>();
-		Usuario user = null;
-		try {
-			user = logicUsuario.getByEmail(email);
-		}catch(DataNotFoundException e) {
-			user = null;
-		}catch(Exception e) {
-			logger.log(Level.WARNING, "Error al conseguir usuario en el servlet SvRegister", e);
-			errores.add("No se ha podido conseguir el usuario");
-		}
 		String fecha = request.getParameter("fechaNacimiento");
 		String password = request.getParameter("password");
 		String flag = request.getParameter("flag");
+		String logMessage = "";
+		List<String> errores = new ArrayList<>();
 		RequestDispatcher rd = null;
+
 		LocalDate fechaSinHora = null;
-		if(fecha != null) {
-			fechaSinHora = LocalDate.parse(fecha);
-		}
-		if(user != null) {
-			logMessage = "Ya existe un usuario registrado con ese email";
+		if (email == null || email.isBlank() || password == null || password.isBlank() || fecha == null || fecha.isBlank()) {
+			logMessage = "Todos los campos obligatorios deben estar completos.";
 		} else {
+			try {
+				fechaSinHora = LocalDate.parse(fecha.trim());
+			} catch (DateTimeParseException e) {
+				logger.log(Level.WARNING, "Fecha de nacimiento inválida en SvRegister: " + fecha, e);
+				logMessage = "La fecha de nacimiento ingresada no tiene un formato válido.";
+			}
+		}
+
+		if (logMessage.isEmpty()) {
+			Usuario user = null;
+			try {
+				user = logicUsuario.getByEmail(email.trim());
+			} catch (DataNotFoundException e) {
+				user = null;
+			} catch (Exception e) {
+				logger.log(Level.WARNING, "Error al conseguir usuario en el servlet SvRegister", e);
+				errores.add("No se ha podido conseguir el usuario");
+			}
+
+			if (user != null) {
+				logMessage = "Ya existe un usuario registrado con ese email";
+			} else if (errores.isEmpty()) {
 				Lector userLector = new Lector(
-					email,
+					email.trim(),
 					password,
 					fechaSinHora.atStartOfDay()
 				);
 				String recibirNotificaciones = request.getParameter("recibirNotificaciones");
-				if(recibirNotificaciones != null) {
-				userLector.setRecibirNotificaciones(true);
-				}else {
-				userLector.setRecibirNotificaciones(false);	
-				}
-				
+				userLector.setRecibirNotificaciones(recibirNotificaciones != null);
+
 				try {
 					logicUsuario.save(userLector);
-				}catch(Exception e) {
+					if (flag == null) {
+						request.getSession().setAttribute("successMsg", "Usuario creado con éxito");
+						response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
+						return;
+					}
+					if ("admin".equals(flag)) {
+						request.setAttribute("feedbackMessage", "¡Usuario creado con éxito!");
+					}
+				} catch (Exception e) {
 					logger.log(Level.SEVERE, "Error al registrar usuario en el servlet SvRegister", e);
 					errores.add("No se ha podido registrar el usuario");
 				}
-			if(flag == null) {
-				request.getSession().setAttribute("successMsg", "Usuario creado con éxito");
-				response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));	
-				return;
 			}
 		}
-		
-		if("admin".equals(flag)) {
+
+		if ("admin".equals(flag)) {
 			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=usuarios");
-			request.setAttribute("feedbackMessage", "¡Usuario creado con éxito!");
-		}else {
+		} else {
 			rd = request.getRequestDispatcher(HttpRoutes.REGISTER_JSP(""));
 		}
-		
-		if(!errores.isEmpty()) {
+
+		if (!errores.isEmpty()) {
 			request.setAttribute("errorGlobal", String.join("<br>", errores));
 		}
 		request.setAttribute("logMsg", logMessage);

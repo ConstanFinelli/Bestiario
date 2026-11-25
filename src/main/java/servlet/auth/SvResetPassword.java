@@ -59,7 +59,18 @@ public class SvResetPassword extends HttpServlet {
 		String nuevaPassword = request.getParameter("password");
 		String confirmPassword = request.getParameter("confirmPassword");
 		
-		if(!confirmPassword.equals(nuevaPassword)) {
+		if(token == null || token.isBlank()) {
+			response.getWriter().println("Token inválido");
+			return;
+		}
+		if(nuevaPassword == null || nuevaPassword.isBlank() || confirmPassword == null || confirmPassword.isBlank()) {
+			request.setAttribute("token", token);
+			request.setAttribute("logMsg", "Debe completar y confirmar la nueva contraseña.");
+			request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
+			return;
+		}
+		if(!nuevaPassword.equals(confirmPassword)) {
+			request.setAttribute("token", token);
 			request.setAttribute("logMsg", "Las contraseñas ingresadas no coinciden");
 			request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
 			return;

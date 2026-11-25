@@ -64,10 +64,10 @@ public class LogicBestia {
 	public Bestia update(Bestia besActualizada) throws DataNotFoundException {
 			Bestia besAnterior = bDao.getOne(besActualizada);
 			if(besAnterior != null) {
-				if(besActualizada.getNombre() == "") {
+				if(besActualizada.getNombre() == null || besActualizada.getNombre().isBlank()) {
 					besActualizada.setNombre(besAnterior.getNombre());
 				}
-				if(besActualizada.getPeligrosidad() == "") {
+				if(besActualizada.getPeligrosidad() == null || besActualizada.getPeligrosidad().isBlank()) {
 					besActualizada.setPeligrosidad(besAnterior.getPeligrosidad());
 				}
 				return bDao.update(besActualizada);
