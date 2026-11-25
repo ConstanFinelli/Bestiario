@@ -18,6 +18,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import logic.LogicUsuario;
 
 /**
@@ -42,6 +43,13 @@ public class SvRegister extends HttpServlet {
 		String fecha = request.getParameter("fechaNacimiento");
 		String password = request.getParameter("password");
 		String flag = request.getParameter("flag");
+		HttpSession session = request.getSession(false);
+		Usuario currentUser = (session != null) ? (Usuario) session.getAttribute("user") : null;
+		boolean isAdminFlow = "admin".equals(flag);
+		if (isAdminFlow && (currentUser == null || !"investigador".equalsIgnoreCase(currentUser.getEstado()))) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: se requieren permisos de investigador.");
+			return;
+		}
 		String logMessage = "";
 		List<String> errores = new ArrayList<>();
 		RequestDispatcher rd = null;
@@ -82,14 +90,12 @@ public class SvRegister extends HttpServlet {
 
 				try {
 					logicUsuario.save(userLector);
-					if (flag == null) {
+					if (!isAdminFlow) {
 						request.getSession().setAttribute("successMsg", "Usuario creado con éxito");
 						response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
 						return;
 					}
-					if ("admin".equals(flag)) {
-						request.setAttribute("feedbackMessage", "¡Usuario creado con éxito!");
-					}
+					request.setAttribute("feedbackMessage", "¡Usuario creado con éxito!");
 				} catch (Exception e) {
 					logger.log(Level.SEVERE, "Error al registrar usuario en el servlet SvRegister", e);
 					errores.add("No se ha podido registrar el usuario");
@@ -97,7 +103,7 @@ public class SvRegister extends HttpServlet {
 			}
 		}
 
-		if ("admin".equals(flag)) {
+		if (isAdminFlow) {
 			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=usuarios");
 		} else {
 			rd = request.getRequestDispatcher(HttpRoutes.REGISTER_JSP(""));
