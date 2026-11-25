@@ -1,7 +1,4 @@
 package logic;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.LinkedList;
 import org.mindrot.jbcrypt.BCrypt;
 
