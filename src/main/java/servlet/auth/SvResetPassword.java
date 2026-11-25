@@ -100,7 +100,10 @@ public class SvResetPassword extends HttpServlet {
 			logicUsuario.updatePassword(t.getIdUsuario(), nuevaPassword);
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error crítico al actualizar la contraseña del usuario en el servlet SvResetPassword", e);
-			request.setAttribute("errorGlobal", "No se ha podido actualizar la contraseña del usuario. ");
+			request.setAttribute("token", token);
+			request.setAttribute("errorGlobal", "No se ha podido actualizar la contraseña del usuario.");
+			request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
+			return;
 		}
 
 		// invalidar token
