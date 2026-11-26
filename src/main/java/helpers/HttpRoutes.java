@@ -166,6 +166,10 @@ public final class HttpRoutes {
 	public static String ELIMINAR_NOTICIA(String base) {
 		return base + "/noticias/eliminar";
 	}
+
+	public static String EDITAR_NOTICIA(String base) {
+		return base + "/noticias/editar";
+	}
 	public static String NOTICIAS_JSP(String base) {
 		return base + "/noticias/noticias.jsp";
 	}
