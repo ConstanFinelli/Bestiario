@@ -63,6 +63,7 @@ public class AuthFilter implements Filter {
             "/evidencias/listarTiposEvidencia",
             "/noticias/crear",
             "/noticias/eliminar",
+            "/noticias/editar",
             "/noticias/redactarNoticia.jsp",
             "/comentarios/eliminar",
             "/mapas/mapaCargaHabitat.jsp"));
