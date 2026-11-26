@@ -5,11 +5,11 @@
 <%@ page import="java.util.LinkedList" %>
 <%
 	LinkedList<Habitat> habitats = (LinkedList<Habitat>) request.getAttribute("habitats");	
-	if(habitats == null ){%>
-		<script>
-        window.location.href = "<%= HttpRoutes.LISTAR_HABITATS(request.getContextPath()) %>?flag=admin";
-    </script>
-	<%}
+	if(habitats == null ){
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_HABITATS("") + "?flag=adminDashboard");
+		rd.forward(request, response);
+		return;
+	}
 %>
 <h2>Gestionar habitats</h2>
 <main class="adminForms">
