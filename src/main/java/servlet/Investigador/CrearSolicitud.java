@@ -17,6 +17,7 @@ import entities.Investigador;
 import entities.Lector;
 import entities.Usuario;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 import helpers.HttpRoutes;
 
 /**
@@ -51,6 +52,11 @@ public class CrearSolicitud extends HttpServlet {
 		} catch (DataNotFoundException e) {
 			logger.log(Level.WARNING, "Usuario no encontrado al crear solicitud en el servlet CrearSolicitud", e);
 			request.setAttribute("errorGlobal", "El usuario no existe. ");
+			request.getRequestDispatcher(HttpRoutes.PRESENTAR_CANDIDATURA_JSP("")).forward(request, response);
+			return;
+		} catch (DuplicateDataException e) {
+			logger.log(Level.WARNING, "DNI duplicado al crear solicitud en el servlet CrearSolicitud: " + dni, e);
+			request.setAttribute("errorGlobal", e.getMessage());
 			request.getRequestDispatcher(HttpRoutes.PRESENTAR_CANDIDATURA_JSP("")).forward(request, response);
 			return;
 		} catch (Exception e) {

@@ -6,6 +6,7 @@ import data.DataUsuario;
 import entities.Investigador;
 import entities.Usuario;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 
 public class LogicUsuario {
 	private DataUsuario usDAO = new DataUsuario();
@@ -25,7 +26,7 @@ public class LogicUsuario {
 		return usDAO.save(us);
 	}
 	
-	public Usuario update(Usuario us) throws DataNotFoundException {
+	public Usuario update(Usuario us) throws DataNotFoundException, DuplicateDataException {
 		return usDAO.update(us);
 	}
 	
