@@ -24,20 +24,11 @@
 <div class="contenedorMapa">
     <div id="map" class="mapa"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="<%=HttpRoutes.MAPA_BASE_JS(request.getContextPath())%>"></script>
     <script>
         var selectedId = <%= idSelected %>;
         
-        var map = L.map('map',{
-        	maxBounds: [[-90, -180], [90, 180]],
-        	maxBoundsViscosity: 1,
-        	maxZoom: 8,
-            minZoom: 3,
-        }).setView([20, 0], 3);
-        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
-        	attribution: 'Tiles &copy; Esri',
-            noWrap: true,
-            bounds: [[-90, -180], [90, 180]],
-        }).addTo(map);
+        var map = crearMapaBase();
         
         function adaptarCoordenada(coord){
         	return coord + (Math.random() - 0.5)*0.3;

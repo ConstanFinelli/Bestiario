@@ -347,4 +347,10 @@ public final class HttpRoutes {
 		return base + "/css/adminDashboard.css";
 	}
 	
+	// Scripts
+	
+	public static String MAPA_BASE_JS(String base) {
+		return base + "/public/js/mapaBase.js";
+	}
+	
 }
