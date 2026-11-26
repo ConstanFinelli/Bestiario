@@ -110,12 +110,7 @@
                 						<button type="submit" class="evAprobar">Aprobar</button>
                 					</form>
                 				<% } %>
-                				<form action="<%= HttpRoutes.ELIMINAR_EVIDENCIA(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Deasea eliminar la evidencia?');">
-                					<input type="hidden" name="nroEvidencia" value="<%= evidencia.getNroEvidencia() %>">
-                					<input type="hidden" name="idTipoEvidencia" value="<%= evidencia.getTipo().getId() %>">
-                					<input type="hidden" name="idBestia" value="<%= bestia.getIdBestia() %>">
-                					<button type="submit" class="evDelete">Eliminar</button>
-                				</form>
+                				<button type="button" class="evDelete" onclick="abrirModalForm('ELIMINAR EVIDENCIA', '¿Estás seguro que deseas eliminar esta evidencia?', '<%= HttpRoutes.ELIMINAR_EVIDENCIA(request.getContextPath()) %>', { nroEvidencia: '<%= evidencia.getNroEvidencia() %>', idTipoEvidencia: '<%= evidencia.getTipo().getId() %>', idBestia: '<%= bestia.getIdBestia() %>' })">Eliminar</button>
                 			</div>
                 		<% } %>
                 	</li>

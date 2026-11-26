@@ -4,7 +4,6 @@
 <%@ page import="entities.Habitat" %>
 <%@ page import="entities.CaracteristicaHabitat" %>
 <%@ page import="java.util.LinkedList" %>
-<!DOCTYPE html>
 <%
 	LinkedList<CaracteristicaHabitat> carHabs = (LinkedList<CaracteristicaHabitat>) request.getAttribute("foundCaracteristicas");
 	Habitat hab = (Habitat) session.getAttribute("associatedHabitat");
@@ -31,11 +30,7 @@ Volver atras</a>
                     <div class="itemInfo">
                         <span class="itemTitle"><%= carHab.getDescripcion() %></span>
                     </div>
-                    <form action="<%= HttpRoutes.ELIMINAR_CARACTERISTICAHABITAT(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Eliminar característica?');">
-                        <input type="hidden" name="id" value="<%= carHab.getIdHabitat() %>">
-                        <input type="hidden" name="descripcion" value="<%= carHab.getDescripcion() %>">
-                        <button type="submit" class="deleteItem">Eliminar</button>
-                    </form>
+                    <button type="button" class="deleteItem" onclick="abrirModalForm('ELIMINAR CARACTERÍSTICA', '¿Estás seguro que deseas eliminar <%= carHab.getDescripcion().replace("'", "\\'") %>?', '<%= HttpRoutes.ELIMINAR_CARACTERISTICAHABITAT(request.getContextPath()) %>', { id: '<%= carHab.getIdHabitat() %>', descripcion: '<%= carHab.getDescripcion().replace("'", "\\'") %>' })">Eliminar</button>
                 </li>
             <%  }
              } %>

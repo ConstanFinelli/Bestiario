@@ -56,12 +56,7 @@
                                 <button class="btnAceptar" type="submit">Aceptar</button>
                             </form>
 
-                            <form action="<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>" method="post" style="display:flex;">
-                                <input type="hidden" name="action" value="rechazar">
-                                <input type="hidden" name="nroRegistro" value="<%= reg.getNroRegistro() %>">
-                                <input type="hidden" name="idBestia" value="<%= reg.getBestia().getIdBestia() %>"/>
-                                <button class="btnRechazar" type="submit">Rechazar</button>
-                            </form>
+                            <button class="btnRechazar" type="button" onclick="abrirModalForm('RECHAZAR REGISTRO', '¿Estás seguro que deseas rechazar el registro N° <%= reg.getNroRegistro() %>?', '<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>', { action: 'rechazar', nroRegistro: '<%= reg.getNroRegistro() %>', idBestia: '<%= reg.getBestia().getIdBestia() %>' }, null, 'Rechazar')">Rechazar</button>
                         </div>
                     </td>
                 </tr>
@@ -71,5 +66,6 @@
     <% } %>
 </section>
 <%@ include file="../components/footer.jsp" %>
+<%@ include file="../components/modalConfirmacion.jsp" %>
 </body>
 </html>

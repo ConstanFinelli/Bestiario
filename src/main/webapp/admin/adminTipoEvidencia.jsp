@@ -3,7 +3,6 @@
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="entities.TipoEvidencia" %>
 <%@ page import="java.util.LinkedList" %>
-<!DOCTYPE html>
 <%
 	LinkedList<TipoEvidencia> tipos = (LinkedList<TipoEvidencia>) request.getAttribute("foundTipos");	
 	if(tipos == null ){
@@ -28,10 +27,7 @@
                     <div class="itemInfo">
                         <span class="itemTitle"><%= desc %> <small>(ID: <%= id %>)</small></span>
                     </div>
-	                <form action="<%= HttpRoutes.ELIMINAR_TIPO_EVIDENCIA(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Eliminar <%= desc %>?');">
-	                    <input type="hidden" name="id" value="<%= id %>">
-	                    <button type="submit" class="deleteItem">Eliminar</button>
-	                </form>
+	                <button type="button" class="deleteItem" onclick="abrirModalForm('ELIMINAR TIPO DE EVIDENCIA', '¿Estás seguro que deseas eliminar <%= desc.replace("'", "\\'") %>?', '<%= HttpRoutes.ELIMINAR_TIPO_EVIDENCIA(request.getContextPath()) %>', 'id', '<%= id %>')">Eliminar</button>
                 </li>
             <%  }
              } %>

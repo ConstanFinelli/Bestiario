@@ -23,6 +23,7 @@ pageEncoding="UTF-8"%>
       <form id="modalFormConfirmar" method="POST" style="display: none">
         <input type="hidden" name="id" id="modalInputId" />
         <button
+          id="modalBtnConfirmar"
           type="submit"
           class="deleteButton"
           onclick="cerrarModalConfirmacion()"
@@ -34,24 +35,26 @@ pageEncoding="UTF-8"%>
   </div>
 </div>
 <script>
-  function abrirModalLink(titulo, mensaje, urlDestino) {
+  function abrirModalLink(titulo, mensaje, urlDestino, confirmText) {
     document.getElementById('modal-titulo').innerText = titulo;
     document.getElementById('modal-cuerpo').innerHTML = mensaje;
     var linkBtn = document.getElementById('modalLinkConfirmar');
     var formBtn = document.getElementById('modalFormConfirmar');
 
+    linkBtn.innerText = confirmText || 'Eliminar';
     linkBtn.href = urlDestino;
     linkBtn.style.display = 'inline-block';
     formBtn.style.display = 'none';
     document.getElementById('modalConfirmacion').classList.add('is-visible');
   }
 
-  function abrirModalForm(titulo, mensaje, actionUrl, paramName, paramValue) {
+  function abrirModalForm(titulo, mensaje, actionUrl, paramName, paramValue, confirmText) {
     document.getElementById('modal-titulo').innerText = titulo;
     document.getElementById('modal-cuerpo').innerHTML = mensaje;
     var linkBtn = document.getElementById('modalLinkConfirmar');
     var formBtn = document.getElementById('modalFormConfirmar');
     var input = document.getElementById('modalInputId');
+    document.getElementById('modalBtnConfirmar').innerText = confirmText || 'Eliminar';
 
     formBtn.action = actionUrl;
 

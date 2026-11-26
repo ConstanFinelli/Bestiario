@@ -11,8 +11,6 @@
     </script>
 	<%}
 %>
-
-<!DOCTYPE html>
 <h2>Gestionar habitats</h2>
 <main class="adminForms">
 <section class="formAdmin">
@@ -29,10 +27,7 @@
                         <span class="itemDesc"><%= hab.getLocalizacion() %></span>
                     </div>
                     <div class="editButtons">
-	                    <form action="<%= HttpRoutes.ELIMINAR_HABITAT(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Eliminar <%= hab.getNombre() %>?');">
-	                        <input type="hidden" name="id" value="<%= hab.getId() %>">
-	                        <button type="submit" class="deleteItem">Eliminar</button>
-	                    </form>
+	                    <button type="button" class="deleteItem" onclick="abrirModalForm('ELIMINAR HÁBITAT', '¿Estás seguro que deseas eliminar <%= hab.getNombre().replace("'", "\\'") %>?', '<%= HttpRoutes.ELIMINAR_HABITAT(request.getContextPath()) %>', 'id', '<%= hab.getId() %>')">Eliminar</button>
 	                    <a class="caractItem" href="<%= HttpRoutes.LISTAR_CARACTERISTICAHABITAT(request.getContextPath()) %>?id=<%=hab.getId()%>">Ver mas</a>
                     </div>
                 </li>

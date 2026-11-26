@@ -3,7 +3,6 @@
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="entities.Lector" %>
 <%@ page import="java.util.LinkedList" %>
-<!DOCTYPE html>
 <%
 	LinkedList<Lector> lectores = (LinkedList<Lector>) request.getAttribute("foundLectores");	
 	if(lectores == null ){
@@ -27,10 +26,7 @@
                         <span class="itemTitle"><%= lector.getCorreo() %> <small>(ID: <%= lector.getIdUsuario() %>)</small></span>
                         <span class="itemDesc">Fecha de nacimiento: <%= lector.getFechaNacimiento() %></span>
                     </div>
-	                <form action="<%= HttpRoutes.ELIMINAR_LECTOR(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Eliminar <%= lector.getCorreo() %>?');">
-	                        <input type="hidden" name="id" value="<%= lector.getIdUsuario() %>">
-	                        <button type="submit" class="deleteItem">Eliminar</button>
-	                </form>
+	                <button type="button" class="deleteItem" onclick="abrirModalForm('ELIMINAR USUARIO', '¿Estás seguro que deseas eliminar <%= lector.getCorreo().replace("'", "\\'") %>?', '<%= HttpRoutes.ELIMINAR_LECTOR(request.getContextPath()) %>', 'id', '<%= lector.getIdUsuario() %>')">Eliminar</button>
                 </li>
             <%  }
              } %>

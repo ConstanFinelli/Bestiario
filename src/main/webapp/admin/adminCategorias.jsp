@@ -3,7 +3,6 @@
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="entities.Categoria" %>
 <%@ page import="java.util.LinkedList" %>
-<!DOCTYPE html>
 <%
 	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");	
 	if(categorias == null ){
@@ -27,10 +26,7 @@
                         <span class="itemTitle"><%= cat.getNombre() %> <small>(ID: <%= cat.getIdCategoria() %>)</small></span>
                         <span class="itemDesc"><%= cat.getDescripcionCategoria() %></span>
                     </div>
-                    <form action="<%= HttpRoutes.ELIMINAR_CATEGORIA(request.getContextPath()) %>" method="POST" onsubmit="return confirm('¿Eliminar <%= cat.getNombre() %>?');">
-                        <input type="hidden" name="id" value="<%= cat.getIdCategoria() %>">
-                        <button type="submit" class="deleteItem">Eliminar</button>
-                    </form>
+                    <button type="button" class="deleteItem" onclick="abrirModalForm('ELIMINAR CATEGORÍA', '¿Estás seguro que deseas eliminar <%= cat.getNombre().replace("'", "\\'") %>?', '<%= HttpRoutes.ELIMINAR_CATEGORIA(request.getContextPath()) %>', 'id', '<%= cat.getIdCategoria() %>')">Eliminar</button>
                 </li>
             <%  }
              } %>
