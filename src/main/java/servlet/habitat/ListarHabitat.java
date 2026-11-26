@@ -40,9 +40,9 @@ public class ListarHabitat extends HttpServlet {
 			request.setAttribute("errorGlobal", "No se ha podido conseguir los habitats. ");
 		}
 		request.setAttribute("habitats", hts);
-		if(flag.equals("listaBestias")) {
+		if("listaBestias".equals(flag)) {
 			rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
-		} else {
+		} else if("adminDashboard".equals(flag)) {
 			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
 		}
 		rd.forward(request, response);

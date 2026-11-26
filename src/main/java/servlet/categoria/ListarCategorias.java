@@ -35,7 +35,7 @@ public class ListarCategorias extends HttpServlet {
 			categorias = controlador.findAll();
 			if("listaBestias".equals(flag)) {
 				rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
-			}else {
+			} else if("adminDashboard".equals(flag)) {
 				rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 			}
 		}catch(Exception e) {

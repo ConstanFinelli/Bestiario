@@ -6,7 +6,7 @@
 <%
 	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");	
 	if(categorias == null ){
-		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_CATEGORIAS(""));
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_CATEGORIAS("") + "?flag=adminDashboard");
 		rd.forward(request, response);
 		return;
 	}
