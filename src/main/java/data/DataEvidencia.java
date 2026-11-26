@@ -268,7 +268,7 @@ public class DataEvidencia {
 		ResultSet rs = null;
 		LinkedList<Evidencia> evidencias = new LinkedList<>();
 		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from evidencia ev inner join bestia_evidencia bv on ev.nroEvidencia = bv.nroEvidencia inner join bestia b on bv.idBestia = b.idBestia where b.idBestia = ?");
+			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select * from evidencia ev inner join bestia_evidencia bv on ev.nroEvidencia = bv.nroEvidencia and ev.idTipoEvidencia = bv.idTipoEvidencia inner join bestia b on bv.idBestia = b.idBestia where b.idBestia = ?");
 			pstmt.setInt(1, b.getIdBestia());
 			rs = pstmt.executeQuery();
 			if(rs != null) {
