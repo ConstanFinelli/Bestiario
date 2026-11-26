@@ -223,46 +223,6 @@ public class DataEvidencia {
 		}
 	}
 	
-	public LinkedList<Evidencia> findAllType(TipoEvidencia te){
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		LinkedList<Evidencia> evidencias = new LinkedList<>();
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from evidencia where idTipoEvidencia = ?");
-			pstmt.setInt(1, te.getId());
-			rs = pstmt.executeQuery();
-			if(rs != null) {
-				while(rs.next()) {
-					int id = rs.getInt("nroEvidencia");
-					LocalDate fechaO = rs.getDate("fechaObtencion").toLocalDate();
-					String estado = rs.getString("estado");
-					String fileId = rs.getString("fileId");
-					Evidencia evidencia = new Evidencia(id, fechaO, estado, fileId, te);
-					evidencias.add(evidencia);
-				}
-			}
-		} catch(SQLException ex) {
-			logger.log(Level.SEVERE, String.format(
-				"Error SQL al listar evidencias por tipo [SQLState: %s, ErrorCode: %d]: %s",
-				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			} catch(SQLException ex) {
-				logger.log(Level.SEVERE, String.format(
-					"Error SQL al cerrar recursos en findAllType de evidencia [SQLState: %s, ErrorCode: %d]: %s",
-					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-			}
-		}
-		return evidencias;
-	}
-	
 	public LinkedList<Evidencia> findAllByBestia(Bestia b){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
