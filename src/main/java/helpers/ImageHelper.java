@@ -20,14 +20,13 @@ public class ImageHelper {
     private static final Logger logger = Logger.getLogger(ImageHelper.class.getName());
     public static final int MAX_WIDTH = 1920;
     public static final int MAX_HEIGHT = 1080;
-    public static final long MAX_RAW_SIZE_BEFORE_COMPRESS = 5 * 1024 * 1024; // 5 MB
+    public static final long MAX_RAW_SIZE_BEFORE_COMPRESS = 5 * 1024 * 1024;
 
     public static byte[] comprimir(byte[] originalBytes, String contentType) {
         if (originalBytes == null || originalBytes.length == 0) {
             return originalBytes;
         }
 
-        // Si el contentType indica explícitamente que no es imagen (ej. video, pdf, etc.), no tocar
         if (contentType != null && !contentType.toLowerCase().startsWith("image/")) {
             return originalBytes;
         }
@@ -35,7 +34,6 @@ public class ImageHelper {
         try (ByteArrayInputStream bais = new ByteArrayInputStream(originalBytes)) {
             BufferedImage originalImage = ImageIO.read(bais);
             if (originalImage == null) {
-                // ImageIO no pudo leerlo (ej. svg, formato no soportado, video), devolver original
                 return originalBytes;
             }
 
@@ -45,7 +43,6 @@ public class ImageHelper {
             boolean exceedsDimensions = (width > MAX_WIDTH || height > MAX_HEIGHT);
             boolean exceedsSize = (originalBytes.length > MAX_RAW_SIZE_BEFORE_COMPRESS);
 
-            // Si las dimensiones son adecuadas y no es excesivamente pesado, mantener original
             if (!exceedsDimensions && !exceedsSize) {
                 return originalBytes;
             }
@@ -74,7 +71,6 @@ public class ImageHelper {
             if (hasAlpha) {
                 ImageIO.write(scaledImage, "png", baos);
             } else {
-                // Compresión JPEG de alta calidad (85%)
                 Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
                 if (writers.hasNext()) {
                     ImageWriter writer = writers.next();

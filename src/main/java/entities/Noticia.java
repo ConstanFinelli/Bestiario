@@ -7,7 +7,7 @@ public class Noticia {
 	private String titulo;
 	private String contenido;
 	private LocalDateTime fechaPublicacion;
-	private Investigador publicador; //lo manejo como string porque sino no acepta nulos
+	private Investigador publicador;
 	
 	public Noticia(int id, String titulo, String contenido, LocalDateTime fechaPublicacion, Investigador publicador) {
 		this.id = id;

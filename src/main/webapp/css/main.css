@@ -213,7 +213,6 @@ h1, h2, h3, h4{
 	transform: scale(1.05);
 }
 
-/* Botones compartidos */
 .submitButton {
     padding: 0.75rem 1.75rem;
     border: none;
@@ -273,7 +272,6 @@ h1, h2, h3, h4{
     width: 26px;
 }
 
-/* Contenedores de formulario compartidos */
 .formBestia,
 .formNoticia,
 .formEditar,
@@ -287,7 +285,6 @@ h1, h2, h3, h4{
     font-size: 1.2rem;
 }
 
-/* Tarjeta .infoBestia compartida */
 .infoBestia {
     box-shadow: 0 4px 6px 0 rgba(7, 35, 60, 0.317);
     background: #d1cec6;
@@ -322,7 +319,6 @@ h1, h2, h3, h4{
     font-weight: 700;
 }
 
-/* Tarjetas de noticias compartidas */
 .new {
     background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 60%),
         linear-gradient(135deg, rgba(139, 69, 19, 0.05) 25%, transparent 25%, transparent 50%, rgba(139, 69, 19, 0.05) 50%, rgba(139, 69, 19, 0.05) 75%, transparent 75%, transparent),

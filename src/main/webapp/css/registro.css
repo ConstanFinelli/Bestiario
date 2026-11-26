@@ -6,7 +6,7 @@
 .mainContent {
   flex-direction: row;
   min-height: 50vh;
-  height: fit-content; /* necesario o se rompe la página al modificar el tamaño horizontal del navegador*/
+  height: fit-content;
   font-family: 'Consolas', system-ui;
 }
 
@@ -404,7 +404,6 @@ textarea {
   display: block;
 }
 
-/* Paginación de evidencias */
 .paginacionEvidencias {
   display: flex;
   flex-direction: column;

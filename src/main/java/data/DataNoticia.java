@@ -158,7 +158,7 @@ public class DataNoticia {
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al guardar noticia [SQLState: %s, ErrorCode: %d]: %s",
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-            noticia = null; //previsorio para caso que no encuentre un inv con idUsuario 
+            noticia = null;
 		} finally {
 			try {
 				if(rs != null) {
@@ -191,7 +191,7 @@ public class DataNoticia {
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al actualizar noticia [SQLState: %s, ErrorCode: %d]: %s",
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-            noticiaNueva = null; //previsorio para caso que no encuentre un inv con idUsuario 
+            noticiaNueva = null;
 		} finally {
 			try {
 				if(pstmt != null) {

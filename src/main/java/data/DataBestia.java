@@ -14,7 +14,6 @@ import entities.Evidencia;
 import entities.Habitat;
 import exceptions.DataNotFoundException;
 
-//INCOMPLETO: DEBATIR EN GRUPO COMO PROSEGUIR Y ORGANIZAR EL TEMA DE CATEGORIAS, HABITATS Y REGISTROS EN EL SAVE
 public class DataBestia {
 	private static final Logger logger = Logger.getLogger(DataBestia.class.getName());
 	public DataHabitat habDAO = new DataHabitat();

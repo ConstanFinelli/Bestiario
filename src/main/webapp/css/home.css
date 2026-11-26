@@ -5,7 +5,7 @@
 	text-align: center;
 	background-color: var(--secondary-color);
 	margin: 0 0;
-	gap: 0; /* para evitar main.css */
+	gap: 0;
 	padding: 0;
 }
 
