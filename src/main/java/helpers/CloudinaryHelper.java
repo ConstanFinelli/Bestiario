@@ -28,7 +28,7 @@ public class CloudinaryHelper {
 				String contentType = archivo.getContentType();
 
 			// Pre-escalar y comprimir en memoria en Java si es imagen grande (> 1920x1080 o > 5MB)
-			fileBytes = ImageHelper.resizeAndCompressIfNeeded(fileBytes, contentType);
+			fileBytes = ImageHelper.comprimir(fileBytes, contentType);
 
 			
 			Transformation<?> uploadTransformation = new Transformation<>()
@@ -46,27 +46,22 @@ public class CloudinaryHelper {
 		}
 	}
 	
-	public static String isImagenDefault(String publicId) {
-		if(publicId == null || publicId.trim().isEmpty()) {
-			publicId = EnvHelper.get("DEFAULT_PICTURE_ID");
-		}
-		return publicId;
+	private static String getDefaultImageParam() {
+		return EnvHelper.get("DEFAULT_PICTURE_ID") + ".png";
 	}
-	
-	public static String getDefaultImage() {
-		return getInstancia().url().transformation(new Transformation<>().width(300).height(300).crop("fill").quality("auto").fetchFormat("auto")).generate(EnvHelper.get("DEFAULT_PICTURE_ID"));
+
+	private static String resolvePublicId(String publicId) {
+		return (publicId == null || publicId.trim().isEmpty()) ? EnvHelper.get("DEFAULT_PICTURE_ID") : publicId;
 	}
-	
+
 	public static String getImagenRegistro(String publicId) {
-		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto").defaultImage(getDefaultImageParam())).generate(resolvePublicId(publicId));
 	}
 	
 	private static String getImagenCuadrada(String publicId, int size) {
-		publicId = isImagenDefault(publicId);
 		return getInstancia().url().transformation(
-				new Transformation<>().width(size).height(size).crop("fill").quality("auto").fetchFormat("auto"))
-				.generate(publicId);
+				new Transformation<>().width(size).height(size).crop("fill").quality("auto").fetchFormat("auto").defaultImage(getDefaultImageParam()))
+				.generate(resolvePublicId(publicId));
 	}
 
 	public static String getImagenMapa(String publicId) {
@@ -82,7 +77,7 @@ public class CloudinaryHelper {
 	}
 	
 	public static String getImagenEvidencia(String publicId) {
-		return getInstancia().url().transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getInstancia().url().transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto").defaultImage(getDefaultImageParam())).generate(resolvePublicId(publicId));
 	}
 	
 	public static String getArchivoEvidencia(String publicId) {

@@ -50,13 +50,21 @@
                   })
                   .bindPopup('<b><%= b.getNombre() %></b><br><%= h.getLocalizacion()%>')
                   .bindTooltip(
-                        '<img src="<%=CloudinaryHelper.getImagenMapa(bestias.get(b))%>" width="60" style="border-radius: 10px; cursor: pointer;">',
-                        {permanent: true, direction: 'top', offset: L.point(-15	, 0)}
+                        '<img src="<%=CloudinaryHelper.getImagenMapa(bestias.get(b))%>" width="60" height="60" style="display: block; border-radius: 10px; cursor: pointer;">',
+                        {permanent: true, direction: 'top', offset: L.point(-15, 0)}
                       );
 
         <%      } 
             } 
         } %>
+
+        window.addEventListener('load', function() {
+            map.eachLayer(function(layer) {
+                if (layer.getTooltip && layer.getTooltip() && layer.getLatLng) {
+                    layer.getTooltip().setLatLng(layer.getLatLng());
+                }
+            });
+        });
     </script>
 </div>
 

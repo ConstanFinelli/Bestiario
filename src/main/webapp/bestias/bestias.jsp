@@ -5,7 +5,6 @@
 <%@ page import="entities.Categoria" %>
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="helpers.CloudinaryHelper" %>
 
 <%
 	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");	
@@ -89,7 +88,7 @@
 					%>
 					<article class="bestia swiper-slide">
 						<h1><%=bestia.getNombre()%></h1>
-						<img src="<%= imagenes.get(bestia)%>" alt="Imagen de: <%=bestia.getNombre()%>" onerror="this.onerror=null; this.src='<%= CloudinaryHelper.getDefaultImage() %>';">
+						<img src="<%= imagenes.get(bestia)%>" alt="Imagen de: <%=bestia.getNombre()%>";">
 						<div class="overlay-buttons">
 							<a class="btnBestia"
 								href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Examinar</a>

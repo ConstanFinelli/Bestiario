@@ -128,7 +128,7 @@
                 <% if(usuario != null){%><a class="btnAgregar" onclick="abrirModalUpload()">Proponer nueva evidencia</a><%} %>	
             </section>
             <aside class="infoBestia">
-            	<img src="<%=UrlImagen%>" alt="Imagen de la bestia" onerror="this.onerror=null; this.src='<%= CloudinaryHelper.getDefaultImage() %>';">
+            	<img src="<%=UrlImagen%>" alt="Imagen de la bestia">
                 <div>
 	                <h3>Detalles de la bestia</h3>
 	                <ul>

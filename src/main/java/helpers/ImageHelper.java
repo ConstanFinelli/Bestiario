@@ -22,7 +22,7 @@ public class ImageHelper {
     public static final int MAX_HEIGHT = 1080;
     public static final long MAX_RAW_SIZE_BEFORE_COMPRESS = 5 * 1024 * 1024; // 5 MB
 
-    public static byte[] resizeAndCompressIfNeeded(byte[] originalBytes, String contentType) {
+    public static byte[] comprimir(byte[] originalBytes, String contentType) {
         if (originalBytes == null || originalBytes.length == 0) {
             return originalBytes;
         }
