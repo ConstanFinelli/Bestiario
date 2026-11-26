@@ -31,6 +31,7 @@ public class ListarHabitat extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = null;
 		LinkedList<Habitat> hts = new LinkedList<>();
+		String flag = request.getParameter("flag");
 		try{
 			hts = controlador.findAll();
 		}
@@ -39,8 +40,11 @@ public class ListarHabitat extends HttpServlet {
 			request.setAttribute("errorGlobal", "No se ha podido conseguir los habitats. ");
 		}
 		request.setAttribute("habitats", hts);
-		
-		rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
+		if(flag.equals("listaBestias")) {
+			rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
+		} else {
+			rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=habitats");
+		}
 		rd.forward(request, response);
 	}
 

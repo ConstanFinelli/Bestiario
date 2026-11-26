@@ -43,6 +43,16 @@ public class LogicBestia {
 	public LinkedList<Bestia> findByCategoria(String categoria){
 		return completarBestias(bDao.findByCategoria(categoria));
 	}
+
+	public LinkedList<Bestia> filterByCategoria(LinkedList<Bestia> bestias, String idCategoria) {
+		bestias.removeIf(bestia -> !bestia.hasCategoria(idCategoria));
+		return bestias;
+	}
+	
+	public LinkedList<Bestia> filterByHabitat(LinkedList<Bestia> bestias, String idHabitat) {
+		bestias.removeIf(bestia -> !bestia.hasHabitat(idHabitat));
+		return bestias;
+	}
 	
 	public LinkedList<Bestia> findAllBestiasFromHabitat(Habitat ht) {
 		return completarBestias(bDao.findAllBestiasFromHabitat(ht));

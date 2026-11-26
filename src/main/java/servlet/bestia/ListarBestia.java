@@ -38,15 +38,18 @@ public class ListarBestia extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.BESTIA_LIST_JSP(""));
-		String filter = request.getParameter("filter");
+		String categoriaFilter = request.getParameter("categoriaFilter");
+		String habitatFilter = request.getParameter("habitatFilter");
 		LinkedList<Bestia> bestias = new LinkedList<>();
 		Map<Bestia, String> imagenes = new LinkedHashMap<Bestia, String>();
 		
 		try {
-			if(filter != null && !filter.isEmpty()) {
-				bestias = controladorBestia.findByCategoria(filter);
-			}else {
-				bestias = controladorBestia.findAll();
+			bestias = controladorBestia.findAll();
+			if(categoriaFilter != null && !categoriaFilter.isEmpty()) {
+				bestias = controladorBestia.filterByCategoria(bestias, categoriaFilter);
+			}
+			if(habitatFilter != null && !habitatFilter.isEmpty()) {
+				bestias = controladorBestia.filterByHabitat(bestias, habitatFilter);
 			}
 			if (!bestias.isEmpty()) {
 				bestias.sort((b1, b2) -> {
@@ -60,8 +63,11 @@ public class ListarBestia extends HttpServlet {
 				request.setAttribute("bestias", bestias);
 				request.setAttribute("imagenes", imagenes);
 			}
-			if(filter != null) {
-				request.setAttribute("searchedFilter", filter); 
+			if(categoriaFilter != null) {
+				request.setAttribute("searchedCategoria", categoriaFilter); 
+			}
+			if(habitatFilter != null) {
+				request.setAttribute("searchedHabitat", habitatFilter); 
 			}
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al listar bestias en el servlet ListarBestia", e);

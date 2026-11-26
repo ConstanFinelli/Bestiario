@@ -3,13 +3,20 @@
 <%@ page import="java.util.*" %>
 <%@ page import="entities.Bestia" %>
 <%@ page import="entities.Categoria" %>
+<%@ page import="entities.Habitat" %>
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="java.util.Map" %>
 
 <%
 	LinkedList<Categoria> categorias = (LinkedList<Categoria>) request.getAttribute("foundCategorias");	
+	LinkedList<Habitat> habitats = (LinkedList<Habitat>) request.getAttribute("habitats");
 	if(categorias == null ){
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_CATEGORIAS("")+"?flag=listaBestias");
+		rd.forward(request, response);
+		return;
+	}
+	if(habitats == null){
+		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.LISTAR_HABITATS("")+"?flag=listaBestias");
 		rd.forward(request, response);
 		return;
 	}
@@ -32,13 +39,14 @@
 <section class="mainContent">
 <h1>Bestias registradas</h1>
 	<% 
-		String searchedFilter = (String) request.getAttribute("searchedFilter");
-	
-		if (searchedFilter == null) { searchedFilter = "";}
+		String searchedCategoria = (String) request.getAttribute("searchedCategoria");
+		String searchedHabitat = (String) request.getAttribute("searchedHabitat");
+		if (searchedCategoria == null) { searchedCategoria = "";}
+		if(searchedHabitat == null) { searchedHabitat = "";}
 	 %>
 	<form action="<%= HttpRoutes.LISTAR_BESTIAS(request.getContextPath()) %>" method="get">
     
-    <input list="categorias-list" name="filter" class="inputFilter" id="filter" placeholder="--Ingrese Categoria--" value= "<%= searchedFilter %>" autocomplete="on">
+    <input list="categorias-list" name="categoriaFilter" class="inputFilter" id="categoriaFilter" placeholder="--Ingrese Categoria--" value= "<%= searchedCategoria %>" autocomplete="on">
     
     <datalist id="categorias-list">
         <% if(categorias != null){ %>
@@ -52,9 +60,24 @@
         <% } %>
     </datalist>
     
-       <button class="btnBestia" type="submit" <%= (categorias == null) ? "disabled" : "" %>>
+    <input list="habitats-list" name="habitatFilter" class="inputFilter" id="habitatFilter" placeholder="--Ingrese Hábitat--" value="<%= searchedHabitat %>" autocomplete="on">
+
+    <datalist id="habitats-list">
+        <% if(habitats != null){ %>
+            <% for(Habitat ht : habitats){ 
+                String nombreHt = ht.getNombre();
+                if (nombreHt != null) { 
+            %>
+                <option value="<%= nombreHt %>"></option>
+            <%  }
+             } %>
+        <% } %>
+    </datalist>
+
+       <button class="btnBestia" type="submit" <%= (categorias == null || habitats == null) ? "disabled" : "" %>>
         Buscar
     </button>
+
 </form>
 	
 	<%

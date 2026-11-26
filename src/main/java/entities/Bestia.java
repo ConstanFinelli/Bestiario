@@ -58,6 +58,24 @@ public class Bestia {
 	public void setCategorias(LinkedList<Categoria> cats){
 		this.categorias = cats;
 	}
+	public boolean hasCategoria(String categoria) {
+		for(Categoria cat: categorias) {
+			if(cat.getNombre().equals(categoria)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasHabitat(String habitat) {
+		for(Habitat hab: habitats) {
+			if(hab.getNombre().equals(habitat)) {
+				return true;
+			}
+		}
+		return false;
+	} 
+
 	public String listarHabitats() {
 		String lista = "";
 		if(this.habitats != null) {
