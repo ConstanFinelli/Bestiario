@@ -112,14 +112,6 @@ h2{
     transform: scale(1.02);
 }
 
-.feedbackMessage{
-	font-size: 1.5rem;
-	padding: 12px;
-	border: 1px solid gray;
-	background: rgba(0,0,0,0.1);
-	margin-bottom: 10px;
-}
-
 .adminForms{
 	display: flex;
 	gap: 15px;
@@ -212,7 +204,7 @@ h2{
 	background-image: linear-gradient(to bottom, #f5deb3 0%, #e8dcb9 40%, #d2b48c 80%, #c1a171 100%);
 	transition: filter 0.2s ease-in-out;
 	border-radius: 0.4rem;
-}H
+}
 
 .backButton svg{
 	height: 20px;

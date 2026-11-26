@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Bestiario - Mapa Cargar Habitat</title>
 <link rel="stylesheet" href="<%=HttpRoutes.MAPA_CSS(request.getContextPath())%>">
+<link rel="stylesheet" href="<%=HttpRoutes.MAIN_CSS(request.getContextPath())%>">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>

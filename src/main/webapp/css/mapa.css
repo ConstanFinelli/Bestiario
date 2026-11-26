@@ -135,7 +135,7 @@ body {
 	text-align: center;
 }
 
-.btnMapa:hoover{
+.btnMapa:hover{
 	background: var(--primary-button-hover);
 }
 

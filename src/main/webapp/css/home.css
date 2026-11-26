@@ -69,10 +69,6 @@
 	gap: 20px;
 }
 
-.aboutUs::after {
-	background-color: rgba(0, 0, 0, 0.5);
-}
-
 .aboutUs p {
 	font-size: 1.5rem;
 	margin: 10px 0;

@@ -97,7 +97,6 @@ public class DataComentario {
 
 	public Comentario save(Comentario c) {
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("insert into comentario(idUsuario, idBestia, contenido, fechapublicacion) values(?, ?, ?, ?)");
 			pstmt.setInt(1, c.getPublicador().getIdUsuario());
@@ -111,9 +110,6 @@ public class DataComentario {
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
 		} finally {
 			try {
-				if(rs != null) {
-					rs.close();
-				}
 				if(pstmt != null) {
 					pstmt.close();
 				}
