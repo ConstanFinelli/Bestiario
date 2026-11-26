@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logic.LogicBestia;
+import logic.LogicRegistro;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ import helpers.HttpRoutes;
 @WebServlet("/bestias/eliminar")
 public class EliminarBestia extends HttpServlet {
 	private LogicBestia controlador = new LogicBestia();
+	private LogicRegistro controladorRegistro = new LogicRegistro();
 	private static final Logger logger = Logger.getLogger(EliminarBestia.class.getName());
 
 	private static final long serialVersionUID = 1L;
@@ -29,6 +31,7 @@ public class EliminarBestia extends HttpServlet {
 		String id = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(id));
 		try {
+			controladorRegistro.deleteImages(bestia);
 			controlador.delete(bestia);
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Bestia no encontrada para eliminar en EliminarBestia", e);
