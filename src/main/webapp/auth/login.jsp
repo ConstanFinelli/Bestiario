@@ -62,7 +62,7 @@
 				        </ul>
 				    </div>
 				<% 
-				        session.removeAttribute("successMsg"); // Lo borramos después de usarlo
+				        session.removeAttribute("successMsg");
 				    } 
 				%>
 			</form>

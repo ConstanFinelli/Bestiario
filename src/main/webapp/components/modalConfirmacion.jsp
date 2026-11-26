@@ -58,7 +58,6 @@ pageEncoding="UTF-8"%>
 
     formBtn.action = actionUrl;
 
-    // Limpiar inputs dinamicos previos
     var dynamicInputs = formBtn.querySelectorAll('.modalDynamicInput');
     dynamicInputs.forEach(function (el) {
       el.remove();

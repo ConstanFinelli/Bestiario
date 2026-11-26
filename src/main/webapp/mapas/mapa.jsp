@@ -96,7 +96,6 @@
 </div>
 
 <script>
-    // Guardar la URL previa si venimos desde fuera del mapa
     if (document.referrer && !document.referrer.includes('/mapa') && !document.referrer.includes('Mapa')) {
         sessionStorage.setItem('mapaPrevUrl', document.referrer);
     }

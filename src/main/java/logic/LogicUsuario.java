@@ -45,27 +45,12 @@ public class LogicUsuario {
 			return false;
 		}
 
-		// 1. Verificación moderna con BCrypt
 		if (storedHash.startsWith("$2a$") || storedHash.startsWith("$2b$") || storedHash.startsWith("$2y$")) {
 			try {
 				return BCrypt.checkpw(plainPassword, storedHash);
 			} catch (Exception e) {
 				return false;
 			}
-		}
-
-		// 2. Verificación de respaldo para migración de contraseñas legadas (Base64)
-		try {
-			String decoded = new String(java.util.Base64.getDecoder().decode(storedHash), java.nio.charset.StandardCharsets.UTF_8);
-			if (plainPassword.equals(decoded)) {
-				// Auto-migración a BCrypt en segundo plano
-				String newHash = hashPassword(plainPassword);
-				usDAO.updatePassword(usuario.getIdUsuario(), newHash);
-				usuario.setContrasena(newHash);
-				return true;
-			}
-		} catch (Exception ignored) {
-			// No era Base64 válido
 		}
 
 		return false;

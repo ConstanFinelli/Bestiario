@@ -63,7 +63,7 @@
 	%>
     <div class="notFound"><%= errorMsg %></div>
 	<%
-        session.removeAttribute("errorMsg"); // para que no se repita
+        session.removeAttribute("errorMsg");
     	}
 	%>
 

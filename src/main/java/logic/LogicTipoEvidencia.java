@@ -25,7 +25,7 @@ public class LogicTipoEvidencia {
 	}
 	
 	public TipoEvidencia delete(TipoEvidencia datoBorrado) throws DataNotFoundException {
-		TipoEvidencia dato = getOne(datoBorrado); // consultar 
+		TipoEvidencia dato = getOne(datoBorrado);
 		return teDAO.delete(dato);
 	}
 }

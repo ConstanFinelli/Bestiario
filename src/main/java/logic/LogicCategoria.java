@@ -31,7 +31,7 @@ public DataCategoria catDAO = new DataCategoria();
 	}
 	
 	public Categoria delete(Categoria datoBorrado) throws DataNotFoundException {
-		Categoria dato = getOne(datoBorrado); // consultar 
+		Categoria dato = getOne(datoBorrado);
 		return catDAO.delete(dato);
 	}
 }
