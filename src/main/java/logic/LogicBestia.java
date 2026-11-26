@@ -10,21 +10,42 @@ import exceptions.DataNotFoundException;
 
 public class LogicBestia {
 	public DataBestia bDao = new DataBestia();
+	private LogicHabitat logicHabitat = new LogicHabitat();
+	private LogicCategoria logicCategoria = new LogicCategoria();
+	private LogicEvidencia logicEvidencia = new LogicEvidencia();
+
+	private void completarBestia(Bestia bestia) {
+		if (bestia == null) {
+			return;
+		}
+		bestia.setHabitats(logicHabitat.findAllByBestia(bestia));
+		bestia.setCategorias(logicCategoria.findAllByBestia(bestia));
+		bestia.setEvidencias(logicEvidencia.findAllByBestia(bestia));
+	}
+
+	private LinkedList<Bestia> completarBestias(LinkedList<Bestia> bestias) {
+		for (Bestia bestia : bestias) {
+			completarBestia(bestia);
+		}
+		return bestias;
+	}
 	
 	public Bestia getOne(Bestia b) throws DataNotFoundException {
-		return bDao.getOne(b);
+		Bestia bestiaEncontrada = bDao.getOne(b);
+		completarBestia(bestiaEncontrada);
+		return bestiaEncontrada;
 	}
 	
 	public LinkedList<Bestia> findAll() {
-		return bDao.findAll();
+		return completarBestias(bDao.findAll());
 	}
 	
 	public LinkedList<Bestia> findByCategoria(String categoria){
-		return bDao.findByCategoria(categoria);
+		return completarBestias(bDao.findByCategoria(categoria));
 	}
 	
 	public LinkedList<Bestia> findAllBestiasFromHabitat(Habitat ht) {
-		return bDao.findAllBestiasFromHabitat(ht);
+		return completarBestias(bDao.findAllBestiasFromHabitat(ht));
 	}
 	
 	public Bestia save(Bestia b) {

@@ -3,6 +3,7 @@ package logic;
 import java.util.LinkedList;
 
 import data.DataCategoria;
+import entities.Bestia;
 import entities.Categoria;
 import exceptions.DataNotFoundException;
 
@@ -15,6 +16,10 @@ public DataCategoria catDAO = new DataCategoria();
 	
 	public LinkedList<Categoria> findAll() {
 		return catDAO.findAll();
+	}
+
+	public LinkedList<Categoria> findAllByBestia(Bestia b) {
+		return catDAO.findAllByBestia(b);
 	}
 	
 	public Categoria save(Categoria catS) {

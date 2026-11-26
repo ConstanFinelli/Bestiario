@@ -16,9 +16,6 @@ import exceptions.DataNotFoundException;
 
 public class DataBestia {
 	private static final Logger logger = Logger.getLogger(DataBestia.class.getName());
-	public DataHabitat habDAO = new DataHabitat();
-	public DataCategoria catDAO = new DataCategoria();
-	public DataEvidencia evDAO = new DataEvidencia();
 	
 	public Bestia getOne(Bestia b) {
 		if(b == null) {
@@ -37,7 +34,6 @@ public class DataBestia {
 				String peligrosidad = rs.getString("peligrosidad");
 				String estado = rs.getString("estado");
 				bestiaEncontrada = new Bestia(id, nombre, peligrosidad, estado);
-				completarBestia(bestiaEncontrada);
 			}
 		} catch(SQLException ex) {
 			logger.log(Level.SEVERE, String.format(
@@ -78,7 +74,6 @@ public class DataBestia {
 					String peligrosidad = rs.getString("peligrosidad");
 					String estado = rs.getString("estado");
 					Bestia bestia = new Bestia(id, nombre, peligrosidad, estado);
-					completarBestia(bestia);
 					bestias.add(bestia);
 				}
 			}
@@ -122,7 +117,6 @@ public class DataBestia {
 					String peligrosidad = rs.getString("peligrosidad");
 					String estado = rs.getString("estado");
 					Bestia bestia = new Bestia(id, nombre, peligrosidad, estado);
-					completarBestia(bestia);
 					bestias.add(bestia);
 				}
 			}
@@ -243,22 +237,6 @@ public class DataBestia {
 			}
 		}
 		return b;
-	}
-	
-	public void addCategorias(Bestia bestiaEncontrada){
-		bestiaEncontrada.setCategorias(catDAO.findAllByBestia(bestiaEncontrada));
-	}
-	public void addHabitats(Bestia bestiaEncontrada) {
-		bestiaEncontrada.setHabitats(habDAO.findAllByBestia(bestiaEncontrada));
-	}
-	public void addEvidencias(Bestia bestiaEncontrada) {
-		bestiaEncontrada.setEvidencias(evDAO.findAllByBestia(bestiaEncontrada));
-	}
-	
-	public void completarBestia(Bestia bestia) {
-		addHabitats(bestia);
-		addCategorias(bestia);
-		addEvidencias(bestia);
 	}
 	
 	public void saveCategorias(Bestia b) {
