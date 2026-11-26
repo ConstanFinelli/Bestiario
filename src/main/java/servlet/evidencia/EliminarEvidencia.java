@@ -40,9 +40,8 @@ public class EliminarEvidencia extends HttpServlet {
 			return;
 		}
 
-		Evidencia evidencia = null;
 		try {
-			evidencia = controladorEvidencia.delete(new Evidencia(nroEvidencia, null, null, null, new TipoEvidencia(idTipo)));
+			controladorEvidencia.delete(new Evidencia(nroEvidencia, null, null, null, new TipoEvidencia(idTipo)));
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Evidencia no encontrada en el servlet EliminarEvidencia", e);
 			request.setAttribute("errorGlobal", "La evidencia que se intentó eliminar no existe.");
@@ -51,7 +50,6 @@ public class EliminarEvidencia extends HttpServlet {
 			request.setAttribute("errorGlobal","No se ha podido eliminar la evidencia");
 		}
 		
-		request.setAttribute("deletedEvidencia", evidencia);
 		request.getRequestDispatcher(HttpRoutes.OBTENER_REGISTRO_BESTIA("") + "?id="+idBestia).forward(request, response);
 	}
 

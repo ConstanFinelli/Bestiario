@@ -50,23 +50,22 @@ public class SvRegister extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado: se requieren permisos de investigador.");
 			return;
 		}
-		String logMessage = "";
 		List<String> errores = new ArrayList<>();
 		RequestDispatcher rd = null;
 
 		LocalDate fechaSinHora = null;
 		if (email == null || email.isBlank() || password == null || password.isBlank() || fecha == null || fecha.isBlank()) {
-			logMessage = "Todos los campos obligatorios deben estar completos.";
+			errores.add("Todos los campos obligatorios deben estar completos.");
 		} else {
 			try {
 				fechaSinHora = LocalDate.parse(fecha.trim());
 			} catch (DateTimeParseException e) {
 				logger.log(Level.WARNING, "Fecha de nacimiento inválida en SvRegister: " + fecha, e);
-				logMessage = "La fecha de nacimiento ingresada no tiene un formato válido.";
+				errores.add("La fecha de nacimiento ingresada no tiene un formato válido.");
 			}
 		}
 
-		if (logMessage.isEmpty()) {
+		if (errores.isEmpty()) {
 			Usuario user = null;
 			try {
 				user = logicUsuario.getByEmail(email.trim());
@@ -78,7 +77,7 @@ public class SvRegister extends HttpServlet {
 			}
 
 			if (user != null) {
-				logMessage = "Ya existe un usuario registrado con ese email";
+				errores.add("Ya existe un usuario registrado con ese email");
 			} else if (errores.isEmpty()) {
 				Lector userLector = new Lector(
 					email.trim(),
@@ -95,7 +94,6 @@ public class SvRegister extends HttpServlet {
 						response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
 						return;
 					}
-					request.setAttribute("feedbackMessage", "¡Usuario creado con éxito!");
 				} catch (Exception e) {
 					logger.log(Level.SEVERE, "Error al registrar usuario en el servlet SvRegister", e);
 					errores.add("No se ha podido registrar el usuario");
@@ -112,7 +110,6 @@ public class SvRegister extends HttpServlet {
 		if (!errores.isEmpty()) {
 			request.setAttribute("errorGlobal", String.join("<br>", errores));
 		}
-		request.setAttribute("logMsg", logMessage);
 		rd.forward(request, response);
 	}
 

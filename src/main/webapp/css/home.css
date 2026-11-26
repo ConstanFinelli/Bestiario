@@ -31,30 +31,7 @@
 }
 
 .new {
-	background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 60%),
-        linear-gradient(135deg, rgba(139, 69, 19, 0.05) 25%, transparent 25%, transparent 50%, rgba(139, 69, 19, 0.05) 50%, rgba(139, 69, 19, 0.05) 75%, transparent 75%, transparent),
-        linear-gradient(to bottom, #f5deb3 0%, #e8dcb9 40%, #d2b48c 80%, #c1a171 100%);
-	height: fit-content;
 	width: 450px;
-	border-radius: 1rem;
-}
-
-.new h2 {
-	font-size: 1.4rem;
-}
-
-.newInfo {
-	font-size: 1rem;
-	color: gray;
-}
-
-.newContainer {
-	padding: 15px;
-}
-
-.newContent {
-	padding: 15px 0;
-	font-size: 1rem;
 }
 
 .aboutUs {

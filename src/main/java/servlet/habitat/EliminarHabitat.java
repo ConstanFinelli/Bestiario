@@ -56,10 +56,6 @@ public class EliminarHabitat extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "El habitat se ha eliminado correctamente");
-		}
-
 		rd.forward(request, response);
 	}
 

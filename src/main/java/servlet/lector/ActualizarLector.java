@@ -84,9 +84,6 @@ public class ActualizarLector extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage","¡Usuario actualizado con éxito!");
-		}
 		rd.forward(request, response);
 	}
 

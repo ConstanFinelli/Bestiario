@@ -67,9 +67,6 @@ public class CrearCaracteristicaHabitat extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "¡Característica creada con éxito!");
-		}
 		rd.forward(request, response);
 	}
 

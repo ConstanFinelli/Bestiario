@@ -101,7 +101,7 @@ public class SvForgotPassword extends HttpServlet {
 			response.sendRedirect(HttpRoutes.LOGIN_JSP(request.getContextPath()));
 		} else {
 			
-			request.getSession().setAttribute("logMsg", "El Correo ingresado no pertenece a nigún usuario");
+			request.getSession().setAttribute("errorGlobal", "El Correo ingresado no pertenece a nigún usuario");
 			response.sendRedirect(HttpRoutes.FORGOT_PASSWORD_JSP(request.getContextPath()));
 		}
 		

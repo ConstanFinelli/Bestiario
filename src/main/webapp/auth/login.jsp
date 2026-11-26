@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Bestiario - Login</title>
+<link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
 <link rel="stylesheet" href="<%= HttpRoutes.LOGIN_CSS(request.getContextPath()) %>">
 </head>
 <body class='logBody'>
@@ -50,21 +51,6 @@
 	                <input type="submit" class="logSubmit" value="Iniciar sesión" />
 	            </aside>
 	            
-				
-				<% 
-				    String errorMsg = (String) session.getAttribute("logMsg");
-				    if (errorMsg != null) { 
-				%>
-				    <div class='errorBox'>
-				        <ul>
-				            <li class="errorMsg">⚠️<%= errorMsg %></li>
-				        </ul>
-				    </div>
-				<% 
-				        session.removeAttribute("logMsg"); // Lo borramos después de usarlo
-				    } 
-				%>
-				
 				
 				<% 
 				    String successMsg = (String) session.getAttribute("successMsg");

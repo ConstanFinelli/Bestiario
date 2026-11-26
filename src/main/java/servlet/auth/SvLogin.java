@@ -32,7 +32,6 @@ public class SvLogin extends HttpServlet {
 		String correo = request.getParameter("correo");
 		String contrasena = request.getParameter("contrasena");
 		String urlAnterior = request.getParameter("urlAnterior");
-		String logMsg = "";
 		Usuario usuario = null;
 		
 		
@@ -60,12 +59,11 @@ public class SvLogin extends HttpServlet {
 	            }
 	            return;
 			}else {
-				logMsg = "La contraseña ingresada es incorrecta.";
+				request.setAttribute("errorGlobal", "La contraseña ingresada es incorrecta.");
 			}
-		}else {
-			logMsg = "El correo ingresado no está registrado.";
+		}else if (request.getAttribute("errorGlobal") == null) {
+			request.setAttribute("errorGlobal", "El correo ingresado no está registrado.");
 		}
-		request.getSession().setAttribute("logMsg", logMsg);
 		rd.forward(request, response);
 	}
 

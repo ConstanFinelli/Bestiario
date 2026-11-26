@@ -26,12 +26,11 @@
 <h1>Candidaturas</h1>
 	
 	<%
-    	String errorMsg = (String) session.getAttribute("errorMsg");
+    	String errorMsg = (String) request.getAttribute("errorMsg");
     	if (errorMsg != null) {
 	%>
     <div class="notFound"><%= errorMsg %></div>
 	<%
-        session.removeAttribute("errorMsg"); // para que no se repita
     	}
 	%>
 	

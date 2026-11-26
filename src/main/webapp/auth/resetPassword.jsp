@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Bestiario - Reset Password</title>
+<link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
 <link rel="stylesheet" href="<%= HttpRoutes.LOGIN_CSS(request.getContextPath()) %>">
 </head>
 
@@ -43,12 +44,6 @@
 	    <aside class="logSubmitContainer">
 	        <input type="submit" class="logSubmit" value="Cambiar contraseña" />
 	    </aside>
-	
-	    <div class='errorBox' style="${empty logMsg ? 'display: none;' : ''}">
-		    <ul>
-		        <li class="errorMsg">${logMsg}</li>
-		    </ul>
-		</div>
 	
 	</form>
 	

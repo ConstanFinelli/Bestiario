@@ -68,9 +68,6 @@ public class EliminarCaracteristicaHabitat extends HttpServlet {
 			return;
 		}
 		
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "¡Característica eliminada con éxito!");
-		}
 		rd.forward(request, response);
 	}
 

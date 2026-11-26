@@ -46,9 +46,6 @@ public class EliminarCategoria extends HttpServlet {
 			logger.log(Level.SEVERE, "Error crítico al eliminar una categoría en el servlet EliminarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar la categoría.");
 		}
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "¡Categoría eliminada con éxito!");
-		}
 		rd.forward(request, response);
 	}
 

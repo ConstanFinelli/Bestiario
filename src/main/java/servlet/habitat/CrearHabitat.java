@@ -45,9 +45,6 @@ public class CrearHabitat extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		}
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "¡Habitat creado con éxito!");
-		}
 		rd.forward(request, response);
 	}
 

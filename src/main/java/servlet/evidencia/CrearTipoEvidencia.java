@@ -35,10 +35,6 @@ public class CrearTipoEvidencia extends HttpServlet {
 			request.setAttribute("errorGlobal","No se ha podido guardar el tipo creado");
 		}
 
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "¡Tipo de evidencia creado con éxito!");
-		}
-			
 		request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=tiposEvidencia").forward(request, response);
 	}
 }

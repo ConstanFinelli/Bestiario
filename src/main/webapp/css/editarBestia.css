@@ -3,9 +3,6 @@
 .formEditar{
 	padding: 3vh 5vw;
 	width: 400px;
-	border: 2px solid var(--primary-color);
-	border-radius: 12px;
-	background: rgba(245, 245, 66,0.075);
 	margin: 0 auto;
 	display: flex;
 	gap: 15px;
@@ -20,29 +17,6 @@
 	width: 20vw;
 }
 
-.inputLabel{
-	font-size: 1.2rem;
-}
-
-.submitButton {
-    padding: 0.75rem 1.75rem;
-    border: none;
-    border-radius: 6px;
-    background: var(--primary-button);
-    color: #2C2C2C;
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    max-width: 300px;
-}
-
-.submitButton:hover {
-    background: var(--primary-button-hover);
-    transform: scale(1.02);
-}
-
 .forms{
 	display: grid;
 	grid-template-columns: 1fr 2fr;
@@ -54,42 +28,7 @@
 	gap: 15px;
 }
 
-.infoBestia{
-    box-shadow: 0 4px 6px 0 rgba(7, 35, 60, 0.317);
-    background: #d1cec6;
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    height: fit-content;
-    width: 20vw;
-    margin-left: auto;
-}
-
-.infoBestia:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(7, 35, 60, 0.4);
-}
-
-.infoBestia img {
-    min-height: 200px;
-    max-height: 350px;
-    width: 20vw;
-    border-radius: 8px;
-    object-fit:cover;
-    object-position: center;
-}
-
-.infoBestia h3{
-    text-align: center;
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
 ul{
-    list-style: none;
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -134,23 +73,8 @@ ul{
 	height: 6vh;
 	width: 12%;
     font-size: 1.4rem;
-    outline: none;
     border: 2px solid var(--primary-color);
-	box-sizing: border-box;
-    border-radius: 6px;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-    transition: filter 0.3s ease-in-out;
-    display: flex;
     justify-content: left;
-    align-items: center;
-    gap: 10px;
-}
-
-.returnButton svg{
-	height: 22px;
-	width: 26px;
 }
 
 .header{

@@ -108,7 +108,7 @@ public class AuthFilter implements Filter {
             if (session == null) {
                 session = httpRequest.getSession(true);
             }
-            session.setAttribute("logMsg", "Debe iniciar sesión para acceder a la funcionalidad solicitada.");
+            session.setAttribute("errorGlobal", "Debe iniciar sesión para acceder a la funcionalidad solicitada.");
 
             String redirectUrl = HttpRoutes.LOGIN_JSP(contextPath);
             if ("GET".equalsIgnoreCase(httpRequest.getMethod())) {

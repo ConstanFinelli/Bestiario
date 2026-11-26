@@ -70,10 +70,6 @@ public class ActualizarCaracteristicaHabitat extends HttpServlet {
 			return;
 		}
 		
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "¡Caracteristica del habitat actualizada con éxito!");
-		}
-		
 		rd.forward(request, response);
 	}
 

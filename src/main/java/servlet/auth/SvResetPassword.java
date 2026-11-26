@@ -42,7 +42,8 @@ public class SvResetPassword extends HttpServlet {
 		}
 			
 		if (t == null || t.isUsed() || t.getExpiration().isBefore(LocalDateTime.now())) {
-		    response.getWriter().println("Token inválido o expirado");
+		    request.getSession().setAttribute("errorGlobal", "Token inválido o expirado.");
+		    response.sendRedirect(HttpRoutes.FORGOT_PASSWORD_JSP(request.getContextPath()));
 		    return;
 		}
 
@@ -60,18 +61,19 @@ public class SvResetPassword extends HttpServlet {
 		String confirmPassword = request.getParameter("confirmPassword");
 		
 		if(token == null || token.isBlank()) {
-			response.getWriter().println("Token inválido");
+			request.getSession().setAttribute("errorGlobal", "Token inválido.");
+			response.sendRedirect(HttpRoutes.FORGOT_PASSWORD_JSP(request.getContextPath()));
 			return;
 		}
 		if(nuevaPassword == null || nuevaPassword.isBlank() || confirmPassword == null || confirmPassword.isBlank()) {
 			request.setAttribute("token", token);
-			request.setAttribute("logMsg", "Debe completar y confirmar la nueva contraseña.");
+			request.setAttribute("errorGlobal", "Debe completar y confirmar la nueva contraseña.");
 			request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
 			return;
 		}
 		if(!nuevaPassword.equals(confirmPassword)) {
 			request.setAttribute("token", token);
-			request.setAttribute("logMsg", "Las contraseñas ingresadas no coinciden");
+			request.setAttribute("errorGlobal", "Las contraseñas ingresadas no coinciden");
 			request.getRequestDispatcher(HttpRoutes.RESET_PASSWORD_JSP("")).forward(request, response);
 			return;
 		}
@@ -91,7 +93,8 @@ public class SvResetPassword extends HttpServlet {
 		}
 
 		if (t == null || t.isUsed() || t.getExpiration().isBefore(LocalDateTime.now())) {
-		    response.getWriter().println("Token inválido");
+		    request.getSession().setAttribute("errorGlobal", "Token inválido o expirado.");
+		    response.sendRedirect(HttpRoutes.FORGOT_PASSWORD_JSP(request.getContextPath()));
 		    return;
 		}
 

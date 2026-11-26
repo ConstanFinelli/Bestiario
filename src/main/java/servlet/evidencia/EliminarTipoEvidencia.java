@@ -53,10 +53,6 @@ public class EliminarTipoEvidencia extends HttpServlet {
 			return;
 		}
 		
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage", "¡Tipo de evidencia eliminada con éxito!");
-		}
-		
 		rd.forward(request, response);
 	}
 

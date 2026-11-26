@@ -29,7 +29,7 @@ public class EliminarBestia extends HttpServlet {
 		String id = request.getParameter("id");
 		Bestia bestia = new Bestia(Integer.parseInt(id));
 		try {
-			bestia = controlador.delete(bestia);
+			controlador.delete(bestia);
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Bestia no encontrada para eliminar en EliminarBestia", e);
 			request.setAttribute("errorGlobal", "La bestia que intentó eliminar no existe.");
@@ -37,7 +37,6 @@ public class EliminarBestia extends HttpServlet {
 			logger.log(Level.SEVERE, "Error crítico al eliminar bestia en el servlet EliminarBestia", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar la bestia seleccionada. ");
 		}
-		request.setAttribute("deletedBestia", bestia);
 		request.getRequestDispatcher(HttpRoutes.LISTAR_BESTIAS("")).forward(request, response);		
 	}
 

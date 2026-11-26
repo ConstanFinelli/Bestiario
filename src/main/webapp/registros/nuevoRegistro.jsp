@@ -181,6 +181,23 @@
 					</div>
 				</div>	
 				 <script>
+				    function previsualizarImagen(event) {
+				        const input = event.target;
+				        const preview = document.getElementById('previewMainPic');
+
+				        if (input.files && input.files[0]) {
+				            const reader = new FileReader();
+				            reader.onload = function(e) {
+				                preview.src = e.target.result;
+				                preview.style.display = 'block';
+				            };
+				            reader.readAsDataURL(input.files[0]);
+				        } else {
+				            preview.src = '';
+				            preview.style.display = 'none';
+				        }
+				    }
+
 				    function abrirModal(link) {
 						if (!link) {
 					        alert("Esta evidencia no tiene un archivo multimedia asociado.");

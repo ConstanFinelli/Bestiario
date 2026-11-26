@@ -54,9 +54,6 @@ public class ActualizarHabitat extends HttpServlet {
 		}
 		
 
-		if(request.getAttribute("errorGlobal") == null) {
-		request.setAttribute("feedbackMessage", "¡Habitat actualizado con éxito!");
-		}
 		rd.forward(request, response);
 	}
 

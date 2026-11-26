@@ -1,6 +1,7 @@
 .tablaRegistros {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     background-color: rgba(245, 245, 66,0.075);
     border-radius: 10px;
     overflow: hidden;
@@ -23,6 +24,7 @@
     display: flex;
     gap: 0.5rem;
     justify-content: center;
+    align-items: center;
 }
 
 .btnExaminar {

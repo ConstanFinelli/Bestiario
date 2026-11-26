@@ -31,10 +31,9 @@ public class ActualizarCategoria extends HttpServlet {
 		String id = request.getParameter("id");
 		String name = request.getParameter("nombre");
 		String desc = request.getParameter("descripcion");
-		String feedbackMessage = "";
 		Categoria cat = new Categoria(Integer.parseInt(id), name, desc);
 		try {
-			cat = controlador.update(cat);
+			controlador.update(cat);
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Categoría no encontrada al actualizar en ActualizarCategoria", e);
 			request.setAttribute("errorGlobal", "La categoría a actualizar no existe.");
@@ -42,11 +41,6 @@ public class ActualizarCategoria extends HttpServlet {
 			logger.log(Level.SEVERE, "Error crítico al actualizar la categoría en el servlet ActualizarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido actualizar la categoría.");
 		}
-		if(cat != null) {
-			feedbackMessage = "¡Categoría actualizada con éxito!";
-		}
-		request.setAttribute("feedbackMessage", feedbackMessage);
-		request.setAttribute("updatedCategoria", cat);
 		rd.forward(request, response);
 	}
 

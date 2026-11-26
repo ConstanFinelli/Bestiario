@@ -67,9 +67,6 @@ public class EliminarLector extends HttpServlet {
 			logger.log(Level.WARNING, "Error al eliminar usuario en el servlet EliminarLector", e);
 			request.setAttribute("errorGlobal", "No se ha podido eliminar el usuario. ");
 		}
-		if(request.getAttribute("errorGlobal") == null) {
-			request.setAttribute("feedbackMessage","¡Usuario eliminado con éxito!");
-		}
 		rd.forward(request, response);
 	}
 

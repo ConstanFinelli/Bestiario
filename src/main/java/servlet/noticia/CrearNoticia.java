@@ -45,11 +45,11 @@ public class CrearNoticia extends HttpServlet {
 			if(titulo != null && contenido != null) {
 				controlador.save(noticia);
 			}
+			response.sendRedirect(HttpRoutes.LISTAR_NOTICIAS(request.getContextPath()));
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al crear noticia en el servlet CrearNoticia", e);
 			request.setAttribute("errorGlobal", "No se ha podido crear la noticia. ");
-		}finally {
-			response.sendRedirect(HttpRoutes.LISTAR_NOTICIAS(request.getContextPath()));
+			request.getRequestDispatcher(HttpRoutes.LISTAR_NOTICIAS("")).forward(request, response);
 		}
 
 	}

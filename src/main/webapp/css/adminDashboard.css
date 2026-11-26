@@ -60,9 +60,6 @@ h2{
 
 .formAdmin{
 	padding: 3vh 30px;
-	border: 2px solid var(--primary-color);
-	border-radius: 12px;
-	background: rgba(245, 245, 66,0.075);
 	margin: 0 auto;
 	display: flex;
 	gap: 15px;
@@ -89,27 +86,10 @@ h2{
 	outline: none;
 }
 
-.inputLabel{
-	font-size: 1.2rem;
-}
-
-.submitButton {
-    padding: 0.75rem 1.75rem;
-    border: none;
-    border-radius: 6px;
-    background: var(--primary-button);
-    color: #2C2C2C;
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    max-width: 300px;
-}
-
-.submitButton:hover {
-    background: var(--primary-button-hover);
-    transform: scale(1.02);
+.formAdmin input[type="date"]{
+	padding: 0.5rem 1rem;
+	height: 3vh;
+	width: 9vw;
 }
 
 .adminForms{
@@ -193,9 +173,6 @@ h2{
 }
 
 .backButton{
-	display: flex;
-	text-decoration: none;
-	color: black;
 	border: 1px solid black;
 	width: max-content;
 	padding: 5px;

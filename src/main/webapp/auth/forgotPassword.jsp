@@ -8,8 +8,10 @@
     <meta charset="UTF-8">
     <title>Bestiario - Recuperar contraseña</title>
 
+    <link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
     <link rel="stylesheet"
           href="<%= HttpRoutes.LOGIN_CSS(request.getContextPath()) %>">
+    <%@ include file="../components/error.jsp" %>
 </head>
 
 <body class="logBody">
@@ -80,25 +82,6 @@
                 />
 
             </aside>
-
-            <%
-                String errorMsg = (String) session.getAttribute("logMsg");
-
-                if (errorMsg != null) {
-            %>
-
-                <div class="errorBox">
-                    <ul>
-                        <li class="errorMsg">
-                            ⚠️ <%= errorMsg %>
-                        </li>
-                    </ul>
-                </div>
-
-            <%
-                    session.removeAttribute("logMsg");
-                }
-            %>
 
         </form>
 

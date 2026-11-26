@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Bestiario - Registrarse</title>
+<link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
 <link rel="stylesheet" href="<%= HttpRoutes.LOGIN_CSS(request.getContextPath()) %>">
 </head>
 <body class='logBody'>
@@ -44,17 +45,6 @@
 				</a>
                 <input type="submit" class="logSubmit" value="Registrarse" />
             </aside>
-            
-            <% 
-			    String logMsg = (String) request.getAttribute("logMsg");
-			    if (logMsg != null && !logMsg.isEmpty()) { 
-			%>
-			    <div class='errorBox'>
-			        <ul>
-			            <li class="errorMsg"><%= logMsg %></li>
-			        </ul>
-			    </div>
-			<% } %>
         </form>
     </div>
 </body>

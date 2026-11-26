@@ -55,7 +55,7 @@ public class ActualizarBestia extends HttpServlet {
 			return;
 		}
 		try {
-			bestia = controlador.update(bestia);
+			controlador.update(bestia);
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Bestia no encontrada al actualizar en ActualizarBestia", e);
 			request.setAttribute("errorGlobal", "La bestia ingresada no existe.");
@@ -68,7 +68,6 @@ public class ActualizarBestia extends HttpServlet {
 			return;
 		}
 		
-		request.getSession().setAttribute("updateBestia", bestia);		
 		request.getSession().setAttribute("imagen", imagen);
 		rd.forward(request, response);
 		

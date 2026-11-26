@@ -42,25 +42,27 @@
             <% for (Registro reg : registros) { %>
                 <tr>
                     <td><%= reg.getNroRegistro() %></td>
-                    <td class="acciones">
-                        <a href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia() %>&nroRegistro=<%= reg.getNroRegistro() %>">
-                        	<button class="btnExaminar">Examinar</button>
-                        </a>
-                    	
-                    	<form action="<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>" method="post" style="display:flex;">
-        					<input type="hidden" name="action" value="aceptar">
-					        <input type="hidden" name="nroRegistro" value="<%= reg.getNroRegistro() %>">
-					        <input type="hidden" name="idInvestigador" value="<%= usuario.getIdUsuario() %>">
-					        <input type="hidden" name="idBestia" value="<%= reg.getBestia().getIdBestia() %>"/>
-					        <button class="btnAceptar" type="submit">Aceptar</button>
-    					</form>
+                    <td>
+                        <div class="acciones">
+                            <a href="<%= HttpRoutes.OBTENER_REGISTRO_BESTIA(request.getContextPath()) %>?id=<%=bestia.getIdBestia() %>&nroRegistro=<%= reg.getNroRegistro() %>">
+                                <button class="btnExaminar">Examinar</button>
+                            </a>
 
-					    <form action="<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>" method="post" style="display:flex;">
-					        <input type="hidden" name="action" value="rechazar">
-					        <input type="hidden" name="nroRegistro" value="<%= reg.getNroRegistro() %>">
-					        <input type="hidden" name="idBestia" value="<%= reg.getBestia().getIdBestia() %>"/>
-					        <button class="btnRechazar" type="submit">Rechazar</button>
-					    </form>
+                            <form action="<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>" method="post" style="display:flex;">
+                                <input type="hidden" name="action" value="aceptar">
+                                <input type="hidden" name="nroRegistro" value="<%= reg.getNroRegistro() %>">
+                                <input type="hidden" name="idInvestigador" value="<%= usuario.getIdUsuario() %>">
+                                <input type="hidden" name="idBestia" value="<%= reg.getBestia().getIdBestia() %>"/>
+                                <button class="btnAceptar" type="submit">Aceptar</button>
+                            </form>
+
+                            <form action="<%= HttpRoutes.ACEPTAR_REGISTRO(request.getContextPath()) %>" method="post" style="display:flex;">
+                                <input type="hidden" name="action" value="rechazar">
+                                <input type="hidden" name="nroRegistro" value="<%= reg.getNroRegistro() %>">
+                                <input type="hidden" name="idBestia" value="<%= reg.getBestia().getIdBestia() %>"/>
+                                <button class="btnRechazar" type="submit">Rechazar</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             <% } %>
