@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import entities.Habitat;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 import helpers.HttpRoutes;
 
 /**
@@ -44,6 +45,11 @@ public class ActualizarHabitat extends HttpServlet {
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Hábitat no encontrado al actualizar en ActualizarHabitat", e);
 			request.setAttribute("errorGlobal", "El hábitat a actualizar no existe.");
+			rd.forward(request, response);
+			return;
+		}catch(DuplicateDataException e) {
+			logger.log(Level.WARNING, "Hábitat duplicado al actualizar en ActualizarHabitat", e);
+			request.setAttribute("errorGlobal", e.getMessage());
 			rd.forward(request, response);
 			return;
 		}catch(Exception e) {

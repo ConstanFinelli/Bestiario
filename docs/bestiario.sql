@@ -114,7 +114,8 @@ CREATE TABLE `categoria` (
   `descripcion` varchar(100) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idCategoria`),
-  UNIQUE KEY `idCategoria_UNIQUE` (`idCategoria`)
+  UNIQUE KEY `idCategoria_UNIQUE` (`idCategoria`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -172,7 +173,8 @@ CREATE TABLE `habitat` (
   `longitud` double DEFAULT NULL,
   `localizacion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idHabitat`),
-  UNIQUE KEY `idhabitat_UNIQUE` (`idHabitat`)
+  UNIQUE KEY `idhabitat_UNIQUE` (`idHabitat`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

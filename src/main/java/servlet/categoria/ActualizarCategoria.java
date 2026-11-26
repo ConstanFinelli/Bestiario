@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import entities.Categoria;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 import helpers.HttpRoutes;
 
 /**
@@ -37,6 +38,9 @@ public class ActualizarCategoria extends HttpServlet {
 		}catch(DataNotFoundException e) {
 			logger.log(Level.WARNING, "Categoría no encontrada al actualizar en ActualizarCategoria", e);
 			request.setAttribute("errorGlobal", "La categoría a actualizar no existe.");
+		}catch(DuplicateDataException e) {
+			logger.log(Level.WARNING, "Categoría duplicada al actualizar en ActualizarCategoria", e);
+			request.setAttribute("errorGlobal", e.getMessage());
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al actualizar la categoría en el servlet ActualizarCategoria", e);
 			request.setAttribute("errorGlobal", "No se ha podido actualizar la categoría.");
