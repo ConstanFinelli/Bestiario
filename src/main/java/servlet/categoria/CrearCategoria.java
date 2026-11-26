@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Categoria;
+import exceptions.DuplicateDataException;
 import helpers.HttpRoutes;
 
 /**
@@ -36,6 +37,9 @@ public class CrearCategoria extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.ADMIN_DASHBOARD_JSP("") + "?crud=categorias");
 		try {
 			cat = controlador.save(cat);
+		}catch(DuplicateDataException e) {
+			logger.log(Level.WARNING, "Categoría duplicada en el servlet CrearCategoria", e);
+			request.setAttribute("errorGlobal", e.getMessage());
 		}catch(Exception e) {
 			logger.log(Level.SEVERE, "Error crítico al crear una categoría en el servlet CrearCategoría", e);
 			request.setAttribute("errorGlobal", "No se ha podido crear la categoría.");

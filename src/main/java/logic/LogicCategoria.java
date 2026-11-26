@@ -6,6 +6,7 @@ import data.DataCategoria;
 import entities.Bestia;
 import entities.Categoria;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 
 public class LogicCategoria {
 public DataCategoria catDAO = new DataCategoria();
@@ -22,11 +23,11 @@ public DataCategoria catDAO = new DataCategoria();
 		return catDAO.findAllByBestia(b);
 	}
 	
-	public Categoria save(Categoria catS) {
+	public Categoria save(Categoria catS) throws DuplicateDataException {
 		return catDAO.save(catS);
 	}
 	
-	public Categoria update(Categoria datos) throws DataNotFoundException {
+	public Categoria update(Categoria datos) throws DataNotFoundException, DuplicateDataException {
 		return catDAO.update(datos);
 	}
 	

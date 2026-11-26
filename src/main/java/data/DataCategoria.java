@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import entities.Bestia;
 import entities.Categoria;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 
 public class DataCategoria {
 
@@ -103,6 +104,10 @@ public class DataCategoria {
 				cat.setIdCategoria(rs.getInt(1));
 			}
 		} catch(SQLException ex) {
+			if ("23000".equals(ex.getSQLState()) && ex.getErrorCode() == 1062) {
+				logger.log(Level.WARNING, "Intento de guardar categoría con nombre duplicado: " + cat.getNombre(), ex);
+				throw new DuplicateDataException("Ya existe una categoría con el nombre '" + cat.getNombre() + "'.", ex);
+			}
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al guardar categoria [SQLState: %s, ErrorCode: %d]: %s",
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
@@ -136,6 +141,10 @@ public class DataCategoria {
 				cat = null;
 			}
 		} catch(SQLException ex) {
+			if ("23000".equals(ex.getSQLState()) && ex.getErrorCode() == 1062) {
+				logger.log(Level.WARNING, "Intento de actualizar categoría con nombre duplicado: " + cat.getNombre(), ex);
+				throw new DuplicateDataException("Ya existe una categoría con el nombre '" + cat.getNombre() + "'.", ex);
+			}
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al actualizar categoria [SQLState: %s, ErrorCode: %d]: %s",
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);

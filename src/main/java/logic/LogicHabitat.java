@@ -6,6 +6,7 @@ import data.DataHabitat;
 import entities.Bestia;
 import entities.Habitat;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 
 public class LogicHabitat {
 	private DataHabitat hDAO = new DataHabitat();
@@ -22,11 +23,11 @@ public class LogicHabitat {
 		return hDAO.findAllByBestia(b);
 	}
 	
-	public Habitat save(Habitat ht) {
+	public Habitat save(Habitat ht) throws DuplicateDataException {
 		return hDAO.save(ht);
 	}
 	
-	public Habitat update(Habitat ht) throws DataNotFoundException {
+	public Habitat update(Habitat ht) throws DataNotFoundException, DuplicateDataException {
 		return hDAO.update(ht);
 	}
 	

@@ -3,6 +3,7 @@ package data;
 import entities.Bestia;
 import entities.Habitat;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -105,6 +106,10 @@ public class DataHabitat {
 				htGuardada.setId(rs.getInt(1));
 			}
 		} catch(SQLException ex) {
+			if ("23000".equals(ex.getSQLState()) && ex.getErrorCode() == 1062) {
+				logger.log(Level.WARNING, "Intento de guardar hábitat con nombre duplicado: " + ht.getNombre(), ex);
+				throw new DuplicateDataException("Ya existe un hábitat con el nombre '" + ht.getNombre() + "'.", ex);
+			}
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al guardar habitat [SQLState: %s, ErrorCode: %d]: %s",
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
@@ -136,6 +141,10 @@ public class DataHabitat {
 				ht = null;
 			}
 		} catch(SQLException ex){
+			if ("23000".equals(ex.getSQLState()) && ex.getErrorCode() == 1062) {
+				logger.log(Level.WARNING, "Intento de actualizar hábitat con nombre duplicado: " + ht.getNombre(), ex);
+				throw new DuplicateDataException("Ya existe un hábitat con el nombre '" + ht.getNombre() + "'.", ex);
+			}
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al actualizar habitat [SQLState: %s, ErrorCode: %d]: %s",
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);

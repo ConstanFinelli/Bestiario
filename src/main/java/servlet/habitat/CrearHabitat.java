@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import entities.Habitat;
+import exceptions.DuplicateDataException;
 import helpers.HttpRoutes;
 
 /**
@@ -37,6 +38,11 @@ public class CrearHabitat extends HttpServlet {
 		}catch(NumberFormatException e) {
 			logger.log(Level.WARNING, "Error parseando los parámetros del habitat en el servlet CrearHabitat", e);
 			request.setAttribute("errorGlobal", "Latitud o longitud inválidos");
+			rd.forward(request, response);
+			return;
+		}catch(DuplicateDataException e) {
+			logger.log(Level.WARNING, "Hábitat duplicado en el servlet CrearHabitat", e);
+			request.setAttribute("errorGlobal", e.getMessage());
 			rd.forward(request, response);
 			return;
 		}catch(Exception e) {
