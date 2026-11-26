@@ -78,7 +78,7 @@ public class LogicRegistro {
 		LinkedList<Registro> registros = findAllByBestia(b);
 		for(Registro registro: registros) {
 			if (registro.getMainPic() != null && !registro.getMainPic().equals(EnvHelper.get("DEFAULT_PICTURE_ID"))) {
-				CloudinaryHelper.deleteImage(registro.getMainPic());
+				CloudinaryHelper.deleteResource(registro.getMainPic(), "image");
 			}
 		}
 	}

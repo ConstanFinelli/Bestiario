@@ -27,7 +27,6 @@ public class CloudinaryHelper {
 
 				String contentType = archivo.getContentType();
 
-			// Pre-escalar y comprimir en memoria en Java si es imagen grande (> 1920x1080 o > 5MB)
 			fileBytes = ImageHelper.comprimir(fileBytes, contentType);
 
 			
@@ -84,9 +83,6 @@ public class CloudinaryHelper {
 		return getInstancia().url().resourceType("raw").transformation(new Transformation<>().flags("attachment")).generate(publicId);
 	}
 
-	/**
-	 * Resuelve la URL de Cloudinary correspondiente a una evidencia según su tipo de recurso.
-	 */
 	public static String getUrlEvidencia(String resourceType, String fileId) {
 		if (resourceType == null) {
 			return getArchivoEvidencia(fileId);
@@ -98,9 +94,16 @@ public class CloudinaryHelper {
 		};
 	}
 	
-	public static void deleteImage(String publicId) {
+	public static void deleteResource(String publicId, String resourceType) {
+	    if (publicId == null || publicId.isBlank()) {
+	        return;
+	    }
+	    String resolvedType = switch (resourceType == null ? "" : resourceType) {
+	        case "image", "video" -> resourceType;
+	        default -> "raw";
+	    };
 	    try {
-	        getInstancia().uploader().destroy(publicId, ObjectUtils.asMap("resource_type", "image"));
+	        getInstancia().uploader().destroy(publicId, ObjectUtils.asMap("resource_type", resolvedType));
 	    } catch (IOException e) {
 	        throw new RuntimeException("Error eliminando archivo", e);
 	    }

@@ -39,15 +39,19 @@ public class LogicEvidencia {
 		return eDAO.save(e);
 	}
 	
+	private void deleteCloudinaryResource(Evidencia e) throws DataNotFoundException {
+		Evidencia actual = getOne(e);
+		String resourceType = actual.getTipo() != null ? actual.getTipo().getResourceType() : null;
+		CloudinaryHelper.deleteResource(actual.getFileId(), resourceType);
+	}
+
 	public Evidencia update(Evidencia e) throws DataNotFoundException {
-		String fileId = getOne(e).getFileId();
-		CloudinaryHelper.deleteImage(fileId);
+		deleteCloudinaryResource(e);
 		return eDAO.update(e);
 	}
 	
 	public Evidencia delete(Evidencia e) throws DataNotFoundException {
-		String fileId = getOne(e).getFileId();
-		CloudinaryHelper.deleteImage(fileId);
+		deleteCloudinaryResource(e);
 		return eDAO.delete(e);
 	}
 	

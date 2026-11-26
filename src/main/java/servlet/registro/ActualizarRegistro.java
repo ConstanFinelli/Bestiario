@@ -196,7 +196,7 @@ public class ActualizarRegistro extends HttpServlet {
 			logger.log(Level.SEVERE, "Error durante la actualización del registro en el servlet ActualizarRegistro", e);
 				for (String id : uploadedCloudinaryIds) {
 						try {
-							CloudinaryHelper.deleteImage(id);
+							CloudinaryHelper.deleteResource(id, "image");
 						}catch(Exception ex) {
 							logger.log(Level.SEVERE, "Error al eliminar imagen ID("+id+") servlet ActualizarRegistro", ex);
 						}
