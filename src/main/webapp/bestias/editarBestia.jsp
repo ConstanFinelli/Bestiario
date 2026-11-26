@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath())%>">
 <link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath())%>">
 <link rel="stylesheet" href="<%= HttpRoutes.EDITARBESTIA_CSS(request.getContextPath())%>">
+<link rel="stylesheet" href="<%= HttpRoutes.LOGIN_CSS(request.getContextPath())%>">
 </head>
 <body>
 	<%@ include file="../../components/navbar.jsp" %>
