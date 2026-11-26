@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="entities.Investigador" %>
-<%@ page import="java.time.LocalDate, helpers.HttpRoutes" %>
+<%@ page import="helpers.HttpRoutes" %>
 
 <!DOCTYPE html>
 <%

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="entities.Noticia" %>
 <%@ page import="helpers.HttpRoutes" %>
 <!DOCTYPE html>
 <html>
