@@ -39,11 +39,7 @@ public class ListarSolicitantes extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher(HttpRoutes.SOLICITUDES_INVESTIGADOR_JSP(""));
 		try{
 			LinkedList<Investigador> solicitantes = controladorUsuario.findAllSolicitantes();
-			if(solicitantes.size() != 0) {
-				request.setAttribute("solicitantes", solicitantes);
-			} else {
-				request.setAttribute("errorMsg", "No hay candidaturas en este momento");
-			}
+			request.setAttribute("solicitantes", solicitantes);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Error al listar solicitantes en el servlet ListarSolicitantes", e);
 			request.setAttribute("errorGlobal", "No se han podido listar solicitantes");

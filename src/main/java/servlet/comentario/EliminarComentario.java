@@ -5,7 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import logic.LogicComentario;
 import entities.Bestia;
 import entities.Comentario;
@@ -31,16 +30,6 @@ public class EliminarComentario extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		Usuario usuario = (session != null) ? (Usuario) session.getAttribute("user") : null;
-
-		if (usuario == null || !"investigador".equals(usuario.getEstado())) {
-			logger.log(Level.WARNING, "Acceso no autorizado al servlet EliminarComentario");
-			request.setAttribute("errorGlobal", "Acceso denegado: se requieren permisos de investigador.");
-			request.getRequestDispatcher(HttpRoutes.HOME_JSP("")).forward(request, response);
-			return;
-		}
-
 		String idUsuarioStr = request.getParameter("idUsuario");
 		String idBestiaStr = request.getParameter("idBestia");
 		String fechaPublicacionStr = request.getParameter("fechaPublicacion");

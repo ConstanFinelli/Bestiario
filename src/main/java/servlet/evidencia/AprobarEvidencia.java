@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import entities.Usuario;
 import exceptions.DataNotFoundException;
 import helpers.HttpRoutes;
 import jakarta.servlet.ServletException;
@@ -12,7 +11,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import logic.LogicEvidencia;
 
 /**
@@ -29,13 +27,6 @@ public class AprobarEvidencia extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Usuario usuario = (Usuario) session.getAttribute("user");
-		if (usuario == null || !"investigador".equals(usuario.getEstado())) {
-			response.sendRedirect(HttpRoutes.HOME_JSP(request.getContextPath()));
-			return;
-		}
-
 		String nroEvidenciaStr = request.getParameter("nroEvidencia");
 		String idTipoStr = request.getParameter("idTipoEvidencia");
 		String idBestia = request.getParameter("idBestia");
