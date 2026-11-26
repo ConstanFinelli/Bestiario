@@ -269,6 +269,10 @@ public final class HttpRoutes {
 	public static String ELIMINAR_COMENTARIO(String base) {
 		return base + "/comentarios/eliminar";
 	}
+
+	public static String EDITAR_COMENTARIO(String base) {
+		return base + "/comentarios/editar";
+	}
 	
 	// Mapas
 	

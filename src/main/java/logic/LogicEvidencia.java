@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import data.DataEvidencia;
 import entities.Bestia;
 import entities.Evidencia;
-import entities.TipoEvidencia;
 import exceptions.DataNotFoundException;
 import helpers.CloudinaryHelper;
 
@@ -53,10 +52,6 @@ public class LogicEvidencia {
 	public Evidencia delete(Evidencia e) throws DataNotFoundException {
 		deleteCloudinaryResource(e);
 		return eDAO.delete(e);
-	}
-	
-	public LinkedList<Evidencia> findAllType(TipoEvidencia te){
-		return eDAO.findAllType(te);
 	}
 	
 	public boolean updateEstado(int nroEvidencia, int idTipoEvidencia, String nuevoEstado) throws DataNotFoundException {

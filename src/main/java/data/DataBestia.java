@@ -99,49 +99,6 @@ public class DataBestia {
 		return bestias;
 	}
 	
-	public LinkedList<Bestia> findByCategoria (String categoria){
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		LinkedList<Bestia> bestias = new LinkedList<>();
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select b.* from bestia b "
-					+ "inner join bestia_categoria bc on bc.idBestia = b.idBestia"
-					+ " inner join categoria c on c.idCategoria = bc.idCategoria "
-					+ "where c.nombre = ? order by b.nombre asc");
-			pstmt.setString(1, categoria);
-			rs = pstmt.executeQuery();
-			if(rs != null) {
-				while(rs.next()) {
-					int id = rs.getInt("idBestia");
-					String nombre = rs.getString("nombre");
-					String peligrosidad = rs.getString("peligrosidad");
-					String estado = rs.getString("estado");
-					Bestia bestia = new Bestia(id, nombre, peligrosidad, estado);
-					bestias.add(bestia);
-				}
-			}
-		} catch(SQLException ex) {
-			logger.log(Level.SEVERE, String.format(
-				"Error SQL al buscar bestias por categoria [SQLState: %s, ErrorCode: %d]: %s",
-				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			} catch(SQLException ex) {
-				logger.log(Level.SEVERE, String.format(
-					"Error SQL al cerrar recursos en findByCategoria de bestia [SQLState: %s, ErrorCode: %d]: %s",
-					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-			}
-		}
-		return bestias;
-	}
-	
 	public Bestia save(Bestia b) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -320,43 +277,6 @@ public class DataBestia {
 				}
 			}
 		}
-	}
-	
-	public LinkedList<Bestia> findAllBestiasFromHabitat(Habitat ht){
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		LinkedList<Bestia> bestiasHabitat = new LinkedList<>();
-		try {
-			pstmt = DbConnector.getInstancia().getConn().prepareStatement("select distinct * from habitat h join bestia_habitat bh on bh.idHabitat = h.idHabitat where bh.idHabitat = ?");
-			pstmt.setInt(1, ht.getId());
-			rs = pstmt.executeQuery();
-			if(rs != null) {
-				while(rs.next()) {
-					Bestia bestia = new Bestia(rs.getInt("idBestia"), null, null, null);
-					bestia = this.getOne(bestia);
-					bestiasHabitat.add(bestia);
-				}
-			}
-		} catch(SQLException ex) {
-			logger.log(Level.SEVERE, String.format(
-				"Error SQL al listar bestias del habitat %d [SQLState: %s, ErrorCode: %d]: %s",
-				ht.getId(), ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-		} finally {
-			try {
-				if(rs != null) {
-					rs.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-				DbConnector.getInstancia().releaseConn();
-			} catch(SQLException ex) {
-				logger.log(Level.SEVERE, String.format(
-					"Error SQL al cerrar recursos en findAllBestiasFromHabitat [SQLState: %s, ErrorCode: %d]: %s",
-					ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
-			}
-		}
-		return bestiasHabitat;
 	}
 	
 	public void removeRelation(Bestia b, Categoria cat) {

@@ -156,15 +156,38 @@
             	<%} 
             	if(!comentarios.isEmpty()){
             	for(Comentario comentario:comentarios){
+            		boolean esAutorComentario = (usuario != null && comentario.getPublicador() != null && usuario.getIdUsuario() == comentario.getPublicador().getIdUsuario());
+            		boolean esInvestigadorComentario = (usuario != null && "investigador".equals(usuario.getEstado()));
             	%>
             	<section class="comentario">
             		<div class="comentarioHeader">
             			<aside class="comentarioDatos"><%= comentario.getPublicador().getCorreo() %> - <span class="fechaComentario">Publicado el <%= comentario.getFecha() %></span></aside>
-            			<% if (usuario != null && "investigador".equals(usuario.getEstado())) { %>
-            			<button type="button" class="btnEliminarComentario" onclick="abrirModalForm('ELIMINAR COMENTARIO', '¿Estás seguro que deseas eliminar este comentario?', '<%= HttpRoutes.ELIMINAR_COMENTARIO(request.getContextPath()) %>', { idUsuario: '<%= comentario.getPublicador().getIdUsuario() %>', idBestia: '<%= bestia.getIdBestia() %>', fechaPublicacion: '<%= comentario.getFecha() %>'<%= (registro != null) ? ", nroRegistro: '" + registro.getNroRegistro() + "'" : "" %> })">Eliminar</button>
+            			<% if (esAutorComentario || esInvestigadorComentario) { %>
+            			<div class="comentarioAcciones">
+            				<% if (esAutorComentario) { %>
+            				<button type="button" class="btnEditarComentario" onclick="abrirEdicionComentario(this)">Editar</button>
+            				<% } %>
+            				<% if (esInvestigadorComentario) { %>
+            				<button type="button" class="btnEliminarComentario" onclick="abrirModalForm('ELIMINAR COMENTARIO', '¿Estás seguro que deseas eliminar este comentario?', '<%= HttpRoutes.ELIMINAR_COMENTARIO(request.getContextPath()) %>', { idUsuario: '<%= comentario.getPublicador().getIdUsuario() %>', idBestia: '<%= bestia.getIdBestia() %>', fechaPublicacion: '<%= comentario.getFecha() %>'<%= (registro != null) ? ", nroRegistro: '" + registro.getNroRegistro() + "'" : "" %> })">Eliminar</button>
+            				<% } %>
+            			</div>
             			<% } %>
             		</div>
             		<article class="comentarioContenido"><%= comentario.getContenido() %></article>
+            		<% if (esAutorComentario) { %>
+            		<form class="comentarioEditForm" action="<%= HttpRoutes.EDITAR_COMENTARIO(request.getContextPath()) %>" method="post" style="display: none;">
+            			<input type="hidden" name="idBestia" value="<%= bestia.getIdBestia() %>">
+            			<% if (registro != null) { %>
+            			<input type="hidden" name="nroRegistro" value="<%= registro.getNroRegistro() %>">
+            			<% } %>
+            			<input type="hidden" name="fechaPublicacion" value="<%= comentario.getFecha() %>">
+            			<input type="text" name="contenido" class="inputEditarComentario" value="<%= comentario.getContenido().replace("\"", "&quot;") %>" maxlength="200" required>
+            			<div class="comentarioEditAcciones">
+            				<button type="submit" class="btnGuardarComentario">Guardar</button>
+            				<button type="button" class="btnCancelarEdicion" onclick="cancelarEdicionComentario(this)">Cancelar</button>
+            			</div>
+            		</form>
+            		<% } %>
             	</section>
             	<%}}else{%>
             	<p>No hay comentarios para esta bestia.</p>
@@ -453,6 +476,38 @@
 			document.addEventListener('DOMContentLoaded', inicializarPaginacionEvidencias);
 		} else {
 			inicializarPaginacionEvidencias();
+		}
+
+		function abrirEdicionComentario(btn) {
+			const card = btn.closest('.comentario');
+			if (!card) return;
+			const contenido = card.querySelector('.comentarioContenido');
+			const form = card.querySelector('.comentarioEditForm');
+			const input = card.querySelector('.inputEditarComentario');
+			if (contenido && form) {
+				contenido.style.display = 'none';
+				form.style.display = 'flex';
+				btn.style.display = 'none';
+				if (input) {
+					input.focus();
+					input.setSelectionRange(input.value.length, input.value.length);
+				}
+			}
+		}
+
+		function cancelarEdicionComentario(btn) {
+			const card = btn.closest('.comentario');
+			if (!card) return;
+			const contenido = card.querySelector('.comentarioContenido');
+			const form = card.querySelector('.comentarioEditForm');
+			const btnEditar = card.querySelector('.btnEditarComentario');
+			if (contenido && form) {
+				form.style.display = 'none';
+				contenido.style.display = 'block';
+				if (btnEditar) {
+					btnEditar.style.display = 'inline-block';
+				}
+			}
 		}
 	</script>
     </body>
