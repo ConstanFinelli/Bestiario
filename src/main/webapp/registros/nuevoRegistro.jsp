@@ -132,54 +132,14 @@
         </section>
         </div>
         		<section class="mainContent evidenciasContent">
-                <% 
-                boolean esInvestigador = (usuario != null && "investigador".equals(usuario.getEstado()));
-                boolean hayEvidenciasVisibles = false;
-                if(evidencias != null && !evidencias.isEmpty()){
-                    for(Evidencia ev : evidencias){
-                        if(esInvestigador || "aprobado".equalsIgnoreCase(ev.getEstado())){
-                            hayEvidenciasVisibles = true;
-                            break;
-                        }
-                    }
-                }
-                if(hayEvidenciasVisibles){ %>
-                <h2>Evidencias</h2>
-                <ul class="evidencias">
-                <% 
-                for(Evidencia evidencia : evidencias){ 
-                    boolean esAprobada = "aprobado".equalsIgnoreCase(evidencia.getEstado());
-                    if(!esInvestigador && !esAprobada){
-                        continue;
-                    }
-                    String teDesc = evidencia.getTipo().getDescripcion();
-                    String fechaOb = evidencia.getFechaObtencion().toString();
-                    String evText = " Obtenido el " + fechaOb;
+                <%
+                boolean mostrarAccionesEvidencia = false;
+                boolean habilitarPaginacionEvidencias = false;
                 %>
-                	<li class="evidenciasItem">
-                		<div class="evidenciaInfo">
-                			<a class="evidenciasLink" href="javascript:void(0)" 
-                			onclick="abrirModal('<%= switch(evidencia.getTipo().getResourceType()){
-                			case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
-                			case "image" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
-                			default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
-                			}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
-                			<% if(esInvestigador && !esAprobada){ %>
-                				<span class="badgeEstado badgePendiente">Pendiente</span>
-                			<% } %>
-                		</div>
-                	</li>
-                <% } %>
-                </ul>
-                <% } %>
+                <%@ include file="../components/listaEvidencias.jsp" %>
                 <button type="submit" class="btnRegistro">Enviar registro</button>
 				</section>
 				
-				<div id="modal" class="modal-container">
-					<div class="modal-content">
-						<div id="modal-body"></div>
-					</div>
-				</div>	
 				 <script>
 				    function previsualizarImagen(event) {
 				        const input = event.target;
@@ -198,72 +158,6 @@
 				        }
 				    }
 
-				    function abrirModal(link) {
-						if (!link) {
-					        alert("Esta evidencia no tiene un archivo multimedia asociado.");
-					        return;
-					    }
-						
-						const modalBody = document.getElementById('modal-body');
-						modalBody.innerHTML = "";
-						const esVideo = link.toLowerCase().match(/\.(mp4|webm|ogg)$/) || link.includes("video/upload");
-					    const esImagen = link.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp|svg)$/) || link.includes("image/upload");
-					    
-					    if (esVideo) {
-					    	const video = document.createElement('video');
-					        video.src = link;
-					        video.controls = true;
-					        video.autoplay = true;
-					        video.classList.add('modal-evidencia');
-					        modalBody.appendChild(video);
-					    } 
-					    else if (esImagen) {
-					    	const img = document.createElement('img');
-					        img.src = link;
-					        img.classList.add('modal-evidencia');
-					        modalBody.appendChild(img);
-					    }else {
-					    	descarga = document.createElement('div');
-					    	descarga.style.textAlign = "center";
-					    	descarga.style.padding = "20px";
-
-					        const p = document.createElement('p');
-					        p.textContent = "El archivo no se puede previsualizar en el navegador.";
-					        p.style.marginBottom = "15px";
-
-					        const a = document.createElement('a');
-					        a.href = link;
-					        a.download = "";
-					        a.target = "_blank";
-					        a.textContent = "Haz click para descargar el archivo";
-					        a.className = "modal-download"; 
-					        
-					        a.style.display = "inline-block";
-					        a.style.padding = "10px 20px";
-					        a.style.background = "#2563eb";
-					        a.style.color = "white";
-					        a.style.textDecoration = "none";
-					        a.style.borderRadius = "5px";
-
-					        descarga.appendChild(p);
-					        descarga.appendChild(a);
-					        modalBody.appendChild(descarga);
-					    }
-					    
-						document.getElementById('modal').classList.add('is-visible');
-					}
-
-					function cerrarModal() {
-						document.getElementById('modal').classList.remove('is-visible');
-					}
-
-					window.onclick = function(event) {
-						let modal = document.getElementById('modal');
-						if (event.target == modal) {
-							cerrarModal();
-						}
-					}
-
 					document.querySelector('form').addEventListener('submit', function(e) {
 						const submitBtn = this.querySelector('button[type=submit]');
 						if (submitBtn) {
@@ -276,5 +170,6 @@
          </form>
         <% } %>
         <%@ include file="../components/footer.jsp" %>
+        <%@ include file="../components/modalEvidencia.jsp" %>
     </body>
 </html>

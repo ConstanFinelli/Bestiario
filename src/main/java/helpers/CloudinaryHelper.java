@@ -83,6 +83,20 @@ public class CloudinaryHelper {
 	public static String getArchivoEvidencia(String publicId) {
 		return getInstancia().url().resourceType("raw").transformation(new Transformation<>().flags("attachment")).generate(publicId);
 	}
+
+	/**
+	 * Resuelve la URL de Cloudinary correspondiente a una evidencia según su tipo de recurso.
+	 */
+	public static String getUrlEvidencia(String resourceType, String fileId) {
+		if (resourceType == null) {
+			return getArchivoEvidencia(fileId);
+		}
+		return switch (resourceType) {
+			case "video" -> getVideoEvidencia(fileId);
+			case "image" -> getImagenEvidencia(fileId);
+			default -> getArchivoEvidencia(fileId);
+		};
+	}
 	
 	public static void deleteImage(String publicId) {
 	    try {

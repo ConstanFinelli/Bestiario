@@ -64,58 +64,12 @@
                 		<div class="notFound">No hay un registro encontrado para esta bestia en la fecha seleccionada.</div>
                 	<%} %>
                 <% } %>
-                <% 
-                boolean esInvestigador = (usuario != null && "investigador".equals(usuario.getEstado()));
-                boolean hayEvidenciasVisibles = false;
-                if(evidencias != null && !evidencias.isEmpty()){
-                    for(Evidencia ev : evidencias){
-                        if(esInvestigador || "aprobado".equalsIgnoreCase(ev.getEstado())){
-                            hayEvidenciasVisibles = true;
-                            break;
-                        }
-                    }
-                }
-                if(hayEvidenciasVisibles){ %>
-                <h2 id="tituloEvidencias">Evidencias</h2>
-                <ul class="evidencias" id="listaEvidencias">
-                <% 
-                for(Evidencia evidencia : evidencias){ 
-                    boolean esAprobada = "aprobado".equalsIgnoreCase(evidencia.getEstado());
-                    if(!esInvestigador && !esAprobada){
-                        continue;
-                    }
-                    String teDesc = evidencia.getTipo().getDescripcion();
-                    String fechaOb = evidencia.getFechaObtencion().toString();
-                    String evText = " Obtenido el " + fechaOb;
+                <%
+                boolean mostrarAccionesEvidencia = true;
+                boolean habilitarPaginacionEvidencias = true;
                 %>
-                	<li class="evidenciasItem">
-                		<div class="evidenciaInfo">
-                			<a class="evidenciasLink" href="javascript:void(0)" 
-                			onclick="abrirModalVer('<%= switch(evidencia.getTipo().getResourceType()){
-                			case "video" -> CloudinaryHelper.getVideoEvidencia(evidencia.getFileId());
-                			case "image" -> CloudinaryHelper.getImagenEvidencia(evidencia.getFileId());
-                			default -> CloudinaryHelper.getArchivoEvidencia(evidencia.getFileId());
-                			}%>')"><span class="tipoEvidenciaText"><%= teDesc %></span><%= evText %></a>
-                			<% if(esInvestigador && !esAprobada){ %>
-                				<span class="badgeEstado badgePendiente">Pendiente</span>
-                			<% } %>
-                		</div>
-                		<% if(esInvestigador){ %>
-                			<div class="evAcciones">
-                				<% if(!esAprobada){ %>
-                					<form action="<%= HttpRoutes.APROBAR_EVIDENCIA(request.getContextPath()) %>" method="POST">
-                						<input type="hidden" name="nroEvidencia" value="<%= evidencia.getNroEvidencia() %>">
-                						<input type="hidden" name="idTipoEvidencia" value="<%= evidencia.getTipo().getId() %>">
-                						<input type="hidden" name="idBestia" value="<%= bestia.getIdBestia() %>">
-                						<button type="submit" class="evAprobar">Aprobar</button>
-                					</form>
-                				<% } %>
-                				<button type="button" class="evDelete" onclick="abrirModalForm('ELIMINAR EVIDENCIA', '¿Estás seguro que deseas eliminar esta evidencia?', '<%= HttpRoutes.ELIMINAR_EVIDENCIA(request.getContextPath()) %>', { nroEvidencia: '<%= evidencia.getNroEvidencia() %>', idTipoEvidencia: '<%= evidencia.getTipo().getId() %>', idBestia: '<%= bestia.getIdBestia() %>' })">Eliminar</button>
-                			</div>
-                		<% } %>
-                	</li>
-                <% } %>
-                </ul>
+                <%@ include file="../components/listaEvidencias.jsp" %>
+                <% if(hayEvidenciasVisibles){ %>
                 <div id="paginacionEvidencias" class="paginacionEvidencias">
                 	<span class="paginacionInfo" id="paginacionInfo"></span>
                 	<div class="paginacionControles">
@@ -225,76 +179,12 @@
 				</div>
 			<%} %>
                 <% if(usuario != null && bestia != null){%><a class="btnAgregar" href="<%= HttpRoutes.ACTUALIZAR_REGISTRO(request.getContextPath()) %>?id=<%=bestia.getIdBestia()%>">Proponer nuevo registro</a><%} %>	
-                <div id="modal" class="modal-container">
-					<div class="modal-content">
-						<div id="modal-body"></div>
-					</div>
-				</div>	
             </section>
         <% } %>
         <%@ include file="../components/footer.jsp" %>
         <%@ include file="../components/modalConfirmacion.jsp" %>
+        <%@ include file="../components/modalEvidencia.jsp" %>
         <script>
-		// javascript para modal
-		function abrirModalVer(link) {
-			if (!link) {
-		        alert("Esta evidencia no tiene un archivo multimedia asociado.");
-		        return;
-		    }
-
-			const modalBody = document.getElementById('modal-body');
-			modalBody.innerHTML = "";
-			const esVideo = link.toLowerCase().match(/\.(mp4|webm|ogg)$/) || link.includes("video/upload");
-		    const esImagen = link.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp|svg)$/) || link.includes("image/upload");
-		    
-		    if (esVideo) {
-		    	const video = document.createElement('video');
-		        video.src = link;
-		        video.controls = true;
-		        video.autoplay = true;
-		        video.classList.add('modal-evidencia');
-		        modalBody.appendChild(video);
-		    } 
-		    else if (esImagen) {
-		    	const img = document.createElement('img');
-		        img.src = link;
-		        img.classList.add('modal-evidencia');
-		        modalBody.appendChild(img);
-		    }else {
-		    	descarga = document.createElement('div');
-		    	descarga.style.textAlign = "center";
-		    	descarga.style.padding = "20px";
-
-		        const p = document.createElement('p');
-		        p.textContent = "El archivo no se puede previsualizar en el navegador.";
-		        p.style.marginBottom = "15px";
-
-		        const a = document.createElement('a');
-		        a.href = link;
-		        a.download = "";
-		        a.target = "_blank";
-		        a.textContent = "Haz click para descargar el archivo";
-		        a.className = "modal-download"; 
-		        
-		        a.style.display = "inline-block";
-		        a.style.padding = "10px 20px";
-		        a.style.background = "#2563eb";
-		        a.style.color = "white";
-		        a.style.textDecoration = "none";
-		        a.style.borderRadius = "5px";
-
-		        descarga.appendChild(p);
-		        descarga.appendChild(a);
-		        modalBody.appendChild(descarga);
-		    }
-		    
-			document.getElementById('modal').classList.add('is-visible');
-		}
-
-		function cerrarModal() {
-			document.getElementById('modal').classList.remove('is-visible');
-		}
-
 		function previsualizarArchivoEvidencia(event, contenedorPreview) {
     const input = event.target;
     contenedorPreview.innerHTML = '';
@@ -441,15 +331,6 @@
 		    modalBody.appendChild(footer);
 
 		    document.getElementById('modal').classList.add('is-visible');
-		}
-
-
-		window.onclick = function(event) {
-			let modal = document.getElementById('modal');
-			if (event.target == modal) {
-				cerrarModal();
-
-			}
 		}
 
 		// Paginación de evidencias en el cliente
