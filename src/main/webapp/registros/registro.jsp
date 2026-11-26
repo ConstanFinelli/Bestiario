@@ -182,7 +182,7 @@
                 
                 <div>
                 <h3>Ver ubicaciones conocidas</h3>
-                <a href="<%= HttpRoutes.MAPA_BESTIA(request.getContextPath())%>?id=<%= bestia.getIdBestia() %>"><img src="<%= CloudinaryHelper.getImagenMapaButton(EnvHelper.get("MAP_PICTURE_ID")) %>" class="mapaButton"></a>
+                <a href="<%= HttpRoutes.MAPA_BESTIA(request.getContextPath())%>?id=<%= bestia.getIdBestia() %>"><img src="<%= CloudinaryHelper.getImagenMapa(EnvHelper.get("MAP_PICTURE_ID")) %>" class="mapaButton"></a>
                 </div>
             </aside>
         </div>

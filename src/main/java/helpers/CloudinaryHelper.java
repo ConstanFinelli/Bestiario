@@ -62,24 +62,19 @@ public class CloudinaryHelper {
 		return getInstancia().url().transformation(new Transformation<>().width(1920).height(1080).crop("limit").quality("auto").fetchFormat("auto")).generate(publicId);
 	}
 	
+	private static String getImagenCuadrada(String publicId, int size) {
+		publicId = isImagenDefault(publicId);
+		return getInstancia().url().transformation(
+				new Transformation<>().width(size).height(size).crop("fill").quality("auto").fetchFormat("auto"))
+				.generate(publicId);
+	}
+
 	public static String getImagenMapa(String publicId) {
-		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getImagenCuadrada(publicId, 200);
 	}
-	
-	public static String getImagenMapaButton(String publicId) {
-		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(200).height(200).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
-	}
-	
+
 	public static String getImagenListadoBestia(String publicId) {
-		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(400).height(400).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
-	}
-	
-	public static String getImagenEditarBestia(String publicId) {
-		publicId = isImagenDefault(publicId);
-		return getInstancia().url().transformation(new Transformation<>().width(400).height(400).crop("fill").quality("auto").fetchFormat("auto")).generate(publicId);
+		return getImagenCuadrada(publicId, 400);
 	}
 	
 	public static String getVideoEvidencia(String publicId) {

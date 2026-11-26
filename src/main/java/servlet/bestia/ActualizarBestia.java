@@ -47,7 +47,7 @@ public class ActualizarBestia extends HttpServlet {
 		String imagen = null;
 		
 		try {
-			imagen = CloudinaryHelper.getImagenEditarBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
+			imagen = CloudinaryHelper.getImagenListadoBestia(controladorRegistro.getImagen(bestia, LocalDateTime.now()));
 		}catch(Exception e) {
 			logger.log(Level.WARNING, "Error al obtener la imagen de la bestia en el servlet ActualizarBestia", e);
 			request.setAttribute("errorGlobal", "No se ha podido obtener la imagen de la bestia");
