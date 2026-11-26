@@ -16,9 +16,6 @@
     <head>
         <title>Bestiario - Noticias</title>
         <meta charset="UTF-8">
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=MedievalSharp&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="<%= HttpRoutes.MAIN_CSS(request.getContextPath()) %>">
 		<link rel="stylesheet" href="<%= HttpRoutes.NOTICIAS_CSS(request.getContextPath()) %>">
 		<link rel="stylesheet" href="<%= HttpRoutes.NAVBAR_CSS(request.getContextPath()) %>">

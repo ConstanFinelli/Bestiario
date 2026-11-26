@@ -2,10 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ page import="entities.Usuario, helpers.HttpRoutes" %>
 <%@ include file="error.jsp" %>
-<head>
- <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-</head>
 <nav>
 			<a class="navTitle" href=<%=HttpRoutes.HOME_JSP(request.getContextPath()) %> >Bestiario</a>
             <a class="navLink" href=<%=HttpRoutes.LISTAR_BESTIAS(request.getContextPath())%>>Bestias</a>
