@@ -10,6 +10,7 @@ import entities.Usuario;
 import entities.Investigador;
 import entities.Lector;
 import exceptions.DataNotFoundException;
+import exceptions.DuplicateDataException;
 
 public class DataUsuario {
 	private static final Logger logger = Logger.getLogger(DataUsuario.class.getName());
@@ -198,6 +199,13 @@ public class DataUsuario {
 			}
 			pstmt.executeUpdate();
 		} catch(SQLException ex) {
+			if ("23000".equals(ex.getSQLState()) && ex.getErrorCode() == 1062) {
+				logger.log(Level.WARNING, "Dato duplicado al actualizar usuario: " + ex.getMessage(), ex);
+				if (inv != null && ex.getMessage() != null && ex.getMessage().contains("dni_UNIQUE")) {
+					throw new DuplicateDataException("Ya existe un usuario registrado con el DNI '" + inv.getDni() + "'.", ex);
+				}
+				throw new DuplicateDataException("Ya existe un usuario con el correo o DNI ingresado.", ex);
+			}
 			logger.log(Level.SEVERE, String.format(
 				"Error SQL al actualizar usuario [SQLState: %s, ErrorCode: %d]: %s",
 				ex.getSQLState(), ex.getErrorCode(), ex.getMessage()), ex);
