@@ -1,13 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%@ page import="logic.LogicRegistro" %>
 <%@ page import="entities.Bestia" %>
-<%@ page import="entities.Habitat" %>
-<%@ page import="entities.Registro" %>
 <%@ page import="entities.Categoria" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="java.time.LocalDateTime" %>
 <%@ page import="helpers.HttpRoutes" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="helpers.CloudinaryHelper" %>
@@ -84,7 +79,6 @@
 			}
 			LinkedList<Bestia> bestias = (LinkedList<Bestia>) request.getAttribute("bestias");
 			Map<Bestia, String> imagenes = (Map<Bestia, String>) request.getAttribute("imagenes");
-			LogicRegistro controladorRegistro = new LogicRegistro();
 			if (bestias != null && !bestias.isEmpty() && imagenes != null) {
 			%>
 			<div class="swiper mySwiper">
@@ -95,8 +89,6 @@
 					%>
 					<article class="bestia swiper-slide">
 						<h1><%=bestia.getNombre()%></h1>
-						<% Registro ultRegistro = controladorRegistro.getRegistroToShow(bestia, LocalDateTime.now());
-						%>
 						<img src="<%= imagenes.get(bestia)%>" alt="Imagen de: <%=bestia.getNombre()%>" onerror="this.onerror=null; this.src='<%= CloudinaryHelper.getDefaultImage() %>';">
 						<div class="overlay-buttons">
 							<a class="btnBestia"
