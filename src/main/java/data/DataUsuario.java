@@ -27,7 +27,7 @@ public class DataUsuario {
 				String correo = rs.getString("correo");
 				String contrasena = rs.getString("contraseña");
 				String estado = rs.getString("estado");
-				Boolean recibirNotificaciones = rs.getBoolean("recibirNotificaciones");
+				boolean recibirNotificaciones = rs.getBoolean("recibirNotificaciones");
 				if("lector".equals(estado)) {
 					LocalDateTime fechaNacimiento = rs.getTimestamp("fechaNacimiento").toLocalDateTime();
 					usuarioEncontrado = new Lector(id, correo, contrasena, fechaNacimiento);
@@ -188,6 +188,7 @@ public class DataUsuario {
 				pstmt.setBoolean(7, inv.getRecibirNotificaciones());
 			}else {
 				le = new Lector(us.getIdUsuario(), us.getCorreo(), us.getContrasena(), getFechaNacimiento(us.getIdUsuario()));
+				le.setRecibirNotificaciones(us.getRecibirNotificaciones());
 				pstmt = DbConnector.getInstancia().getConn().prepareStatement("update usuario set correo = ?, contraseña = ?, fechaNacimiento = ?, estado = 'lector', recibirNotificaciones = ? where idUsuario = ?");
 				pstmt.setString(1, le.getCorreo());
 				pstmt.setString(2, le.getContrasena());

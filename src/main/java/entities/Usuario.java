@@ -5,7 +5,7 @@ public class Usuario {
 	private String correo;
 	private String contrasena;
 	private String estado;
-	private Boolean recibirNotificaciones;
+	private boolean recibirNotificaciones;
 
 	public Usuario() {
 		
@@ -18,7 +18,7 @@ public class Usuario {
 		this.estado = state;
 	}
 	
-	public Usuario(int id, String correo, String contrasena, String state, Boolean recibirNotificaciones) {
+	public Usuario(int id, String correo, String contrasena, String state, boolean recibirNotificaciones) {
 		this.idUsuario = id;
 		this.correo = correo;
 		this.contrasena = contrasena;
@@ -78,11 +78,11 @@ public class Usuario {
 		this.estado = state;
 	}
 
-	public Boolean getRecibirNotificaciones() {
+	public boolean getRecibirNotificaciones() {
 		return recibirNotificaciones;
 	}
 
-	public void setRecibirNotificaciones(Boolean recibirNotificaciones) {
+	public void setRecibirNotificaciones(boolean recibirNotificaciones) {
 		this.recibirNotificaciones = recibirNotificaciones;
 	}
 }
