@@ -9,13 +9,18 @@ import exceptions.DataNotFoundException;
 
 public class LogicComentario {
 	public DataComentario cDao = new DataComentario();
+	private LogicUsuario logicUsuario = new LogicUsuario();
 	
 	public Comentario getOne(Comentario c) throws DataNotFoundException {
 		return cDao.getOne(c);
 	}
 	
 	public LinkedList<Comentario> findAllByBestia(Bestia b){
-		return cDao.findAllByBestia(b);
+		LinkedList<Comentario> comentarios = cDao.findAllByBestia(b);
+		for (Comentario c : comentarios) {
+			c.setPublicador(logicUsuario.getOne(c.getPublicador()));
+		}
+		return comentarios;
 	}
 	
 	public Comentario save(Comentario c) {

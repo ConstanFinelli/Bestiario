@@ -16,7 +16,6 @@ import exceptions.DataNotFoundException;
 
 public class DataEvidencia {
 	private static final Logger logger = Logger.getLogger(DataEvidencia.class.getName());
-	public DataTipoEvidencia teDao = new DataTipoEvidencia();
 	
 	public Evidencia getOne(Evidencia e) {
 		PreparedStatement pstmt = null;
@@ -33,7 +32,7 @@ public class DataEvidencia {
 				String estado = rs.getString("estado");
 				String fileId = rs.getString("fileId");
 				int idTipo = rs.getInt("idTipoEvidencia");
-				TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo));
+				TipoEvidencia tipo = new TipoEvidencia(idTipo);
 				evidenciaEncontrada = new Evidencia(id, fechaO, estado, fileId, tipo);
 			}
 		} catch(SQLException ex) {
@@ -75,7 +74,7 @@ public class DataEvidencia {
 					String estado = rs.getString("estado");
 					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
-					TipoEvidencia tipo = teDao.getOne(new TipoEvidencia(idTipo));
+					TipoEvidencia tipo = new TipoEvidencia(idTipo);
 					Evidencia evidencia = new Evidencia(id, fechaO, estado, fileId, tipo);
 					evidencias.add(evidencia);
 				}
@@ -279,7 +278,7 @@ public class DataEvidencia {
 					String estado = rs.getString("estado");
 					String fileId = rs.getString("fileId");
 					int idTipo = rs.getInt("idTipoEvidencia");
-					TipoEvidencia te = teDao.getOne(new TipoEvidencia(idTipo));
+					TipoEvidencia te = new TipoEvidencia(idTipo);
 					Evidencia evidencia = new Evidencia(nroEvidencia,fechaO, estado, fileId, te);
 					evidencias.add(evidencia);
 				}

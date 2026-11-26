@@ -3,6 +3,7 @@ package logic;
 import java.util.LinkedList;
 
 import data.DataEvidencia;
+import entities.Bestia;
 import entities.Evidencia;
 import entities.TipoEvidencia;
 import exceptions.DataNotFoundException;
@@ -10,13 +11,28 @@ import helpers.CloudinaryHelper;
 
 public class LogicEvidencia {
 	private DataEvidencia eDAO = new DataEvidencia();
+	private LogicTipoEvidencia logicTipoEvidencia = new LogicTipoEvidencia();
 	
 	public Evidencia getOne(Evidencia e) throws DataNotFoundException {
-		return eDAO.getOne(e);
+		Evidencia encontrada = eDAO.getOne(e);
+		encontrada.setTipo(logicTipoEvidencia.getOne(encontrada.getTipo()));
+		return encontrada;
 	}
 	
 	public LinkedList<Evidencia> findAll(){
-		return eDAO.findAll();
+		LinkedList<Evidencia> evidencias = eDAO.findAll();
+		for (Evidencia ev : evidencias) {
+			ev.setTipo(logicTipoEvidencia.getOne(ev.getTipo()));
+		}
+		return evidencias;
+	}
+	
+	public LinkedList<Evidencia> findAllByBestia(Bestia b){
+		LinkedList<Evidencia> evidencias = eDAO.findAllByBestia(b);
+		for (Evidencia ev : evidencias) {
+			ev.setTipo(logicTipoEvidencia.getOne(ev.getTipo()));
+		}
+		return evidencias;
 	}
 	
 	public Evidencia save(Evidencia e) {

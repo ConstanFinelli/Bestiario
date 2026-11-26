@@ -13,7 +13,6 @@ import exceptions.DataNotFoundException;
 
 public class DataComentario {
 	private static final Logger logger = Logger.getLogger(DataComentario.class.getName());
-	public DataUsuario userDAO = new DataUsuario();
 	
 	public Comentario getOne(Comentario c) {
 		PreparedStatement pstmt = null;
@@ -68,7 +67,7 @@ public class DataComentario {
 					String contenido = rs.getString("contenido");
 					LocalDateTime fecha = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
 					Bestia bestia = b;
-					Usuario user = userDAO.getOne(new Usuario(idUsuario));
+					Usuario user = new Usuario(idUsuario);
 					comentario = new Comentario(user, bestia, fecha, contenido);
 					comentarios.add(comentario);
 				}

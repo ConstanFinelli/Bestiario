@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 public class DataNoticia {
 	private static final Logger logger = Logger.getLogger(DataNoticia.class.getName());
-	public DataUsuario userDAO = new DataUsuario();
 	
 	public Noticia getOne(Noticia noticia) {
 		PreparedStatement pstmt = null;
@@ -27,7 +26,7 @@ public class DataNoticia {
 				String contenido = rs.getString("contenido");
 				String titulo = rs.getString("titulo");
 				LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
-				Investigador publicador = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
+				Investigador publicador = new Investigador(rs.getInt("idUsuario"));
 				
 				noticiaFound = new Noticia(id, titulo, contenido, fechaPublicacion, publicador);
 			}
@@ -70,7 +69,7 @@ public class DataNoticia {
 					String contenido = rs.getString("contenido");
 					String titulo = rs.getString("titulo");
 					LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
-					Investigador publicador = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
+					Investigador publicador = new Investigador(rs.getInt("idUsuario"));
 					
 					noticiaFound = new Noticia(id, titulo, contenido, fechaPublicacion, publicador);
 					noticias.add(noticiaFound);
@@ -112,7 +111,7 @@ public class DataNoticia {
 					String contenido = rs.getString("contenido");
 					String titulo = rs.getString("titulo");
 					LocalDateTime fechaPublicacion = rs.getTimestamp("fechaPublicacion").toLocalDateTime();
-					Investigador publicador = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
+					Investigador publicador = new Investigador(rs.getInt("idUsuario"));
 					
 					noticiaFound = new Noticia(id, titulo, contenido, fechaPublicacion, publicador);
 					noticias.add(noticiaFound);

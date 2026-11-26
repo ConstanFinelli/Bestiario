@@ -10,13 +10,11 @@ import java.util.logging.Logger;
 
 import entities.Registro;
 import entities.Bestia;
-import entities.Usuario;
 import entities.Investigador;
 import exceptions.DataNotFoundException;
 
 public class DataRegistro {
 	private static final Logger logger = Logger.getLogger(DataRegistro.class.getName());
-	public DataUsuario userDAO = new DataUsuario();
 	
 	public Registro getRegistroToShow(Bestia b, LocalDateTime fecha) {
 		PreparedStatement pstmt = null;
@@ -44,7 +42,7 @@ public class DataRegistro {
 				if(rs.getTimestamp("fechaBaja") != null) {
 					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 				}
-				Investigador pub = (Investigador) userDAO.getOne(new Investigador(rs.getInt("idUsuario")));
+				Investigador pub = new Investigador(rs.getInt("idUsuario"));
 				String estado = rs.getString("estado");
 				Bestia bestia = b;
 				registroEncontrado = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
@@ -94,7 +92,7 @@ public class DataRegistro {
 				if(rs.getTimestamp("fechaBaja") != null) {
 					fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 				}
-				Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
+				Investigador pub = new Investigador(rs.getInt("idUsuario"));
 				String estado = rs.getString("estado");
 				Bestia bestia = r.getBestia();
 				registroEncontrado = new Registro(r.getNroRegistro(), mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
@@ -150,7 +148,7 @@ public class DataRegistro {
 					if(rs.getTimestamp("fechaBaja") != null) {
 						fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
-					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
+					Investigador pub = new Investigador(rs.getInt("idUsuario"));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
 					Registro registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);
@@ -183,7 +181,6 @@ public class DataRegistro {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		LinkedList<Registro> registros = new LinkedList<>();
-		DataBestia bestiaDao = new DataBestia();
 		
 		try {
 			pstmt = DbConnector.getInstancia().getConn().prepareStatement("Select * from Registro where fechaAprobacion = current_date()");
@@ -204,8 +201,8 @@ public class DataRegistro {
 					if(rs.getTimestamp("fechaBaja") != null) {
 						fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
-					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
-					Bestia bestia = (Bestia) bestiaDao.getOne(new Bestia(rs.getInt("idBestia")));
+					Investigador pub = new Investigador(rs.getInt("idUsuario"));
+					Bestia bestia = new Bestia(rs.getInt("idBestia"));
 					
 					String estado = rs.getString("estado");
 					Registro registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen,  fechaA, fechaB, pub, estado, bestia);
@@ -258,7 +255,7 @@ public class DataRegistro {
 					if(rs.getTimestamp("fechaBaja") != null) {
 						fechaB = rs.getTimestamp("fechaBaja").toLocalDateTime();
 					}
-					Investigador pub = (Investigador) userDAO.getOne(new Usuario(rs.getInt("idUsuario")));
+					Investigador pub = new Investigador(rs.getInt("idUsuario"));
 					String estado = rs.getString("estado");
 					Bestia bestia = b;
 					Registro registro = new Registro(id, mainPic, introduccion, historia, descripcion, resumen, fechaA, fechaB, pub, estado, bestia);

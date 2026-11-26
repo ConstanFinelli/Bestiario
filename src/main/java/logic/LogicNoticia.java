@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import data.DataNoticia;
 import data.DataUsuario;
+import entities.Investigador;
 import entities.Noticia;
 import entities.Usuario;
 import exceptions.DataNotFoundException;
@@ -13,19 +14,30 @@ import exceptions.DataNotFoundException;
 public class LogicNoticia {
 	private DataNoticia dataNoticia = new DataNoticia();
 	private DataUsuario dataUsuario = new DataUsuario();
+	private LogicUsuario logicUsuario = new LogicUsuario();
 	private LogicEmail logicEmail = new LogicEmail();
 	private static final Logger logger = Logger.getLogger(LogicNoticia.class.getName());
 	
 	public Noticia getOne(Noticia noticia) throws DataNotFoundException {
-		return(dataNoticia.getOne(noticia));
+		Noticia encontrada = dataNoticia.getOne(noticia);
+		encontrada.setPublicador((Investigador) logicUsuario.getOne(encontrada.getPublicador()));
+		return encontrada;
 	} 
 	
 	public LinkedList<Noticia> findAll() {
-		return(dataNoticia.findAll());
+		LinkedList<Noticia> noticias = dataNoticia.findAll();
+		for (Noticia n : noticias) {
+			n.setPublicador((Investigador) logicUsuario.getOne(n.getPublicador()));
+		}
+		return noticias;
 	}
 	
 	public LinkedList<Noticia> getUltimasNoticias(){
-		return(dataNoticia.getUltimasNoticias());
+		LinkedList<Noticia> noticias = dataNoticia.getUltimasNoticias();
+		for (Noticia n : noticias) {
+			n.setPublicador((Investigador) logicUsuario.getOne(n.getPublicador()));
+		}
+		return noticias;
 	}
 
 	public Noticia save(Noticia noticia) {
