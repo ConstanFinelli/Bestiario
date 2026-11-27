@@ -470,8 +470,8 @@ public class EmailTemplates {
             
             String base_URL = EnvHelper.get("BASE_URL");
             
-            String URL = HttpRoutes.OBTENER_REGISTRO_BESTIA(base_URL) // Lo ideal seria obtenerla de una .env
-            		+ "?id=" + idBestia; // E incluir el idBestia
+            String URL = HttpRoutes.OBTENER_REGISTRO_BESTIA(base_URL)
+            		+ "?id=" + idBestia;
             
             contenido.append("""
 				<a href="%s" style="
