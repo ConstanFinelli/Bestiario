@@ -17,7 +17,7 @@
 	<h1>Lista de categorías</h1>
     
     <% if(categorias != null && !categorias.isEmpty()) { %>
-        <ul class="adminList">
+        <ul class="adminList" data-entity-label="categorías">
             <% for(Categoria cat : categorias) { 
                 if (cat.getNombre() != null) { 
             %>

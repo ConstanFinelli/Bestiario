@@ -17,7 +17,7 @@
 	<h1>Lista de habitats</h1>
     
     <% if(habitats != null && !habitats.isEmpty()) { %>
-        <ul class="adminList">
+        <ul class="adminList" data-entity-label="hábitats">
             <% for(Habitat hab : habitats) { 
                 if (hab.getNombre() != null) { 
             %>
