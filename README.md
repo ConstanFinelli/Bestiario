@@ -78,12 +78,12 @@ El artefacto generado quedará en `target/Bestiario-0.0.1-SNAPSHOT.war` (puede r
 
 El script `docs/seed_data.sql` precarga los siguientes usuarios con contraseñas almacenadas en formato BCrypt:
 
-| Correo | Rol (`estado`) | Nombre |
-| :--- | :--- | :--- |
-| `juan@bestiario.com` | `investigador` | Juan Perez |
-| `maria@bestiario.com` | `investigador` | Maria Gomez |
-| `test@a.com` | `investigador` | Admin Test |
-| `carlos@bestiario.com` | `lector` | Carlos Ruiz |
+| Correo | Contraseña | Rol (`estado`) | Nombre |
+| :--- | :--- | :--- | :--- |
+| `juan@bestiario.com` | `123` | `investigador` | Juan Perez |
+| `maria@bestiario.com` | `123` | `investigador` | Maria Gomez |
+| `test@a.com` | `123` | `investigador` | Admin Test |
+| `carlos@bestiario.com` | `123` | `lector` | Carlos Ruiz |
 
 También es posible registrar nuevos usuarios (`lector`) desde `/auth/register` o restablecer contraseñas mediante `/forgot-password`.
 
