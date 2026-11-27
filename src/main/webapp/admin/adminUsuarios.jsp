@@ -17,7 +17,7 @@
 	<h1>Lista de lectores</h1>
     
     <% if(lectores != null && !lectores.isEmpty()) { %>
-        <ul class="adminList">
+        <ul class="adminList" data-entity-label="lectores">
             <% for(Lector lector : lectores) { 
                 if (lector.getCorreo() != null) { 
             %>

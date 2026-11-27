@@ -17,7 +17,7 @@
 	<h1>Lista de tipos de evidencia</h1>
     
     <% if(tipos != null && !tipos.isEmpty()) { %>
-        <ul class="adminList">
+        <ul class="adminList" data-entity-label="tipos de evidencia">
             <% for(TipoEvidencia tipo : tipos) { 
                 if (tipo.getDescripcion() != null) { 
                 	String desc = tipo.getDescripcion();

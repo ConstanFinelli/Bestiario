@@ -22,7 +22,7 @@ Volver atras</a>
 	<h1>Características del habitat <%= hab.getNombre() %></h1>
     
     <% if(carHabs != null && !carHabs.isEmpty()) { %>
-        <ul class="adminList">
+        <ul class="adminList" data-entity-label="características">
             <% for(CaracteristicaHabitat carHab : carHabs) { 
                 if (carHab.getDescripcion() != null) { 
             %>
